@@ -1,4 +1,4 @@
-// Regular Typography
+/* Regular Typography */
 
 .large_title {
   /* Large Title/Regular */
@@ -6,7 +6,8 @@
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 40px; /* 125% */
+  /* line-height: 40px;  */
+  /* 125% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -17,7 +18,8 @@
   font-size: 28px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 34px; /* 121.429% */
+  /* line-height: 34px;  */
+  /* 121.429% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -28,7 +30,8 @@
   font-size: 22px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 28px; /* 127.273% */
+  /* line-height: 28px;  */
+  /* 127.273% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -39,7 +42,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 24px; /* 120% */
+  /* line-height: 24px; */
+  /* 120% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -50,7 +54,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 22px; /* 122.222% */
+  /* line-height: 22px;  */
+  /* 122.222% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -61,7 +66,8 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 20px; /* 125% */
+  /* line-height: 20px;  */
+  /* 125% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -72,7 +78,8 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  // line-height: 20px; /* 142.857% */
+  /* line-height: 20px;  */
+  /* 142.857% */
   line-height: 1.5;
   letter-spacing: -0.5px;
 }
@@ -83,7 +90,8 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
-  // line-height: 18px; /* 138.462% */
+  /* line-height: 18px;  */
+  /* 138.462% */
   line-height: 1.5;
   letter-spacing: -0.5px;
 }
@@ -94,7 +102,8 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
-  // line-height: 18px; /* 138.462% */
+  /* line-height: 18px;  */
+  /* 138.462% */
   line-height: 1.5;
   letter-spacing: -0.2px;
 }
@@ -105,12 +114,13 @@
   font-size: 11px;
   font-style: normal;
   font-weight: 400;
-  // line-height: 14px; /* 127.273% */
+  /* line-height: 14px;  */
+  /* 127.273% */
   line-height: 1.5;
   letter-spacing: -0.2px;
 }
 
-// Bold Typography
+/* Bold Typography */
 
 .large_title_bold {
   /* Large Title/Bold */
@@ -118,7 +128,8 @@
   font-size: 32px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 40px; /* 125% */
+  /* line-height: 40px;  */
+  /* 125% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -129,7 +140,8 @@
   font-size: 28px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 34px; /* 121.429% */
+  /* line-height: 34px;  */
+  /* 121.429% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -140,7 +152,8 @@
   font-size: 22px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 28px; /* 127.273% */
+  /* line-height: 28px; */
+  /* 127.273% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -151,7 +164,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 24px; /* 120% */
+  /* line-height: 24px; */
+  /* 120% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -162,7 +176,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 22px; /* 122.222% */
+  /* line-height: 22px;  */
+  /* 122.222% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -173,7 +188,8 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 20px; /* 125% */
+  /* line-height: 20px;  */
+  /* 125% */
   line-height: 1.25;
   letter-spacing: -0.5px;
 }
@@ -184,7 +200,8 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 20px; /* 142.857% */
+  /* line-height: 20px; */
+  /* 142.857% */
   line-height: 1.5;
   letter-spacing: -0.5px;
 }
@@ -195,7 +212,8 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 18px; /* 138.462% */
+  /* line-height: 18px;  */
+  /* 138.462% */
   line-height: 1.5;
   letter-spacing: -0.5px;
 }
@@ -206,7 +224,8 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 18px; /* 138.462% */
+  /* line-height: 18px;  */
+  /* 138.462% */
   line-height: 1.5;
   letter-spacing: -0.2px;
 }
@@ -217,7 +236,8 @@
   font-size: 11px;
   font-style: normal;
   font-weight: 500;
-  // line-height: 14px; /* 127.273% */
+  /* line-height: 14px;  */
+  /* 127.273% */
   line-height: 1.5;
   letter-spacing: -0.2px;
 }
@@ -263,9 +283,7 @@
     font-size: 10px;
   }
 
-  // Bold Typography
-
-  .large_title_bold {
+  Bold Typography .large_title_bold {
     font-size: 30px;
   }
 
@@ -347,7 +365,7 @@
     font-size: 10px;
   }
 
-  // Bold Typography
+  /* Bold Typography */
 
   .large_title_bold {
     font-size: 28px;
@@ -431,7 +449,7 @@
     font-size: 10px;
   }
 
-  // Bold Typography
+  /* Bold Typography */
 
   .large_title_bold {
     font-size: 26px;
