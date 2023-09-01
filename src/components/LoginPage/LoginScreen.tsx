@@ -7,13 +7,13 @@ const LoginScreen = () => {
     <section className={`${classes.loginScreen}`}>
       <img src="/ri_voice.svg" alt="" className={classes.loginScreen_voice} />
       <div className={classes.loginScreen_btn}>
-        <span className={`title_1 ${classes.loginScreen_ringplanBtn}`}>
+        <span className={`title_2 ${classes.loginScreen_ringplanBtn}`}>
           <img src="/icon/ri.svg" alt="" />
           <span>Continue with Ringplan</span>
         </span>
 
         <span
-          className={`title_1 ${classes.loginScreen_extensionBtn}`}
+          className={`title_2 ${classes.loginScreen_extensionBtn}`}
           onMouseOver={() => {
             setExtensionIconColor("var(--primary-default)");
           }}

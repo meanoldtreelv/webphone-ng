@@ -4,13 +4,15 @@ import "./App.css";
 import SplashScreen from "components/SplashScreen";
 import LoginScreen from "components/LoginPage/LoginScreen";
 import LoginScreen2 from "components/LoginPage/LoginScreen2";
+import Sidebar from "components/shared/Sidebar";
 
 function App() {
   return (
     <>
       {/* <SplashScreen /> */}
       {/* <LoginScreen /> */}
-      <LoginScreen2 />
+      {/* <LoginScreen2 /> */}
+      <Sidebar />
       {/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
