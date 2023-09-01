@@ -5,6 +5,8 @@ import SplashScreen from "components/SplashScreen";
 import LoginScreen from "components/LoginPage/LoginScreen";
 import LoginScreen2 from "components/LoginPage/LoginScreen2";
 import Sidebar from "components/shared/Sidebar";
+import Dashboard from "components/Pages/dashboard";
+import Loader from "components/shared/Loader";
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
       {/* <SplashScreen /> */}
       {/* <LoginScreen /> */}
       {/* <LoginScreen2 /> */}
-      <Sidebar />
+      {/* <Sidebar /> */}
+      {/* <Dashboard /> */}
+      <Loader />
       {/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />

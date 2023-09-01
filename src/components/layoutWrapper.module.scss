@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  position: relative;
+}
+
+.sidebar {
+  position: absolute;
+  z-index: 100;
+}
+
+.children {
+  margin-left: 64px;
+  height: 100%;
+  overflow: auto;
+}
