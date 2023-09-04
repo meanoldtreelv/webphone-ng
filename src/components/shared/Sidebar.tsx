@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import classes from "./sidebar.module.scss";
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const [tabActive, setTabActive] = useState("1");
   const [tabHovered, setTabHovered] = useState("1");

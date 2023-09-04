@@ -7,15 +7,24 @@ import LoginScreen2 from "components/LoginPage/LoginScreen2";
 import Sidebar from "components/shared/Sidebar";
 import Dashboard from "components/Pages/dashboard";
 import Loader from "components/shared/Loader";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "components/Pages/home";
 
 function App() {
   return (
     <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<LoginScreen2 />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
       {/* <SplashScreen /> */}
       {/* <LoginScreen /> */}
       {/* <LoginScreen2 /> */}
       {/* <Sidebar /> */}
-      <Dashboard />
+      {/* <Dashboard /> */}
       {/* <Loader /> */}
       {/* <div className="App">
         <header className="App-header">

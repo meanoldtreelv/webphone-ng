@@ -1,0 +1,65 @@
+.edit {
+  padding: 25px;
+  position: fixed;
+  top: 0px;
+  right: 0;
+
+  width: 460px;
+  height: 100vh;
+  flex-shrink: 0;
+
+  //   opacity: 0.8;
+  background: var(--background-secondary, #fff);
+
+  display: flex;
+  flex-direction: column;
+
+  //   position: relative;
+
+  &_heading {
+    color: var(--text-primary, #1f2023);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &_cross {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  &_delete {
+    color: var(--support-danger, #ee3939);
+    // align-self: flex-end;
+    // position: absolute;
+    // bottom: 10px;
+    // place-items: end;
+
+    // width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 0 1;
+  }
+
+  &_save {
+    display: flex;
+    padding: 7px 8px;
+    justify-content: center;
+    align-items: center;
+    // gap: 4px;
+
+    border-radius: 8px;
+    background: var(--primary-disabled, #c8d3e0);
+
+    color: var(--text-on-color-disabled, #fff);
+  }
+}
+
+.deleteSave {
+  position: absolute;
+  bottom: 15px;
+  width: calc(100% - 50px);
+}

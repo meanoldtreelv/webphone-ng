@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./loginScreen2.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const LoginScreen2 = () => {
+  const navigate = useNavigate();
+
+  function onContinueWithRingplan() {
+    navigate("/dashboard"); // Remove the extra parentheses
+  }
+
   return (
     <section className={classes.login}>
       <div className={classes.login_image}>
@@ -15,7 +22,10 @@ const LoginScreen2 = () => {
           <p className={`body ${classes.login_doMore}`}>
             Do more with Ringplan.
           </p>
-          <div className={`body ${classes.login_continueRingplan}`}>
+          <div
+            className={`body ${classes.login_continueRingplan}`}
+            onClick={onContinueWithRingplan}
+          >
             <img src="/icon/ri.svg" alt="" />
             <span>Continue with Ringplan</span>
           </div>
