@@ -1,0 +1,67 @@
+.dialpad {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: auto;
+
+  &_number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & input {
+      margin: auto;
+      //   margin-left: 50px;
+      //   margin-right: 50px;
+      padding: 5px 55px;
+      width: 100%;
+      color: var(--text-tertiary, #9298a0);
+    }
+  }
+  &_keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  &_key {
+    width: 64px;
+    height: 64px;
+
+    border-radius: 48px;
+    background: var(--background-tertiary, #f7f9fc);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // place-items: center;
+    margin: auto;
+
+    & span {
+      color: var(--text-primary, #1f2023);
+
+      font-weight: 400;
+    }
+
+    & p {
+      color: var(--text-secondary, #5c6168);
+    }
+  }
+
+  &_key2 {
+    width: 64px;
+    height: 64px;
+
+    border-radius: 48px;
+    // background: var(--background-tertiary, #f7f9fc);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // place-items: center;
+    margin: auto;
+  }
+}

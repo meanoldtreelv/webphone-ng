@@ -15,8 +15,8 @@ function App() {
       {/* <LoginScreen /> */}
       {/* <LoginScreen2 /> */}
       {/* <Sidebar /> */}
-      {/* <Dashboard /> */}
-      <Loader />
+      <Dashboard />
+      {/* <Loader /> */}
       {/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
