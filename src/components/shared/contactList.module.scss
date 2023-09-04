@@ -1,0 +1,48 @@
+.contact {
+  padding: 15px;
+  height: 100vh;
+  overflow-y: auto;
+  &_search {
+    position: relative;
+    margin-bottom: 15px;
+    & input {
+      background: var(--background-primary, #fff);
+
+      padding: 7px 12px 7px 32px;
+      // align-items: center;
+      flex: 1 0 0;
+
+      border-radius: 8px;
+      border: 1px solid var(--border-secondary, #c8d3e0);
+      background: var(--background-tertiary, #f7f9fc);
+
+      width: 100%;
+    }
+
+    & svg {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+    }
+  }
+
+  &_favorites {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: var(--text-secondary, #5c6168);
+
+    & span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  &_sorting {
+    padding: 10px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,28 @@
+.contact {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &_circle {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--accent-blue-label, #fff);
+
+    border-radius: 32px;
+    background: var(--accent-green-primary, #75c322);
+  }
+
+  &_name {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+}
