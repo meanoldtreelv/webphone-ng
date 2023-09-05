@@ -4,22 +4,29 @@ import React from "react";
 import classes from "./dashboard.module.scss";
 import ContactList from "components/shared/ContactList";
 import ProfileAndExtension from "components/shared/ProfileAndExtension";
+import StatusMenu from "components/Profile/StatusMenu";
+import { relative } from "path";
+import AboutRingplan from "components/Profile/AboutRingplan";
 
 const Dashboard = () => {
   return (
-    <LayoutWrapper>
-      <section className={classes.dashboard}>
-        <div className={classes.contact}>
-          <ContactList />
-        </div>
-        <div className={classes.dialpad}>
-          <Dialpad />
-        </div>
-        <div className={classes.profileAndExtension}>
-          <ProfileAndExtension />
-        </div>
-      </section>
-    </LayoutWrapper>
+    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
+      <LayoutWrapper>
+        <section className={classes.dashboard}>
+          <div className={classes.contact}>
+            <ContactList />
+          </div>
+          <div className={classes.dialpad}>
+            <Dialpad />
+          </div>
+          <div className={classes.profileAndExtension}>
+            <ProfileAndExtension />
+          </div>
+        </section>
+      </LayoutWrapper>
+      {/* <StatusMenu /> */}
+      <AboutRingplan />
+    </div>
   );
 };
 
