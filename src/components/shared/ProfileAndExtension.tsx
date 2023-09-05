@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import classes from "./profileAndExtension.module.scss";
 import EditExtension from "components/Extension/EditExtension";
+import ProfileMenu from "components/Profile/ProfileMenu";
 
 const ProfileAndExtension = () => {
   const [isExtensionOpen, setIsExtensionOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
   const extensionData = [
@@ -21,7 +23,12 @@ const ProfileAndExtension = () => {
       >
         80984
       </span>
-      <span className={`footnote_bold ${classes.profile}`}>
+      <span
+        className={`footnote_bold ${classes.profile}`}
+        onClick={() => {
+          setIsProfileOpen(!isProfileOpen);
+        }}
+      >
         <span>SG</span>
         <svg
           width="10"
@@ -232,6 +239,8 @@ const ProfileAndExtension = () => {
           </div>
         </div>
       )}
+
+      {isProfileOpen && <ProfileMenu />}
 
       {isEditBoxOpen && <EditExtension />}
     </div>

@@ -32,6 +32,27 @@ const EditExtension = () => {
           </svg>
         </span>
       </div>
+      <div className={`body_bold ${classes.extension}`}>
+        Extension <span>682971</span>
+      </div>
+      <div>
+        <select
+          name=""
+          id="extension_number"
+          className={classes.extension_number}
+        >
+          <option value="1001">Number: 1001</option>
+          <option value="1002">1002</option>
+          <option value="1003">1003</option>
+        </select>
+      </div>
+      <div className={`body_bold ${classes.idInfo}`}>ID Info</div>
+      <div className={classes.callerId}>
+        <p className={`caption_1 ${classes.callerId_heading}`}>Caller ID</p>
+        <p className={`body ${classes.callerId_number}`}>
+          “Valentyn”&lt;12346900130&gt;
+        </p>
+      </div>
       <div className={classes.deleteSave}>
         <div className={`footnote_bold ${classes.edit_delete}`}>
           <span className={``}>Delete Extension</span>

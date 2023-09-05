@@ -22,6 +22,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
   }
 
   &_cross {
@@ -55,6 +56,46 @@
     background: var(--primary-disabled, #c8d3e0);
 
     color: var(--text-on-color-disabled, #fff);
+  }
+}
+
+.extension {
+  color: var(--text-primary, #1f2023);
+  padding: 7px 16px;
+
+  margin-bottom: 15px;
+
+  & span {
+    color: var(--light-labels-blue-primary, #0c6dc7);
+  }
+}
+
+.extension_number {
+  width: 100%;
+  background: none;
+  padding: 7px 16px;
+}
+
+.idInfo {
+  color: var(--text-primary, #1f2023);
+
+  padding: 7px 16px;
+
+  margin-bottom: 15px;
+}
+
+.callerId {
+  border-radius: 8px;
+  background: var(--background-quaternary, #f7f9fc);
+
+  padding: 7px 16px;
+
+  &_heading {
+    color: var(--text-secondary, #5c6168);
+  }
+
+  &_number {
+    color: var(--text-primary, #1f2023);
   }
 }
 
