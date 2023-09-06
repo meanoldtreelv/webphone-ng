@@ -4,7 +4,19 @@ import classes from "./endCall.module.scss";
 const EndCall = () => {
   return (
     <div className={classes.endCall}>
-      {false && (
+      {true ? (
+        <img
+          src="/img/dummy/profile.png"
+          alt=""
+          className={classes.backgroundImg}
+        />
+      ) : (
+        <div
+          className={classes.backgroundColor}
+          style={{ backgroundColor: "var(--accent-blue-tertiary, #ECF5FE)" }}
+        ></div>
+      )}
+      {/* {false && (
         <img
           src="/img/dummy/profile.png"
           alt=""
@@ -17,11 +29,17 @@ const EndCall = () => {
           className={classes.backgroundColor}
           style={{ backgroundColor: "var(--accent-blue-tertiary, #ECF5FE)" }}
         ></div>
-      )}
+      )} */}
 
       <div className={classes.endBox}>
-        <div className={classes.profile}>
-          <img src="/img/dummy/profile96.png" alt="" />
+        <div className={`large_title ${classes.profile}`}>
+          {false ? (
+            <span>
+              <img src="/img/dummy/profile.png" alt="" />
+            </span>
+          ) : (
+            <span>SG</span>
+          )}
         </div>
         <p
           className={`title_1 ${classes.name}`}
