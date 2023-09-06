@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./videoCall.module.scss";
 
 const VideoCall = () => {
+  const [isVideoPause, setIsVideoPause] = useState(true);
+  const [isVideoCallActive, seIsVideoCallActive] = useState(true);
+
+  const IconActiveStyle = { background: "var(--background-tertiary, #f7f9fc)" };
+  const IconDisableStyle = {
+    border: "1px solid var(--border-disabled, #c8d3e0)",
+  };
+
   return (
     <section className={classes.videoCall}>
       <div className={classes.videoCall_video}>
         <img src="/img/dummy/video_call.jpeg" alt="" />
+
+        <div className={classes.videoCall_myVideo}>
+          <img src="/img/dummy/dummy_video.png" alt="" />
+        </div>
+
         <div className={`${classes.videoCall_descriptionBox}`}>
           <div>
             <p
@@ -114,11 +127,11 @@ const VideoCall = () => {
                     <g id="Vector">
                       <path
                         d="M5.33334 13.3332L16 2.6665L26.6667 13.3332H18V13.5192C18 15.1365 17.4654 16.7085 16.4793 17.9904L12.0246 23.7815C11.5764 24.3641 11.3333 25.0787 11.3333 25.8138V29.3332H7.33334V25.8138C7.33334 24.1965 7.868 22.6245 8.8541 21.3426L13.3088 15.5516C13.757 14.9689 14 14.2543 14 13.5192V13.3332H5.33334Z"
-                        fill="#C8D3E0"
+                        fill="#191C1F"
                       />
                       <path
                         d="M17.6823 20.7999L19.9755 23.7812C20.4238 24.3638 20.6668 25.0784 20.6668 25.8135V29.3329H24.6668V25.8135C24.6668 24.1962 24.1321 22.6242 23.146 21.3423L19.9629 17.2043C19.6228 18.0623 19.1632 18.8747 18.593 19.616L17.6823 20.7999Z"
-                        fill="#C8D3E0"
+                        fill="#191C1F"
                       />
                     </g>
                   </g>
@@ -183,8 +196,45 @@ const VideoCall = () => {
               </span>
             </div>
             <div className={classes.videoCall_action}>
-              <span className={classes.videoCall_icon}>
+              <span
+                className={classes.videoCall_icon}
+                style={
+                  isVideoCallActive
+                    ? isVideoPause
+                      ? { background: "var(--background-danger, #FFEBEB)" }
+                      : IconActiveStyle
+                    : IconDisableStyle
+                }
+              >
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height=""
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M3.70718 21.7072L21.2072 4.20718L19.793 2.79297L16.3941 6.19186C15.8464 5.46782 14.9778 5 14 5H4C2.34315 5 1 6.34315 1 8V16C1 17.525 2.13788 18.7842 3.61094 18.975L2.29297 20.293L3.70718 21.7072Z"
+                    fill={
+                      isVideoCallActive
+                        ? isVideoPause
+                          ? "#EE3939"
+                          : "#191C1F"
+                        : "#C8D3E0"
+                    }
+                  />
+                  <path
+                    d="M8.41437 19L17.8486 9.56572L21.4453 7.16795C21.7522 6.96338 22.1467 6.94431 22.4719 7.11833C22.797 7.29235 23 7.63121 23 8V16C23 16.3688 22.797 16.7077 22.4719 16.8817C22.1467 17.0557 21.7522 17.0366 21.4453 16.8321L17 13.8685V16C17 17.6569 15.6569 19 14 19H8.41437Z"
+                    fill={
+                      isVideoCallActive
+                        ? isVideoPause
+                          ? "#EE3939"
+                          : "#191C1F"
+                        : "#C8D3E0"
+                    }
+                  />
+                </svg>
+                {/* <svg
                   width="32"
                   height="32"
                   viewBox="0 0 32 32"
@@ -197,10 +247,16 @@ const VideoCall = () => {
                       fill-rule="evenodd"
                       clip-rule="evenodd"
                       d="M22.6667 13.5085V10.6665C22.6667 8.45736 20.8758 6.6665 18.6667 6.6665H5.33334C3.1242 6.6665 1.33334 8.45736 1.33334 10.6665V21.3332C1.33334 23.5423 3.1242 25.3332 5.33334 25.3332H18.6667C20.8758 25.3332 22.6667 23.5423 22.6667 21.3332V18.4912L28.5937 22.4426C29.0029 22.7153 29.5289 22.7408 29.9625 22.5087C30.396 22.2767 30.6667 21.8249 30.6667 21.3332V10.6665C30.6667 10.1748 30.396 9.72297 29.9625 9.49094C29.5289 9.25891 29.0029 9.28434 28.5937 9.55711L22.6667 13.5085Z"
-                      fill="#191C1F"
+                      fill={
+                        isVideoCallActive
+                          ? isVideoPause
+                            ? "#EE3939"
+                            : "#191C1F"
+                          : "#C8D3E0"
+                      }
                     />
                   </g>
-                </svg>
+                </svg> */}
               </span>
               {/* <p
                 className={`caption_2 ${classes.videoCall_text}`}

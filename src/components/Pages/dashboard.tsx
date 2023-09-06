@@ -20,9 +20,9 @@ const Dashboard = () => {
           <div className={classes.contact}>
             <ContactList />
           </div>
-          <Dialer />
+          {/* <Dialer /> */}
           {/* <VideoCall /> */}
-          {/* <EndCall /> */}
+          <EndCall />
           {/* <div className={classes.dialpad}>
             <Dialpad />
           </div> */}
