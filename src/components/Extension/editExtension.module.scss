@@ -1,3 +1,14 @@
+.editBox {
+  width: 100vw;
+  height: 100%;
+  background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+  // background-color: red;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
 .edit {
   padding: 25px;
   position: fixed;
@@ -76,12 +87,29 @@
   padding: 7px 16px;
 }
 
+.inputBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-secondary, #c8d3e0);
+
+  & input {
+    padding: 5px 15px;
+    outline: none;
+  }
+
+  & select {
+    outline: none;
+  }
+}
 .idInfo {
   color: var(--text-primary, #1f2023);
 
   padding: 7px 16px;
 
   margin-bottom: 15px;
+  margin-top: 30px;
 }
 
 .callerId {

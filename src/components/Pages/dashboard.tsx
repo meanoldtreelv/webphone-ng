@@ -10,6 +10,7 @@ import AboutRingplan from "components/Profile/AboutRingplan";
 import Dialer from "components/Dashboard/Dialer";
 import VideoCall from "components/Dashboard/VideoCall";
 import EndCall from "components/Dashboard/EndCall";
+import EditExtension from "components/Extension/EditExtension";
 
 const Dashboard = () => {
   return (
@@ -32,6 +33,7 @@ const Dashboard = () => {
       </LayoutWrapper>
       {/* <StatusMenu /> */}
       {/* <AboutRingplan /> */}
+      {true && <EditExtension />}
     </div>
   );
 };

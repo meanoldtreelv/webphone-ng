@@ -254,7 +254,7 @@ const ProfileAndExtension = () => {
 
       {isProfileOpen && <ProfileMenu />}
 
-      {isEditBoxOpen && <EditExtension />}
+      {/* {isEditBoxOpen && <EditExtension />} */}
     </div>
   );
 };
