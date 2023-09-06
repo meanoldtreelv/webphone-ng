@@ -15,8 +15,10 @@
 .sidebar {
   position: absolute;
   z-index: 100;
-  background-color: blue;
+  // background-color: blue;
   height: 100%;
+  max-width: 100%;
+  // overflow-x: hidden;
 }
 
 .children {
