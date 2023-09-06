@@ -1,4 +1,4 @@
-import Dialpad from "components/Keypad/Dialpad";
+import Dialpad from "components/Dashboard/Dialpad";
 import LayoutWrapper from "components/LayoutWrapper";
 import React from "react";
 import classes from "./dashboard.module.scss";
@@ -7,7 +7,8 @@ import ProfileAndExtension from "components/shared/ProfileAndExtension";
 import StatusMenu from "components/Profile/StatusMenu";
 import { relative } from "path";
 import AboutRingplan from "components/Profile/AboutRingplan";
-import Dialer from "components/Keypad/Dialer";
+import Dialer from "components/Dashboard/Dialer";
+import VideoCall from "components/Dashboard/VideoCall";
 
 const Dashboard = () => {
   return (
@@ -17,7 +18,8 @@ const Dashboard = () => {
           <div className={classes.contact}>
             <ContactList />
           </div>
-          <Dialer />
+          {/* <Dialer /> */}
+          <VideoCall />
           {/* <div className={classes.dialpad}>
             <Dialpad />
           </div> */}
