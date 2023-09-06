@@ -7,6 +7,7 @@ import ProfileAndExtension from "components/shared/ProfileAndExtension";
 import StatusMenu from "components/Profile/StatusMenu";
 import { relative } from "path";
 import AboutRingplan from "components/Profile/AboutRingplan";
+import Dialer from "components/Keypad/Dialer";
 
 const Dashboard = () => {
   return (
@@ -16,16 +17,17 @@ const Dashboard = () => {
           <div className={classes.contact}>
             <ContactList />
           </div>
-          <div className={classes.dialpad}>
+          <Dialer />
+          {/* <div className={classes.dialpad}>
             <Dialpad />
-          </div>
+          </div> */}
           <div className={classes.profileAndExtension}>
             <ProfileAndExtension />
           </div>
         </section>
       </LayoutWrapper>
       {/* <StatusMenu /> */}
-      <AboutRingplan />
+      {/* <AboutRingplan /> */}
     </div>
   );
 };
