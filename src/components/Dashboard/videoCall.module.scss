@@ -1,0 +1,84 @@
+.videoCall {
+  padding: 25px;
+  &_video {
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    height: 700px;
+
+    position: relative;
+  }
+
+  &_descriptionBox {
+    width: 100%;
+    height: 64px;
+    flex-shrink: 0;
+
+    position: absolute;
+    bottom: 0;
+
+    opacity: 0.8;
+    background: var(--background-primary, #fff);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px;
+  }
+
+  &_timer {
+    display: flex;
+    padding: 4px 10px;
+    // align-items: flex-start;
+    // gap: 10px;
+
+    border-radius: 22px;
+    border: 1px solid var(--border-tertiary, #e3eaf2);
+    background: var(--background-primary, #fff);
+    // opacity: 1;
+  }
+
+  &_box {
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  &_actionBox {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    gap: 30px;
+  }
+
+  &_action {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &_icon {
+    display: flex;
+    width: 84px;
+    height: 84px;
+    // padding: 26px;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 48px;
+    background: var(--background-tertiary, #f7f9fc);
+  }
+
+  &_endButton {
+    width: 64px;
+    height: 64px;
+    background: var(--support-danger, #ee3939);
+
+    border-radius: 50%;
+  }
+}
