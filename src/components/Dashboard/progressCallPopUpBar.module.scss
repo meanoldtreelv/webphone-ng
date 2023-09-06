@@ -1,0 +1,9 @@
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 30px;
+
+  background: var(--status-information, #3b9ef7);
+  backdrop-filter: blur(16px);
+}

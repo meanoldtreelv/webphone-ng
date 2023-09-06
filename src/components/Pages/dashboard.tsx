@@ -9,6 +9,7 @@ import { relative } from "path";
 import AboutRingplan from "components/Profile/AboutRingplan";
 import Dialer from "components/Dashboard/Dialer";
 import VideoCall from "components/Dashboard/VideoCall";
+import EndCall from "components/Dashboard/EndCall";
 
 const Dashboard = () => {
   return (
@@ -19,7 +20,8 @@ const Dashboard = () => {
             <ContactList />
           </div>
           {/* <Dialer /> */}
-          <VideoCall />
+          {/* <VideoCall /> */}
+          <EndCall />
           {/* <div className={classes.dialpad}>
             <Dialpad />
           </div> */}
