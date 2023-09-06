@@ -9,6 +9,7 @@ import Dashboard from "components/Pages/dashboard";
 import Loader from "components/shared/Loader";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "components/Pages/home";
+import VoicemailDummy from "components/Pages/voicemailDummy";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginScreen2 />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/voicemail-dummy" element={<VoicemailDummy/>} />
         </Routes>
       </BrowserRouter>
       {/* <SplashScreen /> */}

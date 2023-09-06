@@ -1,0 +1,162 @@
+.header {
+    height:54px ;
+    display:flex ;
+    align-items: center;
+    padding-left: 65px;
+    position: relative;
+    border-bottom: 1px solid var(--border-tertiary, #E3EAF2);
+    /* Blur/Background Blur */
+    backdrop-filter: blur(16px);
+
+    &_pageName {
+        margin-left: 24px;
+    }
+
+    &_cont{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        // left: calc(100% - 350px - 40%);
+        left: 50%;
+        transform: translateX(-50%);
+        // right: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+        // column-gap: 4px;
+    }
+
+    // &_search{
+    //     width: 350px;
+    //     height:32px;
+    //     border-radius: 8px;
+    //     border: 1px solid var(--border-secondary, #C8D3E0);
+    //     background: var(--background-tertiary, #F7F9FC);
+    //     padding-left: 12px;
+    // }
+
+    &_search {
+        position: relative;
+        // margin-bottom: 15px;
+        & input {
+          background: var(--background-primary, #fff);
+    
+          padding: 7px 12px 7px 32px;
+          // align-items: center;
+          flex: 1 0 0;
+    
+          border-radius: 8px;
+          border: 1px solid var(--border-secondary, #c8d3e0);
+          background: var(--background-tertiary, #f7f9fc);
+    
+          width: 100%;
+        }
+    
+        & svg {
+          position: absolute;
+          top: 50%;
+          left: 10px;
+          transform: translateY(-50%);
+        }
+      }
+
+    // &_search::placeholder {
+    //     background-image: url('D:\Work\INternship\js-ringplan_react_sipjs_webphone\public\icon\calender.svg');
+    //   }
+
+    &_filter{
+        margin-left: 4px;
+    }
+}
+
+@media screen and (max-width:1440px) {
+    
+}
+
+@media screen and (max-width:1200px) {
+    .header{
+
+        // &_cont{
+        //     left: calc(100% - 280px - 38%);
+        // }
+
+        &_search{
+            width: 280px;
+        }
+    }
+}
+
+@media screen and (max-width:900px) {
+    .header{
+
+        // &_cont{
+        //     left: calc(100% - 250px - 38%);
+        // }
+
+        &_search{
+            width: 250px;
+            height: 28px;
+        }
+
+        &_filter{
+            width: 28px;
+            height: auto;
+            margin-left: 5px;
+        }
+
+        &_calender{
+            width: 28px;
+            height:auto ;
+        }
+    }
+}
+
+@media screen and (max-width:768px) {
+    .header{
+
+        // &_cont{
+        //     left: calc(100% - 200px - 35%);
+        // }
+
+        &_search{
+            width: 220px;
+            height: 22px;
+        }
+
+        &_filter{
+            width: 22px;
+            height: auto;
+            margin-left: 5px;
+        }
+
+        &_calender{
+            width: 22px;
+            height:auto ;
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .header{
+
+        // &_cont{
+        //     left: calc(100% - 170px - 35%);
+        // }
+
+        &_search{
+            width: 180px;
+            height: 20px;
+        }
+
+        &_filter{
+            width: 20px;
+            height: auto;
+            margin-left: 5px;
+        }
+
+        &_calender{
+            width: 20px;
+            height:auto ;
+        }
+    }
+}
