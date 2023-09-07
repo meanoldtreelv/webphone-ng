@@ -11,6 +11,9 @@ import Dialer from "components/Dashboard/Dialer";
 import VideoCall from "components/Dashboard/VideoCall";
 import EndCall from "components/Dashboard/EndCall";
 import EditExtension from "components/Extension/EditExtension";
+import KeyPad from "components/Dashboard/KeyPad";
+import AddCall from "components/Dashboard/AddCall";
+import TransferCall from "components/Dashboard/TransferCall";
 
 const Dashboard = () => {
   return (
@@ -20,15 +23,18 @@ const Dashboard = () => {
           <div className={classes.contact}>
             <ContactList />
           </div>
-          {/* <Dialer /> */}
+          <Dialer />
           {/* <VideoCall /> */}
-          <EndCall />
+          {/* <EndCall /> */}
           {/* <div className={classes.dialpad}>
-            <Dialpad />
+            <KeyPad />
           </div> */}
-          <div className={classes.profileAndExtension}>
+          {/* <AddCall /> */}
+          {/* <TransferCall /> */}
+
+          {/* <div className={classes.profileAndExtension}>
             <ProfileAndExtension />
-          </div>
+          </div> */}
         </section>
       </LayoutWrapper>
       {/* <StatusMenu /> */}

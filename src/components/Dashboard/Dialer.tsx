@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import classes from "./dialer.module.scss";
+import TransferCallCard from "./TransferCallCard";
 
 const Dialer = () => {
   const [isMute, setIsMute] = useState(true);
   const [isCallActive, setIsCallActive] = useState(true);
+
+  const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
 
   const IconActiveStyle = { background: "var(--background-tertiary, #f7f9fc)" };
   const IconDisableStyle = {
@@ -138,7 +141,13 @@ const Dialer = () => {
               Merge Call
             </p>
           </div>
-          <div className={classes.dialer_action}>
+          <div
+            className={classes.dialer_action}
+            style={{ position: "relative" }}
+            onClick={() => {
+              setIsTransferButtonClicked(!isTransferButtonClicked);
+            }}
+          >
             <span
               className={classes.dialer_icon}
               style={false ? IconActiveStyle : IconDisableStyle}
@@ -170,6 +179,7 @@ const Dialer = () => {
             >
               Transfer
             </p>
+            {isTransferButtonClicked && <TransferCallCard />}
           </div>
           <div className={classes.dialer_action}>
             <span
