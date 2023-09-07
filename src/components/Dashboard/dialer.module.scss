@@ -1,117 +1,117 @@
 .dialer {
-  width: 100%;
-  height: 100vh;
+	width: 100%;
+	height: 100vh;
 
-  &_detailsBox {
-    // background: var(--accent-yellow-tertiary, #fffaeb);
-    position: relative;
-    overflow: hidden;
+	&_detailsBox {
+		// background: var(--accent-yellow-tertiary, #fffaeb);
+		position: relative;
+		overflow: hidden;
 
-    & .backgroundImg {
-      position: absolute;
-      top: 0;
-      right: 0;
+		& .backgroundImg {
+			position: absolute;
+			top: 0;
+			right: 0;
 
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
 
-      filter: blur(32px);
-    }
+			filter: blur(32px);
+		}
 
-    & .backgroundColor {
-      width: 100%;
-      height: 100%;
-      z-index: -10;
-      position: absolute;
-    }
-  }
+		& .backgroundColor {
+			width: 100%;
+			height: 100%;
+			z-index: -10;
+			position: absolute;
+		}
+	}
 
-  &_details {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+	&_details {
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding-top: 200px;
-    padding-bottom: 50px;
-    height: 50vh;
-  }
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 15px;
+		padding-top: 200px;
+		padding-bottom: 50px;
+		height: 50vh;
+	}
 
-  &_profile {
-    width: 96px;
-    height: 96px;
-    flex-shrink: 0;
+	&_profile {
+		width: 96px;
+		height: 96px;
+		flex-shrink: 0;
 
-    border-radius: 48px;
-    background: var(--accent-blue-primary, #3b9ef7);
+		border-radius: 48px;
+		background: var(--accent-blue-primary, #3b9ef7);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-    color: var(--accent-blue-label, #fff);
-  }
+		color: var(--accent-blue-label, #fff);
+	}
 
-  &_timer {
-    border-radius: 22px;
-    border: 1px solid var(--border-tertiary, #e3eaf2);
-    background: var(--background-primary, #fff);
+	&_timer {
+		border-radius: 22px;
+		border: 1px solid var(--border-tertiary, #e3eaf2);
+		background: var(--background-primary, #fff);
 
-    padding: 4px 10px;
-  }
+		padding: 4px 10px;
+	}
 
-  &_box {
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 80px;
-  }
+	&_box {
+		height: 50vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 80px;
+	}
 
-  &_actionBox {
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-    gap: 30px;
-  }
+	&_actionBox {
+		display: flex;
+		justify-content: center;
+		// align-items: center;
+		gap: 30px;
+	}
 
-  &_action {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
+	&_action {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
 
-  &_icon {
-    display: flex;
-    width: 84px;
-    height: 84px;
-    // padding: 26px;
-    justify-content: center;
-    align-items: center;
+	&_icon {
+		display: flex;
+		width: 84px;
+		height: 84px;
+		// padding: 26px;
+		justify-content: center;
+		align-items: center;
 
-    border-radius: 48px;
-    // background: var(--background-tertiary, #f7f9fc);
-    // border-radius: 48px;
-    // border: 1px solid var(--border-disabled, #c8d3e0);
-  }
+		border-radius: 48px;
+		// background: var(--background-tertiary, #f7f9fc);
+		// border-radius: 48px;
+		// border: 1px solid var(--border-disabled, #c8d3e0);
+	}
 
-  &_control {
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	&_control {
+		width: 64px;
+		height: 64px;
+		flex-shrink: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
-  &_endButton {
-    background: var(--support-danger, #ee3939);
+	&_endButton {
+		background: var(--support-danger, #ee3939);
 
-    border-radius: 50%;
-  }
+		border-radius: 50%;
+	}
 }

@@ -11,22 +11,22 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "components/Pages/home";
 
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<LoginScreen2 />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </BrowserRouter>
-      {/* <SplashScreen /> */}
-      {/* <LoginScreen /> */}
-      {/* <LoginScreen2 /> */}
-      {/* <Sidebar /> */}
-      {/* <Dashboard /> */}
-      {/* <Loader /> */}
-      {/* <div className="App">
+	return (
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Home />}></Route>
+					<Route path="/login" element={<LoginScreen2 />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+				</Routes>
+			</BrowserRouter>
+			{/* <SplashScreen /> */}
+			{/* <LoginScreen /> */}
+			{/* <LoginScreen2 /> */}
+			{/* <Sidebar /> */}
+			{/* <Dashboard /> */}
+			{/* <Loader /> */}
+			{/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -42,8 +42,8 @@ function App() {
           </a>
         </header>
       </div> */}
-    </>
-  );
+		</>
+	);
 }
 
 export default App;
