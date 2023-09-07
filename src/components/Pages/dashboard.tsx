@@ -32,13 +32,13 @@ const Dashboard = () => {
           {/* <AddCall /> */}
           {/* <TransferCall /> */}
 
-          {/* <div className={classes.profileAndExtension}>
+          <div className={classes.profileAndExtension}>
             <ProfileAndExtension />
-          </div> */}
+          </div>
         </section>
       </LayoutWrapper>
       {/* <StatusMenu /> */}
-      {/* <AboutRingplan /> */}
+      <AboutRingplan />
       {/* {true && <EditExtension />} */}
     </div>
   );
