@@ -1,123 +1,123 @@
 .profileExtension {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  //   width: 584px;
-  //   height: 54px;
-  flex-shrink: 0;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	//   width: 584px;
+	//   height: 54px;
+	flex-shrink: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	gap: 10px;
 
-  z-index: 10;
+	z-index: 10;
 }
 
 .extension {
-  display: flex;
-  padding: 6px 8px;
-  align-items: center;
-  // gap: 4px;
-  width: fit-content;
+	display: flex;
+	padding: 6px 8px;
+	align-items: center;
+	// gap: 4px;
+	width: fit-content;
 
-  border-radius: 32px;
-  border: 1px solid var(--border-active, #1480e1);
-  cursor: pointer;
+	border-radius: 32px;
+	border: 1px solid var(--border-active, #1480e1);
+	cursor: pointer;
 
-  color: var(--text-link, #1480e1);
+	color: var(--text-link, #1480e1);
 }
 
 .profile {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
 
-  border-radius: 32px;
-  background: var(--accent-green-primary, #75c322);
+	border-radius: 32px;
+	background: var(--accent-green-primary, #75c322);
 
-  color: var(--accent-green-label, #fff);
+	color: var(--accent-green-label, #fff);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-  position: relative;
-  cursor: pointer;
+	position: relative;
+	cursor: pointer;
 
-  & svg {
-    position: absolute;
-    bottom: 0;
-    right: 1px;
-    // transform: translateY(50%);
-  }
+	& svg {
+		position: absolute;
+		bottom: 0;
+		right: 1px;
+		// transform: translateY(50%);
+	}
 }
 
 .extensionBox {
-  width: 325px;
-  //   height: 54px;
-  flex-shrink: 0;
-  padding: 10px;
+	width: 325px;
+	//   height: 54px;
+	flex-shrink: 0;
+	padding: 10px;
 
-  opacity: 0.8;
-  background: var(--background-secondary, #fff);
+	opacity: 0.8;
+	background: var(--background-secondary, #fff);
 
-  //   backdrop-filter: blur(16px);
+	//   backdrop-filter: blur(16px);
 
-  border-radius: 12px;
-  border: 1px solid var(--border-secondary, #c8d3e0);
-  background: var(--background-secondary, #fff);
+	border-radius: 12px;
+	border: 1px solid var(--border-secondary, #c8d3e0);
+	background: var(--background-secondary, #fff);
 
-  /* ◻️ Light/action_shadow */
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+	/* ◻️ Light/action_shadow */
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
 
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  z-index: 20;
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	z-index: 20;
 }
 
 .addExtension {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  height: 54px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	height: 54px;
 }
 
 .extensionOption {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 .label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 5px 10px 5px 40px;
-  //   line-height: 40px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	padding: 5px 10px 5px 40px;
+	//   line-height: 40px;
 
-  height: 48px;
-  align-self: stretch;
+	height: 48px;
+	align-self: stretch;
 
-  border-radius: 8px;
+	border-radius: 8px;
 
-  &:hover {
-    background: var(--background-hover, rgba(145, 160, 181, 0.1));
-  }
+	&:hover {
+		background: var(--background-hover, rgba(145, 160, 181, 0.1));
+	}
 }
 
 .input {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
+	position: absolute;
+	top: 50%;
+	left: 10px;
+	transform: translateY(-50%);
 }
 
 .edit {
-  cursor: pointer;
+	cursor: pointer;
 }
 // .option-input {
 //   -webkit-appearance: none;
