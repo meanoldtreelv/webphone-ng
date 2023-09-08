@@ -1,0 +1,28 @@
+.noVoiceBox{
+    // background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 54px)
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 54px) ;
+    z-index:0 ;
+}
+
+.footer{
+    display: flex;
+    margin-top: 50px;
+    display: flex;
+    position:sticky;
+    bottom: 0;
+    height: fit-content;
+    z-index: 3;
+}
