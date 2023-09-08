@@ -10,30 +10,38 @@ import AboutRingplan from "components/Profile/AboutRingplan";
 import Dialer from "components/Dashboard/Dialer";
 import VideoCall from "components/Dashboard/VideoCall";
 import EndCall from "components/Dashboard/EndCall";
+import EditExtension from "components/Extension/EditExtension";
+import KeyPad from "components/Dashboard/KeyPad";
+import AddCall from "components/Dashboard/AddCall";
+import TransferCall from "components/Dashboard/TransferCall";
 
 const Dashboard = () => {
-  return (
-    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
-      <LayoutWrapper>
-        <section className={classes.dashboard}>
-          <div className={classes.contact}>
-            <ContactList />
-          </div>
-          {/* <Dialer /> */}
-          {/* <VideoCall /> */}
-          <EndCall />
-          {/* <div className={classes.dialpad}>
-            <Dialpad />
+	return (
+		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+			<LayoutWrapper>
+				<section className={classes.dashboard}>
+					<div className={classes.contact}>
+						<ContactList />
+					</div>
+					<Dialer />
+					{/* <VideoCall /> */}
+					{/* <EndCall /> */}
+					{/* <div className={classes.dialpad}>
+            <KeyPad />
           </div> */}
-          <div className={classes.profileAndExtension}>
-            <ProfileAndExtension />
-          </div>
-        </section>
-      </LayoutWrapper>
-      {/* <StatusMenu /> */}
-      {/* <AboutRingplan /> */}
-    </div>
-  );
+					{/* <AddCall /> */}
+					{/* <TransferCall /> */}
+
+					<div className={classes.profileAndExtension}>
+						<ProfileAndExtension />
+					</div>
+				</section>
+			</LayoutWrapper>
+			{/* <StatusMenu /> */}
+			{/* <AboutRingplan /> */}
+			{/* {true && <EditExtension />} */}
+		</div>
+	);
 };
 
 export default Dashboard;

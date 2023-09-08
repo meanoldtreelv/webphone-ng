@@ -1,3 +1,11 @@
+.sidebarBox {
+  height: 100%;
+  background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+
+  overflow-x: hidden;
+  // position: absolute;
+  z-index: 10;
+}
 .sidebar {
   border-right: 1px solid var(--border-tertiary, #e3eaf2);
   background: var(--background-secondary, #fff);

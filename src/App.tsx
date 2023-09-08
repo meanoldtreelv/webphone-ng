@@ -12,23 +12,23 @@ import Home from "components/Pages/home";
 import VoicemailDummy from "components/Pages/voicemailDummy";
 
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<LoginScreen2 />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/voicemail-dummy" element={<VoicemailDummy/>} />
-        </Routes>
-      </BrowserRouter>
-      {/* <SplashScreen /> */}
-      {/* <LoginScreen /> */}
-      {/* <LoginScreen2 /> */}
-      {/* <Sidebar /> */}
-      {/* <Dashboard /> */}
-      {/* <Loader /> */}
-      {/* <div className="App">
+	return (
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Home />}></Route>
+					<Route path="/login" element={<LoginScreen2 />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/voicemail" element={<VoicemailDummy />} />
+				</Routes>
+			</BrowserRouter>
+			{/* <SplashScreen /> */}
+			{/* <LoginScreen /> */}
+			{/* <LoginScreen2 /> */}
+			{/* <Sidebar /> */}
+			{/* <Dashboard /> */}
+			{/* <Loader /> */}
+			{/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -44,8 +44,8 @@ function App() {
           </a>
         </header>
       </div> */}
-    </>
-  );
+		</>
+	);
 }
 
 export default App;
