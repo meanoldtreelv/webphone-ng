@@ -1,0 +1,13 @@
+.signal {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+
+	display: inline-flex;
+	padding: 2px 10px 2px 2px;
+	align-items: center;
+	gap: 2px;
+
+	border-radius: 22px;
+	background: var(--accent-green-primary, #75c322);
+}
