@@ -46,20 +46,6 @@ export const instances_API = (success: Function, error: Function) => {
 // 		.catch((err) => error?.(err));
 // };
 
-export const contacts_API = (success: Function, error: Function) => {
-	instance
-		.get(`/company/directory/contacts`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
-
-export const extension_API = (userId: String, success: Function, error: Function) => {
-	instance
-		.get(`/instances/${userId}/bulks/extensions?filter_by=softphone&by_user=on`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
-
 // export const account_API = (success: Function, error: Function) => {
 // 	instance
 // 		.get("/system/account")
@@ -67,16 +53,46 @@ export const extension_API = (userId: String, success: Function, error: Function
 // 		.catch((err) => error?.(err));
 // };
 
+export const contacts_API = (success: Function, error: Function) => {
+	instance
+		.get(`/company/directory/contacts`, {
+			headers: {
+				Authorization: `${authToken}`,
+			},
+		})
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const extension_API = (userId: String, success: Function, error: Function) => {
+	instance
+		.get(`/instances/${userId}/bulks/extensions?filter_by=softphone&by_user=on`, {
+			headers: {
+				Authorization: `${authToken}`,
+			},
+		})
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
 export const user_API = (userId: String, success: Function, error: Function) => {
 	instance
-		.get("/statuses/v2/users?user_id=" + userId)
+		.get("/statuses/v2/users?user_id=" + userId, {
+			headers: {
+				Authorization: `${authToken}`,
+			},
+		})
 		.then((res) => success?.(res))
 		.catch((err) => error?.(err));
 };
 
 export const callerId_API = (userId: String, success: Function, error: Function) => {
 	instance
-		.get(`/instances/${userId}/dids/callerids`)
+		.get(`/instances/${userId}/dids/callerids`, {
+			headers: {
+				Authorization: `${authToken}`,
+			},
+		})
 		.then((res) => success?.(res))
 		.catch((err) => error?.(err));
 };

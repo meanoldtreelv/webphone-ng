@@ -14,31 +14,84 @@ import EditExtension from "components/Extension/EditExtension";
 import KeyPad from "components/Dashboard/KeyPad";
 import AddCall from "components/Dashboard/AddCall";
 import TransferCall from "components/Dashboard/TransferCall";
-import { account_API, instances_API } from "effects/apiEffect";
+import { account_API, callerId_API, contacts_API, extension_API, instances_API, user_API } from "effects/apiEffect";
 
 const Dashboard = () => {
 	useEffect(() => {
-		instances_API(
-			(res: any) => {
-				console.log(res, "instances API retrieve");
-				if (res?.status?.code === 200) {
-					console.log("success in instances retrieve");
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in instances retrieve");
-			},
-		);
+		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
+		const userID = "5ed668cd38d0350104cb8789";
+		// instances_API(
+		// 	(res: any) => {
+		// 		console.log(res, "instances API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in instances retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in instances retrieve");
+		// 	},
+		// );
 
-		account_API(
+		// account_API(
+		// 	(res: any) => {
+		// 		console.log(res, "account API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in account retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in account retrieve");
+		// 	},
+		// );
+
+		// contacts_API(
+		// 	(res: any) => {
+		// 		console.log(res, "contact API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in contact retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in contact retrieve");
+		// 	},
+		// );
+
+		// extension_API(
+		// 	user_id,
+		// 	(res: any) => {
+		// 		console.log(res, "extension API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in extension retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in extension retrieve");
+		// 	},
+		// );
+
+		// callerId_API(
+		// 	user_id,
+		// 	(res: any) => {
+		// 		console.log(res, "user API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in user retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in user retrieve");
+		// 	},
+		// );
+
+		user_API(
+			userID,
 			(res: any) => {
-				console.log(res, "account API retrieve");
+				console.log(res, "user API retrieve");
 				if (res?.status?.code === 200) {
-					console.log("success in account retrieve");
+					console.log("success in user retrieve");
 				}
 			},
 			(err: any) => {
-				console.error(err, "err in account retrieve");
+				console.error(err, "err in user retrieve");
 			},
 		);
 	}, []);
