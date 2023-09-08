@@ -17,6 +17,7 @@ import TransferCall from "components/Dashboard/TransferCall";
 import { account_API, callerId_API, contacts_API, extension_API, instances_API, user_API } from "effects/apiEffect";
 import Signal from "components/TinyComponents/Signal";
 import LogoutPopUp from "components/Profile/LogoutPopUp";
+import InboundCall from "components/shared/InboundCall";
 
 const Dashboard = () => {
 	useEffect(() => {
@@ -115,14 +116,15 @@ const Dashboard = () => {
 
 					<div className={classes.profileAndExtension}>
 						{/* <ProfileAndExtension /> */}
-						<Signal />
+						{/* <Signal /> */}
 					</div>
 				</section>
 			</LayoutWrapper>
 			{/* <StatusMenu /> */}
 			{/* <AboutRingplan /> */}
 			{/* {true && <EditExtension />} */}
-			<LogoutPopUp />
+			{/* <LogoutPopUp /> */}
+			<InboundCall />
 		</div>
 	);
 };
