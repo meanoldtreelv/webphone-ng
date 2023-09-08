@@ -1,0 +1,66 @@
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 16px;
+	width: 100%;
+	height: 64px;
+	height: fit-content;
+	padding: 15px 0;
+	z-index: 3;
+	border-top: 1px solid var(--border-tertiary, #e3eaf2);
+	background: var(--background-secondary, #fff);
+
+	/* Blur/Background Blur */
+	backdrop-filter: blur(16px);
+
+	&_actionBtn {
+		display: flex;
+		column-gap: 1px;
+	}
+
+	&_progressBar {
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
+	}
+
+	&_progress {
+		width: 660px;
+		height: 6px;
+		background: var(--primary-default, #0c6dc7);
+	}
+
+	&_cont {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		column-gap: 20px;
+	}
+
+	&_details {
+		display: flex;
+		column-gap: 20px;
+	}
+
+	&_dat {
+		display: flex;
+		column-gap: 5px;
+		// alin
+	}
+
+	&_duration {
+		display: flex;
+		column-gap: 3px;
+	}
+
+	&_otherBtns {
+		display: flex;
+		align-items: center;
+		column-gap: 4px;
+
+		& span {
+			padding: 7px;
+		}
+	}
+}
