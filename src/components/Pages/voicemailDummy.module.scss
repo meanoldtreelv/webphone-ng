@@ -26,3 +26,12 @@
     height: fit-content;
     z-index: 3;
 }
+
+.deleteVoicemail{
+    // width: calc(100% - 60px);
+    background: var(--overlay-primary, rgba(36, 40, 46, 0.10));
+    height: calc(100% - 54px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

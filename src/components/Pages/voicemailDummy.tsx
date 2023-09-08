@@ -5,6 +5,8 @@ import style from "./voicemailDummy.module.scss";
 import React from "react";
 import VoicemailCard from "components/Voicemail/VoicemailCard";
 import VoicemailFooter from "components/Voicemail/VoicemailFooter";
+import DeleteVoicemail from "components/Voicemail/DeleteVoicemail";
+import Filter from "components/Voicemail/Filter";
 
 const VoicemailDummy = () => {
 	return (
@@ -17,7 +19,7 @@ const VoicemailDummy = () => {
 					</div>
 				)}
 
-				{true && (
+				{false && (
 					<>
 						<div className={style.body}>
 							<VoicemailCard />
@@ -32,6 +34,13 @@ const VoicemailDummy = () => {
 					</>
 
 				)}
+
+				{/* <div className={style.deleteVoicemail}>
+					<DeleteVoicemail/>
+				</div> */}
+
+				<Filter/>
+				
 
 			</LayoutWrapper>
 		</>

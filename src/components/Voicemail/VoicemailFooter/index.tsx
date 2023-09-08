@@ -40,19 +40,19 @@ const VoicemailFooter = () => {
 				<div className={style.footer_progress}></div>
 				<div className={style.footer_cont}>
 					<div className={style.footer_details}>
-						<div className={style.footer_name}>Melisa Townsend</div>
+						<div className={`caption_1 ${style.footer_name}`}>Melisa Townsend</div>
 						<div className={style.footer_dat}>
-							<div className={style.footer_month}> March</div>
-							<div className={style.footer_date}>12,</div>
-							<div className={style.footer_year}>2023</div>
-							<div className={style.footer_time}>10:33</div>
-							<div className={style.footer_morning}>AM</div>
+							<div className={`caption_1 ${style.footer_month}`}> March</div>
+							<div className={`caption_1 ${style.footer_date}`}>12,</div>
+							<div className={`caption_1 ${style.footer_year}`}>2023</div>
+							<div className={`caption_1 ${style.footer_time}`}>10:33</div>
+							<div className={`caption_1 ${style.footer_morning}`}>AM</div>
 						</div>
 					</div>
 
 					<div className={style.footer_duration}>
-						<div className={style.footer_currentprogress}>00:12 / </div>
-						<div className={style.footer_totalDuration}>0:15</div>
+						<div className={`caption_1 ${style.footer_currentprogress}`}>00:12 / </div>
+						<div className={`caption_1 ${style.footer_totalDuration}`}>0:15</div>
 					</div>
 				</div>
 			</div>
