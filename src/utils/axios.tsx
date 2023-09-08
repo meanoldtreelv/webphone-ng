@@ -4,7 +4,7 @@ import { generateFormData, isUserAuthenticated, parseCookies, resetUserCookie, s
 
 // const { publicRuntimeConfig } = getConfig();
 // Import the config object
-import env from "../../config";
+import env from "../config";
 const instance = axios.create({
 	baseURL: env.API_URL,
 });
