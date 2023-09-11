@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./dialpad.module.scss";
 
 const Dialpad = () => {
+	const [numberEntered, setNumberEntered] = useState("");
+
 	return (
 		<section className={classes.dialpad}>
 			<div className={classes.dialpad_number}>
-				<input type="text" placeholder="Enter number" className={`title_1`} />
+				<input type="text" placeholder="Enter number" className={`title_1`} value={numberEntered} />
 			</div>
 			<div className={classes.dialpad_keypad}>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "1");
+					}}>
 					<span className={`title_1`}>1</span>
 					<p className={`caption_2`}>
 						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,47 +35,91 @@ const Dialpad = () => {
 						</svg>
 					</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "2");
+					}}>
 					<span className={`title_1`}>2</span>
 					<p className={`caption_2`}>ABC</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "3");
+					}}>
 					<span className={`title_1`}>3</span>
 					<p className={`caption_2`}>DEF</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "4");
+					}}>
 					<span className={`title_1`}>4</span>
 					<p className={`caption_2`}>GHI</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "5");
+					}}>
 					<span className={`title_1`}>5</span>
 					<p className={`caption_2`}>JKL</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "6");
+					}}>
 					<span className={`title_1`}>6</span>
 					<p className={`caption_2`}>MNO</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "7");
+					}}>
 					<span className={`title_1`}>7</span>
 					<p className={`caption_2`}>PQRS</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "8");
+					}}>
 					<span className={`title_1`}>8</span>
 					<p className={`caption_2`}>TUV</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "9");
+					}}>
 					<span className={`title_1`}>9</span>
 					<p className={`caption_2`}>WXYZ</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "*");
+					}}>
 					<span className={`title_1`}>*</span>
 					<p className={`caption_2`}></p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "0");
+					}}>
 					<span className={`title_1`}>0</span>
 					<p className={`caption_2`}>+</p>
 				</div>
-				<div className={classes.dialpad_key}>
+				<div
+					className={classes.dialpad_key}
+					onClick={() => {
+						setNumberEntered(numberEntered + "#");
+					}}>
 					<span className={`title_1`}>#</span>
 					<p className={`caption_2`}>&nbsp;</p>
 				</div>

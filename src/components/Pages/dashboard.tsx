@@ -105,26 +105,26 @@ const Dashboard = () => {
 					<div className={classes.contact}>
 						<ContactList />
 					</div>
-					<Dialer />
+					{/* <Dialer /> */}
 					{/* <VideoCall /> */}
 					{/* <EndCall /> */}
-					{/* <div className={classes.dialpad}>
+					<div className={classes.dialpad}>
 						<KeyPad />
-					</div> */}
+					</div>
 					{/* <AddCall /> */}
 					{/* <TransferCall /> */}
 
-					<div className={classes.profileAndExtension}>
-						{/* <ProfileAndExtension /> */}
-						{/* <Signal /> */}
-					</div>
+					{/* <div className={classes.profileAndExtension}>
+						<ProfileAndExtension />
+						<Signal />
+					</div> */}
 				</section>
 			</LayoutWrapper>
 			{/* <StatusMenu /> */}
 			{/* <AboutRingplan /> */}
 			{/* {true && <EditExtension />} */}
 			{/* <LogoutPopUp /> */}
-			<InboundCall />
+			{/* <InboundCall /> */}
 		</div>
 	);
 };

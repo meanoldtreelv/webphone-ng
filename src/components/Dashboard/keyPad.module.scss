@@ -1,28 +1,28 @@
 .dialpad {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: auto;
+	width: 300px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin: auto;
 
-  &_keypad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
+	&_keypad {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+	}
 
-  &_key2 {
-    width: 64px;
-    height: 64px;
+	&_key2 {
+		width: 64px;
+		height: 64px;
 
-    border-radius: 48px;
-    // background: var(--background-tertiary, #f7f9fc);
+		border-radius: 48px;
+		// background: var(--background-tertiary, #f7f9fc);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    // place-items: center;
-    margin: auto;
-  }
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		// place-items: center;
+		margin: auto;
+	}
 }
