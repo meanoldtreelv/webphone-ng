@@ -6,6 +6,7 @@
     border-bottom: 1px solid var(--border-tertiary, #E3EAF2);
     padding: 8px 12px;
     height: fit-content;
+	position: relative;
 
 	&_mainCont {
 		display: flex;

@@ -1,8 +1,12 @@
 import React from "react";
 import style from "./voicemailFooter.module.scss";
+import ShareBtnPopup from "../ShareBtnPopup";
 const VoicemailFooter = () => {
 	return (
 		<div className={style.footer}>
+
+			{/* <ShareBtnPopup></ShareBtnPopup> */}
+
 			<div className={style.footer_actionBtn}>
 				<span className={style.footer_action}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -58,7 +62,7 @@ const VoicemailFooter = () => {
 			</div>
 
 			<div className={style.footer_otherBtns}>
-				<span>
+				<span className={style.footer_shareBtn}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 						<path
 							fill-rule="evenodd"

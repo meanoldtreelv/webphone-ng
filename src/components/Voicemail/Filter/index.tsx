@@ -55,23 +55,23 @@ const Filter = () => {
 				</div>
 				<div className={classes.filters}>
 					<div className={classes.filter1}>
-						<input type="radio" />
-						<div>All</div>
+						<input type="radio" id="all" name="filter" value="all" />
+    					<label htmlFor="all">All</label>
 					</div>
 
 					<div className={classes.filter1}>
-						<input type="radio" />
-						<div>80984</div>
+						<input type="radio" id="80984" name="filter" value="80984" />
+    					<label htmlFor="80984">80984</label>
 					</div>
 
 					<div className={classes.filter1}>
-						<input type="radio" />
-						<div>312</div>
+						<input type="radio" id="312" name="filter" value="312" />
+    					<label htmlFor="312">312</label>
 					</div>
 
 					<div className={classes.filter1}>
-						<input type="radio" />
-						<div>783</div>
+						<input type="radio" id="783" name="filter" value="783" />
+    					<label htmlFor="783">783</label>
 					</div>
 				</div>
 			</div>

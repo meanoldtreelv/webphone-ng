@@ -7,6 +7,7 @@ import VoicemailCard from "components/Voicemail/VoicemailCard";
 import VoicemailFooter from "components/Voicemail/VoicemailFooter";
 import DeleteVoicemail from "components/Voicemail/DeleteVoicemail";
 import Filter from "components/Voicemail/Filter";
+import ShareBtnPopup from "components/Voicemail/ShareBtnPopup";
 
 const VoicemailDummy = () => {
 	return (
@@ -19,14 +20,17 @@ const VoicemailDummy = () => {
 					</div>
 				)}
 
-				{false && (
+				{true && (
 					<>
 						<div className={style.body}>
+							{/* <div className={style.manage}>
+								<div>Manage</div>
+							</div> */}
+							<VoicemailCard />
+							{/* <VoicemailCard />
 							<VoicemailCard />
 							<VoicemailCard />
-							<VoicemailCard />
-							<VoicemailCard />
-							<VoicemailCard />
+							<VoicemailCard /> */}
 						</div>
 						<div className={style.footer}>
 							<VoicemailFooter/>
@@ -39,7 +43,8 @@ const VoicemailDummy = () => {
 					<DeleteVoicemail/>
 				</div> */}
 
-				<Filter/>
+				{/* <Filter/> */}
+				{/* <ShareBtnPopup></ShareBtnPopup> */}
 				
 
 			</LayoutWrapper>
