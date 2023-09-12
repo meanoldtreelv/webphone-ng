@@ -25,11 +25,9 @@ const DeleteVoicemail = () => {
 				<div className={style.delete_btnCont}>
 					<div className={`footnote_bold ${style.delete_cancelBtn}`}>
 						<span className={``}>Cancel</span>
-						{/* <span className={style.edit_save}>Save</span> */}
 					</div>
 					<div className={`footnote_bold ${style.delete_deleteBtn}`}>
 						<span className={``}>Delete</span>
-						{/* <span className={style.edit_save}>Save</span> */}
 					</div>
 				</div>
 			</div>

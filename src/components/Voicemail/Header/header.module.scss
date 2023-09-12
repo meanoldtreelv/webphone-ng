@@ -20,18 +20,8 @@
     width: fit-content;
   }
 
-  // &_search{
-  //     width: 350px;
-  //     height:32px;
-  //     border-radius: 8px;
-  //     border: 1px solid var(--border-secondary, #C8D3E0);
-  //     background: var(--background-tertiary, #F7F9FC);
-  //     padding-left: 12px;
-  // }
-
   &_search {
     position: relative;
-    // margin-bottom: 15px;
     & input {
       background: var(--background-primary, #fff);
 
@@ -60,9 +50,6 @@
 
 @media screen and (max-width: 1200px) {
   .header {
-    // &_cont{
-    //     left: calc(100% - 280px - 38%);
-    // }
 
     &_search {
       & input {

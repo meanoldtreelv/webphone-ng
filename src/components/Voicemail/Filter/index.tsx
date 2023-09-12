@@ -30,28 +30,9 @@ const Filter = () => {
 				<div className={`body_bold ${classes.extension}`}>
 				By Extensions
 				</div>
-				{/* <div className={classes.inputBox}>
-					<label htmlFor="">Number:</label>
-					<select name="" id="extension_number" className={classes.extension_number}>
-						<option value="1001">1001</option>
-						<option value="1002">1002</option>
-						<option value="1003">1003</option>
-					</select>
-				</div>
-				<div className={classes.inputBox}>
-					<label htmlFor="">Name:</label>
-					<input type="text" placeholder="anonymous" />
-				</div>
-				<div className={`body_bold ${classes.idInfo}`}>ID Info</div>
-				<div className={classes.callerId}>
-					<p className={`caption_1 ${classes.callerId_heading}`}>Caller ID</p>
-					<p className={`body ${classes.callerId_number}`}>“Valentyn”&lt;12346900130&gt;</p>
-				</div> */}
+				
 				<div className={classes.deleteSave}>
-					{/* <div className={`footnote_bold ${classes.edit_delete}`}> */}
-						{/* <span className={``}>Delete Extension</span> */}
 						<span className={`footnote_bold ${classes.edit_save}`}>Apply Filter</span>
-					{/* </div> */}
 				</div>
 				<div className={classes.filters}>
 					<div className={classes.filter1}>
