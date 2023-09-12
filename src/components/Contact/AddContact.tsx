@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./addContact.module.scss";
 
 const AddContact = () => {
+	const [contactType, setContactType] = useState("add_contact");
 	const [isNumberAccordianOpen, setIsNumberAccordianOpen] = useState(false);
 	const [isAdditionalFieldAccordianOpen, setIsAdditionalFieldAccordianOpen] = useState(false);
 	const [isCompanyAccordianOpen, setIsCompanyAccordianOpen] = useState(false);
@@ -13,7 +14,7 @@ const AddContact = () => {
 			<div className={classes.addContact}>
 				<div className={`flex justify-between items-center`}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						Add Contact
+						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
 					</span>
 					<span className={`p-1`}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
