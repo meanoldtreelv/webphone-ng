@@ -15,6 +15,9 @@ import KeyPad from "components/Dashboard/KeyPad";
 import AddCall from "components/Dashboard/AddCall";
 import TransferCall from "components/Dashboard/TransferCall";
 import { account_API, callerId_API, contacts_API, extension_API, instances_API, user_API } from "effects/apiEffect";
+import Signal from "components/TinyComponents/Signal";
+import LogoutPopUp from "components/Profile/LogoutPopUp";
+import InboundCall from "components/shared/InboundCall";
 
 const Dashboard = () => {
 	useEffect(() => {
@@ -56,18 +59,18 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		// extension_API(
-		// 	user_id,
-		// 	(res: any) => {
-		// 		console.log(res, "extension API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in extension retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in extension retrieve");
-		// 	},
-		// );
+		extension_API(
+			user_id,
+			(res: any) => {
+				console.log(res, "extension API retrieve");
+				if (res?.status?.code === 200) {
+					console.log("success in extension retrieve");
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in extension retrieve");
+			},
+		);
 
 		// callerId_API(
 		// 	user_id,
@@ -102,23 +105,26 @@ const Dashboard = () => {
 					<div className={classes.contact}>
 						<ContactList />
 					</div>
-					<Dialer />
+					{/* <Dialer /> */}
 					{/* <VideoCall /> */}
 					{/* <EndCall /> */}
-					{/* <div className={classes.dialpad}>
+					<div className={classes.dialpad}>
 						<KeyPad />
-					</div> */}
+					</div>
 					{/* <AddCall /> */}
 					{/* <TransferCall /> */}
 
-					<div className={classes.profileAndExtension}>
+					{/* <div className={classes.profileAndExtension}>
 						<ProfileAndExtension />
-					</div>
+						<Signal />
+					</div> */}
 				</section>
 			</LayoutWrapper>
 			{/* <StatusMenu /> */}
 			{/* <AboutRingplan /> */}
 			{/* {true && <EditExtension />} */}
+			{/* <LogoutPopUp /> */}
+			{/* <InboundCall /> */}
 		</div>
 	);
 };
