@@ -4,8 +4,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    // position: absolute;
-    // transform: translateY(-50%);    
+    position: absolute;
+    transform: translateY(-50%);    
 
     &_boldText{
         margin-top: 24px;

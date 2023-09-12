@@ -19,26 +19,30 @@
     // justify-content: center;
     width: 100%;
     // height: calc(100vh - 54px) ;
+    margin-top: 54px;
     height: 100%;
     z-index:0 ;
 }
 
 .header{
-    position:sticky;
+    position:fixed;
     top: 0;
+    width: 100%;
     z-index: 3; 
 }
 
 .footer{
-    position:sticky;
+    position:fixed;
     bottom: 0;
+    width: 100%;
     z-index: 3;
 }
 
 .deleteVoicemail{
     // width: calc(100% - 60px);
     background: var(--overlay-primary, rgba(36, 40, 46, 0.10));
-    height: calc(100% - 54px);
+    // height: calc(100% - 54px);
+    // position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;

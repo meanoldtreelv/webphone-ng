@@ -12,47 +12,42 @@ import ShareBtnPopup from "components/Voicemail/ShareBtnPopup";
 const VoicemailDummy = () => {
 	return (
 		<>
-			<LayoutWrapper>
-				<div className={`${style.main}`}>
-					<div className={style.header}>
-						<Header />
-					</div>
-					
-					<div className={`bg-red-300 ${style.body}`}>
-						{false && (
-							<div className={style.noVoiceBox}>
-								<NoVoicemail />
-							</div>
+			<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+				<LayoutWrapper>
+					<section className={`${style.main}`}>
+						<div className={style.header}>
+							<Header />
+						</div>
+
+						<div className={`${style.body}`}>
+							{false && (
+								<div className={style.noVoiceBox}>
+									<NoVoicemail />
+								</div>
+							)}
+
+							{true && (
+							<>
+								<div className={style.body}>
+									<VoicemailCard />
+									{/* <VoicemailCard />
+									<VoicemailCard />
+									<VoicemailCard />
+									<VoicemailCard /> */}
+								</div>
+							</>
 						)}
-					</div>
-					<div className={style.footer}>
-						<VoicemailFooter/>
-					</div>
-				</div>
 
-				{/* {true && (
-					<>
-						<div className={style.body}>
-							<VoicemailCard />
-							<VoicemailCard />
-							<VoicemailCard />
-							<VoicemailCard />
-							<VoicemailCard />
+							<div className={style.footer}>
+								<VoicemailFooter />
+							</div>
 						</div>
-						<div className={style.footer}>
-							<VoicemailFooter/>
-						</div>
-					</>
-
-				)} */}
-
-				{/* <div className={style.deleteVoicemail}>
-					<DeleteVoicemail/>
-				</div> */}
+					</section>
+				</LayoutWrapper>
 
 				{/* <Filter/> */}
-				{/* <ShareBtnPopup></ShareBtnPopup> */}
-			</LayoutWrapper>
+				{/* <DeleteVoicemail /> */}
+			</div>
 		</>
 	);
 };

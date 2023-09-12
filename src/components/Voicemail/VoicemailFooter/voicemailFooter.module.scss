@@ -1,9 +1,18 @@
-.footer {
+.cont{
 	display: flex;
 	position: relative;
 	align-items: center;
-	justify-content: center;
 	column-gap: 16px;
+
+
+
+}
+
+.footer {
+	display: flex;
+	
+	justify-content: center;
+	
 	width: 100%;
 	height: 64px;
 	// height: fit-content;
@@ -11,6 +20,7 @@
 	z-index: 3;
 	border-top: 1px solid var(--border-tertiary, #e3eaf2);
 	background: var(--background-secondary, #fff);
+	opacity: .8;
 
 	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
