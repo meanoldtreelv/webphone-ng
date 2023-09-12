@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./addContact.module.scss";
 
 const AddContact = () => {
+	const [contactType, setContactType] = useState("add_contact");
 	const [isNumberAccordianOpen, setIsNumberAccordianOpen] = useState(false);
 	const [isAdditionalFieldAccordianOpen, setIsAdditionalFieldAccordianOpen] = useState(false);
 	const [isCompanyAccordianOpen, setIsCompanyAccordianOpen] = useState(false);
@@ -13,7 +14,7 @@ const AddContact = () => {
 			<div className={classes.addContact}>
 				<div className={`flex justify-between items-center`}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						Add Contact
+						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
 					</span>
 					<span className={`p-1`}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -48,9 +49,9 @@ const AddContact = () => {
 								/>
 							</svg>
 						</span>
-						<span className={`footnote ${classes.uploadButton}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+						{/* <span className={`footnote ${classes.uploadButton}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 							Upload Image
-						</span>
+						</span> */}
 					</div>
 					<div className={classes.box}>
 						<p className={`body_bold ${classes.box_heding}`} style={{ color: "var(--text-primary, #1F2023)" }}>
@@ -93,25 +94,29 @@ const AddContact = () => {
 									setIsNumberAccordianOpen(!isNumberAccordianOpen);
 								}}
 								className={`cursor-pointer`}>
-								{isNumberAccordianOpen ? (
+								{!isNumberAccordianOpen ? (
 									<img src="/icon/btn_accordion_plus.svg" alt=""></img>
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
 							</span>
 						</p>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="phone_number" className={`caption_1`}>
-								Phone Number
-							</label>
-							<input type="text" id="phone_number" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="fax_number" className={`caption_1`}>
-								Fax Number
-							</label>
-							<input type="text" id="fax_number" />
-						</div>
+						{isNumberAccordianOpen && (
+							<>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="phone_number" className={`caption_1`}>
+										Phone Number
+									</label>
+									<input type="text" id="phone_number" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="fax_number" className={`caption_1`}>
+										Fax Number
+									</label>
+									<input type="text" id="fax_number" />
+								</div>
+							</>
+						)}
 					</div>
 
 					<div className={classes.box}>
@@ -125,31 +130,35 @@ const AddContact = () => {
 									setIsAdditionalFieldAccordianOpen(!isAdditionalFieldAccordianOpen);
 								}}
 								className={`cursor-pointer`}>
-								{isAdditionalFieldAccordianOpen ? (
+								{!isAdditionalFieldAccordianOpen ? (
 									<img src="/icon/btn_accordion_plus.svg" alt=""></img>
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
 							</span>
 						</p>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="birthday" className={`caption_1`}>
-								Birthday
-							</label>
-							<input type="text" id="birthday" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="position" className={`caption_1`}>
-								Position
-							</label>
-							<input type="text" id="position" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="department" className={`caption_1`}>
-								Department
-							</label>
-							<input type="text" id="department" />
-						</div>
+						{isAdditionalFieldAccordianOpen && (
+							<>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="birthday" className={`caption_1`}>
+										Birthday
+									</label>
+									<input type="text" id="birthday" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="position" className={`caption_1`}>
+										Position
+									</label>
+									<input type="text" id="position" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="department" className={`caption_1`}>
+										Department
+									</label>
+									<input type="text" id="department" />
+								</div>
+							</>
+						)}
 					</div>
 
 					<div className={classes.box}>
@@ -162,25 +171,29 @@ const AddContact = () => {
 									setIsCompanyAccordianOpen(!isCompanyAccordianOpen);
 								}}
 								className={`cursor-pointer`}>
-								{isCompanyAccordianOpen ? (
+								{!isCompanyAccordianOpen ? (
 									<img src="/icon/btn_accordion_plus.svg" alt=""></img>
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
 							</span>
 						</p>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="organization" className={`caption_1`}>
-								Organization
-							</label>
-							<input type="text" id="organization" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="parent_organization" className={`caption_1`}>
-								Parent Organization
-							</label>
-							<input type="text" id="parent_organization" />
-						</div>
+						{isCompanyAccordianOpen && (
+							<>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="organization" className={`caption_1`}>
+										Organization
+									</label>
+									<input type="text" id="organization" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="parent_organization" className={`caption_1`}>
+										Parent Organization
+									</label>
+									<input type="text" id="parent_organization" />
+								</div>
+							</>
+						)}
 					</div>
 					<div className={classes.box}>
 						<p
@@ -192,21 +205,23 @@ const AddContact = () => {
 									setIsManagerAccordianOpen(!isManagerAccordianOpen);
 								}}
 								className={`cursor-pointer`}>
-								{isManagerAccordianOpen ? (
+								{!isManagerAccordianOpen ? (
 									<img src="/icon/btn_accordion_plus.svg" alt=""></img>
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
 							</span>
 						</p>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="organization" className={`caption_1`}>
-								Reports to
-							</label>
-							<select name="" id="">
-								<option>reports to</option>
-							</select>
-						</div>
+						{isManagerAccordianOpen && (
+							<div className={`${classes.inputBox}`}>
+								<label htmlFor="organization" className={`caption_1`}>
+									Reports to
+								</label>
+								<select name="" id="">
+									<option>reports to</option>
+								</select>
+							</div>
+						)}
 					</div>
 					<div className={classes.box}>
 						<p
@@ -218,37 +233,41 @@ const AddContact = () => {
 									setIsAdditionalField2AccordianOpen(!isAdditionalField2AccordianOpen);
 								}}
 								className={`cursor-pointer`}>
-								{isAdditionalField2AccordianOpen ? (
+								{!isAdditionalField2AccordianOpen ? (
 									<img src="/icon/btn_accordion_plus.svg" alt=""></img>
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
 							</span>
 						</p>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="state" className={`caption_1`}>
-								State
-							</label>
-							<input type="text" id="state" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="zip" className={`caption_1`}>
-								Zip
-							</label>
-							<input type="text" id="zip" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="country" className={`caption_1`}>
-								Country
-							</label>
-							<input type="text" id="country" />
-						</div>
-						<div className={`${classes.inputBox}`}>
-							<label htmlFor="mailing_address" className={`caption_1`}>
-								Mailing Address
-							</label>
-							<input type="text" id="mailing_address" />
-						</div>
+						{isAdditionalField2AccordianOpen && (
+							<>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="state" className={`caption_1`}>
+										State
+									</label>
+									<input type="text" id="state" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="zip" className={`caption_1`}>
+										Zip
+									</label>
+									<input type="text" id="zip" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="country" className={`caption_1`}>
+										Country
+									</label>
+									<input type="text" id="country" />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="mailing_address" className={`caption_1`}>
+										Mailing Address
+									</label>
+									<input type="text" id="mailing_address" />
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 				<div className={classes.buttonBox}>
