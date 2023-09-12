@@ -13,31 +13,38 @@ const VoicemailDummy = () => {
 	return (
 		<>
 			<LayoutWrapper>
-				<Header />
-				{false && (
-					<div className={style.noVoiceBox}>
-						<NoVoicemail />
+				<div className={`${style.main}`}>
+					<div className={style.header}>
+						<Header />
 					</div>
-				)}
+					
+					<div className={`bg-red-300 ${style.body}`}>
+						{false && (
+							<div className={style.noVoiceBox}>
+								<NoVoicemail />
+							</div>
+						)}
+					</div>
+					<div className={style.footer}>
+						<VoicemailFooter/>
+					</div>
+				</div>
 
-				{true && (
+				{/* {true && (
 					<>
 						<div className={style.body}>
-							{/* <div className={style.manage}>
-								<div>Manage</div>
-							</div> */}
-							<VoicemailCard />
-							{/* <VoicemailCard />
 							<VoicemailCard />
 							<VoicemailCard />
-							<VoicemailCard /> */}
+							<VoicemailCard />
+							<VoicemailCard />
+							<VoicemailCard />
 						</div>
 						<div className={style.footer}>
 							<VoicemailFooter/>
 						</div>
 					</>
 
-				)}
+				)} */}
 
 				{/* <div className={style.deleteVoicemail}>
 					<DeleteVoicemail/>
@@ -45,8 +52,6 @@ const VoicemailDummy = () => {
 
 				{/* <Filter/> */}
 				{/* <ShareBtnPopup></ShareBtnPopup> */}
-				
-
 			</LayoutWrapper>
 		</>
 	);
