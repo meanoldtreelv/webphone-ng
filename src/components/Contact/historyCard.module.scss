@@ -1,0 +1,14 @@
+.historyCard {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+
+	height: 54px;
+	align-self: stretch;
+	border-radius: 8px;
+	padding: 7px 16px;
+
+	&:hover {
+		background: var(--background-hover, rgba(145, 160, 181, 0.1));
+	}
+}

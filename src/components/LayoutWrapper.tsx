@@ -7,7 +7,7 @@ const LayoutWrapper = ({ children }: any) => {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.popUp} id="notification_bar">
-				<ProgressCallPopUpBar />
+				{/* <ProgressCallPopUpBar /> */}
 			</div>
 			<div>
 				<div className={classes.sidebar}>
