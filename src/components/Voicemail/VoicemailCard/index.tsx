@@ -13,13 +13,13 @@ const VoicemailCard = () => {
 						<img src="/icon/player-play.svg" alt="" />
 					</span>
 					<div className={style.card_unread}></div>
-					<div className={`caption_1 ${style.card_name}`}>Melisa Townsend</div>
+					<div className={`caption_1 ${style.card_name}`} style={{color:"var(--text-primary, #1F2023)"}}>Melisa Townsend</div>
 				</div>
 
 				<div className={style.card_cont2}>
-					<div className={`caption_1 ${style.card_ext}`}>Ext. 6002</div>
-					<div className={`caption_1 ${style.card_duration}`}>0:15 sec</div>
-					<div className={`caption_1 ${style.card_time}`}>10:55 PM</div>
+					<div className={`caption_1 ${style.card_ext}`} style={{color:"var(--text-primary, #1F2023)"}}>Ext. 6002</div>
+					<div className={`caption_1 ${style.card_duration}`} style={{color:"var(--text-primary, #1F2023)"}}>0:15 sec</div>
+					<div className={`caption_1 ${style.card_time}`} style={{color:"var(--text-primary, #1F2023)"}}>10:55 PM</div>
 					<div className={style.card_icons}>
 						<span className={style.card_phone}>
 							<img src="/icon/voicemail_phone.svg" alt="" />

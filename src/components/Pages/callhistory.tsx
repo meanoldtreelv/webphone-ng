@@ -15,23 +15,25 @@ const Callhistory = () => {
 				<LayoutWrapper>
 					{false && <NoRecentActivity />}
 
-					<section className={` flex ${style.recent}`}>
-						<RecentsSidebar />
+					{true && (
+						<section className={` flex ${style.recent}`}>
+							<RecentsSidebar />
 
-						<div className={`w-[100%] flex flex-col ${style.rightCont}`}>
-							<div className={style.header}>
-								<Header />
-							</div>
-
-							{true && <ContactDetails />}
-
-							{false && (
-								<div className={style.noRecords}>
-									<NoRecordSelected />
+							<div className={`w-[100%] flex flex-col ${style.rightCont}`}>
+								<div className={style.header}>
+									<Header />
 								</div>
-							)}
-						</div>
-					</section>
+
+								{false && <ContactDetails />}
+
+								{true && (
+									<div className={style.noRecords}>
+										<NoRecordSelected />
+									</div>
+								)}
+							</div>
+						</section>
+					)}
 				</LayoutWrapper>
 
 				{false && <ClearHistory />}

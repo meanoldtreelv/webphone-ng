@@ -6,7 +6,7 @@ const RecentHistoryCard = () => {
 	return (
 		<div className={classes.historyCard}>
 			<div className={`flex gap-x-[8px] items-center ${""}`}>
-				<span className={`flex py-[9px] w-[38px] h-[38px] justify-center items-center ${classes.historyCard_circle}`}>
+				<span className={`flex py-[9px] w-[38px] h-[38px] justify-center items-center ${classes.historyCard_circle}`} style={{backgroundColor: "var(--accent-blue-primary, #3B9EF7)"}}>
 					<span>IC</span>
 				</span>
 				<div>
