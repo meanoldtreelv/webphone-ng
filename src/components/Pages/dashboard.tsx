@@ -59,18 +59,18 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		extension_API(
-			user_id,
-			(res: any) => {
-				console.log(res, "extension API retrieve");
-				if (res?.status?.code === 200) {
-					console.log("success in extension retrieve");
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in extension retrieve");
-			},
-		);
+		// extension_API(
+		// 	user_id,
+		// 	(res: any) => {
+		// 		console.log(res, "extension API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in extension retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in extension retrieve");
+		// 	},
+		// );
 
 		// callerId_API(
 		// 	user_id,
@@ -85,45 +85,70 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		user_API(
-			userID,
-			(res: any) => {
-				console.log(res, "user API retrieve");
-				if (res?.status?.code === 200) {
-					console.log("success in user retrieve");
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in user retrieve");
-			},
-		);
+		// user_API(
+		// 	userID,
+		// 	(res: any) => {
+		// 		console.log(res, "user API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in user retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in user retrieve");
+		// 	},
+		// );
 	}, []);
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
 			<LayoutWrapper>
 				<section className={classes.dashboard}>
+					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={classes.contact}>
 						<ContactList />
 					</div>
-					{/* <Dialer /> */}
-					{/* <VideoCall /> */}
-					{/* <EndCall /> */}
+
+					{/* This is a dial pad components for calling */}
 					<div className={classes.dialpad}>
 						<KeyPad />
 					</div>
+
+					{/* When call is in progress this component will be shown  */}
+					{/* <Dialer /> */}
+
+					{/* to add a call in progress call we will call this component */}
 					{/* <AddCall /> */}
+
+					{/* to transfer the call to another number we call this component */}
 					{/* <TransferCall /> */}
 
-					{/* <div className={classes.profileAndExtension}>
-						<ProfileAndExtension />
-						<Signal />
-					</div> */}
+					{/* after clicking on end button this screen will be shown  */}
+					{/* <EndCall /> */}
+
+					{/* this is a video call screen  */}
+					{/* <VideoCall /> */}
+
+					<div className={classes.profileAndExtension}>
+						{/* this is a profile and extension components which is shown at top right of the screen  */}
+						{/* <ProfileAndExtension /> */}
+
+						{/* this is a signal component which have top show at top of the screen to show signal strength */}
+						{/* <Signal /> */}
+					</div>
 				</section>
 			</LayoutWrapper>
+			{/* this is a status menu components to update the status like available, on lunch etc */}
 			{/* <StatusMenu /> */}
+
+			{/* this is a component to show about the ringplan  */}
 			{/* <AboutRingplan /> */}
+
+			{/* component for edit the extension  */}
 			{/* {true && <EditExtension />} */}
+
+			{/* component for logout LogoutPopUp */}
 			{/* <LogoutPopUp /> */}
+
+			{/* incoming call components */}
 			{/* <InboundCall /> */}
 		</div>
 	);

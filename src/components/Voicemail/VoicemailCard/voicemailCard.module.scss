@@ -3,9 +3,10 @@
 	display: flex;
 	flex-direction: column;
 	row-gap: 7px;
-    border-bottom: 1px solid var(--border-tertiary, #E3EAF2);
-    padding: 8px 12px;
-    height: fit-content;
+	border-bottom: 1px solid var(--border-tertiary, #e3eaf2);
+	padding: 8px 12px;
+	height: fit-content;
+	position: relative;
 
 	&_mainCont {
 		display: flex;
@@ -65,13 +66,12 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 8px;
-		// margin-left: 12px;
-		// margin-right: 12px;
+
 		padding: 12px 16px;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 8px;
-		// flex: 1 0 0;
+
 		border-radius: 8px;
 		background: var(--background-tertiary, #f7f9fc);
 	}
