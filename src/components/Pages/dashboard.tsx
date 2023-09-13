@@ -114,10 +114,10 @@ const Dashboard = () => {
 					{/* <AddCall /> */}
 					{/* <TransferCall /> */}
 
-					{/* <div className={classes.profileAndExtension}>
-						<ProfileAndExtension />
-						<Signal />
-					</div> */}
+					<div className={classes.profileAndExtension}>
+						{/* <ProfileAndExtension /> */}
+						{/* <Signal /> */}
+					</div>
 				</section>
 			</LayoutWrapper>
 			{/* <StatusMenu /> */}
