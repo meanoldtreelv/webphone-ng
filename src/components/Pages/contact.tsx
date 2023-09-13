@@ -19,7 +19,7 @@ const Contact = () => {
 					<ContactDetails />
 				</section> */}
 			</LayoutWrapper>
-			{/* <AddContact /> */}
+			<AddContact />
 			{/* <DeleteContactPopUp /> */}
 		</div>
 	);
