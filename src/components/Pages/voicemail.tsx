@@ -1,7 +1,7 @@
 import LayoutWrapper from "components/LayoutWrapper";
 import Header from "components/Voicemail/Header";
 import NoVoicemail from "components/Voicemail/NoVoicemail";
-import style from "./voicemailDummy.module.scss";
+import style from "./voicemail.module.scss";
 import React from "react";
 import VoicemailCard from "components/Voicemail/VoicemailCard";
 import VoicemailFooter from "components/Voicemail/VoicemailFooter";
@@ -9,7 +9,7 @@ import DeleteVoicemail from "components/Voicemail/DeleteVoicemail";
 import Filter from "components/Voicemail/Filter";
 import ShareBtnPopup from "components/Voicemail/ShareBtnPopup";
 
-const VoicemailDummy = () => {
+const Voicemail = () => {
 	return (
 		<>
 			<div style={{ position: "relative", width: "100%", height: "100vh" }}>
@@ -52,4 +52,4 @@ const VoicemailDummy = () => {
 	);
 };
 
-export default VoicemailDummy;
+export default Voicemail;
