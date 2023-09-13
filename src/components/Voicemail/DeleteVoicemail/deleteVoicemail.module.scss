@@ -59,9 +59,10 @@
 	}
 
 	&_deleteBtn {
-		background: #ee3939;
+		background: var(--support-danger, #EE3939);
 		border-radius: 8px;
-		border: 1px solid var(--border-primary, #91a0b5);
+
+		border: 1px solid var(--support-danger, #EE3939);
 		width: 135px;
 		height: 42px;
 		display: flex;

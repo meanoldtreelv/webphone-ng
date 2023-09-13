@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "components/Pages/home";
 import Contact from "components/Pages/contact";
 import Voicemail from "./components/Pages/voicemail";
+import Callhistory from "components/Pages/callhistory";
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/voicemail" element={<Voicemail />} />
+					<Route path="/call-history" element={<Callhistory />} />
 				</Routes>
 			</BrowserRouter>
 			{/* <SplashScreen /> */}

@@ -20,13 +20,13 @@ const Voicemail = () => {
 						</div>
 
 						<div className={`${style.body}`}>
-							{true && (
+							{false && (
 								<div className={style.noVoiceBox}>
 									<NoVoicemail />
 								</div>
 							)}
 
-							{false && (
+							{true && (
 								<>
 									<div className={style.body_box}>
 										<VoicemailCard />
