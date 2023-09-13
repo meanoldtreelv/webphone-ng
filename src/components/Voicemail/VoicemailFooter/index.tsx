@@ -44,19 +44,19 @@ const VoicemailFooter = () => {
 					<div className={style.footer_progress}></div>
 					<div className={style.footer_cont}>
 						<div className={style.footer_details}>
-							<div className={`caption_1 ${style.footer_name}`}>Melisa Townsend</div>
+							<div className={`caption_1 ${style.footer_name}`} style={{color:"var(--text-primary, #1F2023)"}}>Melisa Townsend</div>
 							<div className={style.footer_dat}>
-								<div className={`caption_1 ${style.footer_month}`}> March</div>
-								<div className={`caption_1 ${style.footer_date}`}>12,</div>
-								<div className={`caption_1 ${style.footer_year}`}>2023</div>
-								<div className={`caption_1 ${style.footer_time}`}>10:33</div>
-								<div className={`caption_1 ${style.footer_morning}`}>AM</div>
+								<div className={`caption_1 ${style.footer_month}`} style={{color:"var(--text-secondary, #5C6168)"}}> March</div>
+								<div className={`caption_1 ${style.footer_date}`} style={{color:"var(--text-secondary, #5C6168)"}}>12,</div>
+								<div className={`caption_1 ${style.footer_year}`} style={{color:"var(--text-secondary, #5C6168)"}}>2023</div>
+								<div className={`caption_1 ${style.footer_time}`} style={{color:"var(--text-secondary, #5C6168)"}}>10:33</div>
+								<div className={`caption_1 ${style.footer_morning}`} style={{color:"var(--text-secondary, #5C6168)"}}>AM</div>
 							</div>
 						</div>
 
 						<div className={style.footer_duration}>
-							<div className={`caption_1 ${style.footer_currentprogress}`}>00:12 / </div>
-							<div className={`caption_1 ${style.footer_totalDuration}`}>0:15</div>
+							<div className={`caption_1 ${style.footer_currentprogress}`} style={{color:"var(--text-primary, #1F2023)"}}>00:12 / </div>
+							<div className={`caption_1 ${style.footer_totalDuration}`} style={{color:"var(--text-primary, #1F2023)"}}>0:15</div>
 						</div>
 					</div>
 				</div>

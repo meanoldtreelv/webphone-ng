@@ -4,10 +4,16 @@
 	right: 1.45rem;
 	z-index: 4;
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.15);
+	
+	&_rowText{
+		color: var(--text-primary, #1F2023)
+	}
 
 	&_share {
 		color: #5c6168;
 	}
+
+
 
 	&_delete {
 		color: var(--text-danger, #ee3939);

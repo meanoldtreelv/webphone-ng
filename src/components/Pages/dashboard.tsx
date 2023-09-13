@@ -14,7 +14,14 @@ import EditExtension from "components/Extension/EditExtension";
 import KeyPad from "components/Dashboard/KeyPad";
 import AddCall from "components/Dashboard/AddCall";
 import TransferCall from "components/Dashboard/TransferCall";
-import { account_API, callerId_API, contacts_API, extension_API, instances_API, user_API } from "effects/apiEffect";
+import {
+	GET_Contact_List_API,
+	account_API,
+	callerId_API,
+	extension_API,
+	instances_API,
+	user_API,
+} from "effects/apiEffect";
 import Signal from "components/TinyComponents/Signal";
 import LogoutPopUp from "components/Profile/LogoutPopUp";
 import InboundCall from "components/shared/InboundCall";
@@ -38,7 +45,7 @@ const Dashboard = () => {
 		// account_API(
 		// 	(res: any) => {
 		// 		console.log(res, "account API retrieve");
-		// 		if (res?.status?.code === 200) {
+		// 		if (res?.status === 200) {
 		// 			console.log("success in account retrieve");
 		// 		}
 		// 	},
@@ -47,17 +54,17 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		// contacts_API(
-		// 	(res: any) => {
-		// 		console.log(res, "contact API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in contact retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in contact retrieve");
-		// 	},
-		// );
+		GET_Contact_List_API(
+			(res: any) => {
+				console.log(res, "contact API retrieve");
+				if (res?.status === 200) {
+					console.log("success in contact retrieve");
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact retrieve");
+			},
+		);
 
 		// extension_API(
 		// 	user_id,

@@ -3,6 +3,7 @@
 	height: 100vh;
 	overflow-y: auto;
 	width: 400px;
+	border-right: 1px solid var(--border-tertiary, #E3EAF2);
 
 	&_search {
 		position: relative;
@@ -48,7 +49,7 @@
 	}
 
 	&_sorting {
-		padding: 10px;
+		padding: 4px;
 		cursor: pointer;
 	}
 }
