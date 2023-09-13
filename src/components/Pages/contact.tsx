@@ -12,12 +12,12 @@ const Contact = () => {
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
 			<LayoutWrapper>
-				<NoContact />
-				{/* <section className={`flex ${classes.contact_container}`}>
+				{/* <NoContact /> */}
+				<section className={`flex ${classes.contact_container}`}>
 					<ContactList />
-					<NoContactSelected />
+					{/* <NoContactSelected /> */}
 					<ContactDetails />
-				</section> */}
+				</section>
 			</LayoutWrapper>
 			<AddContact />
 			{/* <DeleteContactPopUp /> */}

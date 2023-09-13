@@ -35,22 +35,22 @@ const Filter = () => {
 				<div className={classes.filters}>
 					<div className={classes.filter1}>
 						<input type="radio" id="all" name="filter" value="all" />
-						<label htmlFor="all">All</label>
+						<label htmlFor="all" style={{color: "var(--text-primary, #1F2023)"}}>All</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="80984" name="filter" value="80984" />
-						<label htmlFor="80984">80984</label>
+						<label htmlFor="80984" style={{color: "var(--text-primary, #1F2023)"}}>80984</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="312" name="filter" value="312" />
-						<label htmlFor="312">312</label>
+						<label htmlFor="312" style={{color: "var(--text-primary, #1F2023)"}}>312</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="783" name="filter" value="783" />
-						<label htmlFor="783">783</label>
+						<label htmlFor="783" style={{color: "var(--text-primary, #1F2023)"}}>783</label>
 					</div>
 				</div>
 			</div>

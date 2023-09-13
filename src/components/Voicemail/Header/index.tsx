@@ -4,7 +4,7 @@ import style from "./header.module.scss";
 const Header = () => {
 	return (
 		<section className={style.header}>
-			<div className={`sub_headline_bold ${style.header_pageName}`}>Voicemail</div>
+			<div className={`sub_headline_bold ${style.header_pageName}`} style={{color:"var(--text-primary, #1F2023)"}}>Voicemail</div>
 			<div className={style.header_cont}>
 				<div className={style.header_search}>
 					<input type="text" placeholder="Search number" />

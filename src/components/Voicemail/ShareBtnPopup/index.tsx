@@ -24,7 +24,7 @@ const ShareBtnPopup = () => {
 						</defs>
 					</svg>
 				</span>
-				<div className={`${style.popup_copy} ${style.popup_rowText} caption_1`}>Copy Link</div>
+				<div className={`caption_1 ${style.popup_rowText} ${style.popup_copy}`}>Copy Link</div>
 			</div>
 
 			<div
@@ -38,7 +38,7 @@ const ShareBtnPopup = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`${style.popup_copyText} ${style.popup_rowText} caption_1`}>Copy Text</div>
+				<div className={`caption_1 ${style.popup_rowText} ${style.popup_copyText}`}>Copy Text</div>
 			</div>
 
 			<div className={`${style.popup_row} flex items-center gap-x-2 py-[11px] pl-[16px]`}>
@@ -53,7 +53,7 @@ const ShareBtnPopup = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`${style.popup_email} ${style.popup_rowText} caption_1`}>Share via Email</div>
+				<div className={`caption_1 ${style.popup_rowText} ${style.popup_email}`}>Share via Email</div>
 			</div>
 		</div>
 	);
