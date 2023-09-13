@@ -1,10 +1,10 @@
 import React from "react";
 import style from "./voicemailFooter.module.scss";
 import ShareBtnPopup from "../ShareBtnPopup";
+
 const VoicemailFooter = () => {
 	return (
 		<div className={style.footer}>
-			
 			<div className={style.cont}>
 				<ShareBtnPopup></ShareBtnPopup>
 				<div className={style.footer_actionBtn}>

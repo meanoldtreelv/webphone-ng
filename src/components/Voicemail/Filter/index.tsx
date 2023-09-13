@@ -27,32 +27,30 @@ const Filter = () => {
 						</svg>
 					</span>
 				</div>
-				<div className={`body_bold ${classes.extension}`}>
-				By Extensions
-				</div>
-				
+				<div className={`body_bold ${classes.extension}`}>By Extensions</div>
+
 				<div className={classes.deleteSave}>
-						<span className={`footnote_bold ${classes.edit_save}`}>Apply Filter</span>
+					<span className={`footnote_bold ${classes.edit_save}`}>Apply Filter</span>
 				</div>
 				<div className={classes.filters}>
 					<div className={classes.filter1}>
 						<input type="radio" id="all" name="filter" value="all" />
-    					<label htmlFor="all">All</label>
+						<label htmlFor="all">All</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="80984" name="filter" value="80984" />
-    					<label htmlFor="80984">80984</label>
+						<label htmlFor="80984">80984</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="312" name="filter" value="312" />
-    					<label htmlFor="312">312</label>
+						<label htmlFor="312">312</label>
 					</div>
 
 					<div className={classes.filter1}>
 						<input type="radio" id="783" name="filter" value="783" />
-    					<label htmlFor="783">783</label>
+						<label htmlFor="783">783</label>
 					</div>
 				</div>
 			</div>

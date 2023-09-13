@@ -1,34 +1,33 @@
-.noVoiceBox {
-	// background-color: antiquewhite;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	// height: calc(100vh - 54px)
+.main {
 	height: 100%;
+	width: 100%;
 }
 
-.main {
-	height: 100vh;
+.header {
+	width: 100%;
+	z-index: 3;
+	height: fit-content;
 }
 
 .body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	// justify-content: center;
 	width: 100%;
-	// height: calc(100vh - 54px) ;
-	margin-top: 54px;
-	height: 100%;
+
+	height: calc(100% - 54px);
 	z-index: 0;
+
+	padding-bottom: 64px;
 }
 
-.header {
-	position: fixed;
-	top: 0;
+.noVoiceBox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
-	z-index: 3;
+
+	height: 100%;
 }
 
 .footer {
@@ -36,14 +35,4 @@
 	bottom: 0;
 	width: 100%;
 	z-index: 3;
-}
-
-.deleteVoicemail {
-	// width: calc(100% - 60px);
-	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
-	// height: calc(100% - 54px);
-	// position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }

@@ -20,20 +20,16 @@ const Voicemail = () => {
 						</div>
 
 						<div className={`${style.body}`}>
-							{false && (
+							{true && (
 								<div className={style.noVoiceBox}>
 									<NoVoicemail />
 								</div>
 							)}
 
-							{true && (
+							{false && (
 								<>
-									<div className={style.body}>
+									<div className={style.body_box}>
 										<VoicemailCard />
-										{/* <VoicemailCard />
-									<VoicemailCard />
-									<VoicemailCard />
-									<VoicemailCard /> */}
 									</div>
 								</>
 							)}
@@ -45,7 +41,7 @@ const Voicemail = () => {
 					</section>
 				</LayoutWrapper>
 
-				{/* <Filter/> */}
+				{/* <Filter /> */}
 				{/* <DeleteVoicemail /> */}
 			</div>
 		</>

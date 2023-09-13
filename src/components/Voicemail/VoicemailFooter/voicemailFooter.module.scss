@@ -1,26 +1,21 @@
-.cont{
+.cont {
 	display: flex;
 	position: relative;
 	align-items: center;
 	column-gap: 16px;
-
-
-
 }
 
 .footer {
 	display: flex;
-	
 	justify-content: center;
-	
+
 	width: 100%;
 	height: 64px;
-	// height: fit-content;
 	padding: 15px 0;
 	z-index: 3;
 	border-top: 1px solid var(--border-tertiary, #e3eaf2);
 	background: var(--background-secondary, #fff);
-	opacity: .8;
+	opacity: 0.8;
 
 	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
@@ -57,7 +52,6 @@
 	&_dat {
 		display: flex;
 		column-gap: 5px;
-		// alin
 	}
 
 	&_duration {
