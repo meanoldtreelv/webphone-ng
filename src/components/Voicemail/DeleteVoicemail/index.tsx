@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./deleteVoicemail.module.scss";
+
 const DeleteVoicemail = () => {
 	return (
 		<div className={style.overlay}>

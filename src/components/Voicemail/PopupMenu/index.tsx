@@ -36,9 +36,8 @@ const PopupMenu = () => {
 				<div className={`${style.popup_delete} ${style.popup_rowText} caption_1`}>Delete</div>
 			</div>
 
-            <div
+			<div
 				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
-				
 				<div className={`${style.popup_share} ${style.popup_rowText} caption_1`}>Share</div>
 			</div>
 

@@ -1,9 +1,11 @@
 import React from "react";
 import style from "./shareBtnPopup.module.scss";
+
 const ShareBtnPopup = () => {
 	return (
 		<div className={`${style.popup} w-[200px] rounded-[8px] border-2 border-[#C8D3E0] bg-white`}>
-			<div className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
+			<div
+				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<g clip-path="url(#clip0_2436_7081)">
@@ -25,7 +27,8 @@ const ShareBtnPopup = () => {
 				<div className={`${style.popup_copy} ${style.popup_rowText} caption_1`}>Copy Link</div>
 			</div>
 
-			<div className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[##E3EAF2] py-[11px] pl-[16px]`}>
+			<div
+				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[##E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<path
