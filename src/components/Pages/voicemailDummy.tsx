@@ -27,16 +27,16 @@ const VoicemailDummy = () => {
 							)}
 
 							{true && (
-							<>
-								<div className={style.body}>
-									<VoicemailCard />
-									{/* <VoicemailCard />
+								<>
+									<div className={style.body}>
+										<VoicemailCard />
+										{/* <VoicemailCard />
 									<VoicemailCard />
 									<VoicemailCard />
 									<VoicemailCard /> */}
-								</div>
-							</>
-						)}
+									</div>
+								</>
+							)}
 
 							<div className={style.footer}>
 								<VoicemailFooter />
