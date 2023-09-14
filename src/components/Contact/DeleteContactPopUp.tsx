@@ -1,7 +1,14 @@
 import React from "react";
 import classes from "./deleteContactPopUp.module.scss";
+import { useDispatch } from "react-redux";
+import { contactActions } from "../../store/contact";
 
 const DeleteContactPopUp = () => {
+	const dispatch = useDispatch();
+
+	function deleteContactHandler() {
+		dispatch(contactActions.closeDeleteContact());
+	}
 	return (
 		<section className={classes.popUp}>
 			<div className={classes.popUp_box}>
@@ -25,7 +32,12 @@ const DeleteContactPopUp = () => {
 					</p>
 				</div>
 				<div className={classes.popUp_button}>
-					<span className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<span
+						className={`body`}
+						style={{ color: "var(--text-primary, #1F2023)" }}
+						onClick={() => {
+							dispatch(contactActions.closeDeleteContact());
+						}}>
 						Cancel
 					</span>
 					<span
@@ -34,7 +46,8 @@ const DeleteContactPopUp = () => {
 							color: "var(--text-on-color, #FFF)",
 							background: "var(--support-danger, #EE3939)",
 							border: "1px solid var(--support-danger, #EE3939)",
-						}}>
+						}}
+						onClick={deleteContactHandler}>
 						Delete
 					</span>
 				</div>

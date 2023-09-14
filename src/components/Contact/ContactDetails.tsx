@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import classes from "./contactDetails.module.scss";
 import HistoryCard from "./HistoryCard";
+import { useDispatch } from "react-redux";
+import { contactActions } from "../../store/contact";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
+
+	const [isCallHistory, setIsCallHistory] = useState(false);
+
+	const dispatch = useDispatch();
+
+	// styling
 	const contactActiveButton = {
 		background: "var(--primary-default, #0c6dc7)",
 		boxShadow: "0px 4px 4px 0px rgba(12, 109, 199, 0.15)",
@@ -211,36 +219,42 @@ const ContactDetails = () => {
 						</div>
 						<p
 							className={`footnote_bold cursor-pointer`}
-							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}>
+							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}
+							onClick={() => {
+								dispatch(contactActions.openDeleteContact());
+							}}>
 							Delete Contact
 						</p>
 					</div>
 				) : (
 					<div className={classes.callHistory}>
-						{/* <div className={classes.noHistory_box}>
-							<div className={classes.noHistory}>
-								<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-									<path
-										d="M15 41.8654C17.7052 43.2309 20.7628 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24V30L10 24M24 14V26L32 30"
-										stroke="#6C7A8B"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-								<p>{`You have no call history with Melisa Townsend`}</p>
+						{isCallHistory ? (
+							<div>
+								<p className={`caption_2 py-2 px-4`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+									Today (6)
+								</p>
+								<HistoryCard />
+								<HistoryCard />
+								<HistoryCard />
+								<HistoryCard />
+								<HistoryCard />
 							</div>
-						</div> */}
-						<div>
-							<p className={`caption_2 py-2 px-4`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-								Today (6)
-							</p>
-							<HistoryCard />
-							<HistoryCard />
-							<HistoryCard />
-							<HistoryCard />
-							<HistoryCard />
-						</div>
+						) : (
+							<div className={classes.noHistory_box}>
+								<div className={classes.noHistory}>
+									<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+										<path
+											d="M15 41.8654C17.7052 43.2309 20.7628 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24V30L10 24M24 14V26L32 30"
+											stroke="#6C7A8B"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+									<p>{`You have no call history with Melisa Townsend`}</p>
+								</div>
+							</div>
+						)}
 					</div>
 				)}
 			</div>
