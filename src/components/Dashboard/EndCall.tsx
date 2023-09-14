@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./endCall.module.scss";
+import { useDispatch } from "react-redux";
+import { callingActions } from "../../store/calling";
 
 const EndCall = () => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		setTimeout(() => {
+			dispatch(callingActions.dialPad());
+		}, 1000);
+	});
 	return (
 		<div className={classes.endCall}>
-			{true ? (
+			{false ? (
 				<img src="/img/dummy/profile.png" alt="" className={classes.backgroundImg} />
 			) : (
 				<div

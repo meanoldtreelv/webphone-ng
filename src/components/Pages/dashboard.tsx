@@ -2,7 +2,7 @@ import Dialpad from "components/Dashboard/Dialpad";
 import LayoutWrapper from "components/LayoutWrapper";
 import React, { useEffect } from "react";
 import classes from "./dashboard.module.scss";
-import ContactList from "components/shared/ContactList";
+import ContactList from "components/Contact/ContactList";
 import ProfileAndExtension from "components/shared/ProfileAndExtension";
 import StatusMenu from "components/Profile/StatusMenu";
 import { relative } from "path";
@@ -14,12 +14,27 @@ import EditExtension from "components/Extension/EditExtension";
 import KeyPad from "components/Dashboard/KeyPad";
 import AddCall from "components/Dashboard/AddCall";
 import TransferCall from "components/Dashboard/TransferCall";
-import { account_API, callerId_API, contacts_API, extension_API, instances_API, user_API } from "effects/apiEffect";
 import Signal from "components/TinyComponents/Signal";
 import LogoutPopUp from "components/Profile/LogoutPopUp";
 import InboundCall from "components/shared/InboundCall";
+import {
+	GET_Contact_List_API,
+	account_API,
+	callerId_API,
+	extension_API,
+	instances_API,
+	user_API,
+} from "effects/apiEffect";
+
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+	const isDialerActive = useSelector((state) => state.calling.dialer);
+	const isCallInProgress = useSelector((state) => state.calling.callInProgress);
+	const isCallTransfer = useSelector((state) => state.calling.transferCalling);
+	const isCallAdded = useSelector((state) => state.calling.addCalling);
+	const isCallEnded = useSelector((state) => state.calling.callEnding);
+
 	useEffect(() => {
 		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
 		const userID = "5ed668cd38d0350104cb8789";
@@ -38,7 +53,7 @@ const Dashboard = () => {
 		// account_API(
 		// 	(res: any) => {
 		// 		console.log(res, "account API retrieve");
-		// 		if (res?.status?.code === 200) {
+		// 		if (res?.status === 200) {
 		// 			console.log("success in account retrieve");
 		// 		}
 		// 	},
@@ -47,17 +62,17 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		// contacts_API(
-		// 	(res: any) => {
-		// 		console.log(res, "contact API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in contact retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in contact retrieve");
-		// 	},
-		// );
+		GET_Contact_List_API(
+			(res: any) => {
+				console.log(res, "contact API retrieve");
+				if (res?.status === 200) {
+					console.log("success in contact retrieve");
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact retrieve");
+			},
+		);
 
 		// extension_API(
 		// 	user_id,
@@ -108,21 +123,23 @@ const Dashboard = () => {
 					</div>
 
 					{/* This is a dial pad components for calling */}
-					<div className={classes.dialpad}>
-						<KeyPad />
-					</div>
+					{isDialerActive && (
+						<div className={classes.dialpad}>
+							<KeyPad />
+						</div>
+					)}
 
 					{/* When call is in progress this component will be shown  */}
-					{/* <Dialer /> */}
+					{isCallInProgress && <Dialer />}
 
 					{/* to add a call in progress call we will call this component */}
-					{/* <AddCall /> */}
+					{isCallAdded && <AddCall />}
 
 					{/* to transfer the call to another number we call this component */}
-					{/* <TransferCall /> */}
+					{isCallTransfer && <TransferCall />}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{/* <EndCall /> */}
+					{isCallEnded && <EndCall />}
 
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}

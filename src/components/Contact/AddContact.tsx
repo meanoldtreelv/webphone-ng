@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./addContact.module.scss";
+import { Add_contact_API } from "effects/apiEffect";
+import { useDispatch } from "react-redux";
+import { contactActions } from "../../store/contact";
 
 const AddContact = () => {
 	const [contactType, setContactType] = useState("add_contact");
@@ -9,6 +12,82 @@ const AddContact = () => {
 	const [isManagerAccordianOpen, setIsManagerAccordianOpen] = useState(false);
 	const [isAdditionalField2AccordianOpen, setIsAdditionalField2AccordianOpen] = useState(false);
 
+	const [payload, setPayload] = useState({});
+
+	const firstNameRef = useRef<HTMLInputElement | "">(null);
+	const lastNameRef = useRef(null);
+	const phoneRef = useRef(null);
+	const faxRef = useRef(null);
+	const emailRef = useRef(null);
+	const birthdayRef = useRef(null);
+	const salutationRef = useRef(null);
+	const descriptionRef = useRef(null);
+	const jobPositionRef = useRef(null);
+	const jobDepartmentRef = useRef(null);
+	const jobReportsRef = useRef(null);
+	const countryRef = useRef(null);
+	const stateRef = useRef(null);
+	const cityRef = useRef(null);
+	const streetRef = useRef(null);
+	const zipcodeRef = useRef(null);
+	const organizationRef = useRef(null);
+	const parentOrganizationRef = useRef(null);
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		Add_contact_API(
+			payload,
+			(res: any) => {
+				console.log(res, "contact API retrieve");
+				if (res?.status === 201) {
+					console.log("success in contact retrieve");
+					dispatch(contactActions.closeAddContact());
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact retrieve");
+			},
+		);
+	}, [payload]);
+
+	function onSaveContact() {
+		setPayload({
+			first_name: firstNameRef.current.value || null,
+			last_name: lastNameRef.current.value || null,
+			phone: phoneRef.current.value || null,
+			fax: faxRef.current.value || null,
+			email: emailRef.current.value || null,
+			birthday: birthdayRef.current.value || null,
+			salutation: salutationRef.current.value || "",
+			description: descriptionRef.current.value || null,
+			job_details: {
+				position: jobPositionRef.current.value || null,
+				department: jobDepartmentRef.current.value || "",
+				reports_to: jobReportsRef.current.value || null,
+			},
+			address: {
+				country: countryRef.current.value || null,
+				state: stateRef.current.value || null,
+				city: cityRef.current.value || null,
+				street: streetRef.current.value || null,
+				zipcode: zipcodeRef.current.value || null,
+			},
+			organization_details: {
+				organization: organizationRef.current.value || null,
+				parent_organization: parentOrganizationRef.current.value || null,
+			},
+		});
+	}
+
+	function closeContactHandler() {
+		dispatch(contactActions.closeAddContact());
+	}
+
+	console.log("====================================");
+	console.log(payload);
+	console.log("====================================");
+
 	return (
 		<section className={classes.overlay}>
 			<div className={classes.addContact}>
@@ -16,7 +95,7 @@ const AddContact = () => {
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
 					</span>
-					<span className={`p-1`}>
+					<span className={`p-1 cursor-pointer`} onClick={closeContactHandler}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 							<g clip-path="url(#clip0_2412_11469)">
 								<path
@@ -59,21 +138,21 @@ const AddContact = () => {
 						</p>
 						<div className={`${classes.inputBox}`}>
 							<label htmlFor="first_name" className={`caption_1`}>
-								First Name
+								First Name <span style={{ color: "var(--support-danger, #EE3939)" }}>*</span>
 							</label>
-							<input type="text" id="first_name" />
+							<input type="text" id="first_name" ref={firstNameRef} />
 						</div>
 						<div className={`${classes.inputBox}`}>
 							<label htmlFor="last_name" className={`caption_1`}>
-								Last Name
+								Last Name <span style={{ color: "var(--support-danger, #EE3939)" }}>*</span>
 							</label>
-							<input type="text" id="last_name" />
+							<input type="text" id="last_name" ref={lastNameRef} />
 						</div>
 						<div className={`${classes.inputBox}`} style={{ position: "relative", paddingBottom: "20px" }}>
 							<label htmlFor="email" className={`caption_1`}>
 								Email
 							</label>
-							<input type="text" id="email" />
+							<input type="text" id="email" ref={emailRef} />
 							{true && (
 								<p
 									className={`caption_2`}
@@ -89,7 +168,7 @@ const AddContact = () => {
 							className={`body_bold flex justify-between ${classes.box_heding}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Numbers</span>{" "}
-							<span
+							{/* <span
 								onClick={() => {
 									setIsNumberAccordianOpen(!isNumberAccordianOpen);
 								}}
@@ -99,24 +178,21 @@ const AddContact = () => {
 								) : (
 									<img src="/icon/btn_accordion_minus.svg" alt=""></img>
 								)}
-							</span>
+							</span> */}
 						</p>
-						{isNumberAccordianOpen && (
-							<>
-								<div className={`${classes.inputBox}`}>
-									<label htmlFor="phone_number" className={`caption_1`}>
-										Phone Number
-									</label>
-									<input type="text" id="phone_number" />
-								</div>
-								<div className={`${classes.inputBox}`}>
-									<label htmlFor="fax_number" className={`caption_1`}>
-										Fax Number
-									</label>
-									<input type="text" id="fax_number" />
-								</div>
-							</>
-						)}
+
+						<div className={`${classes.inputBox}`}>
+							<label htmlFor="phone_number" className={`caption_1`}>
+								Phone Number <span style={{ color: "var(--support-danger, #EE3939)" }}>*</span>
+							</label>
+							<input type="text" id="phone_number" ref={phoneRef} />
+						</div>
+						<div className={`${classes.inputBox}`}>
+							<label htmlFor="fax_number" className={`caption_1`}>
+								Fax Number
+							</label>
+							<input type="text" id="fax_number" ref={faxRef} />
+						</div>
 					</div>
 
 					<div className={classes.box}>
@@ -143,19 +219,31 @@ const AddContact = () => {
 									<label htmlFor="birthday" className={`caption_1`}>
 										Birthday
 									</label>
-									<input type="text" id="birthday" />
+									<input type="date" id="birthday" ref={birthdayRef} />
 								</div>
 								<div className={`${classes.inputBox}`}>
 									<label htmlFor="position" className={`caption_1`}>
 										Position
 									</label>
-									<input type="text" id="position" />
+									<input type="text" id="position" ref={jobPositionRef} />
 								</div>
 								<div className={`${classes.inputBox}`}>
 									<label htmlFor="department" className={`caption_1`}>
 										Department
 									</label>
-									<input type="text" id="department" />
+									<input type="text" id="department" ref={jobDepartmentRef} />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="description" className={`caption_1`}>
+										Description
+									</label>
+									<input type="text" id="description" ref={descriptionRef} />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="salutation" className={`caption_1`}>
+										Salutation
+									</label>
+									<input type="text" id="salutation" ref={salutationRef} />
 								</div>
 							</>
 						)}
@@ -184,13 +272,13 @@ const AddContact = () => {
 									<label htmlFor="organization" className={`caption_1`}>
 										Organization
 									</label>
-									<input type="text" id="organization" />
+									<input type="text" id="organization" ref={organizationRef} />
 								</div>
 								<div className={`${classes.inputBox}`}>
 									<label htmlFor="parent_organization" className={`caption_1`}>
 										Parent Organization
 									</label>
-									<input type="text" id="parent_organization" />
+									<input type="text" id="parent_organization" ref={parentOrganizationRef} />
 								</div>
 							</>
 						)}
@@ -214,11 +302,11 @@ const AddContact = () => {
 						</p>
 						{isManagerAccordianOpen && (
 							<div className={`${classes.inputBox}`}>
-								<label htmlFor="organization" className={`caption_1`}>
+								<label htmlFor="reports" className={`caption_1`}>
 									Reports to
 								</label>
-								<select name="" id="">
-									<option>reports to</option>
+								<select name="" id="reports" ref={jobReportsRef}>
+									<option value="none">none</option>
 								</select>
 							</div>
 						)}
@@ -227,7 +315,7 @@ const AddContact = () => {
 						<p
 							className={`body_bold  flex justify-between ${classes.box_heding}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
-							<span>Additional Fields</span>
+							<span>Address Fields</span>
 							<span
 								onClick={() => {
 									setIsAdditionalField2AccordianOpen(!isAdditionalField2AccordianOpen);
@@ -243,38 +331,56 @@ const AddContact = () => {
 						{isAdditionalField2AccordianOpen && (
 							<>
 								<div className={`${classes.inputBox}`}>
+									<label htmlFor="street" className={`caption_1`}>
+										Street
+									</label>
+									<input type="text" id="street" ref={streetRef} />
+								</div>
+								<div className={`${classes.inputBox}`}>
+									<label htmlFor="city" className={`caption_1`}>
+										city
+									</label>
+									<input type="text" id="city" ref={cityRef} />
+								</div>
+								<div className={`${classes.inputBox}`}>
 									<label htmlFor="state" className={`caption_1`}>
 										State
 									</label>
-									<input type="text" id="state" />
+									<input type="text" id="state" ref={stateRef} />
 								</div>
 								<div className={`${classes.inputBox}`}>
 									<label htmlFor="zip" className={`caption_1`}>
 										Zip
 									</label>
-									<input type="text" id="zip" />
+									<input type="text" id="zip" ref={zipcodeRef} />
 								</div>
 								<div className={`${classes.inputBox}`}>
 									<label htmlFor="country" className={`caption_1`}>
 										Country
 									</label>
-									<input type="text" id="country" />
+									<input type="text" id="country" ref={countryRef} />
 								</div>
-								<div className={`${classes.inputBox}`}>
+								{/* <div className={`${classes.inputBox}`}>
 									<label htmlFor="mailing_address" className={`caption_1`}>
 										Mailing Address
 									</label>
 									<input type="text" id="mailing_address" />
-								</div>
+								</div> */}
 							</>
 						)}
 					</div>
 				</div>
 				<div className={classes.buttonBox}>
-					<span className={`footnote ${classes.cancel}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<span
+						className={`footnote ${classes.cancel}`}
+						style={{ color: "var(--text-primary, #1F2023)" }}
+						onClick={closeContactHandler}>
 						Cancel
 					</span>
-					<span className={`footnote_bold ${classes.save}`} style={{ color: "var(--text-on-color, #FFF)" }}>
+					<span
+						className={`footnote_bold ${classes.save}`}
+						style={{ color: "var(--text-on-color, #FFF)" }}
+						onClick={onSaveContact}>
 						Save
 					</span>
 				</div>
