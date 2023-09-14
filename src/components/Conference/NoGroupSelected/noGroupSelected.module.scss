@@ -1,0 +1,24 @@
+.noContact {
+	width: 100%;
+	height: calc(100% - 54px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	// background-color: red;
+
+	&_box {
+		width: 280px;
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		transform: translateY(-50%);
+	}
+
+	&_head{
+		color: var(--text-primary, #1F2023);
+	}
+}
