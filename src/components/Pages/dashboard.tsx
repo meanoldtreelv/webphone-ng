@@ -2,7 +2,7 @@ import Dialpad from "components/Dashboard/Dialpad";
 import LayoutWrapper from "components/LayoutWrapper";
 import React, { useEffect } from "react";
 import classes from "./dashboard.module.scss";
-import ContactList from "components/shared/ContactList";
+import ContactList from "components/Contact/ContactList";
 import ProfileAndExtension from "components/shared/ProfileAndExtension";
 import StatusMenu from "components/Profile/StatusMenu";
 import { relative } from "path";

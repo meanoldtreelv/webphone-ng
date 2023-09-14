@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./addContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
+import { useDispatch } from "react-redux";
+import { contactActions } from "../../store/contact";
 
 const AddContact = () => {
 	const [contactType, setContactType] = useState("add_contact");
@@ -31,6 +33,8 @@ const AddContact = () => {
 	const organizationRef = useRef(null);
 	const parentOrganizationRef = useRef(null);
 
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		Add_contact_API(
 			payload,
@@ -38,6 +42,7 @@ const AddContact = () => {
 				console.log(res, "contact API retrieve");
 				if (res?.status === 201) {
 					console.log("success in contact retrieve");
+					dispatch(contactActions.closeAddContact());
 				}
 			},
 			(err: any) => {
@@ -75,6 +80,10 @@ const AddContact = () => {
 		});
 	}
 
+	function closeContactHandler() {
+		dispatch(contactActions.closeAddContact());
+	}
+
 	console.log("====================================");
 	console.log(payload);
 	console.log("====================================");
@@ -86,7 +95,7 @@ const AddContact = () => {
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
 					</span>
-					<span className={`p-1`}>
+					<span className={`p-1 cursor-pointer`} onClick={closeContactHandler}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 							<g clip-path="url(#clip0_2412_11469)">
 								<path
@@ -362,7 +371,10 @@ const AddContact = () => {
 					</div>
 				</div>
 				<div className={classes.buttonBox}>
-					<span className={`footnote ${classes.cancel}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<span
+						className={`footnote ${classes.cancel}`}
+						style={{ color: "var(--text-primary, #1F2023)" }}
+						onClick={closeContactHandler}>
 						Cancel
 					</span>
 					<span
