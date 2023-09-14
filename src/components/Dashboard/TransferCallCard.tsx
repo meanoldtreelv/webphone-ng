@@ -26,9 +26,9 @@ const TransferCallCard = () => {
 							id="Vector"
 							d="M11.3333 7.33333L14 4.66667M14 4.66667L11.3333 2M14 4.66667H6M4.66667 14L2 11.3333M2 11.3333L4.66667 8.66667M2 11.3333H10"
 							stroke="#6C7A8B"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
 						/>
 					</g>
 				</svg>
@@ -42,9 +42,9 @@ const TransferCallCard = () => {
 							id="Vector"
 							d="M11.3333 7.33333L14 4.66667M14 4.66667L11.3333 2M14 4.66667H6M4.66667 14L2 11.3333M2 11.3333L4.66667 8.66667M2 11.3333H10M12.8551 11.3333H12.7072"
 							stroke="#6C7A8B"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
 						/>
 					</g>
 				</svg>

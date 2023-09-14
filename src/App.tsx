@@ -12,6 +12,7 @@ import Home from "components/Pages/home";
 import Contact from "components/Pages/contact";
 import Voicemail from "./components/Pages/voicemail";
 import Callhistory from "components/Pages/callhistory";
+import Conference from "components/Pages/conference";
 
 function App() {
 	return (
@@ -24,6 +25,7 @@ function App() {
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/voicemail" element={<Voicemail />} />
 					<Route path="/call-history" element={<Callhistory />} />
+					<Route path="/conference" element={<Conference />} />
 				</Routes>
 			</BrowserRouter>
 			{/* <SplashScreen /> */}

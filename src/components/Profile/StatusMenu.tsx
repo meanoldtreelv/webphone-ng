@@ -9,14 +9,14 @@ const StatusMenu = () => {
 					<span className={`sub_headline_bold`}>Set Status</span>
 					<span className={classes.close}>
 						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<g id="line / close" clip-path="url(#clip0_2236_1196)">
+							<g id="line / close" clipPath="url(#clip0_2236_1196)">
 								<path
 									id="Vector"
 									d="M11.25 6.75L6.75 11.25M6.75 6.75L11.25 11.25M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
 									stroke="#6C7A8B"
-									stroke-width="1.5"
-									stroke-linecap="round"
-									stroke-linejoin="round"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
 								/>
 							</g>
 							<defs>
@@ -33,15 +33,7 @@ const StatusMenu = () => {
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
-									<circle
-										id="Ellipse"
-										cx="9.00001"
-										cy="9.0001"
-										r="6.4"
-										fill="#75C322"
-										stroke="white"
-										stroke-width="2"
-									/>
+									<circle id="Ellipse" cx="9.00001" cy="9.0001" r="6.4" fill="#75C322" stroke="white" strokeWidth="2" />
 								</g>
 							</svg>
 							<span className={`${classes.status_type_active}`}>Available</span>
@@ -51,15 +43,7 @@ const StatusMenu = () => {
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
-									<circle
-										id="Ellipse"
-										cx="9.00001"
-										cy="9.0001"
-										r="6.4"
-										fill="#91A0B5"
-										stroke="white"
-										stroke-width="2"
-									/>
+									<circle id="Ellipse" cx="9.00001" cy="9.0001" r="6.4" fill="#91A0B5" stroke="white" strokeWidth="2" />
 								</g>
 							</svg>
 							<span className={`${classes.status_type_active}`}>Away</span>
@@ -69,15 +53,7 @@ const StatusMenu = () => {
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
-									<circle
-										id="Ellipse"
-										cx="9.00001"
-										cy="9.0001"
-										r="6.4"
-										fill="#EE3939"
-										stroke="white"
-										stroke-width="2"
-									/>
+									<circle id="Ellipse" cx="9.00001" cy="9.0001" r="6.4" fill="#EE3939" stroke="white" strokeWidth="2" />
 								</g>
 							</svg>
 							<span className={`${classes.status_type_active}`}>Do not disturb</span>
@@ -111,8 +87,8 @@ const StatusMenu = () => {
 									<g id="Vector Meet">
 										<path d="M8 8H4.57143V11.4286H8V8Z" fill="#944AF5" />
 										<path
-											fill-rule="evenodd"
-											clip-rule="evenodd"
+											fillRule="evenodd"
+											clipRule="evenodd"
 											d="M4.57143 0H2.28571V2.28571C1.02335 2.28571 0 3.30906 0 4.57143V13.7143C0 14.9767 1.02335 16 2.28571 16H13.7143C14.9767 16 16 14.9767 16 13.7143V4.57143C16 3.30906 14.9767 2.28571 13.7143 2.28571V0H11.4286V2.28571H4.57143V0ZM13.7143 5.71429H2.28571V13.7143H13.7143V5.71429Z"
 											fill="#944AF5"
 										/>
@@ -129,8 +105,8 @@ const StatusMenu = () => {
 								<g id="status / lunch">
 									<path
 										id="Vector Lunch"
-										fill-rule="evenodd"
-										clip-rule="evenodd"
+										fillRule="evenodd"
+										clipRule="evenodd"
 										d="M11.1284 0.0450223C11.5775 0.197442 11.8202 0.691686 11.6705 1.14895L10.9281 3.41672C11.4737 3.50106 11.9982 3.61003 12.4893 3.74362L13.5193 1.64626C13.731 1.21515 14.2458 1.04041 14.6692 1.25596C15.0926 1.47152 15.2643 1.99574 15.0526 2.42685L14.1125 4.34107C15.266 4.91119 16 5.69496 16 6.69242V9.01819C16 12.8741 12.5714 16 8 16C3.42857 16 0 12.8741 0 9.01819V6.69242C0 4.13461 4.82883 2.9816 9.18091 3.234L10.0442 0.596984C10.1939 0.139724 10.6793 -0.107398 11.1284 0.0450223ZM11.3905 5.98114L10.6621 7.46445C10.4504 7.89556 10.622 8.41978 11.0454 8.63533C11.4688 8.85089 11.9837 8.67615 12.1954 8.24504L12.9563 6.6956C13.4385 7.03688 13.7143 7.43266 13.7143 7.85467C13.7143 9.13999 11.1559 10.1819 8 10.1819C4.84409 10.1819 2.28571 9.13999 2.28571 7.85467C2.28571 6.56935 4.84409 5.52739 8 5.52739C8.14397 5.52739 8.2867 5.52956 8.42799 5.53382L7.7585 7.57881C7.60881 8.03607 7.85151 8.53031 8.30061 8.68273C8.7497 8.83515 9.23512 8.58803 9.38482 8.13077L10.1797 5.7027C10.6126 5.77552 11.0188 5.86937 11.3905 5.98114Z"
 										fill="#6C7A8B"
 									/>
@@ -172,8 +148,8 @@ const StatusMenu = () => {
 								<g id="status / afk">
 									<path
 										id="Vector AFK"
-										fill-rule="evenodd"
-										clip-rule="evenodd"
+										fillRule="evenodd"
+										clipRule="evenodd"
 										d="M10.2857 1.14282C13.4416 1.14282 16 3.7012 16 6.85711C16 10.013 13.4416 12.5714 10.2857 12.5714H3.42857L0.97549 15.0245C0.61551 15.3845 0 15.1295 0 14.6204V6.85711C0 3.7012 2.55837 1.14282 5.71429 1.14282H10.2857ZM4.57143 7.99996C5.20261 7.99996 5.71429 7.48829 5.71429 6.85711C5.71429 6.22592 5.20261 5.71425 4.57143 5.71425C3.94025 5.71425 3.42857 6.22592 3.42857 6.85711C3.42857 7.48829 3.94025 7.99996 4.57143 7.99996ZM9.14286 6.85711C9.14286 7.48829 8.63118 7.99996 8 7.99996C7.36882 7.99996 6.85714 7.48829 6.85714 6.85711C6.85714 6.22592 7.36882 5.71425 8 5.71425C8.63118 5.71425 9.14286 6.22592 9.14286 6.85711ZM11.4286 7.99996C12.0598 7.99996 12.5714 7.48829 12.5714 6.85711C12.5714 6.22592 12.0598 5.71425 11.4286 5.71425C10.7974 5.71425 10.2857 6.22592 10.2857 6.85711C10.2857 7.48829 10.7974 7.99996 11.4286 7.99996Z"
 										fill="#6C7A8B"
 									/>

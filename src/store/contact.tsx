@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialContactState = { addContactPopUpOpen: false, deleteContactPopUpOpen: false };
+const initialContactState = {
+	addContactPopUpOpen: false,
+	deleteContactPopUpOpen: false,
+	selectedContactOpen: false,
+	contactList: [],
+	selectedContact: [],
+};
 
 const contactSlice = createSlice({
 	name: "contact",
@@ -17,6 +23,20 @@ const contactSlice = createSlice({
 		},
 		openDeleteContact(state) {
 			state.deleteContactPopUpOpen = true;
+		},
+		openSelectedContact(state) {
+			state.selectedContactOpen = true;
+		},
+		closeSelectedContact(state) {
+			state.selectedContactOpen = false;
+		},
+		setContactList(state, action) {
+			console.log("setContactList action dispatched with payload:", action.payload);
+			state.contactList = action.payload;
+		},
+		setSelectedContact(state, action) {
+			console.log("setSellected contact action dispatched with payload:", action.payload);
+			state.selectedContact = action.payload;
 		},
 	},
 });
