@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./contactDetails.module.scss";
 import HistoryCard from "./HistoryCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contactActions } from "../../store/contact";
 
 const ContactDetails = () => {
@@ -10,6 +10,9 @@ const ContactDetails = () => {
 	const [isCallHistory, setIsCallHistory] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const selectedContactData = useSelector((state) => state.contact.selectedContact);
+	console.log(selectedContactData, "selectedContactData");
 
 	// styling
 	const contactActiveButton = {
@@ -36,10 +39,12 @@ const ContactDetails = () => {
 						</span>
 						<div>
 							<p className={`title_3 `} style={{ color: "var(--text-primary, #1F2023)" }}>
-								Melisa Townsend
+								{`${selectedContactData?.salutation || ""} ${selectedContactData?.first_name || ""} ${
+									selectedContactData?.last_name || ""
+								}`}
 							</p>
 							<p className={`body`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-								melisatownsend@gmail.com
+								{selectedContactData?.email || "null"}
 							</p>
 						</div>
 					</div>
@@ -48,8 +53,8 @@ const ContactDetails = () => {
 							<path
 								d="M7.75 3.00017H2.5C2.10218 3.00017 1.72064 3.15821 1.43934 3.43951C1.15804 3.72081 1 4.10235 1 4.50017V15.0002C1 15.398 1.15804 15.7795 1.43934 16.0608C1.72064 16.3421 2.10218 16.5002 2.5 16.5002H13C13.3978 16.5002 13.7794 16.3421 14.0607 16.0608C14.342 15.7795 14.5 15.398 14.5 15.0002V9.75017M13.375 1.87517C13.6734 1.5768 14.078 1.40918 14.5 1.40918C14.922 1.40918 15.3266 1.5768 15.625 1.87517C15.9234 2.17354 16.091 2.57821 16.091 3.00017C16.091 3.42213 15.9234 3.8268 15.625 4.12517L8.5 11.2502L5.5 12.0002L6.25 9.00017L13.375 1.87517Z"
 								stroke="#1F2023"
-								stroke-linecap="round"
-								stroke-linejoin="round"
+								strokeLinecap="round"
+								strokeLinejoin="round"
 							/>
 						</svg>
 						<span className={`footnote `} style={{ color: "var(--text-primary, #1F2023)" }}>
@@ -82,7 +87,7 @@ const ContactDetails = () => {
 										Phone
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										+1(234) 687 5520
+										{selectedContactData?.phone || "null"}
 									</p>
 								</div>
 								<div className={classes.iconBox}>
@@ -110,15 +115,15 @@ const ContactDetails = () => {
 										Fax
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										+1(234) 687 5520
+										{selectedContactData?.fax || "null"}
 									</p>
 								</div>
 								<div className={classes.iconBox}>
 									<span>
 										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
+												fillRule="evenodd"
+												clipRule="evenodd"
 												d="M9.5625 4.875V1.5H4.5C3.67157 1.5 3 2.17157 3 3V15C3 15.8284 3.67157 16.5 4.5 16.5H13.5C14.3284 16.5 15 15.8284 15 15V6.9375H11.625C10.4859 6.9375 9.5625 6.01409 9.5625 4.875ZM5.25 10.6875C5.25 10.3768 5.50184 10.125 5.8125 10.125H11.4375C11.7482 10.125 12 10.3768 12 10.6875C12 10.9982 11.7482 11.25 11.4375 11.25H5.8125C5.50184 11.25 5.25 10.9982 5.25 10.6875ZM5.25 13.3125C5.25 13.0018 5.50184 12.75 5.8125 12.75H8.4375C8.74816 12.75 9 13.0018 9 13.3125C9 13.6232 8.74816 13.875 8.4375 13.875H5.8125C5.50184 13.875 5.25 13.6232 5.25 13.3125Z"
 												fill="white"
 											/>
@@ -138,7 +143,7 @@ const ContactDetails = () => {
 										Birthday
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										7/12/1998
+										{selectedContactData?.birthday || "null"}
 									</p>
 								</div>
 							</div>
@@ -148,7 +153,7 @@ const ContactDetails = () => {
 										Position
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										Sales Manager
+										{selectedContactData?.job_details?.position || "null"}
 									</p>
 								</div>
 							</div>
@@ -158,7 +163,7 @@ const ContactDetails = () => {
 										Department
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										Sales
+										{selectedContactData?.job_details?.department || "null"}
 									</p>
 								</div>
 							</div>
@@ -170,7 +175,7 @@ const ContactDetails = () => {
 										Company
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										ABC Company
+										{selectedContactData?.organization_details?.organization || "null"}
 									</p>
 								</div>
 							</div>
@@ -182,7 +187,7 @@ const ContactDetails = () => {
 										City
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										San diege
+										{selectedContactData?.address?.city || "null"}
 									</p>
 								</div>
 							</div>
@@ -192,7 +197,7 @@ const ContactDetails = () => {
 										State
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										CA
+										{selectedContactData?.address?.state || "null"}
 									</p>
 								</div>
 							</div>
@@ -202,20 +207,20 @@ const ContactDetails = () => {
 										Country
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										United States
+										{selectedContactData?.address?.country || "null"}
 									</p>
 								</div>
 							</div>
-							<div className={classes.row}>
+							{/* <div className={classes.row}>
 								<div>
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Mailing Address
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										12585 Kirkham Ct. Poway
+										new jersy, US, 20551
 									</p>
 								</div>
-							</div>
+							</div> */}
 						</div>
 						<p
 							className={`footnote_bold cursor-pointer`}
@@ -246,9 +251,9 @@ const ContactDetails = () => {
 										<path
 											d="M15 41.8654C17.7052 43.2309 20.7628 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24V30L10 24M24 14V26L32 30"
 											stroke="#6C7A8B"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
 										/>
 									</svg>
 									<p>{`You have no call history with Melisa Townsend`}</p>

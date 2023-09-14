@@ -11,14 +11,14 @@ const AboutRingplan = () => {
 					<span className={`sub_headline_bold`}>About RingPlan</span>
 					<span className={classes.close}>
 						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<g id="line / close" clip-path="url(#clip0_2236_1196)">
+							<g id="line / close" clipPath="url(#clip0_2236_1196)">
 								<path
 									id="Vector"
 									d="M11.25 6.75L6.75 11.25M6.75 6.75L11.25 11.25M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
 									stroke="#6C7A8B"
-									stroke-width="1.5"
-									stroke-linecap="round"
-									stroke-linejoin="round"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
 								/>
 							</g>
 							<defs>
@@ -42,8 +42,8 @@ const AboutRingplan = () => {
 							<g id="fill / info">
 								<path
 									id="Vector"
-									fill-rule="evenodd"
-									clip-rule="evenodd"
+									fillRule="evenodd"
+									clipRule="evenodd"
 									d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8C1.5 11.59 4.41 14.5 8 14.5C11.59 14.5 14.5 11.59 14.5 8C14.5 4.41 11.59 1.5 8 1.5ZM8.66667 5.33333C8.66667 5.70152 8.36819 6 8 6C7.63181 6 7.33333 5.70152 7.33333 5.33333C7.33333 4.96514 7.63181 4.66667 8 4.66667C8.36819 4.66667 8.66667 4.96514 8.66667 5.33333ZM7.33333 8C7.33333 7.63181 7.63181 7.33333 8 7.33333C8.36819 7.33333 8.66667 7.63181 8.66667 8V10.6667C8.66667 11.0349 8.36819 11.3333 8 11.3333C7.63181 11.3333 7.33333 11.0349 7.33333 10.6667V8Z"
 									fill={isLatestVersion ? "#75C322" : "#F5C400"}
 								/>
@@ -64,9 +64,9 @@ const AboutRingplan = () => {
 										id="Vector"
 										d="M7.125 4.5L11.625 9L7.125 13.5"
 										stroke="#1480E1"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
 									/>
 								</g>
 							</svg>
@@ -81,9 +81,9 @@ const AboutRingplan = () => {
 										id="Vector"
 										d="M7.125 4.5L11.625 9L7.125 13.5"
 										stroke="#1480E1"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
 									/>
 								</g>
 							</svg>
