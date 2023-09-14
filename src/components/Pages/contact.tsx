@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 const Contact = () => {
 	const [isContactLoaded, setIsContactLoaded] = useState(true);
 	const [isContactSelected, setIsContactSelected] = useState(true);
+
 	const isAddContactOpen = useSelector((state) => state.contact.addContactPopUpOpen);
 	const isDeleteContactOpen = useSelector((state) => state.contact.deleteContactPopUpOpen);
 

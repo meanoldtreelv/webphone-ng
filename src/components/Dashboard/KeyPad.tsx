@@ -1,8 +1,15 @@
 import React from "react";
 import Dialpad from "./Dialpad";
 import classes from "./keyPad.module.scss";
+import { useDispatch } from "react-redux";
+import { callingActions } from "../../store/calling";
 
 const KeyPad = () => {
+	const dispatch = useDispatch();
+	function callingHandler() {
+		dispatch(callingActions.progressCall());
+	}
+
 	return (
 		<div className={classes.dialpad}>
 			<Dialpad />
@@ -21,7 +28,10 @@ const KeyPad = () => {
 						</g>
 					</svg>
 				</div>
-				<div className={classes.dialpad_key2} style={{ background: "var(--primary-disabled, #C8D3E0)" }}>
+				<div
+					className={classes.dialpad_key2}
+					style={{ background: "var(--primary-disabled, #C8D3E0)" }}
+					onClick={callingHandler}>
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="fill / phone">
 							<path

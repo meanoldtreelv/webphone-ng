@@ -14,6 +14,9 @@ import EditExtension from "components/Extension/EditExtension";
 import KeyPad from "components/Dashboard/KeyPad";
 import AddCall from "components/Dashboard/AddCall";
 import TransferCall from "components/Dashboard/TransferCall";
+import Signal from "components/TinyComponents/Signal";
+import LogoutPopUp from "components/Profile/LogoutPopUp";
+import InboundCall from "components/shared/InboundCall";
 import {
 	GET_Contact_List_API,
 	account_API,
@@ -22,11 +25,16 @@ import {
 	instances_API,
 	user_API,
 } from "effects/apiEffect";
-import Signal from "components/TinyComponents/Signal";
-import LogoutPopUp from "components/Profile/LogoutPopUp";
-import InboundCall from "components/shared/InboundCall";
+
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+	const isDialerActive = useSelector((state) => state.calling.dialer);
+	const isCallInProgress = useSelector((state) => state.calling.callInProgress);
+	const isCallTransfer = useSelector((state) => state.calling.transferCalling);
+	const isCallAdded = useSelector((state) => state.calling.addCalling);
+	const isCallEnded = useSelector((state) => state.calling.callEnding);
+
 	useEffect(() => {
 		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
 		const userID = "5ed668cd38d0350104cb8789";
@@ -115,21 +123,23 @@ const Dashboard = () => {
 					</div>
 
 					{/* This is a dial pad components for calling */}
-					<div className={classes.dialpad}>
-						<KeyPad />
-					</div>
+					{isDialerActive && (
+						<div className={classes.dialpad}>
+							<KeyPad />
+						</div>
+					)}
 
 					{/* When call is in progress this component will be shown  */}
-					{/* <Dialer /> */}
+					{isCallInProgress && <Dialer />}
 
 					{/* to add a call in progress call we will call this component */}
-					{/* <AddCall /> */}
+					{isCallAdded && <AddCall />}
 
 					{/* to transfer the call to another number we call this component */}
-					{/* <TransferCall /> */}
+					{isCallTransfer && <TransferCall />}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{/* <EndCall /> */}
+					{isCallEnded && <EndCall />}
 
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}

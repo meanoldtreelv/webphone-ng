@@ -2,16 +2,35 @@ import React, { useState } from "react";
 import classes from "./dialer.module.scss";
 import TransferCallCard from "./TransferCallCard";
 
+import { useDispatch } from "react-redux";
+import { callingActions } from "../../store/calling";
+
 const Dialer = () => {
 	const [isMute, setIsMute] = useState(true);
+	const [isCallConnected, setIsCallConnected] = useState(false);
 	const [isCallActive, setIsCallActive] = useState(true);
 
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
 
+	const dispatch = useDispatch();
+
+	// style for state update
 	const IconActiveStyle = { background: "var(--background-tertiary, #f7f9fc)" };
 	const IconDisableStyle = {
 		border: "1px solid var(--border-disabled, #c8d3e0)",
 	};
+
+	function endCallHandler() {
+		dispatch(callingActions.endCall());
+	}
+
+	function addCallHandler() {
+		dispatch(callingActions.addCall());
+	}
+
+	function transferCallHandler() {
+		setIsTransferButtonClicked(!isTransferButtonClicked);
+	}
 
 	return (
 		<section className={classes.dialer}>
@@ -19,8 +38,8 @@ const Dialer = () => {
 				className={classes.dialer_detailsBox}
 				// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
 			>
-				{true && <img src="/img/dummy/profile.png" alt="" className={classes.backgroundImg} />}
-				{false && (
+				{false && <img src="/img/dummy/profile.png" alt="" className={classes.backgroundImg} />}
+				{true && (
 					<div
 						className={classes.backgroundColor}
 						style={{ backgroundColor: "var(--accent-blue-tertiary, #ECF5FE)" }}></div>
@@ -28,7 +47,7 @@ const Dialer = () => {
 
 				<div className={classes.dialer_details}>
 					<div className={`large_title ${classes.dialer_profile}`}>
-						{true ? <img src="/img/dummy/profile96.png" alt=""></img> : <span>SG</span>}
+						{false ? <img src="/img/dummy/profile96.png" alt=""></img> : <span>MW</span>}
 					</div>
 					<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						Matt Wiz
@@ -39,7 +58,7 @@ const Dialer = () => {
 
 					{/* add the condition here for dialing  */}
 
-					{true ? (
+					{!isCallConnected ? (
 						<p className={classes.title_3} style={{ color: "var(--text-secondary, #5C6168)" }}>
 							Dialing...
 						</p>
@@ -52,7 +71,7 @@ const Dialer = () => {
 			</div>
 			<div className={classes.dialer_box}>
 				<div className={classes.dialer_actionBox}>
-					<div className={classes.dialer_action}>
+					<div className={classes.dialer_action} onClick={addCallHandler}>
 						<span className={classes.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 							<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="fill / call_add">
@@ -97,10 +116,14 @@ const Dialer = () => {
 					<div
 						className={classes.dialer_action}
 						style={{ position: "relative" }}
-						onClick={() => {
-							setIsTransferButtonClicked(!isTransferButtonClicked);
-						}}>
-						<span className={classes.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
+						// onClick={() => {
+						// 	setIsTransferButtonClicked(!isTransferButtonClicked);
+						// }}
+					>
+						<span
+							className={classes.dialer_icon}
+							style={false ? IconActiveStyle : IconDisableStyle}
+							onClick={transferCallHandler}>
 							<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="fill / call_transfer">
 									<g id="Vector">
@@ -210,7 +233,7 @@ const Dialer = () => {
 							</g>
 						</svg>
 					</div>
-					<div className={`${classes.dialer_control} ${classes.dialer_endButton}`}>
+					<div className={`${classes.dialer_control} ${classes.dialer_endButton}`} onClick={endCallHandler}>
 						<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="fill / phone_end">
 								<path
