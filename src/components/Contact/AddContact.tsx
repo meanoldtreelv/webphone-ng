@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./addContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contactActions } from "../../store/contact";
 import { GET_Contact_Salutation_API } from "../../effects/apiEffect";
 
@@ -15,6 +15,9 @@ const AddContact = () => {
 	const [salutationList, setSalutationList] = useState([]);
 
 	const [payload, setPayload] = useState({});
+
+	const isAddContactOpen = useSelector((state) => state.contact.addContactPopUpOpen);
+	const isEditContactOpen = useSelector((state) => state.contact.editContact);
 
 	const firstNameRef = useRef<HTMLInputElement | "">(null);
 	const lastNameRef = useRef(null);
@@ -69,36 +72,42 @@ const AddContact = () => {
 	}, [payload]);
 
 	function onSaveContact() {
-		setPayload({
-			first_name: firstNameRef.current.value || null,
-			last_name: lastNameRef.current.value || null,
-			phone: phoneRef.current.value || null,
-			fax: faxRef.current.value || null,
-			email: emailRef.current.value || null,
-			birthday: birthdayRef.current.value || null,
-			salutation: salutationRef.current.value || "",
-			description: descriptionRef.current.value || null,
-			job_details: {
-				position: jobPositionRef.current.value || null,
-				department: jobDepartmentRef.current.value || "",
-				reports_to: jobReportsRef.current.value || null,
-			},
-			address: {
-				country: countryRef.current.value || null,
-				state: stateRef.current.value || null,
-				city: cityRef.current.value || null,
-				street: streetRef.current.value || null,
-				zipcode: zipcodeRef.current.value || null,
-			},
-			organization_details: {
-				organization: organizationRef.current.value || null,
-				parent_organization: parentOrganizationRef.current.value || null,
-			},
-		});
+		if (isEditContactOpen) {
+			dispatch(contactActions.setEditContactFalse());
+		}
+		if (isAddContactOpen) {
+			setPayload({
+				first_name: firstNameRef.current.value || null,
+				last_name: lastNameRef.current.value || null,
+				phone: phoneRef.current.value || null,
+				fax: faxRef.current.value || null,
+				email: emailRef.current.value || null,
+				birthday: birthdayRef.current.value || null,
+				salutation: salutationRef.current.value || "",
+				description: descriptionRef.current.value || null,
+				job_details: {
+					position: jobPositionRef.current.value || null,
+					department: jobDepartmentRef.current.value || "",
+					reports_to: jobReportsRef.current.value || null,
+				},
+				address: {
+					country: countryRef.current.value || null,
+					state: stateRef.current.value || null,
+					city: cityRef.current.value || null,
+					street: streetRef.current.value || null,
+					zipcode: zipcodeRef.current.value || null,
+				},
+				organization_details: {
+					organization: organizationRef.current.value || null,
+					parent_organization: parentOrganizationRef.current.value || null,
+				},
+			});
+		}
 	}
 
 	function closeContactHandler() {
 		dispatch(contactActions.closeAddContact());
+		dispatch(contactActions.setEditContactFalse());
 	}
 
 	console.log("====================================");
@@ -110,7 +119,7 @@ const AddContact = () => {
 			<div className={classes.addContact}>
 				<div className={`flex justify-between items-center`}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
+						{isEditContactOpen ? "Edit Contact" : "Add Contact"}
 					</span>
 					<span className={`p-1 cursor-pointer`} onClick={closeContactHandler}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">

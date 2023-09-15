@@ -92,3 +92,14 @@ export const showToast = (message: string, type: TypeOptions, id = "unique") => 
 		type,
 	});
 };
+
+//short Abbreviation for contact
+export const contactAbbreviation = (firstName, lastName, phone, email) => {
+	const firstNameChar = firstName ? firstName[0] : "";
+	const lastNameChar = lastName ? lastName[0] : "";
+	const phoneChar = phone ? phone[0] + phone[1] + phone[2] : "";
+	const emailChar = email ? email[0] + email[1] : "";
+	const abbreviation =
+		firstNameChar + lastNameChar || ((!firstNameChar || !lastNameChar) && (phoneChar ? phoneChar : emailChar));
+	return abbreviation;
+};

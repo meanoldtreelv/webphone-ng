@@ -3,6 +3,7 @@ import classes from "./contactDetails.module.scss";
 import HistoryCard from "./HistoryCard";
 import { useDispatch, useSelector } from "react-redux";
 import { contactActions } from "../../store/contact";
+import { contactAbbreviation } from "../../utils";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
@@ -39,7 +40,12 @@ const ContactDetails = () => {
 									background: "linear-gradient(135deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.00) 50.52%)",
 									height: "100%",
 								}}>
-								MT
+								{contactAbbreviation(
+									selectedContactData?.first_name,
+									selectedContactData?.last_name,
+									selectedContactData?.phone,
+									selectedContactData?.email,
+								)}
 							</span>
 						</span>
 						<div>

@@ -22,6 +22,7 @@ const Contact = () => {
 	const isAddContactOpen = useSelector((state) => state.contact.addContactPopUpOpen);
 	const isDeleteContactOpen = useSelector((state) => state.contact.deleteContactPopUpOpen);
 	const isContactSelected = useSelector((state) => state.contact.selectedContactOpen);
+	const isEditContactOpen = useSelector((state) => state.contact.editContact);
 
 	const contactLists = useSelector((state) => state.contact.contactList);
 
@@ -57,7 +58,7 @@ const Contact = () => {
 					<NoContact />
 				)}
 			</LayoutWrapper>
-			{isAddContactOpen && <AddContact />}
+			{(isAddContactOpen || isEditContactOpen) && <AddContact />}
 
 			{isDeleteContactOpen && <DeleteContactPopUp />}
 		</div>

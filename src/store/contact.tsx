@@ -50,6 +50,7 @@ const contactSlice = createSlice({
 		},
 		setEditContactFalse(state) {
 			state.editContact = false;
+			state.addContactPopUpOpen = false;
 		},
 	},
 });

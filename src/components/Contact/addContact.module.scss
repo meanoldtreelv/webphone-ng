@@ -39,6 +39,8 @@
 	flex-direction: column;
 	gap: 35px;
 
+	height: 100%;
+
 	/* Style the main scrollbar */
 	&::-webkit-scrollbar {
 		width: 2px; /* Width of the scrollbar */

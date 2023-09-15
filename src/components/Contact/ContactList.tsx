@@ -81,7 +81,7 @@ const ContactList = () => {
 				{/* favourite contact heading */}
 				<div>
 					<p className={`caption_2 ${classes.contact_favorites}`}>
-						<span>
+						{/* <span>
 							<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="line / star">
 									<path
@@ -94,7 +94,7 @@ const ContactList = () => {
 								</g>
 							</svg>
 							<span>Favorites (3)</span>
-						</span>
+						</span> */}
 						<span className={` ${classes.contact_sorting}`}>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="fill / sorting">
@@ -118,13 +118,7 @@ const ContactList = () => {
 					</p>
 				</div>
 				{/* favourite contact  */}
-				<div>
-					{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}
-
-					{/* <ContactCard />
-				<ContactCard />
-				<ContactCard /> */}
-				</div>
+				<div>{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}</div>
 
 				{/* frquently contact heading  */}
 				<div>

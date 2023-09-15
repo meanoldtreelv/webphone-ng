@@ -133,3 +133,10 @@ export const DELETE_Contact_API = (dircnt_id: String, success: Function, error: 
 		.then((res) => success?.(res))
 		.catch((err) => error?.(err));
 };
+
+export const UPDATE_Contact_API = (dircnt_id: String, success: Function, error: Function) => {
+	axios
+		.put(`https://ssp-backend.ringplan.com/company/directory/contacts/${dircnt_id}`, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
