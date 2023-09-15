@@ -18,13 +18,13 @@ const Dialpad = () => {
 					<span className={`title_1`}>1</span>
 					<p className={`caption_2`}>
 						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<g id="line / voicemail" clip-path="url(#clip0_2129_3092)">
+							<g id="line / voicemail" clipPath="url(#clip0_2129_3092)">
 								<path
 									id="Vector"
 									d="M4.00033 11.3332C5.84127 11.3332 7.33366 9.84079 7.33366 7.99984C7.33366 6.15889 5.84127 4.6665 4.00033 4.6665C2.15938 4.6665 0.666992 6.15889 0.666992 7.99984C0.666992 9.84079 2.15938 11.3332 4.00033 11.3332ZM4.00033 11.3332H12.0003M12.0003 11.3332C13.8413 11.3332 15.3337 9.84079 15.3337 7.99984C15.3337 6.15889 13.8413 4.6665 12.0003 4.6665C10.1594 4.6665 8.66699 6.15889 8.66699 7.99984C8.66699 9.84079 10.1594 11.3332 12.0003 11.3332Z"
 									stroke="#6C7A8B"
-									stroke-width="1.5"
-									stroke-linecap="round"
+									strokeWidth="1.5"
+									strokeLinecap="round"
 								/>
 							</g>
 							<defs>
@@ -138,9 +138,9 @@ const Dialpad = () => {
                 id="Vector"
                 d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H6C4.93913 15 3.92172 15.4214 3.17157 16.1716C2.42143 16.9217 2 17.9391 2 19V21M19 8V14M22 11H16M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z"
                 stroke="#C8D3E0"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </g>
           </svg>
@@ -176,14 +176,14 @@ const Dialpad = () => {
             <path
               d="M23.5 19C23.5 19.3978 23.342 19.7794 23.0607 20.0607C22.7794 20.342 22.3978 20.5 22 20.5H7.07036C6.56883 20.5 6.10049 20.2494 5.82229 19.8321L0.785831 12.2775C0.673863 12.1095 0.673862 11.8907 0.785831 11.7228L5.8223 4.16814C6.10049 3.75085 6.56883 3.50021 7.07035 3.5002L22 3.5C22.3978 3.5 22.7794 3.65804 23.0607 3.93934C23.342 4.22064 23.5 4.60218 23.5 5V19Z"
               stroke="#C8D3E0"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M10.875 8.875L17.125 15.125M17.125 8.875L10.875 15.125"
               stroke="#C8D3E0"
-              stroke-width="1.5"
-              stroke-linecap="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
             />
           </svg>
         </div>
