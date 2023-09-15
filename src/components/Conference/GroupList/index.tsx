@@ -60,7 +60,7 @@ const GroupList = () => {
 				</span>
 			</div>
 
-			<div className=" flex flex-col gap-y-1.5">
+			<div className={`flex flex-col gap-y-1.5 ${classes.list}`}>
 				{changeList === "group" ? (
 					<>
 						<GroupCard />

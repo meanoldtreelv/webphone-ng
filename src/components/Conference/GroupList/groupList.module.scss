@@ -1,4 +1,5 @@
 .contact {
+	flex-shrink: 0;
 	padding-top: 16px;
 	height: 100vh;
 	overflow-y: auto;
@@ -68,4 +69,29 @@ background: var(--background-primary, #FFF);
 
 	border-radius: 8px;
 	background: var(--primary-default, #0c6dc7);
+}
+
+.list{
+	height: calc(100% - 115px);
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 12px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		height: 4rem;
+		border-radius: 0.5rem;
+		border: 4px solid transparent;
+		background-clip: content-box;
+		background-color: var(--text-secondary, #5c6168);
+
+		&:hover {
+			// background-color: #5757a6;
+		}
+	}
+
+	&::-webkit-scrollbar-track {
+		// background-color: #91eae4;
+	}
 }
