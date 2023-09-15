@@ -2,9 +2,11 @@ import React from "react";
 import classes from "./contactCard.module.scss";
 import { useDispatch } from "react-redux";
 import { contactActions } from "../../store/contact";
+import { contactAbbreviation } from "../../utils";
 
 const ContactCard = ({ contactData }) => {
 	const dispatch = useDispatch();
+
 	return (
 		<div
 			className={classes.contact}
@@ -12,9 +14,15 @@ const ContactCard = ({ contactData }) => {
 				dispatch(contactActions.setSelectedContact(contactData));
 				dispatch(contactActions.openSelectedContact());
 			}}>
-			<span className={`sub_headline ${classes.contact_circle}`}>AA</span>
+			<span className={`sub_headline ${classes.contact_circle}`}>
+				{contactAbbreviation(contactData?.first_name, contactData?.last_name, contactData?.phone, contactData?.email)}
+			</span>
 			<span className={classes.contact_name}>
-				<span>{contactData?.first_name + " " + contactData?.last_name}</span>
+				<span>
+					{contactData?.first_name + contactData?.last_name
+						? contactData?.first_name + " " + contactData?.last_name
+						: contactData?.phone || contactData?.email || contactData?.fax}
+				</span>
 				<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="fill / suitcase">
 						<g id="Vector">

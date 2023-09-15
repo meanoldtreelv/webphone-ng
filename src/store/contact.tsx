@@ -6,6 +6,8 @@ const initialContactState = {
 	selectedContactOpen: false,
 	contactList: [],
 	selectedContact: [],
+	deleteContactId: "",
+	editContact: false,
 };
 
 const contactSlice = createSlice({
@@ -20,6 +22,7 @@ const contactSlice = createSlice({
 		},
 		closeDeleteContact(state) {
 			state.deleteContactPopUpOpen = false;
+			state.selectedContactOpen = false;
 		},
 		openDeleteContact(state) {
 			state.deleteContactPopUpOpen = true;
@@ -37,6 +40,17 @@ const contactSlice = createSlice({
 		setSelectedContact(state, action) {
 			console.log("setSellected contact action dispatched with payload:", action.payload);
 			state.selectedContact = action.payload;
+		},
+		setDeleteContactId(state, action) {
+			console.log("setDeleteContactId contact action dispatched with payload:", action.payload);
+			state.deleteContactId = action.payload;
+		},
+		setEditContactTrue(state) {
+			state.editContact = true;
+		},
+		setEditContactFalse(state) {
+			state.editContact = false;
+			state.addContactPopUpOpen = false;
 		},
 	},
 });

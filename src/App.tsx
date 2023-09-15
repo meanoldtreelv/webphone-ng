@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import SplashScreen from "components/SplashScreen";
 import LoginScreen from "components/LoginPage/LoginScreen";

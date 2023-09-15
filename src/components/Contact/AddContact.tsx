@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./addContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contactActions } from "../../store/contact";
+import { GET_Contact_Salutation_API } from "../../effects/apiEffect";
 
 const AddContact = () => {
 	const [contactType, setContactType] = useState("add_contact");
@@ -11,8 +12,12 @@ const AddContact = () => {
 	const [isCompanyAccordianOpen, setIsCompanyAccordianOpen] = useState(false);
 	const [isManagerAccordianOpen, setIsManagerAccordianOpen] = useState(false);
 	const [isAdditionalField2AccordianOpen, setIsAdditionalField2AccordianOpen] = useState(false);
+	const [salutationList, setSalutationList] = useState([]);
 
 	const [payload, setPayload] = useState({});
+
+	const isAddContactOpen = useSelector((state) => state.contact.addContactPopUpOpen);
+	const isEditContactOpen = useSelector((state) => state.contact.editContact);
 
 	const firstNameRef = useRef<HTMLInputElement | "">(null);
 	const lastNameRef = useRef(null);
@@ -36,6 +41,21 @@ const AddContact = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		GET_Contact_Salutation_API(
+			(res: any) => {
+				console.log(res, "contact salutation API retrieve");
+				if (res?.status === 200) {
+					console.log("success in contact salutation retrieve");
+					setSalutationList(res.data.possible_salutations);
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact salutation retrieve");
+			},
+		);
+	}, []);
+
+	useEffect(() => {
 		Add_contact_API(
 			payload,
 			(res: any) => {
@@ -52,36 +72,42 @@ const AddContact = () => {
 	}, [payload]);
 
 	function onSaveContact() {
-		setPayload({
-			first_name: firstNameRef.current.value || null,
-			last_name: lastNameRef.current.value || null,
-			phone: phoneRef.current.value || null,
-			fax: faxRef.current.value || null,
-			email: emailRef.current.value || null,
-			birthday: birthdayRef.current.value || null,
-			salutation: salutationRef.current.value || "",
-			description: descriptionRef.current.value || null,
-			job_details: {
-				position: jobPositionRef.current.value || null,
-				department: jobDepartmentRef.current.value || "",
-				reports_to: jobReportsRef.current.value || null,
-			},
-			address: {
-				country: countryRef.current.value || null,
-				state: stateRef.current.value || null,
-				city: cityRef.current.value || null,
-				street: streetRef.current.value || null,
-				zipcode: zipcodeRef.current.value || null,
-			},
-			organization_details: {
-				organization: organizationRef.current.value || null,
-				parent_organization: parentOrganizationRef.current.value || null,
-			},
-		});
+		if (isEditContactOpen) {
+			dispatch(contactActions.setEditContactFalse());
+		}
+		if (isAddContactOpen) {
+			setPayload({
+				first_name: firstNameRef.current.value || null,
+				last_name: lastNameRef.current.value || null,
+				phone: phoneRef.current.value || null,
+				fax: faxRef.current.value || null,
+				email: emailRef.current.value || null,
+				birthday: birthdayRef.current.value || null,
+				salutation: salutationRef.current.value || "",
+				description: descriptionRef.current.value || null,
+				job_details: {
+					position: jobPositionRef.current.value || null,
+					department: jobDepartmentRef.current.value || "",
+					reports_to: jobReportsRef.current.value || null,
+				},
+				address: {
+					country: countryRef.current.value || null,
+					state: stateRef.current.value || null,
+					city: cityRef.current.value || null,
+					street: streetRef.current.value || null,
+					zipcode: zipcodeRef.current.value || null,
+				},
+				organization_details: {
+					organization: organizationRef.current.value || null,
+					parent_organization: parentOrganizationRef.current.value || null,
+				},
+			});
+		}
 	}
 
 	function closeContactHandler() {
 		dispatch(contactActions.closeAddContact());
+		dispatch(contactActions.setEditContactFalse());
 	}
 
 	console.log("====================================");
@@ -93,7 +119,7 @@ const AddContact = () => {
 			<div className={classes.addContact}>
 				<div className={`flex justify-between items-center`}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						{contactType === "add_contact" ? "Add Contact" : "Edit Contact"}
+						{isEditContactOpen ? "Edit Contact" : "Add Contact"}
 					</span>
 					<span className={`p-1 cursor-pointer`} onClick={closeContactHandler}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -243,7 +269,15 @@ const AddContact = () => {
 									<label htmlFor="salutation" className={`caption_1`}>
 										Salutation
 									</label>
-									<input type="text" id="salutation" ref={salutationRef} />
+									{/* <input type="text" id="salutation" ref={salutationRef} /> */}
+									<select name="" id="salutation" ref={salutationRef}>
+										<option value=""></option>
+										{salutationList?.map((item) => (
+											<option value={item} key={item}>
+												{item}
+											</option>
+										))}
+									</select>
 								</div>
 							</>
 						)}
