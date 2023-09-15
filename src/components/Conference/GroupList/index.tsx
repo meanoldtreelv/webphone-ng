@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./groupList.module.scss";
 import GroupCard from "../GroupCard";
+import GroupCalHistoryCard from "../GroupCallHistoryCard";
 
 const GroupList = () => {
+	let [changeList, setChangeList] = useState("group");
 	return (
-		<div className={classes.contact} style={{background: "var(--background-primary, #FFF)"}}>
+		<div className={classes.contact} style={{ background: "var(--background-primary, #FFF)" }}>
 			<div className={classes.contact_search}>
 				<input type="text" placeholder="Search number" />
 
@@ -38,36 +40,73 @@ const GroupList = () => {
 				</svg>
 			</div>
 
-			<div className={`body flex pl-[16px] pt-[8px] gap-x-[20px] mb-[8px] ${classes.heads}`} style={{color: 'var(--text-secondary, #5C6168)', borderBottom: '1px solid var(--border-secondary, #C8D3E0)'}}>
-				<span className="pb-[10px]" style={{color: 'var(--text-link, #1480E1)', borderBottom: "2px solid var(--text-link, #1480E1)"}}>Groups</span>
-				<span className="pb-[10px]">Call History</span>
+			<div
+				className={`body flex pl-[16px] pt-[8px] gap-x-[20px] mb-[8px] ${classes.heads}`}
+				style={{ color: "var(--text-secondary, #5C6168)", borderBottom: "1px solid var(--border-secondary, #C8D3E0)" }}>
+				<span
+					className="pb-[10px]"
+					onClick={() => {setChangeList("group")}}
+					style={changeList==="group" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)", cursor:"default" } : { color: "var(--text-secondary, #5C6168)", borderBottom: "none" , cursor:"default"}}>
+					Groups
+				</span>
+				<span
+					className="pb-[10px]"
+					onClick={() => {
+						setChangeList("groupCallHistory");
+					}}
+					style={changeList==="groupCallHistory" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)", cursor:"default" } : { color: "var(--text-secondary, #5C6168)", borderBottom: "none" , cursor:"default"}}
+					>
+					Call History
+				</span>
 			</div>
 
-			<div>
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
-				<GroupCard />
+			<div className={`flex flex-col gap-y-1.5 ${classes.list}`}>
+				{changeList === "group" ? (
+					<>
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+						<GroupCard />
+					</>
+				) : (
+					<>
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+						<GroupCalHistoryCard />
+					</>
+				)}
 			</div>
-			
 		</div>
 	);
 };
