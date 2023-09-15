@@ -23,6 +23,8 @@ const Contact = () => {
 	const isDeleteContactOpen = useSelector((state) => state.contact.deleteContactPopUpOpen);
 	const isContactSelected = useSelector((state) => state.contact.selectedContactOpen);
 
+	const contactLists = useSelector((state) => state.contact.contactList);
+
 	const dispatch = useDispatch();
 	useEffect(() => {
 		GET_Contact_List_API(
@@ -46,7 +48,7 @@ const Contact = () => {
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
 			<LayoutWrapper>
-				{isContactLoaded ? (
+				{contactLists?.length > 0 ? (
 					<section className={`flex ${classes.contact_container}`}>
 						<ContactList />
 						{isContactSelected ? <ContactDetails /> : <NoContactSelected />}

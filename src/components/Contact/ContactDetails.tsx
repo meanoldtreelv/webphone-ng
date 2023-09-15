@@ -12,7 +12,12 @@ const ContactDetails = () => {
 	const dispatch = useDispatch();
 
 	const selectedContactData = useSelector((state) => state.contact.selectedContact);
-	console.log(selectedContactData, "selectedContactData");
+	// console.log(selectedContactData, "selectedContactData");
+
+	function editContactHandler() {
+		dispatch(contactActions.openAddContact());
+		dispatch(contactActions.setEditContactTrue());
+	}
 
 	// styling
 	const contactActiveButton = {
@@ -48,7 +53,7 @@ const ContactDetails = () => {
 							</p>
 						</div>
 					</div>
-					<span className={`flex ${classes.edit}`}>
+					<span className={`flex cursor-pointer ${classes.edit}`} onClick={editContactHandler}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
 							<path
 								d="M7.75 3.00017H2.5C2.10218 3.00017 1.72064 3.15821 1.43934 3.43951C1.15804 3.72081 1 4.10235 1 4.50017V15.0002C1 15.398 1.15804 15.7795 1.43934 16.0608C1.72064 16.3421 2.10218 16.5002 2.5 16.5002H13C13.3978 16.5002 13.7794 16.3421 14.0607 16.0608C14.342 15.7795 14.5 15.398 14.5 15.0002V9.75017M13.375 1.87517C13.6734 1.5768 14.078 1.40918 14.5 1.40918C14.922 1.40918 15.3266 1.5768 15.625 1.87517C15.9234 2.17354 16.091 2.57821 16.091 3.00017C16.091 3.42213 15.9234 3.8268 15.625 4.12517L8.5 11.2502L5.5 12.0002L6.25 9.00017L13.375 1.87517Z"
@@ -227,6 +232,7 @@ const ContactDetails = () => {
 							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}
 							onClick={() => {
 								dispatch(contactActions.openDeleteContact());
+								dispatch(contactActions.setDeleteContactId(selectedContactData?.id));
 							}}>
 							Delete Contact
 						</p>
@@ -256,7 +262,20 @@ const ContactDetails = () => {
 											strokeLinejoin="round"
 										/>
 									</svg>
-									<p>{`You have no call history with Melisa Townsend`}</p>
+									<p>{`You have no call history with ${
+										selectedContactData?.first_name ? selectedContactData?.first_name + " " : ""
+									}${selectedContactData?.last_name ? selectedContactData?.last_name + " " : ""}${
+										!selectedContactData?.first_name && !selectedContactData?.last_name && selectedContactData?.phone
+											? selectedContactData?.phone + " "
+											: ""
+									}${
+										!selectedContactData?.first_name &&
+										!selectedContactData?.last_name &&
+										!selectedContactData?.phone &&
+										selectedContactData?.email
+											? selectedContactData?.email + " "
+											: ""
+									}`}</p>
 								</div>
 							</div>
 						)}

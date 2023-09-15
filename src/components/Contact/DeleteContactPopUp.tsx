@@ -1,14 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./deleteContactPopUp.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contactActions } from "../../store/contact";
+import { DELETE_Contact_API } from "../../effects/apiEffect";
+import { log } from "console";
 
 const DeleteContactPopUp = () => {
 	const dispatch = useDispatch();
+	const contactId = useSelector((state) => state.contact.deleteContactId);
+	const contactLists = useSelector((state) => state.contact.contactList);
+	console.log("====================================");
+	console.log(contactId);
+	console.log("====================================");
 
 	function deleteContactHandler() {
-		dispatch(contactActions.closeDeleteContact());
+		DELETE_Contact_API(
+			contactId,
+			(res: any) => {
+				console.log(res, "contact delete API retrieve");
+				if (res?.status === 204) {
+					console.log("success in contact delete retrieve");
+					dispatch(contactActions.closeDeleteContact());
+					const filteredContact = filterAfterDeletedContact(contactLists, contactId);
+					dispatch(contactActions.setContactList(filteredContact));
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact delete retrieve");
+			},
+		);
 	}
+
+	// const idToDelete = "5e7b78c28c0f5dfdda5f53a7"; // Replace with the ID you want to delete
+
+	// const updatedContactLists = contactLists.filter((item) => item.id !== idToDelete);
+
+	// Print the updated array
+	// console.log(updatedContactLists);
+
+	function filterAfterDeletedContact(contactArray, contactIdToDelete) {
+		const updatedContactLists = contactArray?.filter((item) => item?.id !== contactIdToDelete);
+		return updatedContactLists;
+	}
+
 	return (
 		<section className={classes.popUp}>
 			<div className={classes.popUp_box}>
@@ -24,7 +58,7 @@ const DeleteContactPopUp = () => {
 							/>
 						</svg>
 					</div>
-					<p className={`body_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<p className={`body_bold`} style={{ color: "var(--text-primary, #1F2023)" }} onClick={deleteContactHandler}>
 						Delete Contact
 					</p>
 					<p className={`footnote`} style={{ color: "var(--text-secondary, #5C6168)" }}>
