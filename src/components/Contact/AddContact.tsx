@@ -3,6 +3,7 @@ import classes from "./addContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
 import { useDispatch } from "react-redux";
 import { contactActions } from "../../store/contact";
+import { GET_Contact_Salutation_API } from "../../effects/apiEffect";
 
 const AddContact = () => {
 	const [contactType, setContactType] = useState("add_contact");
@@ -11,6 +12,7 @@ const AddContact = () => {
 	const [isCompanyAccordianOpen, setIsCompanyAccordianOpen] = useState(false);
 	const [isManagerAccordianOpen, setIsManagerAccordianOpen] = useState(false);
 	const [isAdditionalField2AccordianOpen, setIsAdditionalField2AccordianOpen] = useState(false);
+	const [salutationList, setSalutationList] = useState([]);
 
 	const [payload, setPayload] = useState({});
 
@@ -34,6 +36,21 @@ const AddContact = () => {
 	const parentOrganizationRef = useRef(null);
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		GET_Contact_Salutation_API(
+			(res: any) => {
+				console.log(res, "contact salutation API retrieve");
+				if (res?.status === 200) {
+					console.log("success in contact salutation retrieve");
+					setSalutationList(res.data.possible_salutations);
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in contact salutation retrieve");
+			},
+		);
+	}, []);
 
 	useEffect(() => {
 		Add_contact_API(
@@ -243,7 +260,15 @@ const AddContact = () => {
 									<label htmlFor="salutation" className={`caption_1`}>
 										Salutation
 									</label>
-									<input type="text" id="salutation" ref={salutationRef} />
+									{/* <input type="text" id="salutation" ref={salutationRef} /> */}
+									<select name="" id="salutation" ref={salutationRef}>
+										<option value=""></option>
+										{salutationList?.map((item) => (
+											<option value={item} key={item}>
+												{item}
+											</option>
+										))}
+									</select>
 								</div>
 							</>
 						)}
