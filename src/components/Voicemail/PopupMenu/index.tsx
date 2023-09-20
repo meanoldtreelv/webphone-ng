@@ -1,11 +1,10 @@
-import React from "react";
-import style from "./popupMenu.module.scss";
+import styles from "./PopupMenu.module.scss";
 
 const PopupMenu = () => {
 	return (
-		<div className={`${style.popup} w-[200px] rounded-[8px] border-2 border-[#C8D3E0] bg-white`}>
+		<div className={`${styles.popup} w-[200px] rounded-[8px] border-2 border-[#C8D3E0] bg-white`}>
 			<div
-				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
+				className={`${styles.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<path
@@ -17,11 +16,11 @@ const PopupMenu = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`caption_1 ${style.popup_rowText} ${style.popup_sendMsg} `}>Send Message</div>
+				<div className={`caption_1 ${styles.popup_rowText} ${styles.popup_sendMsg} `}>Send Message</div>
 			</div>
 
 			<div
-				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
+				className={`${styles.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<path
@@ -33,16 +32,16 @@ const PopupMenu = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`caption_1 ${style.popup_rowText} ${style.popup_delete}`}>Delete</div>
+				<div className={`caption_1 ${styles.popup_rowText} ${styles.popup_delete}`}>Delete</div>
 			</div>
 
 			<div
-				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
-				<div className={` caption_1 ${style.popup_share} ${style.popup_rowText}`}>Share</div>
+				className={`${styles.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
+				<div className={` caption_1 ${styles.popup_share} ${styles.popup_rowText}`}>Share</div>
 			</div>
 
 			<div
-				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
+				className={`${styles.popup_row} flex items-center gap-x-2 border-b-[1px] border-[#E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<g clipPath="url(#clip0_2436_7081)">
@@ -61,11 +60,11 @@ const PopupMenu = () => {
 						</defs>
 					</svg>
 				</span>
-				<div className={` caption_1 ${style.popup_rowText} ${style.popup_copy}`}>Copy Link</div>
+				<div className={` caption_1 ${styles.popup_rowText} ${styles.popup_copy}`}>Copy Link</div>
 			</div>
 
 			<div
-				className={`${style.popup_row} flex items-center gap-x-2 border-b-[1px] border-[##E3EAF2] py-[11px] pl-[16px]`}>
+				className={`${styles.popup_row} flex items-center gap-x-2 border-b-[1px] border-[##E3EAF2] py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<path
@@ -75,10 +74,10 @@ const PopupMenu = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`caption_1 ${style.popup_rowText} ${style.popup_copyText}`}>Copy Text</div>
+				<div className={`caption_1 ${styles.popup_rowText} ${styles.popup_copyText}`}>Copy Text</div>
 			</div>
 
-			<div className={`${style.popup_row} flex items-center gap-x-2 py-[11px] pl-[16px]`}>
+			<div className={`${styles.popup_row} flex items-center gap-x-2 py-[11px] pl-[16px]`}>
 				<span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 						<path
@@ -90,7 +89,7 @@ const PopupMenu = () => {
 						/>
 					</svg>
 				</span>
-				<div className={`caption_1 ${style.popup_rowText} ${style.popup_email}`}>Share via Email</div>
+				<div className={`caption_1 ${styles.popup_rowText} ${styles.popup_email}`}>Share via Email</div>
 			</div>
 		</div>
 	);

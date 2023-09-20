@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import classes from "./groupDetails.module.scss";
+import { useState } from "react";
+import styles from "./GroupDetails.module.scss";
 // import HistoryCard from "./HistoryCard";
 
 const GroupDetails = () => {
@@ -11,12 +11,12 @@ const GroupDetails = () => {
 		fontWeight: "500",
 	};
 	return (
-		<section className={classes.contactDetails}>
-			<div className={classes.contactDetails_box}>
-				<div className={`body_bold ${classes.heading}`} style={{color: "var(--text-primary, #1F2023)"}}> Group Info</div>
-				<div className={classes.contactInfo}>
-					<div className={classes.rowBox}>
-						<div className={classes.row}>
+		<section className={styles.contactDetails}>
+			<div className={styles.contactDetails_box}>
+				<div className={`body_bold ${styles.heading}`} style={{color: "var(--text-primary, #1F2023)"}}> Group Info</div>
+				<div className={styles.contactInfo}>
+					<div className={styles.rowBox}>
+						<div className={styles.row}>
 							<div>
 								<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									Group Name
@@ -26,7 +26,7 @@ const GroupDetails = () => {
 								</p>
 							</div>
 						</div>
-						<div className={classes.row}>
+						<div className={styles.row}>
 							<div>
 								<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									Description

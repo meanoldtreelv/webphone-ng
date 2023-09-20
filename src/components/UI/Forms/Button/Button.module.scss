@@ -1,0 +1,22 @@
+.button {
+	padding: 11px 12px;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 13px;
+	justify-content: center;
+}
+
+.buttonFill {
+	// gap: 4px;
+	background: var(--primary-default, #0c6dc7);
+	color: var(--text-on-color, #fff);
+	cursor: pointer;
+	margin-top: 30px;
+}
+
+.buttonBorder {
+	border: 1px solid var(--border-primary, #91a0b5);
+}

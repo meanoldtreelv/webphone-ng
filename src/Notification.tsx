@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./index.scss";
 
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import NotificationModel from "components/Notification/NotificationModel";
+import NotificationModel from "components/Notification";
 
 const root = ReactDOM.createRoot(
   document.getElementById("notification") as HTMLElement

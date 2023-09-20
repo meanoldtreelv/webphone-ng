@@ -1,0 +1,40 @@
+track changes
+-------------
+-> major issues found & fixed
+-> install core plugins that were missing
+    -> @types/css-modules
+    -> @types/react
+
+
+=> the app should migrate to tailwind
+
+------------------------------------------------
+
+-> partially done with loginScreen2
+
+------------------------------------------------
+
+-> what is the point of having a home screen, if the home screen's purpose is only to disply a splash screen
+-> why are we having two login screens?
+-> the login component only contains the loginpage2 component??
+-> CSS & SCSS are being used ... choose one..
+    -> better to continue with SCSS
+-> image and other assets should be placed inside of
+    -> src/assets folder
+-> are all the colors needed?
+    -> why not create a sass file for the colors too?
+        -> why still css?
+-> the sass files use nesting a lot ... not a good practice
+-> unless there is a logic involved please use the module approach
+    -> makes your code linear (locally connected)
+
+--------------------------------------------------------
+
+-> when creating a component capitalize the first letter
+-> please use the same naming convention
+    -> for some the import for css is 'classes' for other it is 'style' => fix it to 'styles'
+-> please use consistent function creating => use arrow functions on every code
+
+--------------------------------------------------------
+
+

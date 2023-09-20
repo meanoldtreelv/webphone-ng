@@ -1,13 +1,12 @@
-import React from "react";
-import classes from "./filter.module.scss";
+import styles from "./Filter.module.scss";
 
 const Filter = () => {
 	return (
-		<section className={classes.editBox}>
-			<div className={classes.edit}>
-				<div className={`sub_headline_bold ${classes.edit_heading}`}>
+		<section className={styles.editBox}>
+			<div className={styles.edit}>
+				<div className={`sub_headline_bold ${styles.edit_heading}`}>
 					<span>Filters</span>
-					<span className={` ${classes.edit_cross}`}>
+					<span className={` ${styles.edit_cross}`}>
 						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="line / close" clipPath="url(#clip0_2236_1196)">
 								<path
@@ -27,34 +26,34 @@ const Filter = () => {
 						</svg>
 					</span>
 				</div>
-				<div className={`body_bold ${classes.extension}`}>By Extensions</div>
+				<div className={`body_bold ${styles.extension}`}>By Extensions</div>
 
-				<div className={classes.deleteSave}>
-					<span className={`footnote_bold ${classes.edit_save}`}>Apply Filter</span>
+				<div className={styles.deleteSave}>
+					<span className={`footnote_bold ${styles.edit_save}`}>Apply Filter</span>
 				</div>
-				<div className={classes.filters}>
-					<div className={classes.filter1}>
+				<div className={styles.filters}>
+					<div className={styles.filter1}>
 						<input type="radio" id="all" name="filter" value="all" />
 						<label htmlFor="all" style={{ color: "var(--text-primary, #1F2023)" }}>
 							All
 						</label>
 					</div>
 
-					<div className={classes.filter1}>
+					<div className={styles.filter1}>
 						<input type="radio" id="80984" name="filter" value="80984" />
 						<label htmlFor="80984" style={{ color: "var(--text-primary, #1F2023)" }}>
 							80984
 						</label>
 					</div>
 
-					<div className={classes.filter1}>
+					<div className={styles.filter1}>
 						<input type="radio" id="312" name="filter" value="312" />
 						<label htmlFor="312" style={{ color: "var(--text-primary, #1F2023)" }}>
 							312
 						</label>
 					</div>
 
-					<div className={classes.filter1}>
+					<div className={styles.filter1}>
 						<input type="radio" id="783" name="filter" value="783" />
 						<label htmlFor="783" style={{ color: "var(--text-primary, #1F2023)" }}>
 							783

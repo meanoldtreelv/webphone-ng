@@ -1,11 +1,17 @@
-import React from "react";
-import classes from "./splashScreen.module.scss";
+import styles from "./SplashScreen.module.scss";
+
+import Logo from "components/UI/Logo";
 
 const SplashScreen = () => {
 	return (
-		<section className={classes.splashScreen}>
-			<img src="/ri_voice.svg" alt="" className={classes.splashScreen_voice} />
-			<img src="/ringplan_logo.svg" alt="" className={classes.splashScreen_ringplan} />
+		<section className={styles.splashScreen}>
+			<div className={styles.riVoiceLogo}>
+				<Logo type="ri-voice" />
+			</div>
+			
+			<div className={styles.ringplanLogo}>
+				<Logo />
+			</div>
 		</section>
 	);
 };

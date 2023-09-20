@@ -1,11 +1,10 @@
-import React from "react";
-import style from "./deleteVoicemail.module.scss";
+import styles from "./DeleteVoicemail.module.scss";
 
 const DeleteVoicemail = () => {
 	return (
-		<div className={style.overlay}>
-			<div className={style.delete}>
-				<div className={style.delete_cont}>
+		<div className={styles.overlay}>
+			<div className={styles.delete}>
+				<div className={styles.delete_cont}>
 					<span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 							<path
@@ -17,17 +16,17 @@ const DeleteVoicemail = () => {
 							/>
 						</svg>
 					</span>
-					<div className={`body_bold ${style.delete_head}`}>Delete Voicemails?</div>
-					<div className={`footnote ${style.delete_ques}`}>
+					<div className={`body_bold ${styles.delete_head}`}>Delete Voicemails?</div>
+					<div className={`footnote ${styles.delete_ques}`}>
 						Are you sure that you want to delete selected voicemails?
 					</div>
 				</div>
 
-				<div className={style.delete_btnCont}>
-					<div className={`footnote_bold ${style.delete_cancelBtn}`}>
+				<div className={styles.delete_btnCont}>
+					<div className={`footnote_bold ${styles.delete_cancelBtn}`}>
 						<span className={``}>Cancel</span>
 					</div>
-					<div className={`footnote_bold ${style.delete_deleteBtn}`}>
+					<div className={`footnote_bold ${styles.delete_deleteBtn}`}>
 						<span className={``}>Delete</span>
 					</div>
 				</div>

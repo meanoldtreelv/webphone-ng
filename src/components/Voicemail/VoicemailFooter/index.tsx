@@ -1,14 +1,13 @@
-import React from "react";
-import style from "./voicemailFooter.module.scss";
+import styles from "./VoicemailFooter.module.scss";
 import ShareBtnPopup from "../ShareBtnPopup";
 
 const VoicemailFooter = () => {
 	return (
-		<div className={style.footer}>
-			<div className={style.cont}>
+		<div className={styles.footer}>
+			<div className={styles.cont}>
 				{/* <ShareBtnPopup></ShareBtnPopup> */}
-				<div className={style.footer_actionBtn}>
-					<span className={style.footer_action}>
+				<div className={styles.footer_actionBtn}>
+					<span className={styles.footer_action}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
 							<path
 								fillRule="evenodd"
@@ -18,7 +17,7 @@ const VoicemailFooter = () => {
 							/>
 						</svg>
 					</span>
-					<span className={style.footer_action}>
+					<span className={styles.footer_action}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
 							<path
 								fillRule="evenodd"
@@ -28,7 +27,7 @@ const VoicemailFooter = () => {
 							/>
 						</svg>
 					</span>
-					<span className={style.footer_action}>
+					<span className={styles.footer_action}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
 							<path
 								fillRule="evenodd"
@@ -40,43 +39,43 @@ const VoicemailFooter = () => {
 					</span>
 				</div>
 
-				<div className={style.footer_progressBar}>
-					<div className={style.footer_progress}></div>
-					<div className={style.footer_cont}>
-						<div className={style.footer_details}>
-							<div className={`caption_1 ${style.footer_name}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+				<div className={styles.footer_progressBar}>
+					<div className={styles.footer_progress}></div>
+					<div className={styles.footer_cont}>
+						<div className={styles.footer_details}>
+							<div className={`caption_1 ${styles.footer_name}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 								Melisa Townsend
 							</div>
-							<div className={style.footer_dat}>
-								<div className={`caption_1 ${style.footer_month}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+							<div className={styles.footer_dat}>
+								<div className={`caption_1 ${styles.footer_month}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									{" "}
 									March
 								</div>
-								<div className={`caption_1 ${style.footer_date}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+								<div className={`caption_1 ${styles.footer_date}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									12,
 								</div>
-								<div className={`caption_1 ${style.footer_year}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+								<div className={`caption_1 ${styles.footer_year}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									2023
 								</div>
-								<div className={`caption_1 ${style.footer_time}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+								<div className={`caption_1 ${styles.footer_time}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									10:33
 								</div>
 								<div
-									className={`caption_1 ${style.footer_morning}`}
+									className={`caption_1 ${styles.footer_morning}`}
 									style={{ color: "var(--text-secondary, #5C6168)" }}>
 									AM
 								</div>
 							</div>
 						</div>
 
-						<div className={style.footer_duration}>
+						<div className={styles.footer_duration}>
 							<div
-								className={`caption_1 ${style.footer_currentprogress}`}
+								className={`caption_1 ${styles.footer_currentprogress}`}
 								style={{ color: "var(--text-primary, #1F2023)" }}>
 								00:12 /{" "}
 							</div>
 							<div
-								className={`caption_1 ${style.footer_totalDuration}`}
+								className={`caption_1 ${styles.footer_totalDuration}`}
 								style={{ color: "var(--text-primary, #1F2023)" }}>
 								0:15
 							</div>
@@ -84,8 +83,8 @@ const VoicemailFooter = () => {
 					</div>
 				</div>
 
-				<div className={style.footer_otherBtns}>
-					<span className={style.footer_shareBtn}>
+				<div className={styles.footer_otherBtns}>
+					<span className={styles.footer_shareBtn}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 							<path
 								fillRule="evenodd"

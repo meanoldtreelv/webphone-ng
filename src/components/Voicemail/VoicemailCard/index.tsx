@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import style from "./voicemailCard.module.scss";
+import { useState } from "react";
+import styles from "./VoicemailCard.module.scss";
 import PopupMenu from "../PopupMenu";
 
 const VoicemailCard = () => {
 	let [transcripts, setTranscript] = useState(false);
 
 	return (
-		<div className={style.card}>
-			<div className={style.card_mainCont}>
-				<div className={style.card_cont1}>
+		<div className={styles.card}>
+			<div className={styles.card_mainCont}>
+				<div className={styles.card_cont1}>
 					<span>
 						<img src="/icon/player-play.svg" alt="" />
 					</span>
-					<div className={style.card_unread}></div>
-					<div className={`caption_1 ${style.card_name}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<div className={styles.card_unread}></div>
+					<div className={`caption_1 ${styles.card_name}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						Melisa Townsend
 					</div>
 				</div>
 
-				<div className={style.card_cont2}>
-					<div className={`caption_1 ${style.card_ext}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+				<div className={styles.card_cont2}>
+					<div className={`caption_1 ${styles.card_ext}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						Ext. 6002
 					</div>
-					<div className={`caption_1 ${style.card_duration}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<div className={`caption_1 ${styles.card_duration}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						0:15 sec
 					</div>
-					<div className={`caption_1 ${style.card_time}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+					<div className={`caption_1 ${styles.card_time}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						10:55 PM
 					</div>
-					<div className={style.card_icons}>
-						<span className={style.card_phone}>
+					<div className={styles.card_icons}>
+						<span className={styles.card_phone}>
 							<img src="/icon/voicemail_phone.svg" alt="" />
 						</span>
 
 						<span
-							className={style.card_transcriptIcon}
+							className={styles.card_transcriptIcon}
 							onClick={() => {
 								setTranscript(!transcripts);
 							}}>
@@ -52,16 +52,16 @@ const VoicemailCard = () => {
 							</svg>
 						</span>
 
-						<span className={style.card_menu}>
+						<span className={styles.card_menu}>
 							<img src="/icon/voicemail_menu.svg" alt="" />
 						</span>
 					</div>
 				</div>
 			</div>
 			{transcripts === true ? (
-				<div className={`${style.card_transcript}`}>
-					<div className={`caption_2 ${style.card_head}`}>Transcript</div>
-					<div className={`caption_1 ${style.card_des}`}>
+				<div className={`${styles.card_transcript}`}>
+					<div className={`caption_2 ${styles.card_head}`}>Transcript</div>
+					<div className={`caption_1 ${styles.card_des}`}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed odio euismod ut pellentesque massa ac, et
 						augue. Mauris non aenean adipiscing enim turpis nunc elementum vel sed.
 					</div>

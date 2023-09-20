@@ -1,15 +1,16 @@
-import React from "react";
-import classes from "./noGroupSelected.module.scss";
+import styles from "./NoGroupSelected.module.scss";
+
+import noSelectedImg from './../../../assets/images/icon/no_selected.svg';
 
 const NoGroupSelected = () => {
 	return (
-		<section className={classes.noContact}>
-			<div className={classes.noContact_box}>
-				<img src="/icon/no_selected.svg" alt="" />
-				<div className={`title_3_bold ${classes.noContact_head}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+		<section className={styles.noContact}>
+			<div className={styles.noContact_box}>
+				<img src={noSelectedImg} alt="" />
+				<div className={`title_3_bold ${styles.noContact_head}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 					No Group Selected
 				</div>
-				<div className={`body ${classes.noContact_info}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+				<div className={`body ${styles.noContact_info}`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 					To view detailed info select a group from list
 				</div>
 			</div>

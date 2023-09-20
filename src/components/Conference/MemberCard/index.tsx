@@ -1,14 +1,14 @@
-import React from 'react'
-import style from "./memberCard.module.scss"
+import styles from "./MemberCard.module.scss"
+
 const MemberCard = () => {
   return (
-    <div className={style.card}>
-        <div className={style.cont1}>
-            <span className={style.memberInitials}>
-                <span className={style.initials}>VS</span>
+    <div className={styles.card}>
+        <div className={styles.cont1}>
+            <span className={styles.memberInitials}>
+                <span className={styles.initials}>VS</span>
             </span>
         </div>
-        <div className={style.cont2}>
+        <div className={styles.cont2}>
             <span className='caption_2' style={{color: "var(--text-primary, #1F2023)"}}>Host</span>
             <span className='caption_2' style={{color: "var(--text-link, #1480E1)"}}>80984</span>
         </div>
