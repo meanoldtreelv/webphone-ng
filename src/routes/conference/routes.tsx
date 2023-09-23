@@ -1,12 +1,12 @@
-import React from 'react';
 import { RouteObject } from "react-router-dom";
-import routePaths from './../../constants/routes';
-import Conference from './../../pages/Conference';
+import routePaths from "./../../constants/routes";
+import Conference from "./../../pages/Conference";
 
 export const conferenceRoutes: RouteObject[] = [
-    {
-        path: routePaths.CONFERENCE.__PATH,
-        element: <Conference />,
-        
-    },
-];
+    routePaths.CONFERENCE.__PATH,
+    routePaths.CONFERENCE.GROUPS.ROUTE,
+    routePaths.CONFERENCE.CALL_HISTORY.ROUTE
+].map(route => ({
+    path: route,
+    element: <Conference />
+}));

@@ -45,3 +45,11 @@ export interface IAuthWrapper {
 export interface IAuthState {
 	isAuthenticated: boolean;
 }
+
+export interface IContactCard {
+	first_name: string;
+	last_name: string;
+	phone: string;
+	email: string;
+	fax: string;
+}

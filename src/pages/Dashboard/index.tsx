@@ -25,15 +25,27 @@ import {
 	// user_API,
 } from "./../../effects/apiEffect";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "../../layouts/BaseLayout";
+import { useGetContactsQuery } from "services/contact";
+import { addCall, callDailer, callEnding, callInProgress, transferCall } from './../../redux/call/callSelectors';
+import { setContactList } from "./../../redux/contact/contactSlice";
+import { contactLists } from "./../../redux/contact/contactSelectors";
 
 const Dashboard = () => {
-	const isDialerActive = useSelector((state: any) => state.calling.dialer);
-	const isCallInProgress = useSelector((state: any) => state.calling.callInProgress);
-	const isCallTransfer = useSelector((state: any) => state.calling.transferCalling);
-	const isCallAdded = useSelector((state: any) => state.calling.addCalling);
-	const isCallEnded = useSelector((state: any) => state.calling.callEnding);
+	const { data } = useGetContactsQuery(null);
+	const dispatch = useDispatch();
+
+	const isDialerActive = useSelector(callDailer);
+	const isCallInProgress = useSelector(callInProgress);
+	const isCallTransfer = useSelector(transferCall);
+	const isCallAdded = useSelector(addCall);
+	const isCallEnded = useSelector(callEnding);
+	const contact_list = useSelector(contactLists);
+
+	useEffect(() => {
+		dispatch(setContactList(data));
+	}, [data]);
 
 	useEffect(() => {
 		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
@@ -62,17 +74,17 @@ const Dashboard = () => {
 		// 	},
 		// );
 
-		GET_Contact_List_API(
-			(res: any) => {
-				console.log(res, "contact API retrieve");
-				if (res?.status === 200) {
-					console.log("success in contact retrieve");
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in contact retrieve");
-			},
-		);
+		// GET_Contact_List_API(
+		// 	(res: any) => {
+		// 		console.log(res, "contact API retrieve");
+		// 		if (res?.status === 200) {
+		// 			console.log("success in contact retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in contact retrieve");
+		// 	},
+		// );
 
 		// extension_API(
 		// 	user_id,

@@ -4,23 +4,28 @@ import { voicemailRoutes } from "./voicemail/routes";
 import { authRoutes } from "./auth/routes";
 import { conferenceRoutes } from "./conference/routes";
 import { callHistoryRoutes } from "./callHistory/routes";
-
-import Home from "pages/Home";
+import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
+import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 
 const routes: RouteObject[] = [
-    {
-        path: "/",
-        element: <Home />,
-    },
+	{
+		path: "/",
+		element: <Home />,
+	},
 ];
 
 export default createBrowserRouter([
-    ...routes,
-    ...contactRoutes,
-    ...voicemailRoutes,
-    ...authRoutes,
-    ...conferenceRoutes,
-    ...callHistoryRoutes,
-    ...dashboardRoutes
+	{
+		errorElement: <ErrorBoundaryLayout />,
+		children: [
+			...routes,
+			...contactRoutes,
+			...voicemailRoutes,
+			...authRoutes,
+			...conferenceRoutes,
+			...callHistoryRoutes,
+			...dashboardRoutes,
+		],
+	},
 ]);

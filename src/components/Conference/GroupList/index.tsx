@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./GroupList.module.scss";
 import GroupCard from "../GroupCard";
 import GroupCalHistoryCard from "../GroupCallHistoryCard";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
 import SearchIcon from "components/UI/Icons/Search";
-import { NavLink, useLocation } from "react-router-dom";
-import routes from './../../../constants/routes';
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import routes from "./../../../constants/routes";
 
 const GroupList = () => {
-	let [changeList, setChangeList] = useState("group");
+	const navigate = useNavigate();
+	const pathname = useLocation().pathname;
+	const current_path = pathname === routes.CONFERENCE.CALL_HISTORY.ROUTE;
+
+	useEffect(() => {
+		if (pathname == routes.CONFERENCE.ROUTE) navigate(`${routes.CONFERENCE.__PATH}/${routes.CONFERENCE.GROUPS.__PATH}`);
+	}, [pathname]);
 
 	return (
 		<div className={styles.contact} style={{ background: "var(--background-primary, #FFF)" }}>
@@ -20,7 +26,6 @@ const GroupList = () => {
 					<UserAddIcon />
 				</span>
 
-				{/* styles.search_icon belongs here */}
 				<div className={styles.search_icon}>
 					<SearchIcon />
 				</div>
@@ -29,44 +34,24 @@ const GroupList = () => {
 			<div
 				className={`body flex pl-[16px] pt-[8px] gap-x-[20px] mb-[8px] ${styles.heads}`}
 				style={{ color: "var(--text-secondary, #5C6168)", borderBottom: "1px solid var(--border-secondary, #C8D3E0)" }}>
-				{/* <NavLink
-					to={routes.CONFERENCE.GROUPS.__PATH}
-					className="pb-[10px]"
-					onClick={() => {setChangeList("group")}}
-					style={changeList==="group" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)" } : { color: "var(--text-secondary, #5C6168)", borderBottom: "none"}}>
+				<NavLink
+					to={routes.CONFERENCE.GROUPS.ROUTE}
+					className={({ isActive }: { isActive: boolean }) =>
+						[`pb-[10px] ${styles.side_tab}`, isActive ? styles.active_tab : null].join(" ")
+					}>
 					Groups
 				</NavLink>
 				<NavLink
-					to={routes.CONFERENCE.CALL_HISTORY.__PATH}
-					className="pb-[10px]"
-					onClick={() => {
-						setChangeList("groupCallHistory");
-					}}
-					style={changeList==="groupCallHistory" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)"} : { color: "var(--text-secondary, #5C6168)", borderBottom: "none"}}
-					>
+					to={routes.CONFERENCE.CALL_HISTORY.ROUTE}
+					className={({ isActive }: { isActive: boolean }) =>
+						[`pb-[10px] ${styles.side_tab}`, isActive ? styles.active_tab : null].join(" ")
+					}>
 					Call History
-				</NavLink> */}
-
-				{/* the above approach is not done but it will be used */}
-				<span
-					className="pb-[10px]"
-					onClick={() => {setChangeList("group")}}
-					style={changeList==="group" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)" } : { color: "var(--text-secondary, #5C6168)", borderBottom: "none"}}>
-					Groups
-				</span>
-				<span
-					className="pb-[10px]"
-					onClick={() => {
-						setChangeList("groupCallHistory");
-					}}
-					style={changeList==="groupCallHistory" ? { color: "var(--text-link, #1480E1)", borderBottom: "2px solid var(--text-link, #1480E1)"} : { color: "var(--text-secondary, #5C6168)", borderBottom: "none"}}
-					>
-					Call History
-				</span>
+				</NavLink>
 			</div>
 
 			<div className={`flex flex-col gap-y-1.5 ${styles.list}`}>
-				{changeList === "group" ? (
+				{!current_path ? (
 					<>
 						<GroupCard />
 						<GroupCard />

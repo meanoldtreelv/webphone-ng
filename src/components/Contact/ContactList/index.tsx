@@ -15,24 +15,24 @@ const ContactList = () => {
 	const contactList = useSelector(contactLists);
 
 	// Sort the array based on first name
-	const sortedContactLists = [...contactList]?.sort((a, b) => {
-		const firstNameA = a.first_name || ""; // Handle null first name
-		const firstNameB = b.first_name || ""; // Handle null first name
+	// const sortedContactLists = [...contactList]?.sort((a, b) => {
+	// 	const firstNameA = a.first_name || ""; // Handle null first name
+	// 	const firstNameB = b.first_name || ""; // Handle null first name
 
-		if (firstNameA === "" && firstNameB === "") {
-			return 0; // If both first names are null, consider them equal
-		} else if (firstNameA === "") {
-			return 1; // Put null values at the end
-		} else if (firstNameB === "") {
-			return -1; // Put null values at the end
-		}
+	// 	if (firstNameA === "" && firstNameB === "") {
+	// 		return 0; // If both first names are null, consider them equal
+	// 	} else if (firstNameA === "") {
+	// 		return 1; // Put null values at the end
+	// 	} else if (firstNameB === "") {
+	// 		return -1; // Put null values at the end
+	// 	}
 
-		return firstNameA.localeCompare(firstNameB);
-	});
+	// 	return firstNameA.localeCompare(firstNameB);
+	// });
 
-	const sortedData = [...contactList]
-		.filter((item) => item.first_name && item.first_name.startsWith("a"))
-		.sort((a, b) => a.first_name.localeCompare(b.first_name));
+	// const sortedData = [...contactList]
+	// 	.filter((item) => item.first_name && item.first_name.startsWith("a"))
+	// 	.sort((a, b) => a.first_name.localeCompare(b.first_name));
 
 	return (
 		<div className={styles.contact}>
@@ -65,7 +65,7 @@ const ContactList = () => {
 					</p>
 				</div>
 				{/* favourite contact  */}
-				<div>{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}</div>
+				{/* <div>{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}</div> */}
 
 				{/* frquently contact heading  */}
 				<div>
@@ -78,7 +78,15 @@ const ContactList = () => {
 
 				{/* frequently contact  */}
 				<div>
-					<ContactCard />
+					{contactList.map(contact => (
+						<ContactCard 
+							first_name={contact.first_name}
+							last_name={contact.last_name}
+							phone={contact.phone}
+							email={contact.email}
+							fax={contact.fax}
+						/>
+					))}
 				</div>
 				{/* namewise contact heading  */}
 				<div>
@@ -91,7 +99,15 @@ const ContactList = () => {
 
 				{/* frequently contact  */}
 				<div>
-					<ContactCard />
+					{contactList.map(contact => (
+						<ContactCard 
+							first_name={contact.first_name}
+							last_name={contact.last_name}
+							phone={contact.phone}
+							email={contact.email}
+							fax={contact.fax}
+						/>
+					))}
 				</div>
 			</div>
 		</div>

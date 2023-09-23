@@ -4,8 +4,8 @@
 	height: 100vh;
 	overflow-y: auto;
 	width: 410px;
-	border-right: 1px solid var(--border-tertiary, #E3EAF2);
-background: var(--background-primary, #FFF);
+	border-right: 1px solid var(--border-tertiary, #e3eaf2);
+	background: var(--background-primary, #fff);
 
 	&_search {
 		position: relative;
@@ -71,7 +71,7 @@ background: var(--background-primary, #FFF);
 	background: var(--primary-default, #0c6dc7);
 }
 
-.list{
+.list {
 	height: calc(100% - 115px);
 	overflow-y: auto;
 
@@ -94,4 +94,14 @@ background: var(--background-primary, #FFF);
 	&::-webkit-scrollbar-track {
 		// background-color: #91eae4;
 	}
+}
+
+.active_tab {
+	color: var(--text-link, #1480e1) !important;
+	border-bottom: 2px solid var(--text-link, #1480e1) !important;
+}
+
+.side_tab {
+	color: var(--text-secondary, #5c6168);
+	border-bottom: none;
 }
