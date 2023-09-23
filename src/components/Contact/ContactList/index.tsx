@@ -78,7 +78,7 @@ const ContactList = () => {
 
 				{/* frequently contact  */}
 				<div>
-					{contactList.map(contact => (
+					{contactList?.map(contact => (
 						<ContactCard 
 							first_name={contact.first_name}
 							last_name={contact.last_name}
@@ -99,7 +99,7 @@ const ContactList = () => {
 
 				{/* frequently contact  */}
 				<div>
-					{contactList.map(contact => (
+					{contactList?.map(contact => (
 						<ContactCard 
 							first_name={contact.first_name}
 							last_name={contact.last_name}

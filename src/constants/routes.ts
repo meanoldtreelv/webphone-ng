@@ -33,5 +33,5 @@ export default {
     DASHBOARD: {
         __PATH: 'dashboard',
         ROUTE: '/dashboard'
-    }
+    },
 }

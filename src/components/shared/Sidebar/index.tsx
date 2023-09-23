@@ -45,19 +45,19 @@ const Sidebar = () => {
 	};
 
 	const sidebarTopLinks:ISidebarLinks[] = [
-		{ path: routePaths.DASHBOARD.__PATH, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
-		{ path: routePaths.CONTACT.__PATH, icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Contacts', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Texting', unread: 1 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Recent', unread: 1 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Fax', unread: 2 },
-		{ path: routePaths.VOICEMAIL.__PATH, icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Voicemail', unread: 4 },
+		{ path: routePaths.DASHBOARD.ROUTE, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
+		{ path: routePaths.CONTACT.ROUTE, icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Contacts', unread: 3 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Texting', unread: 1 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Recent', unread: 1 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Fax', unread: 2 },
+		{ path: routePaths.VOICEMAIL.ROUTE, icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Voicemail', unread: 4 },
 	];
 
 	const sidebarBtmLinks:ISidebarLinks[] = [
-		{ path: routePaths.DASHBOARD.__PATH, icon: <SidecarIcon />, name: 'Sidecar', unread: 2 },
-		{ path: routePaths.CONTACT.__PATH, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Settings', unread: 3 },
+		{ path: routePaths.DASHBOARD.ROUTE, icon: <SidecarIcon />, name: 'Sidecar', unread: 2 },
+		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Settings', unread: 3 },
 	];
 
 	return (
@@ -74,7 +74,7 @@ const Sidebar = () => {
 					<div className={styles.sidebar_topTab}>
 						{sidebarTopLinks.map((link: ISidebarLinks) => (
 							<NavLink
-								to={`/${link.path}`}
+								to={link.path}
 								className={({ isActive }: { isActive: boolean }) =>
 									[`body ${styles.sidebar_tab}`, isActive ? styles.active_tab : null].join(" ")
 								}
@@ -94,7 +94,7 @@ const Sidebar = () => {
 					<div className={styles.sidebar_topTab}>
 					{sidebarBtmLinks.map((link: ISidebarLinks) => (
 							<NavLink
-								to={`/${link.path}`}
+								to={link.path}
 								className={({ isActive }: { isActive: boolean }) =>
 									[`body ${styles.sidebar_tab}`, isActive ? styles.active_tab : null].join(" ")
 								}

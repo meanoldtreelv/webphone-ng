@@ -13,7 +13,7 @@ const GroupList = () => {
 	const current_path = pathname === routes.CONFERENCE.CALL_HISTORY.ROUTE;
 
 	useEffect(() => {
-		if (pathname == routes.CONFERENCE.ROUTE) navigate(`${routes.CONFERENCE.__PATH}/${routes.CONFERENCE.GROUPS.__PATH}`);
+		if (pathname == routes.CONFERENCE.ROUTE) navigate(`${routes.CONFERENCE.__PATH}/${routes.CONFERENCE.GROUPS.__PATH}`, { replace: true });
 	}, [pathname]);
 
 	return (
