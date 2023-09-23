@@ -47,7 +47,7 @@ const Sidebar = () => {
 	const sidebarTopLinks:ISidebarLinks[] = [
 		{ path: routePaths.DASHBOARD.ROUTE, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Contacts', unread: 3 },
-		{ path: routePaths.CONFERENCE.ROUTE, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
+		{ path: routePaths.CONFERENCE.GROUPS.ROUTE, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
 		{ path: routePaths.CONFERENCE.ROUTE, icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Texting', unread: 1 },
 		{ path: routePaths.CONFERENCE.ROUTE, icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Recent', unread: 1 },
 		{ path: routePaths.CONFERENCE.ROUTE, icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Fax', unread: 2 },
