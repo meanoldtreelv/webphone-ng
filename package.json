@@ -23,6 +23,7 @@
 		"react-scripts": "5.0.1",
 		"react-toastify": "^9.1.3",
 		"sass": "^1.66.1",
+		"sip.js": "^0.20.0",
 		"typescript": "^4.9.5",
 		"web-vitals": "^2.1.4",
 		"workbox-background-sync": "^6.6.0",

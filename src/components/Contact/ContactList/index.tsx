@@ -7,7 +7,6 @@ import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
 import SearchIcon from "components/UI/Icons/Search";
-import { useAppSelector } from "redux/hooks";
 import { RootState } from "redux/store";
 
 const ContactList = () => {
@@ -80,6 +79,7 @@ const ContactList = () => {
 				<div>
 					{contactList?.map(contact => (
 						<ContactCard 
+							id={contact.id}
 							first_name={contact.first_name}
 							last_name={contact.last_name}
 							phone={contact.phone}
@@ -100,7 +100,8 @@ const ContactList = () => {
 				{/* frequently contact  */}
 				<div>
 					{contactList?.map(contact => (
-						<ContactCard 
+						<ContactCard
+							id={contact.id}
 							first_name={contact.first_name}
 							last_name={contact.last_name}
 							phone={contact.phone}

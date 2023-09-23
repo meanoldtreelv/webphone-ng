@@ -4,4 +4,5 @@ export interface ICallState {
     addCall: boolean;
     transferCall: boolean;
     callEnding: boolean;
+    callNumber: string;
 }

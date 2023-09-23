@@ -26,8 +26,8 @@ import {
 } from "./../../effects/apiEffect";
 
 import { useDispatch, useSelector } from "react-redux";
-import BaseLayout from "../../layouts/BaseLayout";
-import { useGetContactsQuery } from "services/contact";
+import BaseLayout from "./../../layouts/BaseLayout";
+import { useGetContactsQuery } from "./../../services/contact";
 import { addCall, callDailer, callEnding, callInProgress, transferCall } from './../../redux/call/callSelectors';
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
@@ -41,7 +41,6 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	const isCallEnded = useSelector(callEnding);
-	const contact_list = useSelector(contactLists);
 
 	useEffect(() => {
 		dispatch(setContactList(data));

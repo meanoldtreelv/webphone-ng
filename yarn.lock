@@ -8585,6 +8585,11 @@ signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
+sip.js@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/sip.js/-/sip.js-0.20.0.tgz#6be18eb5bd5cc31cd16cdd74cea0cb38f400bdea"
+  integrity sha512-Xjmopw8LleGsdYDU93ykm8iPAGSnFkB8nC1ro4CL/N+Er9O9dAimpvuR1W2tcsYAgoAa4l8Iyx4wrU6ke8xGFg==
+
 sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"

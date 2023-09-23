@@ -2,13 +2,16 @@ import { SetStateAction, useState } from "react";
 import styles from "./Dialpad.module.scss";
 import Dialpad1Icon from "components/UI/Icons/Dialpad1";
 import Input from "components/UI/Forms/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { setCallNumber } from "redux/call/callSlice";
+import { callNumber } from "redux/call/callSelectors";
 
 
 
-const Dialpad = (
-  { numberEntered, setNumberEntered } : {
-    numberEntered: string, setNumberEntered: React.Dispatch<SetStateAction<string>>
-  }) => {
+const Dialpad = () => {
+  const dispatch = useDispatch()
+  const number = useSelector(callNumber);
+
 	const dialpad_arr = [
 		[1, <Dialpad1Icon />],
 		[2, "ABC"],
@@ -27,14 +30,14 @@ const Dialpad = (
 	return (
 		<section className={styles.dialpad}>
 			<div className={styles.dialpad_number}>
-				<input type="text" placeholder="Enter number" className={`title_1 ${styles.numberEntered}`} value={numberEntered} />
+				<input type="text" placeholder="Enter number" className={`title_1 ${styles.numberEntered}`} value={number} />
       </div>
 			<div className={styles.dialpad_keypad}>
 				{dialpad_arr.map((key_arr) => (
 					<div
 						className={styles.dialpad_key}
 						onClick={() => {
-							setNumberEntered(numberEntered + key_arr[0]);
+							dispatch(setCallNumber(number + key_arr[0]));
 						}}>
 						<span className={`title_1`}>{key_arr[0]}</span>
 						<p className={`caption_2`}>{key_arr[1]}</p>

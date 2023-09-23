@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./Dialer.module.scss";
 import TransferCallCard from "../TransferCallCard";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { endCall, addCall } from "redux/call/callSlice";
 
 import dummyProfileImg from './../../../assets/images/img/dummy/profile.png';
@@ -14,12 +14,14 @@ import CallDialpad from "components/UI/Icons/Call/CallDialpad";
 import CallEndIcon from "components/UI/Icons/Call/CallEnd";
 import CallHoldIcon from "components/UI/Icons/Call/CallHold";
 import CallMicOffIcon from "components/UI/Icons/Call/CallMicOff";
+import { callNumber } from "redux/call/callSelectors";
 
 
 const Dialer = () => {
 	const [isMute, setIsMute] = useState(true);
 	const [isCallConnected, setIsCallConnected] = useState(false);
 	const [isCallActive, setIsCallActive] = useState(true);
+	const number = useSelector(callNumber);
 
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
 
@@ -64,7 +66,7 @@ const Dialer = () => {
 						Matt Wiz
 					</p>
 					<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-						1234567890
+						{number}
 					</p>
 
 					{/* add the condition here for dialing  */}

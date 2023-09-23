@@ -7,6 +7,7 @@ const initialCallState: ICallState = {
 	addCall: false,
 	transferCall: false,
 	callEnding: false,
+	callNumber: "",
 };
 
 const callSlice = createSlice({
@@ -34,11 +35,12 @@ const callSlice = createSlice({
 		transferCall(state) {
 			state.transferCall = true;
 		},
+		setCallNumber(state, action) {
+			state.callNumber = action.payload;
+		},
 	},
 });
 
-export const {
-	dialPad, progressCall, endCall, addCall, transferCall
-} = callSlice.actions;
+export const { dialPad, progressCall, endCall, addCall, transferCall, setCallNumber } = callSlice.actions;
 
 export default callSlice.reducer;

@@ -5,13 +5,7 @@ import "./App.scss";
 import routes from "./routes/index";
 import { useGetAccountQuery } from "./services/system";
 
-const App = () => {
-	const {data, isLoading, error } = useGetAccountQuery(null);
-
-	console.log(data)
-
-	return <RouterProvider router={routes} />;
-};
+const App = () => <RouterProvider router={routes} />;
 
 export default App;
 

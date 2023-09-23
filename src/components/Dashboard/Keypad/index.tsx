@@ -1,33 +1,29 @@
 import Dialpad from "../Dialpad";
 import styles from "./Keypad.module.scss";
-import { useDispatch } from "react-redux";
-import { progressCall } from "redux/call/callSlice";
-import BackspaceIcon from "components/UI/Icons/Backspace";
-import Button from "components/UI/Forms/Button";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { progressCall, setCallNumber } from "./../../../redux/call/callSlice";
+import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
+import Button from "./../../../components/UI/Forms/Button";
+import { callNumber } from "./../../../redux/call/callSelectors";
 
 const Keypad = () => {
 	const dispatch = useDispatch();
-
-	// for testing purpose, store numbere entered in redux store
-	const [numberEntered, setNumberEntered] = useState("");
+	const number = useSelector(callNumber)
 
 	const callingHandler = () => {
 		dispatch(progressCall());
 	}
 
-	// this logic needs to be extracted later
 	const modifyNumber = () => {
-		if(numberEntered.length) {
-			const number = numberEntered.slice(0, numberEntered.length - 1);
-			setNumberEntered(number);
+		if(number.length) {
+			const modified_number = number.slice(0, number.length - 1);
+			dispatch(setCallNumber(modified_number));
 		}
-		console.log(numberEntered.length);
 	}
 
 	return (
 		<div className={styles.dialpad}>
-			<Dialpad numberEntered={numberEntered} setNumberEntered={setNumberEntered} />
+			<Dialpad />
 			<div className={styles.dialpad_keypad}>
 				<div className={styles.dialpad_key2}>
 					{/* here lies add user icon, pass props and use the icon */}
@@ -59,8 +55,8 @@ const Keypad = () => {
 						</g>
 					</svg>
 				</div>
-				<div className={styles.dialpad_key2}>
-					<button onClick={modifyNumber}>
+				<div >
+					<button className={styles.dialpad_key2} onClick={modifyNumber}>
 						<BackspaceIcon />
 					</button>
 					{/* replace the above button with this, the above is only for testing */}

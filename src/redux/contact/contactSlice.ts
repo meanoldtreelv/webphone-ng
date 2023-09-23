@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IContactState } from "./contactTypes";
+import { IContactList, IContactState } from "./contactTypes";
 
 const initialContactState: IContactState = {
 	addContactPopUpOpen: false,
 	deleteContactPopUpOpen: false,
 	selectedContactOpen: false,
 	contactList: [],
-	selectedContact: [],
+	selectedContact: {} as IContactList,
 	deleteContactId: "",
-	editContact: false,
+	editContactNumber: "",
 };
 
 const contactSlice = createSlice({
@@ -44,11 +44,11 @@ const contactSlice = createSlice({
 		setDeleteContactId(state, action) {
 			state.deleteContactId = action	.payload;
 		},
-		setEditContactTrue(state) {
-			state.editContact = true;
+		setEditContactNumber(state, action) {
+			state.editContactNumber = action.payload;
 		},
 		setEditContactFalse(state) {
-			state.editContact = false;
+			state.editContactNumber = null;
 			state.addContactPopUpOpen = false;
 		},
 	},
@@ -64,7 +64,7 @@ export const {
 	setContactList,
 	setSelectedContact,
 	setDeleteContactId,
-	setEditContactTrue,
+	setEditContactNumber,
 	setEditContactFalse,
 } = contactSlice.actions;
 

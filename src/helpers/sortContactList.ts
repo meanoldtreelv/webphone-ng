@@ -1,10 +1,7 @@
-import { useSelector } from "react-redux";
-import { contactLists } from "./../redux/contact/contactSelectors";
+import { IContactList } from "redux/contact/contactTypes";
 
-export const contactSort = () => {
-	const contactList = useSelector(contactLists);
-
-	[...contactList]?.sort((a, b) => {
+export const _sortContacts = (contacts: IContactList[]) => {
+	[...contacts]?.sort((a, b) => {
 		const firstNameA = a.first_name || ""; // Handle null first name
 		const firstNameB = b.first_name || ""; // Handle null first name
 

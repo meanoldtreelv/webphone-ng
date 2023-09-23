@@ -37,7 +37,7 @@ const Login = () => {
 
 					<Input type="text" placeholder="Enter extension here..." required icon={<ExtensionIcon />} />
 					<Input type="text" placeholder="Enter server address here..." required icon={<EnvelopeIcon />} />
-					<Input type="text" placeholder="Enter secret code here..." required icon={<LockIcon />} />
+					<Input type="text" placeholder="Enter secret code here..." required icon={<LockIcon />} errorMsg="something went wrong" />
 
 					<Button fill>Sign In</Button>
 

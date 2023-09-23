@@ -1,5 +1,5 @@
 // update this interface according to the contact's list type
-type IContactList = {
+export type IContactList = {
     id: string;
     company_id: string;
     first_name: string;
@@ -46,8 +46,8 @@ export interface IContactState {
     addContactPopUpOpen: boolean;
     deleteContactPopUpOpen: boolean;
     selectedContactOpen: boolean;
-    contactList: IContactList[];
-    selectedContact: [];
+    contactList: (IContactList[] | null);
+    selectedContact: IContactList;
     deleteContactId: string;
-    editContact: boolean;
+    editContactNumber: string | null;
 }

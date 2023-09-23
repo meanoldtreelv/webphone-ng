@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./AddContact.module.scss";
+import styles from "./AddEditContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 // import { contactActions } from "../../../app/features/contact/contact.slice";
 import { closeAddContact, setEditContactFalse} from "redux/contact/contactSlice";
-import { addContactOpen, editContactOpen } from "redux/contact/contactSelectors";
+import { addContactOpen, editContactNumber } from "redux/contact/contactSelectors";
 import { GET_Contact_Salutation_API } from "../../../effects/apiEffect";
 
 import accordionPlusImg from './../../../assets/images/icon/btn_accordion_plus.svg';
 import accordionMinusImg from './../../../assets/images/icon/btn_accordion_minus.svg';
 import XIcon from "components/UI/Icons/X";
 import UserIcon from "components/UI/Icons/User/UserSingle";
-import Input from "components/UI/Forms/Input";
+// import Input from "components/UI/Forms/Input";
 
 const AddContact = () => {
 	const isAddContactOpen = useSelector(addContactOpen);
-	const isEditContactOpen = useSelector(editContactOpen);
+	const contactNumber = useSelector(editContactNumber);
 
 	const [accordionToggle, setAccordionToggle] = useState({
 		additional: false,
@@ -81,9 +81,10 @@ const AddContact = () => {
 	}, [payload]);
 
 	const onSaveContact = () => {
-		if (isEditContactOpen) {
+		if (contactNumber) {
 			dispatch(setEditContactFalse());
 		}
+
 		if (isAddContactOpen) {
 			setPayload({
 				first_name: firstNameRef.current.value || null,
@@ -124,7 +125,7 @@ const AddContact = () => {
 			<div className={styles.addContact}>
 				<div className={`flex justify-between items-center`}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						{isEditContactOpen ? "Edit Contact" : "Add Contact"}
+						{contactNumber ? "Edit Contact" : "Add Contact"}
 					</span>
 					<span className={`p-1 cursor-pointer`} onClick={closeContactHandler}>
 						<XIcon />

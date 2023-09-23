@@ -2,13 +2,14 @@ import { useState } from "react";
 import styles from "./ContactDetails.module.scss";
 import HistoryCard from "../HistoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import { openAddContact, setEditContactTrue, openDeleteContact, setDeleteContactId } from "redux/contact/contactSlice";
+import { openAddContact, setEditContactNumber, openDeleteContact, setDeleteContactId } from "redux/contact/contactSlice";
 import { contactAbbreviation } from "../../../utils";
 import EditIcon from "components/UI/Icons/Edit";
 import PhoneIcon from "components/UI/Icons/Phone";
 import ChatIcon from "components/UI/Icons/Chat";
 import FileIcon from "components/UI/Icons/File";
 import HistoryTimeIcon from "components/UI/Icons/Call/CallHistory";
+import { selectedContactData } from "redux/contact/contactSelectors";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
@@ -17,12 +18,12 @@ const ContactDetails = () => {
 
 	const dispatch = useDispatch();
 
-	const selectedContactData = useSelector((state: any) => state.contact.selectedContact);
-	// console.log(selectedContactData, "selectedContactData");
+	const selectedContact = useSelector(selectedContactData);
+	console.log("selected contact's id", selectedContact.id);
 
 	const editContactHandler = () => {
 		dispatch(openAddContact());
-		dispatch(setEditContactTrue());
+		dispatch(setEditContactNumber(null));
 	}
 
 	// styling
@@ -46,30 +47,31 @@ const ContactDetails = () => {
 									height: "100%",
 								}}>
 								{contactAbbreviation(
-									selectedContactData?.first_name,
-									selectedContactData?.last_name,
-									selectedContactData?.phone,
-									selectedContactData?.email,
+									selectedContact?.first_name,
+									selectedContact?.last_name,
+									selectedContact?.phone,
+									selectedContact?.email,
 								)}
 							</span>
 						</span>
 						<div>
 							<p className={`title_3 `} style={{ color: "var(--text-primary, #1F2023)" }}>
-								{`${selectedContactData?.salutation || ""} ${selectedContactData?.first_name || ""} ${
-									selectedContactData?.last_name || ""
+								{`${selectedContact?.salutation || ""} ${selectedContact?.first_name || ""} ${
+									selectedContact?.last_name || ""
 								}`}
 							</p>
 							<p className={`body`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-								{selectedContactData?.email || "null"}
+								{selectedContact?.email || "null"}
 							</p>
 						</div>
 					</div>
-					<span className={`flex cursor-pointer ${styles.edit}`} onClick={editContactHandler}>
+					{/* change to the proper button found in the UI/forms/button */}
+					<button className={`flex cursor-pointer ${styles.edit}`} onClick={editContactHandler}>
 						<EditIcon />
 						<span className={`footnote `} style={{ color: "var(--text-primary, #1F2023)" }}>
 							Edit
 						</span>
-					</span>
+					</button>
 				</div>
 				<div className={`caption_1 ${styles.contactButton}`}>
 					<span
@@ -100,7 +102,7 @@ const ContactDetails = () => {
 										Phone
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.phone || "null"}
+										{selectedContact?.phone || "null"}
 									</p>
 								</div>
 								<div className={styles.iconBox}>
@@ -132,7 +134,7 @@ const ContactDetails = () => {
 										Fax
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.fax || "null"}
+										{selectedContact?.fax || "null"}
 									</p>
 								</div>
 								<div className={styles.iconBox}>
@@ -149,7 +151,7 @@ const ContactDetails = () => {
 										Birthday
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.birthday || "null"}
+										{selectedContact?.birthday || "null"}
 									</p>
 								</div>
 							</div>
@@ -159,7 +161,7 @@ const ContactDetails = () => {
 										Position
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.job_details?.position || "null"}
+										{selectedContact?.job_details?.position || "null"}
 									</p>
 								</div>
 							</div>
@@ -169,7 +171,7 @@ const ContactDetails = () => {
 										Department
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.job_details?.department || "null"}
+										{selectedContact?.job_details?.department || "null"}
 									</p>
 								</div>
 							</div>
@@ -181,7 +183,7 @@ const ContactDetails = () => {
 										Company
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.organization_details?.organization || "null"}
+										{selectedContact?.organization_details?.organization || "null"}
 									</p>
 								</div>
 							</div>
@@ -193,7 +195,7 @@ const ContactDetails = () => {
 										City
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.address?.city || "null"}
+										{selectedContact?.address?.city || "null"}
 									</p>
 								</div>
 							</div>
@@ -203,7 +205,7 @@ const ContactDetails = () => {
 										State
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.address?.state || "null"}
+										{selectedContact?.address?.state || "null"}
 									</p>
 								</div>
 							</div>
@@ -213,7 +215,7 @@ const ContactDetails = () => {
 										Country
 									</p>
 									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContactData?.address?.country || "null"}
+										{selectedContact?.address?.country || "null"}
 									</p>
 								</div>
 							</div>
@@ -233,7 +235,7 @@ const ContactDetails = () => {
 							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}
 							onClick={() => {
 								dispatch(openDeleteContact());
-								dispatch(setDeleteContactId(selectedContactData?.id));
+								dispatch(setDeleteContactId(selectedContact?.id));
 							}}>
 							Delete Contact
 						</p>
@@ -256,17 +258,17 @@ const ContactDetails = () => {
 								<div className={styles.noHistory}>
 									<HistoryTimeIcon />
 									<p>{`You have no call history with ${
-										selectedContactData?.first_name ? selectedContactData?.first_name + " " : ""
-									}${selectedContactData?.last_name ? selectedContactData?.last_name + " " : ""}${
-										!selectedContactData?.first_name && !selectedContactData?.last_name && selectedContactData?.phone
-											? selectedContactData?.phone + " "
+										selectedContact?.first_name ? selectedContact?.first_name + " " : ""
+									}${selectedContact?.last_name ? selectedContact?.last_name + " " : ""}${
+										!selectedContact?.first_name && !selectedContact?.last_name && selectedContact?.phone
+											? selectedContact?.phone + " "
 											: ""
 									}${
-										!selectedContactData?.first_name &&
-										!selectedContactData?.last_name &&
-										!selectedContactData?.phone &&
-										selectedContactData?.email
-											? selectedContactData?.email + " "
+										!selectedContact?.first_name &&
+										!selectedContact?.last_name &&
+										!selectedContact?.phone &&
+										selectedContact?.email
+											? selectedContact?.email + " "
 											: ""
 									}`}</p>
 								</div>
