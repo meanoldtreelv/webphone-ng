@@ -4,6 +4,7 @@ import Header from "components/Settings/Header";
 import SipAccount from "components/Settings/SipAccount";
 import AudioSetting from "components/Settings/AudioSetting";
 import VideoSetting from "components/Settings/VideoSetting";
+import UserInterface from "components/Settings/UserInterface";
 
 const Settings = () => {
 	return (
@@ -14,7 +15,8 @@ const Settings = () => {
 					<section>
 						{/* <SipAccount /> */}
 						{/* <AudioSetting /> */}
-						<VideoSetting />
+						{/* <VideoSetting /> */}
+						<UserInterface />
 					</section>
 				</section>
 			</BaseLayout>
