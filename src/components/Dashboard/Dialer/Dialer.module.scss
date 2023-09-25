@@ -3,7 +3,7 @@
 	height: 100vh;
 
 	&_detailsBox {
-		// background: var(--accent-yellow-tertiary, #fffaeb);
+		background: var(--accent-blue-tertiary);
 		position: relative;
 		overflow: hidden;
 
@@ -24,12 +24,12 @@
 			height: 100%;
 			z-index: -10;
 			position: absolute;
+			color: #ecf5fe;
 		}
 	}
 
 	&_details {
 		background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
-
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -41,26 +41,51 @@
 	}
 
 	&_profile {
-		width: 96px;
-		height: 96px;
 		flex-shrink: 0;
-
 		border-radius: 48px;
 		background: var(--accent-blue-primary, #3b9ef7);
-
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
 		color: var(--accent-blue-label, #fff);
+		font-size: 32px;
+		
+		span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 96px;
+			height: 96px;
+			font-size: 0.85em;
+			background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
+		}
+	}
+
+	h1 {
+		font-size: 28px;
+		color: #1f2023;
+	}
+
+	&_number {
+		font-size: 20px;
+		color: #5c6168;
+	}
+
+	&_dialing {
+		color: #5c6168;
 	}
 
 	&_timer {
 		border-radius: 22px;
-		border: 1px solid var(--border-tertiary, #e3eaf2);
-		background: var(--background-primary, #fff);
-
+		border: 1px solid  #e3eaf2;
+		background: #fff;
 		padding: 4px 10px;
+		color: #1f2023;
+	}
+
+	&_text {
+		font-size: 11px;
+		color: #1f2023;
 	}
 
 	&_box {
@@ -74,7 +99,6 @@
 	&_actionBox {
 		display: flex;
 		justify-content: center;
-		// align-items: center;
 		gap: 30px;
 	}
 
@@ -84,23 +108,17 @@
 		justify-content: center;
 		align-items: center;
 		gap: 10px;
-
-		// cursor: pointer;
+		position: relative;
 	}
 
 	&_icon {
 		display: flex;
 		width: 84px;
 		height: 84px;
-		// padding: 26px;
 		justify-content: center;
 		align-items: center;
 
 		border-radius: 48px;
-		// background: var(--background-tertiary, #f7f9fc);
-		// border-radius: 48px;
-		// border: 1px solid var(--border-disabled, #c8d3e0);
-
 		cursor: pointer;
 	}
 
@@ -116,7 +134,7 @@
 	}
 
 	&_endButton {
-		background: var(--support-danger, #ee3939);
+		background: #ee3939;
 
 		border-radius: 50%;
 	}

@@ -1,18 +1,14 @@
 import styles from "./NoRecentActivity.module.scss";
 
-import noContactsImg from './../../../assets/images/icon/no_contacts.svg';
+import noContactsImg from "./../../../assets/images/icon/no_contacts.svg";
 
 const NoRecentActivity = () => {
 	return (
 		<section className={styles.noContact}>
 			<div className={styles.noContact_box}>
 				<img src={noContactsImg} alt="" />
-				<div className={`title_3_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
-					No Recent Activity
-				</div>
-				<div className={`body`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-					When you call members you’ll see the activity here
-				</div>
+				<h3>No Recent Activity</h3>
+				<p>When you call members you'll see the activity here</p>
 
 				{/* <span className={`body_bold ${styles.button}`} style={{ color: "var(--text-on-color, #FFF)" }}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">

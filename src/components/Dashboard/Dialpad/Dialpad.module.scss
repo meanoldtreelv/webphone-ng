@@ -70,6 +70,14 @@
 		// place-items: center;
 		margin: auto;
 	}
+
+	&_val {
+		font-size: 28px;
+	}
+
+	&_val2 {
+		font-size: 11px;
+	}
 }
 
 .numberEntered {
@@ -78,4 +86,5 @@
 	text-align: center;
 	// shoould remain hidden for the timebeing 
 	overflow-x: hidden;
+	font-size: 28px;
 }

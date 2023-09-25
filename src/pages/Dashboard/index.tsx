@@ -15,7 +15,7 @@ import AddCall from "../../components/Dashboard/AddCall";
 import TransferCall from "../../components/Dashboard/TransferCall";
 import Signal from "../../components/TinyComponents/Signal";
 import LogoutPopUp from "../../components/Profile/LogoutPopup";
-import InboundCall from "../../components/shared/InboundCall/InboundCall";
+import InboundCall from "../../components/shared/InboundCall";
 import {
 	GET_Contact_List_API,
 	// account_API,

@@ -6,11 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCallNumber } from "redux/call/callSlice";
 import { callNumber } from "redux/call/callSelectors";
 
-
-
 const Dialpad = () => {
-  const dispatch = useDispatch()
-  const number = useSelector(callNumber);
+	const dispatch = useDispatch();
+	const number = useSelector(callNumber);
 
 	const dialpad_arr = [
 		[1, <Dialpad1Icon />],
@@ -30,8 +28,8 @@ const Dialpad = () => {
 	return (
 		<section className={styles.dialpad}>
 			<div className={styles.dialpad_number}>
-				<input type="text" placeholder="Enter number" className={`title_1 ${styles.numberEntered}`} value={number} />
-      </div>
+				<input type="text" placeholder="Enter number" className={styles.numberEntered} value={number} />
+			</div>
 			<div className={styles.dialpad_keypad}>
 				{dialpad_arr.map((key_arr) => (
 					<div
@@ -39,8 +37,8 @@ const Dialpad = () => {
 						onClick={() => {
 							dispatch(setCallNumber(number + key_arr[0]));
 						}}>
-						<span className={`title_1`}>{key_arr[0]}</span>
-						<p className={`caption_2`}>{key_arr[1]}</p>
+						<span className={styles.dialpad_val}>{key_arr[0]}</span>
+						<p className={styles.dialpad_val2}>{key_arr[1]}</p>
 					</div>
 				))}
 			</div>

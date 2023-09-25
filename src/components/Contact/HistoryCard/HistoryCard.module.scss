@@ -2,7 +2,6 @@
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-
 	height: 54px;
 	align-self: stretch;
 	border-radius: 8px;
@@ -11,4 +10,30 @@
 	&:hover {
 		background: var(--background-hover, rgba(145, 160, 181, 0.1));
 	}
+}
+
+.cardTitle {
+	font-size: 14px;
+}
+
+.cardInfo {
+	display: flex;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.cardContactNumber {
+	margin-left: 5px;
+	font-size: 13px;
+}
+
+.cardCallTime {
+	font-size: 13px;
+	color: #9298a0;
+	text-align: right;
+}
+
+.cardCallDuration {
+	font-size: 13px;
+	margin-top: 4px;
 }

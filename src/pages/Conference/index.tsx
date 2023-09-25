@@ -12,7 +12,7 @@ const Conference = () => {
 		<div
 			style={{ position: "relative", width: "100%", height: "100vh"}}>
 			<BaseLayout>
-				{false && <StartConference />}
+				{true && <StartConference />}
 				
 				{true && (
 					<section className={` flex ${styles.recent}`}>

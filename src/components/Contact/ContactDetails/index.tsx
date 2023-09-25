@@ -2,7 +2,12 @@ import { useState } from "react";
 import styles from "./ContactDetails.module.scss";
 import HistoryCard from "../HistoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import { openAddContact, setEditContactNumber, openDeleteContact, setDeleteContactId } from "redux/contact/contactSlice";
+import {
+	openAddContact,
+	setEditContactNumber,
+	openDeleteContact,
+	setDeleteContactId,
+} from "redux/contact/contactSlice";
 import { contactAbbreviation } from "../../../utils";
 import EditIcon from "components/UI/Icons/Edit";
 import PhoneIcon from "components/UI/Icons/Phone";
@@ -13,18 +18,16 @@ import { selectedContactData } from "redux/contact/contactSelectors";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
-
 	const [isCallHistory, setIsCallHistory] = useState(false);
 
 	const dispatch = useDispatch();
 
 	const selectedContact = useSelector(selectedContactData);
-	console.log("selected contact's id", selectedContact.id);
 
 	const editContactHandler = () => {
 		dispatch(openAddContact());
 		dispatch(setEditContactNumber(null));
-	}
+	};
 
 	// styling
 	const contactActiveButton = {
@@ -36,16 +39,10 @@ const ContactDetails = () => {
 	return (
 		<section className={styles.contactDetails}>
 			<div className={styles.contactDetails_box}>
-				<div className={`flex justify-between items-center`}>
-					<div className={`flex items-center gap-2`}>
-						<span className={` ${styles.profile}`} style={{ background: "var(--accent-purple-primary, #944af5)" }}>
-							<span
-								className={`flex justify-center items-center title_3`}
-								style={{
-									color: "var(--accent-purple-label, #FFF)",
-									background: "linear-gradient(135deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.00) 50.52%)",
-									height: "100%",
-								}}>
+				<div className={styles.contactDetails_header}>
+					<div className={styles.headerLeft}>
+						<div className={styles.profile}>
+							<span>
 								{contactAbbreviation(
 									selectedContact?.first_name,
 									selectedContact?.last_name,
@@ -53,27 +50,23 @@ const ContactDetails = () => {
 									selectedContact?.email,
 								)}
 							</span>
-						</span>
-						<div>
-							<p className={`title_3 `} style={{ color: "var(--text-primary, #1F2023)" }}>
+						</div>
+						<div className={styles.profileInfo}>
+							<p>
 								{`${selectedContact?.salutation || ""} ${selectedContact?.first_name || ""} ${
 									selectedContact?.last_name || ""
 								}`}
 							</p>
-							<p className={`body`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-								{selectedContact?.email || "null"}
-							</p>
+							<span>{selectedContact?.email || "null"}</span>
 						</div>
 					</div>
-					{/* change to the proper button found in the UI/forms/button */}
-					<button className={`flex cursor-pointer ${styles.edit}`} onClick={editContactHandler}>
+
+					<button className={styles.edit} onClick={editContactHandler}>
 						<EditIcon />
-						<span className={`footnote `} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Edit
-						</span>
+						<span>Edit</span>
 					</button>
 				</div>
-				<div className={`caption_1 ${styles.contactButton}`}>
+				<div className={styles.contactButton}>
 					<span
 						style={activeButton === "1" ? contactActiveButton : {}}
 						onClick={() => {

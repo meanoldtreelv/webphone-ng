@@ -8,21 +8,15 @@ const RecentHistoryCard = () => {
 	const [callType, setCallType] = useState("");
 	return (
 		<div className={styles.historyCard}>
-			<div className={`flex gap-x-[8px] items-center ${""}`}>
-				<span className={`flex py-[9px] w-[38px] h-[38px] justify-center items-center ${styles.historyCard_circle}`} style={{backgroundColor: "var(--accent-blue-primary, #3B9EF7)"}}>
+			<div className={styles.cardLeft}>
+				<div className={styles.cardLeft_circle}>
 					<span>IC</span>
-				</span>
-				<div>
-					<p
-						className={`body`}
-						style={
-							callType === "missed"
-								? { color: "var(--text-danger, #EE3939)" }
-								: { color: "var(--text-primary, #1F2023)" }
-						}>
+				</div>
+				<div className={styles.cardLeft_right}>
+					<p style={callType === "missed" ? { color: "#EE3939" } : { color: "#1F2023" }}>
 						Inbound Call
 					</p>
-					<p className={`flex gap-1 items-center`}>
+					<p>
 						<span>
 							{callType === "missed" ? (
 								<CallMissedIcon />

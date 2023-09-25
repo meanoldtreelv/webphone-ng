@@ -8,15 +8,15 @@ const TransferCall = () => {
 
 	const transferCallHandler = () => {
 		dispatch(transferCall());
-	}
+	};
 
 	const transferAttendedCallHandler = () => {
 		dispatch(transferCall());
-	}
+	};
 
 	return (
 		<section className={styles.dialpad_container}>
-			<p className={`sub_headline_bold ${styles.dialpad_transferCall}`}>Transfer Call</p>
+			<p className={styles.dialpad_transferCall}>Transfer Call</p>
 
 			<div className={styles.dialpad}>
 				<Dialpad />
@@ -32,10 +32,7 @@ const TransferCall = () => {
 							/>
 						</svg>
 					</div>
-					<div
-						className={styles.dialpad_key2}
-						style={{ background: "var(--primary-disabled, #C8D3E0)" }}
-						onClick={transferCallHandler}>
+					<div className={styles.dialpad_key2} onClick={transferCallHandler}>
 						<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="fill / call_transfer">
 								<g id="Vector">

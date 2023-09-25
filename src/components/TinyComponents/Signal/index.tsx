@@ -10,7 +10,7 @@ const Signal = () => {
 				<circle cx="12" cy="12" r="4" stroke="white" strokeWidth="1.5" />
 				<circle cx="12" cy="12" r="7" stroke="white" strokeWidth="1.5" />
 			</svg>
-			<span className={`footnote_bold`}>Strong</span>
+			<span>Strong</span>
 		</div>
 	);
 };

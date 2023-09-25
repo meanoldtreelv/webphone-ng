@@ -8,25 +8,84 @@
 	border-radius: 8px;
 	padding: 7px 16px 7px 16px;
 
-	&:hover {
-		background: var(--background-active, rgba(25, 138, 240, 0.10));
+	&_left {
+		display: flex;
+		align-items: center;
 	}
 
-	&_circle{
-		border-radius: 32px;
-		background: linear-gradient(135deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.00) 50.52%);
-		
+	&:hover {
+		background: rgba(25, 138, 240, 0.1);
+	}
 
-		& span{
-			color: var(--accent-blue-label, #FFF);
+	&_circle {
+		margin-right: 8px;
+		border-radius: 32px;
+		display: flex;
+		padding: 9px;
+		justify-content: center;
+		align-items: center;
+		background: #e3eaf2;
+
+		& svg {
+			color: #fff;
 		}
+	}
+
+	&_right {
+		p {
+			font-size: 13px;
+			text-align: right;
+			color: #9298a0;
+		}
+	}
+
+	&_info {
+		> p {
+			font-size: 14px;
+			color: #1f2023;
+		}
+	}
+}
+
+.cardMissedInfo {
+	display: flex;
+	// add gap-2 tailwind sass's equivalent here
+	align-items: center;
+
+	&_icon {
+		margin-right: 5px;
+
+		svg {
+			width: 14px;
+		}
+	}
+
+	&_count {
+		display: flex;
+		align-items: center;
+		// add gap-x-[1px] equivalent here
+		justify-content: center;
+		border-radius: 6px;
+		padding: 0 2px;
+		margin-right: 5px;
+		// change to appropriate coloring
+		border: 1px solid red !important;
+
+		span {
+			font-size: 11px;
+			font-weight: 500;
+		}
+	}
+
+	&_time {
+		font-size: 13px;
 	}
 }
 
 .user_icon {
 	height: unset;
 	svg {
-		width: 12px;
+		width: 11px;
 		height: unset;
 	}
 }

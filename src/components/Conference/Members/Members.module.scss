@@ -3,7 +3,20 @@
 }
 
 .membersHead{
+    display: flex;
     padding: 9px 14px;
+    font-size: 11px;
+    // gap-x-[2px]
+    align-items: center;
+
+    > div {
+        margin-right: 5px;
+    }
+
+    > span {
+        color: #5c6168;
+        font-size: 12px;
+    }
 }
 
 .groupMembers{

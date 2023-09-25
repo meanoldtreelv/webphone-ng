@@ -5,7 +5,7 @@ import TransferCallCard from "../TransferCallCard";
 import { useDispatch, useSelector } from "react-redux";
 import { endCall, addCall } from "redux/call/callSlice";
 
-import dummyProfileImg from './../../../assets/images/img/dummy/profile.png';
+import dummyProfileImg from "./../../../assets/images/img/dummy/profile.png";
 import PhoneAddIcon from "./../../../components/UI/Icons/Call/CallAdd";
 import CallTransferIcon from "./../../../components/UI/Icons/Call/CallTransfer";
 import CallCameraIcon from "./../../../components/UI/Icons/Call/CallCamera";
@@ -15,7 +15,6 @@ import CallEndIcon from "components/UI/Icons/Call/CallEnd";
 import CallHoldIcon from "components/UI/Icons/Call/CallHold";
 import CallMicOffIcon from "components/UI/Icons/Call/CallMicOff";
 import { callNumber } from "redux/call/callSelectors";
-
 
 const Dialer = () => {
 	const [isMute, setIsMute] = useState(true);
@@ -35,50 +34,37 @@ const Dialer = () => {
 
 	const endCallHandler = () => {
 		dispatch(endCall());
-	}
+	};
 
 	const addCallHandler = () => {
 		dispatch(addCall());
-	}
+	};
 
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
-	}
+	};
 
 	return (
 		<section className={styles.dialer}>
 			<div
 				className={styles.dialer_detailsBox}
-				// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
 			>
 				{false && <img src={dummyProfileImg} alt="" className={styles.backgroundImg} />}
-				{true && (
-					<div
-						className={styles.backgroundColor}
-						style={{ backgroundColor: "var(--accent-blue-tertiary, #ECF5FE)" }}></div>
-				)}
+				{true && <div className={styles.backgroundColor}></div>}
 
 				<div className={styles.dialer_details}>
-					<div className={`large_title ${styles.dialer_profile}`}>
+					<div className={styles.dialer_profile}>
 						{false ? <img src="/img/dummy/profile96.png" alt=""></img> : <span>MW</span>}
 					</div>
-					<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
-						Matt Wiz
-					</p>
-					<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-						{number}
-					</p>
+					<h1>Matt Wiz</h1>
+					<p className={styles.dialer_number}>{number}</p>
 
 					{/* add the condition here for dialing  */}
 
 					{!isCallConnected ? (
-						<p className={styles.title_3} style={{ color: "var(--text-secondary, #5C6168)" }}>
-							Dialing...
-						</p>
+						<p className={styles.dialer_dialing}>Dialing...</p>
 					) : (
-						<div className={`bold ${styles.dialer_timer}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							03:45
-						</div>
+						<div className={styles.dialer_timer}>03:45</div>
 					)}
 				</div>
 			</div>
@@ -88,22 +74,17 @@ const Dialer = () => {
 						<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 							<PhoneAddIcon />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Add Call
-						</p>
+						<p className={styles.dialer_text}>Add Call</p>
 					</div>
 					<div className={styles.dialer_action}>
 						<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 							{/* check if this icon works too */}
 							<CallMergeIcon />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Merge Call
-						</p>
+						<p className={styles.dialer_text}>Merge Call</p>
 					</div>
 					<div
 						className={styles.dialer_action}
-						style={{ position: "relative" }}
 						// onClick={() => {
 						// 	setIsTransferButtonClicked(!isTransferButtonClicked);
 						// }}
@@ -115,9 +96,7 @@ const Dialer = () => {
 							{/* check if this icon works */}
 							<CallTransferIcon />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Transfer
-						</p>
+						<p className={styles.dialer_text}>Transfer</p>
 						{isTransferButtonClicked && <TransferCallCard />}
 					</div>
 					<div className={styles.dialer_action}>
@@ -125,37 +104,24 @@ const Dialer = () => {
 							{/* check if this icon works or not */}
 							<CallCameraIcon />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Video
-						</p>
+						<p className={styles.dialer_text}>Video</p>
 					</div>
 					<div className={styles.dialer_action}>
 						<span
 							className={styles.dialer_icon}
-							style={
-								isCallActive
-									? isMute
-										? { background: "var(--background-danger, #FFEBEB)" }
-										: IconActiveStyle
-									: IconDisableStyle
-							}
+							style={isCallActive ? (isMute ? { background: "#FFEBEB" } : IconActiveStyle) : IconDisableStyle}
 							// background: "var(--background-danger, #FFEBEB)"
 							// style={isCallActive ? {} : {}}
 						>
-							
 							<CallMicOffIcon isCallActive isMute />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Mute
-						</p>
+						<p className={styles.dialer_text}>Mute</p>
 					</div>
 					<div className={styles.dialer_action}>
 						<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 							<CallHoldIcon />
 						</span>
-						<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-							Hold
-						</p>
+						<p className={styles.dialer_text}>Hold</p>
 					</div>
 				</div>
 				<div className={styles.dialer_actionBox}>

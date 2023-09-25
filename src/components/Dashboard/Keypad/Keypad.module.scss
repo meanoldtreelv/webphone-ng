@@ -14,16 +14,15 @@
 	&_key2 {
 		width: 64px;
 		height: 64px;
-
 		border-radius: 48px;
-		// background: var(--background-tertiary, #f7f9fc);
-
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		// place-items: center;
 		margin: auto;
-		cursor: pointer;
+	}
+	
+	&_phone {
+		background: var(--primary-disabled, #C8D3E0);
 	}
 }

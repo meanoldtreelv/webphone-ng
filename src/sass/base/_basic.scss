@@ -1,0 +1,26 @@
+@import "./../abstracts/variables";
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.Wrapper {
+  width: $sc-lg;
+  margin: auto;
+}
+
+ul,
+li {
+  list-style: none;
+  list-style-type: none;
+}
+
+img {
+  vertical-align: middle;
+}
+
+button {
+  cursor: pointer;
+}

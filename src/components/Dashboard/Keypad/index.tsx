@@ -8,24 +8,24 @@ import { callNumber } from "./../../../redux/call/callSelectors";
 
 const Keypad = () => {
 	const dispatch = useDispatch();
-	const number = useSelector(callNumber)
+	const number = useSelector(callNumber);
 
 	const callingHandler = () => {
 		dispatch(progressCall());
-	}
+	};
 
 	const modifyNumber = () => {
-		if(number.length) {
+		if (number.length) {
 			const modified_number = number.slice(0, number.length - 1);
 			dispatch(setCallNumber(modified_number));
 		}
-	}
+	};
 
 	return (
 		<div className={styles.dialpad}>
 			<Dialpad />
 			<div className={styles.dialpad_keypad}>
-				<div className={styles.dialpad_key2}>
+				<button className={styles.dialpad_key2}>
 					{/* here lies add user icon, pass props and use the icon */}
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / add_user">
@@ -39,10 +39,10 @@ const Keypad = () => {
 							/>
 						</g>
 					</svg>
-				</div>
-				<div
-					className={styles.dialpad_key2}
-					style={{ background: "var(--primary-disabled, #C8D3E0)" }}
+				</button>
+				<button
+					className={[styles.dialpad_key2, styles.dialpad_phone].join(" ")}
+					style={{ background: "" }}
 					onClick={callingHandler}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,15 +54,15 @@ const Keypad = () => {
 							/>
 						</g>
 					</svg>
-				</div>
-				<div >
+				</button>
+				<button>
 					<button className={styles.dialpad_key2} onClick={modifyNumber}>
 						<BackspaceIcon />
 					</button>
 					{/* replace the above button with this, the above is only for testing */}
 					{/* <Button>
 					</Button> */}
-				</div>
+				</button>
 			</div>
 		</div>
 	);

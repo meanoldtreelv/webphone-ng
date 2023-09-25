@@ -1,3 +1,5 @@
+@import './../../../sass/abstracts/variables';
+
 .contactDetails {
 	width: 100%;
 	height: 100%;
@@ -16,73 +18,12 @@
 	}
 }
 
-.edit {
-	display: inline-flex;
-	padding: 7px 8px;
-	justify-content: center;
-	align-items: center;
-	gap: 4px;
-
-	border-radius: 8px;
-	border: 1px solid var(--border-primary, #91a0b5);
-
-	// height: 60px;
-}
-
-.profile {
-	width: 54px;
-	height: 54px;
-	flex-shrink: 0;
-
-	border-radius: 48px;
-	background: var(--accent-purple-primary, #944af5);
-}
-
-.contactButton {
-	display: flex;
-	width: 100%;
-	padding: 2px;
-	align-items: flex-start;
-
-	border-radius: 8px;
-	border: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-tertiary, #f7f9fc);
-
-	& span {
-		display: flex;
-		padding: 5px 10px;
-		justify-content: center;
-		align-items: center;
-		gap: 10px;
-		flex: 1 0 0;
-
-		border-radius: 6px;
-		// background: var(--primary-default, #0c6dc7);
-
-		/* Blue Button Shadow */
-		// box-shadow: 0px 4px 4px 0px rgba(12, 109, 199, 0.15);
-
-		color: var(--text-secondary, #5c6168);
-
-		cursor: pointer;
-	}
-}
-
 .contactInfo {
 	overflow: auto;
 	width: 100%;
-	// height: 100%;
-
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-
-	// background-color: red;
-
-	// padding: 15px;
-	// position: fixed;
-	// top: 0px;
-	// right: 0;
 }
 
 .rowBox {
@@ -108,10 +49,10 @@
 }
 
 .contactInfoText{
-	& span {
 		color: var(--primary-default, #0C6DC7);
 		cursor: pointer;
-	}
+		font-size: 13px;
+		font-weight: bold;
 }
 
 .iconBox {
@@ -136,12 +77,15 @@
 	overflow: auto;
 	width: 100%;
 	height: 100%;
-
 	display: flex;
 	flex-direction: column;
-	// justify-content: center;
-	// align-items: center;
 	gap: 20px;
+
+	p {
+		font-size: 11px;
+		padding: 2px 4px;
+		color: map-get($color, text-secondary)
+	}
 }
 .noHistory_box {
 	width: 100%;
@@ -161,4 +105,21 @@
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+}
+
+.cardLabel {
+	font-size: 13px;
+	color: map-get($color, text-secondary);
+}
+
+.cardValue {
+	color: map-get($color, text-primary);
+	font-size: 14px;
+}
+
+.deleteRecord {
+	color: map-get($color, support-danger-default);
+	text-align: left;
+	width: 100%;
+	font-size: 13px;
 }
