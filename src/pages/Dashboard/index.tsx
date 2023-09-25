@@ -41,6 +41,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	const isCallEnded = useSelector(callEnding);
+	const { ringingInboundCalls } = useSelector((state: any) => state.sip)
 
 	useEffect(() => {
 		dispatch(setContactList(data));
@@ -177,7 +178,7 @@ const Dashboard = () => {
 			{/* <LogoutPopUp /> */}
 
 			{/* incoming call components */}
-			{/* <InboundCall /> */}
+			{ringingInboundCalls.length > 0 ? <InboundCall /> : ""}
 		</div>
 	);
 };

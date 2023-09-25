@@ -5,12 +5,14 @@ import { progressCall, setCallNumber } from "./../../../redux/call/callSlice";
 import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
 import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
+import sip from "../../../lib/sip"
 
 const Keypad = () => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber)
 
 	const callingHandler = () => {
+		sip.call(number)
 		dispatch(progressCall());
 	}
 
@@ -42,7 +44,7 @@ const Keypad = () => {
 				</div>
 				<div
 					className={styles.dialpad_key2}
-					style={{ background: "var(--primary-disabled, #C8D3E0)" }}
+					style={{ background: number.length? "var(--primary-active, #074177)" : "var(--primary-disabled, #C8D3E0)"}}
 					onClick={callingHandler}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">

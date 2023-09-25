@@ -12,6 +12,7 @@ import ContactIcon from "components/UI/Icons/Sidebar/Contact";
 import KeypadIcon from "components/UI/Icons/Sidebar/Keypad";
 import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
+import { useSelector } from "react-redux";
 
 interface ISidebarLinks {
 	path: string;
@@ -19,7 +20,6 @@ interface ISidebarLinks {
 	unread: number;
 	name: string;
 }
-
 const Sidebar = () => {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -28,6 +28,7 @@ const Sidebar = () => {
 
 	const [unreadMessage, setUnreadMessage] = useState(true);
 
+	const { extAuth } = useSelector((state: any) => state.sip)
 	// the above two functions, they need to be removed
 	// use sass
 	const activeTabStyle = {
@@ -44,7 +45,10 @@ const Sidebar = () => {
 		setIsCollapsed(!isCollapsed);
 	};
 
-	const sidebarTopLinks:ISidebarLinks[] = [
+	const sidebarTopLinks:ISidebarLinks[] =extAuth? 
+		[
+			{ path: routePaths.DASHBOARD.ROUTE, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
+		] : [
 		{ path: routePaths.DASHBOARD.ROUTE, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Contacts', unread: 3 },
 		{ path: routePaths.CONFERENCE.GROUPS.ROUTE, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
@@ -54,7 +58,12 @@ const Sidebar = () => {
 		{ path: routePaths.VOICEMAIL.ROUTE, icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Voicemail', unread: 4 },
 	];
 
-	const sidebarBtmLinks:ISidebarLinks[] = [
+	const sidebarBtmLinks:ISidebarLinks[] = extAuth? 
+	[
+		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
+		{ path: routePaths.CONFERENCE.ROUTE, icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Settings', unread: 3 },
+	]:
+	[
 		{ path: routePaths.DASHBOARD.ROUTE, icon: <SidecarIcon />, name: 'Sidecar', unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
 		{ path: routePaths.CONFERENCE.ROUTE, icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Settings', unread: 3 },

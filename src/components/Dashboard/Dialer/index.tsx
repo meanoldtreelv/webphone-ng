@@ -15,7 +15,7 @@ import CallEndIcon from "components/UI/Icons/Call/CallEnd";
 import CallHoldIcon from "components/UI/Icons/Call/CallHold";
 import CallMicOffIcon from "components/UI/Icons/Call/CallMicOff";
 import { callNumber } from "redux/call/callSelectors";
-
+import sip from "../../../lib/sip"
 
 const Dialer = () => {
 	const [isMute, setIsMute] = useState(true);
