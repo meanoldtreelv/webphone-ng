@@ -30,7 +30,7 @@ const Login = () => {
 		serverErrorMsg?: string,
 		secretErrorMsg?: string,
 	}
-	const [form, setForm] = useState<FormData>({extension:"5501", secret:"7C53F7B0C1FF448F95575F80D64C7480", server:"zraytechnoloDoobh.ringplan.com"});
+	const [form, setForm] = useState<FormData>({extension:"", secret:"", server:"zraytechnoloDoobh.ringplan.com"});
 	const loginWithExtension = ()=>{
 		(form?.extension === "") ? setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: ""}});
 		(form?.server === "") ? setForm((prevState)=>{return{ ...prevState, serverErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, serverErrorMsg: ""}});

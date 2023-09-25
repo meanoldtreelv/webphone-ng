@@ -4071,23 +4071,13 @@ function micChangedRefreshDevice(){
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     store.dispatch({type:"sip/authLoading", payload:true})
-    // profileName = username;
-    // wssServer = "webrtc.ringplan.com";
-    // WebSocketPort = "443";
-    // ServerPath = "/";
-    // SipDomain = domain;
-    // SipUsername = username;
-    // SipPassword = password;
-
-
-    profileName = "301";
-    wssServer = "localhost";
-    WebSocketPort = "8089";
-    ServerPath = "/ws";
-    SipDomain = "localhost";
-    SipUsername = "301";
-    SipPassword = "@300300";
-
+    profileName = username;
+    wssServer = "webrtc.ringplan.com";
+    WebSocketPort = "443";
+    ServerPath = "/";
+    SipDomain = domain;
+    SipUsername = username;
+    SipPassword = password;
     CreateUserAgent()
   },
   call: (number: string) => {
