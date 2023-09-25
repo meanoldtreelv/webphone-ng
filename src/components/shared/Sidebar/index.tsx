@@ -15,7 +15,7 @@ import MeetIcon from "components/UI/Icons/Sidebar/Meet";
 
 interface ISidebarLinks {
 	path: string;
-	icon: React.ReactElement,
+	icon: React.ReactElement;
 	unread: number;
 	name: string;
 }
@@ -44,20 +44,60 @@ const Sidebar = () => {
 		setIsCollapsed(!isCollapsed);
 	};
 
-	const sidebarTopLinks:ISidebarLinks[] = [
-		{ path: routePaths.DASHBOARD.__PATH, icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Keypad', unread: 2 },
-		{ path: routePaths.CONTACT.__PATH, icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Contacts', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Conference', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Texting', unread: 1 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Recent', unread: 1 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Fax', unread: 2 },
-		{ path: routePaths.VOICEMAIL.__PATH, icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Voicemail', unread: 4 },
+	const sidebarTopLinks: ISidebarLinks[] = [
+		{
+			path: routePaths.DASHBOARD.__PATH,
+			icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Keypad",
+			unread: 2,
+		},
+		{
+			path: routePaths.CONTACT.__PATH,
+			icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Contacts",
+			unread: 3,
+		},
+		{
+			path: routePaths.CONFERENCE.__PATH,
+			icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Conference",
+			unread: 3,
+		},
+		{
+			path: routePaths.CONFERENCE.__PATH,
+			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Texting",
+			unread: 1,
+		},
+		{
+			path: routePaths.CONFERENCE.__PATH,
+			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Recent",
+			unread: 1,
+		},
+		{
+			path: routePaths.CONFERENCE.__PATH,
+			icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Fax",
+			unread: 2,
+		},
+		{
+			path: routePaths.VOICEMAIL.__PATH,
+			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Voicemail",
+			unread: 4,
+		},
 	];
 
-	const sidebarBtmLinks:ISidebarLinks[] = [
-		{ path: routePaths.DASHBOARD.__PATH, icon: <SidecarIcon />, name: 'Sidecar', unread: 2 },
-		{ path: routePaths.CONTACT.__PATH, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
-		{ path: routePaths.CONFERENCE.__PATH, icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />, name: 'Settings', unread: 3 },
+	const sidebarBtmLinks: ISidebarLinks[] = [
+		{ path: routePaths.DASHBOARD.__PATH, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
+		{ path: routePaths.CONTACT.__PATH, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
+		{
+			path: routePaths.SETTINGS.__PATH,
+			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Settings",
+			unread: 3,
+		},
 	];
 
 	return (
@@ -79,9 +119,7 @@ const Sidebar = () => {
 									[`body ${styles.sidebar_tab}`, isActive ? styles.active_tab : null].join(" ")
 								}
 								onClick={toggleCollapsed}>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>
-									{link.icon}
-								</span>
+								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
@@ -92,16 +130,14 @@ const Sidebar = () => {
 						))}
 					</div>
 					<div className={styles.sidebar_topTab}>
-					{sidebarBtmLinks.map((link: ISidebarLinks) => (
+						{sidebarBtmLinks.map((link: ISidebarLinks) => (
 							<NavLink
 								to={`/${link.path}`}
 								className={({ isActive }: { isActive: boolean }) =>
 									[`body ${styles.sidebar_tab}`, isActive ? styles.active_tab : null].join(" ")
 								}
 								onClick={toggleCollapsed}>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>
-									{link.icon}
-								</span>
+								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>

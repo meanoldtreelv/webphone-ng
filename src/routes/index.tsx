@@ -7,20 +7,22 @@ import { callHistoryRoutes } from "./callHistory/routes";
 
 import Home from "pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
+import { settingsRoutes } from "./settings/routes";
 
 const routes: RouteObject[] = [
-    {
-        path: "/",
-        element: <Home />,
-    },
+	{
+		path: "/",
+		element: <Home />,
+	},
 ];
 
 export default createBrowserRouter([
-    ...routes,
-    ...contactRoutes,
-    ...voicemailRoutes,
-    ...authRoutes,
-    ...conferenceRoutes,
-    ...callHistoryRoutes,
-    ...dashboardRoutes
+	...routes,
+	...contactRoutes,
+	...voicemailRoutes,
+	...authRoutes,
+	...conferenceRoutes,
+	...callHistoryRoutes,
+	...dashboardRoutes,
+	...settingsRoutes,
 ]);
