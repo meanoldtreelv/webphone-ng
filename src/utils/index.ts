@@ -94,7 +94,7 @@ export const showToast = (message: string, type: TypeOptions, id = "unique") => 
 };
 
 //short Abbreviation for contact
-export const contactAbbreviation = (firstName:any, lastName: any, phone: any, email: any) => {
+export const contactAbbreviation = (firstName: any, lastName: any, phone: any, email: any) => {
 	const firstNameChar = firstName ? firstName[0] : "";
 	const lastNameChar = lastName ? lastName[0] : "";
 	const phoneChar = phone ? phone[0] + phone[1] + phone[2] : "";
@@ -103,3 +103,6 @@ export const contactAbbreviation = (firstName:any, lastName: any, phone: any, em
 		firstNameChar + lastNameChar || ((!firstNameChar || !lastNameChar) && (phoneChar ? phoneChar : emailChar));
 	return abbreviation;
 };
+
+// empty function
+export const emptyFunction = () => {};

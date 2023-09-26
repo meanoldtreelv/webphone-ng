@@ -7,6 +7,7 @@ import { callHistoryRoutes } from "./callHistory/routes";
 import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
 import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
+import { settingsRoutes } from "./settings/routes";
 
 const routes: RouteObject[] = [
 	{
@@ -26,6 +27,7 @@ export default createBrowserRouter([
 			...conferenceRoutes,
 			...callHistoryRoutes,
 			...dashboardRoutes,
+			...settingsRoutes,
 		],
 	},
 ]);

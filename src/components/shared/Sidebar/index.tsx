@@ -94,7 +94,7 @@ const Sidebar = () => {
 		{ path: routePaths.DASHBOARD.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
 		{
-			path: routePaths.CONFERENCE.ROUTE,
+			path: routePaths.SETTINGS.ROUTE,
 			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 			name: "Settings",
 			unread: 3,
@@ -116,7 +116,9 @@ const Sidebar = () => {
 						{sidebarTopLinks.map((link: ISidebarLinks) => (
 							<NavLink
 								to={link.path}
-								className={({ isActive }: { isActive: boolean }) => ([styles.sidebar_tab, isActive ? styles.active_tab : ""].join(' '))}
+								className={({ isActive }: { isActive: boolean }) =>
+									[styles.sidebar_tab, isActive ? styles.active_tab : ""].join(" ")
+								}
 								onClick={toggleCollapsed}>
 								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
