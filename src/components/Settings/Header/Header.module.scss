@@ -21,6 +21,7 @@
 	span {
 		padding: 15px 0;
 		border-bottom: 2px solid transparent;
+		cursor: pointer;
 
 		&:hover {
 			color: var(--text-link, #1480e1);
@@ -28,4 +29,10 @@
 			font-weight: 500;
 		}
 	}
+}
+
+.activeTab {
+	color: var(--text-link, #1480e1);
+	border-bottom: 2px solid var(--text-link, #1480e1) !important;
+	font-weight: 500;
 }

@@ -3,6 +3,7 @@ import styles from "./UserInterface.module.scss";
 import FileIcon from "components/UI/Icons/File";
 import OnOffSwitch from "components/UI/OnOffSwitch";
 import FolderIcon from "components/UI/Icons/Folder";
+import Input from "components/UI/Forms/Input";
 
 const UserInterface = () => {
 	return (
@@ -42,8 +43,10 @@ const UserInterface = () => {
 					<span>Use Dark Mode</span>
 				</p>
 				<p>
-					<OnOffSwitch />
-					<span>Auto Dark Mode</span>
+					<span>
+						<OnOffSwitch />
+						<span>Auto Dark Mode</span>
+					</span>
 				</p>
 			</div>
 			<h2 className={`body_bold ${styles.heading}`}>
@@ -67,6 +70,13 @@ const UserInterface = () => {
 				<p>
 					<OnOffSwitch />
 					<span>Save position</span>
+				</p>
+			</div>
+			<h2 className={`body_bold ${styles.heading}`}>OCR</h2>
+			<div className={`caption_1 ${styles.toggleBox}`}>
+				<p>
+					<OnOffSwitch />
+					<span>Enable OCR</span>
 				</p>
 			</div>
 		</section>

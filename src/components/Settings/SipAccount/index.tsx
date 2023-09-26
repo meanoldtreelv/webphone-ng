@@ -22,11 +22,16 @@ const SipAccount = () => {
 			<div className={styles.sipAccount}>
 				<span className={`footnote ${styles.sipAccount_id}`}>
 					<span>sip:</span>
-					{"131513@ztelcocdnwt.ringplan.com"}
+					<span>131513@ztelcocdnwt.ringplan.com</span>
 				</span>
 				<span className={styles.sipAccount_actions}>
-					<EditIcon />
-					<DeleteIcon />
+					<span>
+						<EditIcon />
+					</span>
+
+					<span>
+						<DeleteIcon />
+					</span>
 				</span>
 			</div>
 		</div>
