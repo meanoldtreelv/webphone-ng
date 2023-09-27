@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .videoCall {
 	padding: 25px;
 	&_video {
@@ -5,7 +7,6 @@
 		overflow: hidden;
 		width: 100%;
 		height: 700px;
-
 		position: relative;
 	}
 
@@ -13,17 +14,14 @@
 		position: absolute;
 		bottom: 70px;
 		right: 30px;
-
 		width: 240px;
 		height: 142px;
 		flex-shrink: 0;
-
 		// fill: url(<path-to-image>), lightgray 50% / cover no-repeat;
 		stroke-width: 1px;
-		stroke: var(--background-primary, #fff);
-		filter: drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.05));
-
-		border: 1px solid var(--background-primary, #fff);
+		stroke: map-get($color, background-primary);
+		filter: drop-shadow(0px 0px 16px map-get($color, dark-box-shadow));
+		border: 1px solid map-get($color, background-primary);
 		border-radius: 8px;
 		overflow: hidden;
 	}
@@ -32,17 +30,13 @@
 		width: 100%;
 		height: 64px;
 		flex-shrink: 0;
-
 		position: absolute;
 		bottom: 0;
-
 		opacity: 0.8;
-		background: var(--background-primary, #fff);
-
+		background: map-get($color, background-primary);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-
 		padding: 15px;
 	}
 
@@ -50,10 +44,10 @@
 		display: flex;
 		padding: 4px 10px;
 		border-radius: 22px;
-		border: 1px solid var(--border-tertiary, #e3eaf2);
-		background: var(--background-primary, #fff);
+		border: 1px solid map-get($color, border-tertiary);
+		background: map-get($color, background-primary);
 		font-size: 14px;
-		color: var(--text-primary, #1f2023);
+		color: map-get($color, text-primary);
 		margin-right: 30px;
 	}
 
@@ -83,12 +77,12 @@
 
 .callName {
 	font-size: 14px;
-	color: var(--text-primary, #1f2023);
+	color: map-get($color, text-primary);
 }
 
 .callNumber {
 	font-size: 13px;
-	color: var(--text-secondary, #5c6168);
+	color: map-get($color, text-secondary-2);
 }
 
 .callInfoRight {
@@ -97,19 +91,19 @@
 }
 
 .iconWrap {
-		display: flex;
-		width: 84px;
-		height: 84px;
-		// padding: 26px;
-		justify-content: center;
-		align-items: center;
-		border-radius: 48px;
-		background: var(--background-tertiary, #f7f9fc);
+	display: flex;
+	width: 84px;
+	height: 84px;
+	// padding: 26px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 48px;
+	background: map-get($color, background-tertiary);
 }
 
 .videoCall_endButton {
-  width: 64px;
-  height: 64px;
-  background: var(--support-danger, #ee3939);
-  border-radius: 50%;
+	width: 64px;
+	height: 64px;
+	background: map-get($color, support-danger-default);
+	border-radius: 50%;
 }

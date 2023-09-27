@@ -13,48 +13,46 @@ const CallHistory = () => {
 	const CallHistory = useSelector(callHistory);
 
 	return (
-		<>
-			<div style={{ position: "relative", width: "100%", height: "100vh" }}>
-				<BaseLayout>
-					{CallHistory?.length !== 0 ? (
-						<div className={styles.noRecentBox}>
+		<div className={styles.callHistory}>
+			<BaseLayout>
+				{CallHistory.length === 0 ? (
+					<>
+						<NoRecentActivity />
+						<div className={styles.header}>
+							<Header />
+						</div>
+					</>
+				) : (
+					<section className={styles.recent}>
+						<RecentsSidebar />
+
+						<div className={styles.rightCont}>
 							<div className={styles.header}>
 								<Header />
 							</div>
-							<NoRecentActivity />
-						</div>
-					) : (
-						<section className={` ${styles.recent}`}>
-							<RecentsSidebar />
 
-							<div className={` ${styles.rightCont}`}>
-								<div className={styles.header}>
-									<Header />
+							{false && <ContactDetails />}
+
+							{true && (
+								<div className={styles.noRecords}>
+									<NoRecordSelected />
 								</div>
-
-								{true && <ContactDetails />}
-
-								{false && (
-									<div className={styles.noRecords}>
-										<NoRecordSelected />
-									</div>
-								)}
-							</div>
-						</section>
-					)}
-				</BaseLayout>
-
-				{false && (
-					<PromptDialog
-						type="warning"
-						title="Clear Call History"
-						actionBtnTxt="Clear"
-						onClick={() => console.log("test")}>
-						Are you sure that you want to clear call history?
-					</PromptDialog>
+							)}
+						</div>
+					</section>
 				)}
-			</div>
-		</>
+			</BaseLayout>
+
+			{false && (
+				<PromptDialog
+					type="warning"
+					title="Clear Call History"
+					actionBtnTxt="Clear"
+					onClick={() => console.log("test")}>
+					Are you sure that you want to clear call history?
+				</PromptDialog>
+			)}
+		</div>
 	);
 };
 

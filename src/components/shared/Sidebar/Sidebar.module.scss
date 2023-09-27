@@ -40,6 +40,7 @@
 		padding: 6px 8px 6px 8px;
 		border-radius: 8px;
 		// background: var(--background-active, rgba(25, 138, 240, 0.1));
+	font-size: 14px;
 
 		display: flex;
 		// justify-content: center;
@@ -100,9 +101,4 @@
 .active_tab {
 	background: var(--background-active, rgba(25, 138, 240, 0.1));
 	color: var(--text-link, #1480e1) !important;
-}
-
-.sidebar_tab {
-	font-size: 14px;
-
 }

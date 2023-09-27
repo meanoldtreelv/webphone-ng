@@ -1,10 +1,12 @@
+@import "./../../../sass/abstracts/variables";
+
 .bar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 5px 30px;
-	color: var(--status-information-label, #fff);
-	background: var(--status-information, #3b9ef7);
+	color: map-get($color, background-primary);
+	background: map-get($color, accent-blue-primary);
 	backdrop-filter: blur(16px);
 
 	&_info {
@@ -13,22 +15,22 @@
 		align-items: center;
 		font-size: 13px;
 
-    > span {
-      color: white;
-    }
+		> span {
+			color: map-get($color, background-primary);
+		}
 	}
 
-  svg {
-    margin-right: 10px;
-  }
+	svg {
+		margin-right: 10px;
+	}
 }
 
 .callName {
 	font-size: 14px;
-  color: white;
+	color: map-get($color, background-primary);
 }
 
 .callDuration {
 	font-size: 13px;
-  color: white;
+	color: map-get($color, background-primary);
 }

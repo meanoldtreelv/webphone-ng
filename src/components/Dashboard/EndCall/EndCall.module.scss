@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .endCall {
 	width: 100%;
 	height: 100%;
@@ -5,18 +7,16 @@
 	position: relative;
 	overflow: hidden;
 	font-size: 20px;
-	color: var(--text-secondary, #5C6168);
+	color: map-get($color, text-secondary-2);
 }
 
 .backgroundImg {
 	position: absolute;
 	top: 0;
 	right: 0;
-
 	width: 100%;
 	height: 100%;
 	z-index: -1;
-
 	filter: blur(32px);
 }
 
@@ -25,21 +25,18 @@
 	height: 100%;
 	z-index: -10;
 	position: absolute;
-	background: var(--accent-blue-tertiary, #ECF5FE);
+	background: map-get($color, blue-color-100);
 }
 
 .endBox {
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 25.21%, #fff 100%);
-
+	background: map-get($color, linear-bg-3);
 	width: 100%;
 	height: 100%;
-
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
 	align-items: center;
 	justify-content: center;
-
 	z-index: 100;
 
 	& div {
@@ -58,14 +55,11 @@
 	flex-shrink: 0;
 	font-size: 32px;
 	border-radius: 48px;
-	background: var(--accent-blue-primary, #3b9ef7);
-
+	background: map-get($color, accent-blue-primary);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	color: var(--accent-blue-label, #fff);
-
+	color: map-get($color, background-primary);
 	overflow: hidden;
 
 	& img {
@@ -77,10 +71,8 @@
 		display: inline-block;
 		width: 100%;
 		height: 100%;
-
 		// border-radius: 48px;
-		background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
-
+		background: map-get($color, linear-bg);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -89,17 +81,17 @@
 
 .timer {
 	border-radius: 22px;
-	border: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-primary, #fff);
+	border: 1px solid map-get($color, border-tertiary);
+	background: map-get($color, background-primary);
 	font-size: 14px;
 	display: flex;
 	padding: 4px 10px;
 	align-items: flex-start;
 	// gap: 10px;
-	color: var(--text-primary, #1F2023);
+	color: map-get($color, text-primary);
 }
 
 .name {
 	font-size: 28px;
-	color: var(--text-primary, #1F2023);
+	color: map-get($color, text-primary);
 }

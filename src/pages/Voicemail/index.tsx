@@ -11,14 +11,14 @@ import BaseLayout from "../../layouts/BaseLayout";
 
 const Voicemail = () => {
 	return (
-		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+		<div className={styles.voicemail}>
 			<BaseLayout>
-				<section className={`${styles.main}`}>
+				<section className={styles.main}>
 					<div className={styles.header}>
 						<Header />
 					</div>
 
-					<div className={`${styles.body}`}>
+					<div className={styles.body}>
 						{false && (
 							<div className={styles.noVoiceBox}>
 								<NoVoicemail />

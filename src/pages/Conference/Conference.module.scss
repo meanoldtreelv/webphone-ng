@@ -1,8 +1,21 @@
-.rightCont{
+.conference {
 	position: relative;
+	width: 100%;
+	height: 100vh;
 }
 
-.body{
+.recent {
+	display: flex;
+}
+
+.rightCont {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.body {
 	max-width: 950px;
 	margin-left: auto;
 	margin-right: auto;

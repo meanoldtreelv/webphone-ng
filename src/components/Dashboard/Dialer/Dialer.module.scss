@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .dialer {
 	width: 100%;
 	height: 100vh;
@@ -24,12 +26,12 @@
 			height: 100%;
 			z-index: -10;
 			position: absolute;
-			color: #ecf5fe;
+			color: map-get($color, blue-color-100);
 		}
 	}
 
 	&_details {
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+		background: map-get($color, linear-bg-2);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -43,13 +45,13 @@
 	&_profile {
 		flex-shrink: 0;
 		border-radius: 48px;
-		background: var(--accent-blue-primary, #3b9ef7);
+		background: map-get($color, accent-blue-primary);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: var(--accent-blue-label, #fff);
+		color: map-get($color, background-primary);
 		font-size: 32px;
-		
+
 		span {
 			display: flex;
 			align-items: center;
@@ -57,35 +59,35 @@
 			width: 96px;
 			height: 96px;
 			font-size: 0.85em;
-			background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
+			background: map-get($color, linear-bg);
 		}
 	}
 
 	h1 {
 		font-size: 28px;
-		color: #1f2023;
+		color: map-get($color, text-primary);
 	}
 
 	&_number {
 		font-size: 20px;
-		color: #5c6168;
+		color: map-get($color, text-secondary-2);
 	}
 
 	&_dialing {
-		color: #5c6168;
+		color: map-get($color, text-secondary-2);
 	}
 
 	&_timer {
 		border-radius: 22px;
-		border: 1px solid  #e3eaf2;
-		background: #fff;
+		border: 1px solid map-get($color, border-tertiary);
+		background: map-get($color, background-primary);
 		padding: 4px 10px;
-		color: #1f2023;
+		color: map-get($color, text-primary);
 	}
 
 	&_text {
 		font-size: 11px;
-		color: #1f2023;
+		color: map-get($color, text-primary);
 	}
 
 	&_box {
@@ -117,7 +119,6 @@
 		height: 84px;
 		justify-content: center;
 		align-items: center;
-
 		border-radius: 48px;
 		cursor: pointer;
 	}
@@ -129,13 +130,11 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
 		cursor: pointer;
 	}
 
 	&_endButton {
-		background: #ee3939;
-
+		background: map-get($color, support-danger-default);
 		border-radius: 50%;
 	}
 }
