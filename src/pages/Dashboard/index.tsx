@@ -125,7 +125,7 @@ const Dashboard = () => {
 		// );
 	}, []);
 	return (
-		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}

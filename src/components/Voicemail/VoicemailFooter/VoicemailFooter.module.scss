@@ -16,9 +16,18 @@
 	border-top: 1px solid var(--border-tertiary, #e3eaf2);
 	background: var(--background-secondary, #fff);
 	// opacity: 0.8;
-
 	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
+
+	&_name, &_currentprogress, &_totalDuration {
+		font-size: 13px;
+		color: var(--text-primary, #1F2023);
+	}
+
+	&_month, &_date, &_year, &_time, &_morning {
+		font-size: 13px;
+		color: var(--text-secondary, #5C6168);
+	}
 
 	&_actionBtn {
 		display: flex;

@@ -1,3 +1,5 @@
+@import './../../../sass/abstracts/variables';
+
 .conferenceHeader {
 	display: flex;
 	padding: 11px 25px;
@@ -6,10 +8,10 @@
 	justify-content: space-between;
 	align-items: center;
 	opacity: 0.8;
-	background: #fff;
+	background: map-get($color, background-primary);
 
 	h2 {
-		color: #1f2023;
+		color: map-get($color, text-primary);
 		font-size: 16px;
 	}
 }
@@ -24,12 +26,12 @@
 		padding: 8px 10px;
 		margin-right: 15px;
 		border-radius: 8px;
-		border: 1px solid #91a0b5;
+		border: 1px solid map-get($color, border-primary);
 
 		span {
 			font-size: 13px;
 			margin-left: 4px;
-			color: #1f2023;
+			color: map-get($color, text-primary);
 		}
 	}
 }
@@ -40,7 +42,7 @@
 	align-items: center;
 	padding: 8px 10px;
 	font-size: 13px;
-	color: #fff;
+	color: map-get($color, background-primary);
 	border-radius: 8px;
-	background: #0c6dc7;
+	background: map-get($color, primary-default);
 }

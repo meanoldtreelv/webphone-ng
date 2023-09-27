@@ -34,8 +34,7 @@
 	align-self: stretch;
 
 	border-radius: 8px;
-	background: var(--background-tertiary, #f7f9fc);
-
+	background: map-get($color, background-tertiary);
 	width: 100%;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .contactInfoText{
-		color: var(--primary-default, #0C6DC7);
+		color: map-get($color, primary-default);
 		cursor: pointer;
 		font-size: 13px;
 		font-weight: bold;
@@ -65,10 +64,8 @@
 		justify-content: center;
 		align-items: center;
 		gap: 4px;
-
 		border-radius: 8px;
-		background: var(--primary-default, #0c6dc7);
-
+		background: map-get($color, primary-default);
 		cursor: pointer;
 	}
 }

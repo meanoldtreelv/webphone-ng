@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .contact {
 	height: 54px;
 	display: flex;
@@ -15,9 +17,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: #fff;
+		color: map-get($color, background-primary);
 		border-radius: 32px;
-		background: #75c322;
+		background: map-get($color, green-color-600);
 	}
 
 	&_name {
@@ -27,6 +29,6 @@
 	}
 
 	&:hover {
-		background: var(--background-active, rgba(25, 138, 240, 0.1));
+		background: map-get($color, background-active);
 	}
 }

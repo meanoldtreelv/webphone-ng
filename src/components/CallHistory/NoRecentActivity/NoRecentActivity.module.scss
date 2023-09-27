@@ -33,6 +33,6 @@
 	align-items: center;
 	gap: 4px;
 	border-radius: 8px;
-	background: var(--primary-default, #0c6dc7);
+	background: map-get($color, primary-default);
 	margin-top: 20px;
 }

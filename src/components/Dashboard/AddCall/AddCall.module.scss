@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .dialpad_container {
 	width: 100%;
 	height: 100%;
@@ -36,6 +38,6 @@
 		justify-content: center;
 		align-items: center;
 		margin: auto;
-		background: #c8d3e0;
+		background: map-get($color, border-secondary);
 	}
 }

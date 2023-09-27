@@ -1,3 +1,5 @@
+@import './../../../sass/abstracts/variables';
+
 .card{
     width: 76px;
     display: flex;
@@ -20,12 +22,12 @@
     align-items: center;
     justify-content: center;
     border-radius: 48px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.00) 50.52%);
-    background-color: #75C322;
+    background: map-get($color, linear-bg);
+    background-color: map-get($color, green-color-600);
 }
 
 .initials{
-    color: var(--accent-green-label, #FFF);
+    color: map-get($color, background-primary);
     font-family: Poppins;
     font-size: 20px;
     font-style: normal;
@@ -41,11 +43,11 @@
 
     > p {
         font-size: 11px;
-        color: #1f2023;
+        color: map-get($color, text-primary);
     }
 
     span {
         font-size: 11px;
-        color: #1480e1;
+        color: map-get($color, text-link);
     }
 }

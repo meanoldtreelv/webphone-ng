@@ -25,11 +25,14 @@
     &_join {
       color: var(--text-link);
       margin-bottom: 5px;
+      font-size: 22px;
+      font-weight: 600;
     }
   
     &_doMore {
       color: var(--text-secondary);
       margin-bottom: 40px;
+      font-size: 14px;
     }
   
     &_continueRingplan {
@@ -61,6 +64,7 @@
       color: var(--text-tertiary, #9298a0);
       text-align: center;
       margin-bottom: 20px;
+      font-size: 13px;
     }
   
     &_inputBox {

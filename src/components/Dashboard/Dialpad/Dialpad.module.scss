@@ -1,3 +1,5 @@
+@import './../../../sass/abstracts/variables';
+
 .dialpad {
 	width: 300px;
 	display: flex;
@@ -20,7 +22,7 @@
 			//   margin-right: 50px;
 			padding: 5px 55px;
 			width: 100%;
-			color: var(--text-tertiary, #9298a0);
+			color: map-get($color, grey-color-60);
 			text-align: center;
 		}
 	}
@@ -34,35 +36,29 @@
 	&_key {
 		width: 64px;
 		height: 64px;
-
 		border-radius: 48px;
-		background: var(--background-tertiary, #f7f9fc);
-
+		background: map-get($color, background-tertiary);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		// place-items: center;
 		margin: auto;
-
 		& span {
-			color: var(--text-primary, #1f2023);
-
+			color: map-get($color, text-primary);
 			font-weight: 400;
 		}
 
 		& p {
-			color: var(--text-secondary, #5c6168);
+			color: map-get($color, text-secondary-2);
 		}
 	}
 
 	&_key2 {
 		width: 64px;
 		height: 64px;
-
 		border-radius: 48px;
 		// background: var(--background-tertiary, #f7f9fc);
-
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -84,7 +80,7 @@
 	height: 40px;
 	width: 100%;
 	text-align: center;
-	// shoould remain hidden for the timebeing 
+	// shoould remain hidden for the timebeing
 	overflow-x: hidden;
 	font-size: 28px;
 }

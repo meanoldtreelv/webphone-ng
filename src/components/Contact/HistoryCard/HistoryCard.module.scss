@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .historyCard {
 	display: flex;
 	justify-content: space-between;
@@ -8,7 +10,7 @@
 	padding: 7px 16px;
 
 	&:hover {
-		background: var(--background-hover, rgba(145, 160, 181, 0.1));
+		background: map-get($color, opacity-neutral-10);
 	}
 }
 
@@ -29,7 +31,7 @@
 
 .cardCallTime {
 	font-size: 13px;
-	color: #9298a0;
+	color: map-get($color, grey-color-60);
 	text-align: right;
 }
 

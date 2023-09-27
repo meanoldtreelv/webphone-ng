@@ -1,3 +1,5 @@
+@import './../../../sass/abstracts/variables';
+
 .noContact {
 	width: 100%;
 	height: calc(100% - 54px);
@@ -18,13 +20,13 @@
 	}
 
 	&_head {
-		color: #1f2023;
+		color: map-get($color, text-primary);
 		font-size: 20px;
 		font-weight: 600 !important;
 	}
 
 	&_info {
 		font-size: 14px;
-		color: #5c6168;
+		color: map-get($color, text-secondary-2);
 	}
 }

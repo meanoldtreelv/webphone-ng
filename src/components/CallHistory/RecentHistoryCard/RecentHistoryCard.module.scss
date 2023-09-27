@@ -11,7 +11,7 @@
 	padding: 7px 16px 7px 0;
 
 	&:hover {
-		background: var(--background-active, rgba(25, 138, 240, 0.1));
+		background: map-get($color, background-active);
 	}
 }
 
@@ -32,7 +32,7 @@
 		// background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
 
 		& span {
-			color: var(--accent-blue-label, #fff);
+			color: map-get($color, accent-blue-label)
 		}
 	}
 
