@@ -1,11 +1,13 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .noContact {
 	width: 100%;
 	height: 100%;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	margin: auto;
 
 	&_box {
 		width: 280px;
@@ -24,15 +26,4 @@
 	p {
 		color: map-get($color, text-secondary);
 	}
-}
-
-.button {
-	display: inline-flex;
-	padding: 11px 12px;
-	justify-content: center;
-	align-items: center;
-	gap: 4px;
-	border-radius: 8px;
-	background: var(--primary-default, #0c6dc7);
-	margin-top: 20px;
 }

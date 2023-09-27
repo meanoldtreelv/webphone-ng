@@ -1,15 +1,24 @@
-.recent{
-    width: 100%;
-    height: 100%;
+.noRecentBox {
+	width: 100%;
+	height: 100%;
+}
+
+.recent {
+	width: 100%;
+	height: 100%;
+	display: flex;
 }
 
 .header {
-	// position: fixed;
+	position: fixed;
 	top: 0;
 	width: 100%;
 	z-index: 3;
 }
 
-.rightCont{
+.rightCont {
 	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 }

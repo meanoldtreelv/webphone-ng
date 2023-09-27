@@ -1,4 +1,4 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .contactDetails {
 	width: 100%;
@@ -7,6 +7,7 @@
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	padding-top: 54px;
 
 	&_box {
 		width: 550px;
@@ -34,7 +35,8 @@
 	align-self: stretch;
 
 	border-radius: 8px;
-	background: var(--background-tertiary, #f7f9fc);
+	// background: var(--background-tertiary, #f7f9fc);
+	background: map-get($color, background-tertiary);
 
 	width: 100%;
 }
@@ -48,11 +50,12 @@
 	align-self: stretch;
 }
 
-.contactInfoText{
-		color: var(--primary-default, #0C6DC7);
-		cursor: pointer;
-		font-size: 13px;
-		font-weight: bold;
+.contactInfoText {
+	// color: var(--primary-default, #0c6dc7);
+	color: map-get($color, primary-default);
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: bold;
 }
 
 .iconBox {
@@ -67,7 +70,8 @@
 		gap: 4px;
 
 		border-radius: 8px;
-		background: var(--primary-default, #0c6dc7);
+		// background: var(--primary-default, #0c6dc7);
+		background: map-get($color, primary-default);
 
 		cursor: pointer;
 	}
@@ -84,9 +88,10 @@
 	p {
 		font-size: 11px;
 		padding: 2px 4px;
-		color: map-get($color, text-secondary)
+		color: map-get($color, text-secondary);
 	}
 }
+
 .noHistory_box {
 	width: 100%;
 	height: 100%;
@@ -122,4 +127,5 @@
 	text-align: left;
 	width: 100%;
 	font-size: 13px;
+	padding-left: 15px;
 }

@@ -1,5 +1,4 @@
 import styles from "./NoRecordSelected.module.scss";
-
 import noSelectedImg from "./../../../assets/images/icon/no_selected.svg";
 
 const NoRecordSelected = () => {
