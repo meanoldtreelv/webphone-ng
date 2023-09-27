@@ -2,15 +2,17 @@ import styles from "./RecentsSidebar.module.scss";
 import RecentHistoryCard from "../RecentHistoryCard";
 import DeleteIcon from "components/UI/Icons/Delete";
 import Calendar from "components/UI/Icons/Calendar";
+import SearchBar from "components/UI/SearchBar";
 import SearchIcon from "components/UI/Icons/Search";
 
 const RecentsSidebar = () => {
 	return (
 		<div className={styles.contact}>
-			<div className={styles.contact_search}>
+			{/* <div className={styles.contact_search}>
 				<input type="text" placeholder="Search number" />
 				<SearchIcon />
-			</div>
+			</div> */}
+			<SearchBar />
 
 			<div className={styles.list}>
 				<div className={styles.contact_sectionInfo}>
@@ -33,6 +35,10 @@ const RecentsSidebar = () => {
 					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />
+					<RecentHistoryCard />
+					<RecentHistoryCard />
+					<RecentHistoryCard />
+					<RecentHistoryCard />
 				</div>
 
 				<div className={styles.contact_sectionInfo}>
@@ -43,10 +49,6 @@ const RecentsSidebar = () => {
 					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
 				</div>
 
 				<div className={styles.contact_sectionInfo}>
@@ -54,10 +56,6 @@ const RecentsSidebar = () => {
 				</div>
 
 				<div>
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />

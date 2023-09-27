@@ -71,7 +71,7 @@ const Sidebar = () => {
 			unread: 1,
 		},
 		{
-			path: routePaths.CONFERENCE.ROUTE,
+			path: routePaths.CALL_HISTORY.ROUTE,
 			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 			name: "Recent",
 			unread: 1,

@@ -6,14 +6,23 @@ import RecentsSidebar from "../../components/CallHistory/RecentsSidebar";
 import ContactDetails from "../../components/CallHistory/ContactDetails";
 import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "../../components/Modal/PromptDialog";
+import { useSelector } from "react-redux";
+import { callHistory } from "redux/call-history/callHistorySelectors";
 
 const CallHistory = () => {
+	const CallHistory = useSelector(callHistory);
+
 	return (
 		<div className={styles.callHistory}>
 			<BaseLayout>
-				{false && <NoRecentActivity />}
-
-				{true && (
+				{CallHistory.length === 0 ? (
+					<>
+						<NoRecentActivity />
+						<div className={styles.header}>
+							<Header />
+						</div>
+					</>
+				) : (
 					<section className={styles.recent}>
 						<RecentsSidebar />
 

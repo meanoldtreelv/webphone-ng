@@ -8,7 +8,7 @@
 	height: 54px;
 	align-self: stretch;
 	border-radius: 8px;
-	padding: 7px 16px 7px 0;
+	padding: 7px 16px 7px 7px;
 
 	&:hover {
 		background: map-get($color, background-active);
@@ -29,10 +29,9 @@
 		background: map-get($color, accent-blue-primary);
 		border-radius: 32px;
 		// this needs fixing
-		// background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
 
 		& span {
-			color: map-get($color, accent-blue-label)
+			color: map-get($color, accent-blue-label);
 		}
 	}
 
@@ -43,7 +42,15 @@
 
 			span {
 				margin-right: 4px;
+				color: map-get($color, text-secondary);
 			}
 		}
+	}
+}
+
+.cardRight {
+	p {
+		text-align: right;
+		color: map-get($color, text-tertiary);
 	}
 }

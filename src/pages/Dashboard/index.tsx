@@ -28,7 +28,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { useGetContactsQuery } from "./../../services/contact";
-import { addCall, callDailer, callEnding, callInProgress, transferCall } from './../../redux/call/callSelectors';
+import { addCall, callDailer, callEnding, callInProgress, transferCall } from "./../../redux/call/callSelectors";
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
 

@@ -1,16 +1,17 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .header {
-  height: 54px;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  border-bottom: 1px solid map-get($color, border-tertiary);
-  backdrop-filter: blur(16px);
-  opacity: 0.8;
-  background: map-get($color, background-primary);
+	height: 54px;
+	display: flex;
+	align-items: center;
+	padding: 0 24px;
+	border-bottom: 1px solid map-get($color, border-tertiary);
+	backdrop-filter: blur(16px);
+	opacity: 0.8;
+	// background: var(--background-primary, #fff);
+	background: map-get($color, background-primary);
 
-  h3 {
-    font-size: 1.15em;
-  }
+	h3 {
+		font-size: 1.15em;
+	}
 }
