@@ -29,7 +29,7 @@ const sipSlice = createSlice({
   initialState: {
     authMessage: "",
     authLoading: false,
-    extAuth: true, //login by ext
+    extAuth: false, //login by ext
     extNumber: null as number | null, 
     ringingInboundCalls: [] as inboundCall[],
     ringingInboundCallActive:0,
@@ -42,6 +42,9 @@ const sipSlice = createSlice({
   reducers: {
     authMessage: (state, action) =>  {
       state.authMessage = action.payload
+    },
+    extAuth: (state, action) =>  {
+      state.extAuth = action.payload
     },
     extNumber: (state, action) =>  {
       state.extNumber = action.payload
@@ -252,5 +255,5 @@ const sipSlice = createSlice({
   },
 })
 
-export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive} = sipSlice.actions
+export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth} = sipSlice.actions
 export default  sipSlice.reducer;

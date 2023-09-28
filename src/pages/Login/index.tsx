@@ -14,13 +14,15 @@ import {useEffect, useState} from "react"
 import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip"
+import {store} from '../../redux/store'
 
 const Login = () => {
 	const navigate = useNavigate();
 
 	const onContinueWithRingplan = () => {
+		store.dispatch({type:"sip/extAuth", payload:false});
 		navigate("/dashboard"); // Remove the extra parentheses
-	};
+	}
 
 	interface FormData {
 		extension?: string,
@@ -32,6 +34,7 @@ const Login = () => {
 	}
 	const [form, setForm] = useState<FormData>({extension:"", secret:"", server:"zraytechnoloDoobh.ringplan.com"});
 	const loginWithExtension = ()=>{
+		store.dispatch({type:"sip/extAuth", payload:true});
 		(form?.extension === "") ? setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: ""}});
 		(form?.server === "") ? setForm((prevState)=>{return{ ...prevState, serverErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, serverErrorMsg: ""}});
 		(form?.secret === "") ? setForm((prevState)=>{return{ ...prevState, secretErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, secretErrorMsg: ""}});
