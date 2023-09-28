@@ -5,11 +5,13 @@ import settingReducer from "./setting/settingSlice";
 import commonReducer from "./common/commonSlice";
 import callHistoryReducer from "./call-history/callHistorySlice";
 import { apiService } from "./../services/api";
+import sipReducer from "./sip"
 
 export const store = configureStore({
 	reducer: {
 		contact: contactReducer,
 		calling: callingReducer,
+        sip: sipReducer,
 		common: commonReducer,
 		setting: settingReducer,
 		callHistory: callHistoryReducer,

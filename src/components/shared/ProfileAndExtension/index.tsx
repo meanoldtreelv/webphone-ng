@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./ProfileAndExtension.module.scss";
 import EditExtension from "components/Extension";
 import ProfileMenu from "components/Profile/ProfileMenu";
+import { useSelector } from "react-redux";
 
 const ProfileAndExtension = () => {
 	const [isExtensionOpen, setIsExtensionOpen] = useState(false);
@@ -10,6 +11,7 @@ const ProfileAndExtension = () => {
 
 	const [editExtension, setEditExtension] = useState(0);
 
+	const { extNumber, extAuth } = useSelector((state: any) => state.sip)
 	const extensionData = [
 		{ name: "Test 1", extension: 1001, active: true },
 		{ name: "Test 2", extension: 1002, active: false },
@@ -20,9 +22,9 @@ const ProfileAndExtension = () => {
 			<span
 				className={styles.extension}
 				onClick={() => {
-					setIsExtensionOpen(!isExtensionOpen);
+          setIsExtensionOpen(extAuth?false:!isExtensionOpen) ;
 				}}>
-				80984
+				{extNumber ? extNumber : "Not Registered"}
 			</span>
 			<span
 				className={styles.profile}
@@ -228,7 +230,7 @@ const ProfileAndExtension = () => {
 				</div>
 			)}
 
-			{isProfileOpen && <ProfileMenu />}
+			{isProfileOpen && <ProfileMenu extAuth={extAuth} />}
 
 			{/* {isEditBoxOpen && <EditExtension />} */}
 		</div>

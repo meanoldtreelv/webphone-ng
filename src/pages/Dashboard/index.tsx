@@ -31,6 +31,7 @@ import { useGetContactsQuery } from "./../../services/contact";
 import { addCall, callDailer, callEnding, callInProgress, transferCall } from "./../../redux/call/callSelectors";
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
+import DTMF from "components/Dashboard/DTMF";
 
 const Dashboard = () => {
 	const { data } = useGetContactsQuery(null);
@@ -41,6 +42,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	const isCallEnded = useSelector(callEnding);
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip)
 
 	useEffect(() => {
 		dispatch(setContactList(data));
@@ -134,30 +136,34 @@ const Dashboard = () => {
 					</div>
 
 					{/* This is a dial pad components for calling */}
-					{isDialerActive && (
-						<div className={styles.dialpad}>
-							<KeyPad />
-						</div>
-					)}
+					{
+						answeredCalls.length < 1 && ringingOutboundCalls.length < 1 ? (
+							<div className={styles.dialpad}>
+								<KeyPad />
+							</div>
+						) : null
+					}
 
 					{/* When call is in progress this component will be shown  */}
-					{isCallInProgress && <Dialer />}
+					{/* {isCallInProgress && <Dialer />} */}
+
+					{ (answeredCalls.length > 0 || ringingOutboundCalls.length > 0) && !isCallEnded ? <Dialer /> : null}
 
 					{/* to add a call in progress call we will call this component */}
 					{isCallAdded && <AddCall />}
-
+					{/* <DTMF /> */}
 					{/* to transfer the call to another number we call this component */}
 					{isCallTransfer && <TransferCall />}
 
 					{/* after clicking on end button this screen will be shown  */}
 					{isCallEnded && <EndCall />}
-
+					
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}
 
 					<div className={styles.profileAndExtension}>
 						{/* this is a profile and extension components which is shown at top right of the screen  */}
-						{/* <ProfileAndExtension /> */}
+						<ProfileAndExtension />
 
 						{/* this is a signal component which have top show at top of the screen to show signal strength */}
 						{/* <Signal /> */}
@@ -177,7 +183,8 @@ const Dashboard = () => {
 			{/* <LogoutPopUp /> */}
 
 			{/* incoming call components */}
-			{/* <InboundCall /> */}
+
+			{ringingInboundCalls.length > 0 ? <InboundCall /> : null}
 		</div>
 	);
 };

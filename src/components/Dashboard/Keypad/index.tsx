@@ -5,14 +5,15 @@ import { progressCall, setCallNumber } from "./../../../redux/call/callSlice";
 import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
 import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
+import sip from "../../../lib/sip"
 
 const Keypad = () => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber);
 
 	const callingHandler = () => {
-		dispatch(progressCall());
-	};
+		// dispatch(progressCall());
+	}
 
 	const modifyNumber = () => {
 		if (number.length) {
@@ -25,7 +26,7 @@ const Keypad = () => {
 		<div className={styles.dialpad}>
 			<Dialpad />
 			<div className={styles.dialpad_keypad}>
-				<button className={styles.dialpad_key2}>
+				<div className={styles.dialpad_key2}>
 					{/* here lies add user icon, pass props and use the icon */}
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / add_user">
@@ -39,11 +40,11 @@ const Keypad = () => {
 							/>
 						</g>
 					</svg>
-				</button>
-				<button
-					className={[styles.dialpad_key2, styles.dialpad_phone].join(" ")}
-					style={{ background: "" }}
-					onClick={callingHandler}>
+				</div>
+				<div
+					className={styles.dialpad_key2}
+					style={{ background: number.length? "var(--primary-active, #074177)" : "var(--primary-disabled, #C8D3E0)"}}
+					onClick={()=>{sip.call(number)}}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="fill / phone">
@@ -54,15 +55,15 @@ const Keypad = () => {
 							/>
 						</g>
 					</svg>
-				</button>
-				<button>
+				</div>
+				<div >
 					<button className={styles.dialpad_key2} onClick={modifyNumber}>
 						<BackspaceIcon />
 					</button>
 					{/* replace the above button with this, the above is only for testing */}
 					{/* <Button>
 					</Button> */}
-				</button>
+				</div>
 			</div>
 		</div>
 	);

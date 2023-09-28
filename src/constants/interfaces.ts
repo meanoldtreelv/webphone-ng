@@ -10,7 +10,7 @@ export interface IButton {
 }
 
 export interface IInput {
-	onChange?: (event: ChangeEvent<HTMLInputElement>) => {};
+	onChange?: (event: ChangeEvent<HTMLInputElement>) => {} | void;
 	placeholder?: string;
 	required?: boolean;
 	type?: string;

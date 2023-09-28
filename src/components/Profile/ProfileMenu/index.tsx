@@ -1,6 +1,5 @@
 import styles from "./ProfileMenu.module.scss";
-
-const ProfileMenu = () => {
+const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 	return (
 		<div className={styles.profile}>
 			<div className={styles.profile_nameBox}>
@@ -8,7 +7,8 @@ const ProfileMenu = () => {
 				<span className={styles.profile_name}>Valentyn S.</span>
 			</div>
 			<div className={styles.profile_settingBox}>
-				<div className={styles.profile_settingBox_item}>
+				{!extAuth?(
+					<div className={styles.profile_settingBox_item}>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / user">
 							<path
@@ -23,6 +23,8 @@ const ProfileMenu = () => {
 					</svg>
 					<span>Account Settings</span>
 				</div>
+				):null}
+				
 				<div className={styles.profile_settingBox_item}>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / add_emoji" clipPath="url(#clip0_2254_30482)">
