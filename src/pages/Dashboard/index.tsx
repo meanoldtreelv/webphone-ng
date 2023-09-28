@@ -15,7 +15,7 @@ import AddCall from "../../components/Dashboard/AddCall";
 import TransferCall from "../../components/Dashboard/TransferCall";
 import Signal from "../../components/TinyComponents/Signal";
 import LogoutPopUp from "../../components/Profile/LogoutPopup";
-import InboundCall from "../../components/shared/InboundCall/InboundCall";
+import InboundCall from "../../components/shared/InboundCall";
 import {
 	GET_Contact_List_API,
 	// account_API,
@@ -28,7 +28,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { useGetContactsQuery } from "./../../services/contact";
-import { addCall, callDailer, callEnding, callInProgress, transferCall } from './../../redux/call/callSelectors';
+import { addCall, callDailer, callEnding, callInProgress, transferCall } from "./../../redux/call/callSelectors";
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
 import DTMF from "components/Dashboard/DTMF";
@@ -127,7 +127,7 @@ const Dashboard = () => {
 		// );
 	}, []);
 	return (
-		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}

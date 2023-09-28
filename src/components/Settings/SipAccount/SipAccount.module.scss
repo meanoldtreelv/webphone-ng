@@ -1,0 +1,62 @@
+.account {
+	width: 650px;
+	margin: auto;
+	padding: 30px;
+	overflow-y: auto;
+}
+
+.heading {
+	color: var(--text-primary, #1f2023);
+	padding: 12px;
+}
+
+.sipAddressBox {
+	border-radius: 8px;
+	background: var(--background-tertiary, #f7f9fc);
+	padding: 12px;
+}
+
+.addressHeading {
+	color: var(--text-secondary, #5c6168);
+}
+
+.address {
+	color: var(--text-primary, #1f2023);
+}
+
+.heading2 {
+	border-radius: 8px;
+	background: var(--background-tertiary, #f7f9fc);
+
+	color: var(--text-secondary, #5c6168);
+	padding: 12px;
+
+	display: flex;
+	justify-content: space-between;
+}
+
+.sipAccount {
+	border-bottom: 1px solid var(--border-tertiary, #e3eaf2);
+	padding: 12px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&_id {
+		span {
+			color: var(--text-link, #1480e1);
+		}
+	}
+
+	&_actions {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 15px;
+
+		span {
+			cursor: pointer;
+		}
+	}
+}

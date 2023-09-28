@@ -4,7 +4,7 @@ import TransferCallCard from "../TransferCallCard";
 
 import { useSelector } from "react-redux";
 
-import dummyProfileImg from './../../../assets/images/img/dummy/profile.png';
+import dummyProfileImg from "./../../../assets/images/img/dummy/profile.png";
 import PhoneAddIcon from "./../../../components/UI/Icons/Call/CallAdd";
 import CallTransferIcon from "./../../../components/UI/Icons/Call/CallTransfer";
 import CallCameraIcon from "./../../../components/UI/Icons/Call/CallCamera";

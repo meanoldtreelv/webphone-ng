@@ -1,8 +1,9 @@
+@import "./../../../sass/abstracts/variables";
+
 .overlay {
 	width: 100vw;
 	height: 100%;
-	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
-	// background-color: red;
+	background: map-get($color, overlay-primary);
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -14,56 +15,46 @@
 	position: fixed;
 	top: 0px;
 	right: 0;
-
 	width: 560px;
 	height: 100vh;
 	flex-shrink: 0;
-
-	//   opacity: 0.8;
-	background: var(--background-secondary, #fff);
-
+	background: map-get($color, background-primary);
 	display: flex;
 	flex-direction: column;
-
 	z-index: 1000;
-
 	display: flex;
 	flex-direction: column;
 	gap: 35px;
+
+	&_header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 }
 .contact_data {
 	overflow: auto;
 	padding: 10px;
-
 	display: flex;
 	flex-direction: column;
 	gap: 35px;
-
 	height: 100%;
 
-	/* Style the main scrollbar */
 	&::-webkit-scrollbar {
-		width: 2px; /* Width of the scrollbar */
-		// background-color: red;
+		width: 2px;
 	}
 
-	/* Style the thumb (the draggable part of the scrollbar) */
 	::-webkit-scrollbar-thumb {
-		background-color: #888; /* Color of the thumb */
-		border-radius: 5px; /* Rounded corners for the thumb */
-		// background-color: red;
+		background-color: #888;
+		border-radius: 5px;
 	}
 
-	/* Style the track (the area where the thumb moves) */
 	::-webkit-scrollbar-track {
-		background-color: #f0f0f0; /* Color of the track */
-		// background-color: red;
+		background-color: #f0f0f0;
 	}
 
-	/* Style the scrollbar corner (if needed) */
 	::-webkit-scrollbar-corner {
-		background-color: #ccc; /* Color of the corner */
-		// background-color: red;
+		background-color: #ccc;
 	}
 }
 
@@ -71,10 +62,8 @@
 	width: 74px;
 	height: 74px;
 	flex-shrink: 0;
-
 	border-radius: 48px;
-	background: var(--accent-grey-secondary, #e3eaf2);
-
+	background: map-get($color, border-tertiary);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -85,16 +74,12 @@
 	padding: 7px 8px;
 	justify-content: center;
 	align-items: center;
-	// gap: 4px;
-
 	border-radius: 8px;
-	border: 1px solid var(--border-primary, #91a0b5);
-
+	border: 1px solid map-get($color, border-primary);
 	width: 105px;
 	height: 32px;
 }
-.box {
-}
+
 .box_heding {
 	margin-bottom: 10px;
 }
@@ -102,15 +87,13 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
-
+	border-bottom: 1px solid map-get($color, border-secondary);
 	padding: 11px 0px;
-	// align-items: flex-start;
 	gap: 8px;
 	align-self: stretch;
 
 	& label {
-		color: var(--text-secondary, #5c6168);
+		color: map-get($color, text-secondary-2);
 		width: fit-content;
 		white-space: nowrap;
 	}
@@ -133,13 +116,10 @@
 	justify-content: center;
 	align-items: center;
 	gap: 4px;
-
 	border-radius: 8px;
-	border: 1px solid var(--border-primary, #91a0b5);
-
+	border: 1px solid map-get($color, border-primary);
 	height: 32px;
 	width: fit-content;
-
 	cursor: pointer;
 }
 
@@ -149,15 +129,11 @@
 	justify-content: center;
 	align-items: center;
 	gap: 4px;
-
 	border-radius: 8px;
 	border: 1px solid transparent;
-	background: var(--primary-default, #0c6dc7);
-
+	background: map-get($color, primary-default);
 	height: 32px;
-
 	width: fit-content;
-
 	cursor: pointer;
 }
 

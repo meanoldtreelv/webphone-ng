@@ -1,3 +1,5 @@
+@import "./../../../sass/abstracts/variables";
+
 .noContact {
 	width: 100%;
 	height: calc(100% - 54px);
@@ -5,7 +7,6 @@
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	// background-color: red;
 
 	&_box {
 		width: 280px;
@@ -18,7 +19,11 @@
 		transform: translateY(-50%);
 	}
 
-	&_head{
-		color: var(--text-primary, #1F2023);
+	h3 {
+		font-size: 1.3em;
+	}
+
+	p {
+		color: map-get($color, text-secondary);
 	}
 }

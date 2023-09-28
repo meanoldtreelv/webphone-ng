@@ -9,18 +9,18 @@ import sip from "../../../lib/sip"
 
 const Keypad = () => {
 	const dispatch = useDispatch();
-	const number = useSelector(callNumber)
+	const number = useSelector(callNumber);
 
 	const callingHandler = () => {
 		// dispatch(progressCall());
 	}
 
 	const modifyNumber = () => {
-		if(number.length) {
+		if (number.length) {
 			const modified_number = number.slice(0, number.length - 1);
 			dispatch(setCallNumber(modified_number));
 		}
-	}
+	};
 
 	return (
 		<div className={styles.dialpad}>

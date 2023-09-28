@@ -6,15 +6,18 @@
 	align-items: center;
 
 	&_boldText {
-		color: var(--text-primary, #1F2023);
+		color: var(--text-primary, #1f2023);
 		margin-top: 24px;
 		margin-bottom: 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 
 	&_text {
-		color: var(--text-secondary, #5C6168);
+		color: var(--text-secondary, #5c6168);
 		max-width: 280px;
 		text-align: center;
+		font-size: 14px;
 	}
 }
 

@@ -1,14 +1,41 @@
+@import "./../../../sass/abstracts/variables";
+
 .historyCard {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-
 	height: 54px;
 	align-self: stretch;
 	border-radius: 8px;
 	padding: 7px 16px;
 
 	&:hover {
-		background: var(--background-hover, rgba(145, 160, 181, 0.1));
+		background: map-get($color, opacity-neutral-10);
 	}
+}
+
+.cardTitle {
+	font-size: 14px;
+}
+
+.cardInfo {
+	display: flex;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.cardContactNumber {
+	margin-left: 5px;
+	font-size: 13px;
+}
+
+.cardCallTime {
+	font-size: 13px;
+	color: map-get($color, grey-color-60);
+	text-align: right;
+}
+
+.cardCallDuration {
+	font-size: 13px;
+	margin-top: 4px;
 }

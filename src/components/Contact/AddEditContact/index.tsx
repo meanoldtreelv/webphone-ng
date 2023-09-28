@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./AddEditContact.module.scss";
 import { Add_contact_API } from "effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
-// import { contactActions } from "../../../app/features/contact/contact.slice";
 import { closeAddContact, setEditContactFalse} from "redux/contact/contactSlice";
 import { addContactOpen, editContactNumber } from "redux/contact/contactSelectors";
 import { GET_Contact_Salutation_API } from "../../../effects/apiEffect";
-
 import accordionPlusImg from './../../../assets/images/icon/btn_accordion_plus.svg';
 import accordionMinusImg from './../../../assets/images/icon/btn_accordion_minus.svg';
 import XIcon from "components/UI/Icons/X";
 import UserIcon from "components/UI/Icons/User/UserSingle";
-// import Input from "components/UI/Forms/Input";
 
 const AddContact = () => {
 	const isAddContactOpen = useSelector(addContactOpen);
@@ -123,7 +120,7 @@ const AddContact = () => {
 	return (
 		<section className={styles.overlay}>
 			<div className={styles.addContact}>
-				<div className={`flex justify-between items-center`}>
+				<div className={styles.addContact_header}>
 					<span className={`sub_headline_bold`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						{contactNumber ? "Edit Contact" : "Add Contact"}
 					</span>

@@ -3,22 +3,9 @@ import styles from "./TransferCallCard.module.scss";
 const TransferCallCard = () => {
 	return (
 		<div className={styles.transfer}>
-			<div
-				className={`caption_2`}
-				style={{
-					color: "var(--text-secondary, #5C6168)",
-					borderBottom: "1px solid var(--border-tertiary, #E3EAF2)",
-				}}>
-				Transfer
-			</div>
+			<div className={styles.cardTitle}>Transfer</div>
 
-			<div
-				className={`caption_1`}
-				style={{
-					color: "var(--text-primary, #1F2023)",
-					borderBottom: "1px solid var(--border-tertiary, #E3EAF2)",
-					cursor: "pointer",
-				}}>
+			<button className={styles.cardOptions}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer">
 						<path
@@ -33,8 +20,8 @@ const TransferCallCard = () => {
 				</svg>
 
 				<span>Transfer Call</span>
-			</div>
-			<div className={`caption_1`} style={{ color: "var(--text-primary, #1F2023)", cursor: "pointer" }}>
+			</button>
+			<button className={styles.cardOptions}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer_2">
 						<path
@@ -49,7 +36,7 @@ const TransferCallCard = () => {
 				</svg>
 
 				<span>Transfer Attended Call</span>
-			</div>
+			</button>
 		</div>
 	);
 };

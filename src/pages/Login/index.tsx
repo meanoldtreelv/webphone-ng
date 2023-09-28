@@ -20,7 +20,7 @@ const Login = () => {
 
 	const onContinueWithRingplan = () => {
 		navigate("/dashboard"); // Remove the extra parentheses
-	}
+	};
 
 	interface FormData {
 		extension?: string,
@@ -52,8 +52,8 @@ const Login = () => {
 			</div>
 			<div className={styles.login_textBox}>
 				<div className={styles.login_text}>
-					<h1 className={`title_2_bold ${styles.login_join}`}>Join the RingPlan Team</h1>
-					<p className={`body ${styles.login_doMore}`}>Do more with Ringplan.</p>
+					<h1 className={styles.login_join}>Join the RingPlan Team</h1>
+					<p className={styles.login_doMore}>Do more with Ringplan.</p>
 
 					<div className={styles.continueRingplan}>
 						<Button onClick={onContinueWithRingplan} icon={<Logo type="ri" />} border>
@@ -61,7 +61,7 @@ const Login = () => {
 						</Button>
 					</div>
 
-					<p className={`caption_1 ${styles.login_withExtension}`}>Or login with extension and secret</p>
+					<p className={styles.login_withExtension}>Or login with extension and secret</p>
 
 					<Input type="text" errorMsg={form?.extensionErrorMsg} value={form?.extension} onChange={(e) => setForm({...form, extension: e.target.value})} placeholder="Enter extension here..." required icon={<ExtensionIcon  />} />
 					<Input type="text" errorMsg={form?.serverErrorMsg} value={form?.server} onChange={(e) => setForm({...form, server: e.target.value})} placeholder="Enter server address here..." required icon={<EnvelopeIcon />} />
@@ -81,4 +81,3 @@ const Login = () => {
 };
 
 export default Login;
-

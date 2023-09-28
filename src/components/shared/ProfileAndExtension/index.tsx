@@ -20,14 +20,14 @@ const ProfileAndExtension = () => {
 	return (
 		<div className={styles.profileExtension}>
 			<span
-				className={`footnote_bold ${styles.extension}`}
+				className={styles.extension}
 				onClick={() => {
           setIsExtensionOpen(extAuth?false:!isExtensionOpen) ;
 				}}>
 				{extNumber ? extNumber : "Not Registered"}
 			</span>
 			<span
-				className={`footnote_bold ${styles.profile}`}
+				className={styles.profile}
 				onClick={() => {
 					setIsProfileOpen(!isProfileOpen);
 				}}>
@@ -48,7 +48,7 @@ const ProfileAndExtension = () => {
 			{isExtensionOpen && (
 				<div className={styles.extensionBox}>
 					<div className={styles.addExtension}>
-						<span className={`sub_headline_bold`}>Extension</span>
+						<span>Extension</span>
 						{/* <svg
               width="18"
               height="18"

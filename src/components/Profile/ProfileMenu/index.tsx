@@ -3,8 +3,8 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 	return (
 		<div className={styles.profile}>
 			<div className={styles.profile_nameBox}>
-				<span className={`sub_headline ${styles.profile_image}`}>VS</span>{" "}
-				<span className={`body_bold ${styles.profile_name}`}>Valentyn S.</span>
+				<span className={styles.profile_image}>VS</span>
+				<span className={styles.profile_name}>Valentyn S.</span>
 			</div>
 			<div className={styles.profile_settingBox}>
 				{!extAuth?(

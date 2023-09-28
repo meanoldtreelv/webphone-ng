@@ -1,9 +1,36 @@
-.bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 30px;
+@import "./../../../sass/abstracts/variables";
 
-  background: var(--status-information, #3b9ef7);
-  backdrop-filter: blur(16px);
+.bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px 30px;
+	color: map-get($color, background-primary);
+	background: map-get($color, accent-blue-primary);
+	backdrop-filter: blur(16px);
+
+	&_info {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 13px;
+
+		> span {
+			color: map-get($color, background-primary);
+		}
+	}
+
+	svg {
+		margin-right: 10px;
+	}
+}
+
+.callName {
+	font-size: 14px;
+	color: map-get($color, background-primary);
+}
+
+.callDuration {
+	font-size: 13px;
+	color: map-get($color, background-primary);
 }

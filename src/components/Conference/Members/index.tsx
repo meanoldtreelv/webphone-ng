@@ -5,40 +5,40 @@ import UserMultiIcon from "./../../../components/UI/Icons/User/UserMulti";
 const Members = () => {
 	return (
 		<div className={styles.members}>
-			<div className={`caption_2 flex gap-x-[2px] items-center ${styles.membersHead}`}>
-				<span>
+			<div className={styles.membersHead}>
+				<div>
 					<UserMultiIcon />
-				</span>
-                <span style={{color: "var(--text-secondary, #5C6168)", }}>Members(9)</span>
+				</div>
+				<span>Members (9)</span>
 			</div>
-            <div className={styles.groupMembers}>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-                <MemberCard/>
-            </div>
+			<div className={styles.groupMembers}>
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+				<MemberCard />
+			</div>
 		</div>
 	);
 };

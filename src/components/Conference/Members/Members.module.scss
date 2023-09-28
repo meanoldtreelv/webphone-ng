@@ -1,9 +1,23 @@
+@import './../../../sass/abstracts/variables';
+
 .members{
     padding: 9px 25px;
 }
 
 .membersHead{
+    display: flex;
     padding: 9px 14px;
+    font-size: 11px;
+    align-items: center;
+
+    > div {
+        margin-right: 5px;
+    }
+
+    > span {
+        color: map-get($color, text-secondary-2);
+        font-size: 12px;
+    }
 }
 
 .groupMembers{

@@ -1,103 +1,109 @@
+@import "./../../../sass/abstracts/variables";
+
 .videoCall {
-  padding: 25px;
-  &_video {
-    border-radius: 12px;
-    overflow: hidden;
-    width: 100%;
-    height: 700px;
+	padding: 25px;
+	&_video {
+		border-radius: 12px;
+		overflow: hidden;
+		width: 100%;
+		height: 700px;
+		position: relative;
+	}
 
-    position: relative;
-  }
+	&_myVideo {
+		position: absolute;
+		bottom: 70px;
+		right: 30px;
+		width: 240px;
+		height: 142px;
+		flex-shrink: 0;
+		// fill: url(<path-to-image>), lightgray 50% / cover no-repeat;
+		stroke-width: 1px;
+		stroke: map-get($color, background-primary);
+		filter: drop-shadow(0px 0px 16px map-get($color, dark-box-shadow));
+		border: 1px solid map-get($color, background-primary);
+		border-radius: 8px;
+		overflow: hidden;
+	}
 
-  &_myVideo {
-    position: absolute;
-    bottom: 70px;
-    right: 30px;
+	&_descriptionBox {
+		width: 100%;
+		height: 64px;
+		flex-shrink: 0;
+		position: absolute;
+		bottom: 0;
+		opacity: 0.8;
+		background: map-get($color, background-primary);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 15px;
+	}
 
-    width: 240px;
-    height: 142px;
-    flex-shrink: 0;
+	&_timer {
+		display: flex;
+		padding: 4px 10px;
+		border-radius: 22px;
+		border: 1px solid map-get($color, border-tertiary);
+		background: map-get($color, background-primary);
+		font-size: 14px;
+		color: map-get($color, text-primary);
+		margin-right: 30px;
+	}
 
-    // fill: url(<path-to-image>), lightgray 50% / cover no-repeat;
-    stroke-width: 1px;
-    stroke: var(--background-primary, #fff);
-    filter: drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.05));
+	&_box {
+		height: 25vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 80px;
+	}
 
-    border: 1px solid var(--background-primary, #fff);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+	&_actionBox {
+		display: flex;
+		justify-content: center;
+		// align-items: center;
+		gap: 30px;
+	}
 
-  &_descriptionBox {
-    width: 100%;
-    height: 64px;
-    flex-shrink: 0;
+	&_action {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+}
 
-    position: absolute;
-    bottom: 0;
+.callName {
+	font-size: 14px;
+	color: map-get($color, text-primary);
+}
 
-    opacity: 0.8;
-    background: var(--background-primary, #fff);
+.callNumber {
+	font-size: 13px;
+	color: map-get($color, text-secondary-2);
+}
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.callInfoRight {
+	display: flex;
+	align-items: center;
+}
 
-    padding: 15px;
-  }
+.iconWrap {
+	display: flex;
+	width: 84px;
+	height: 84px;
+	// padding: 26px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 48px;
+	background: map-get($color, background-tertiary);
+}
 
-  &_timer {
-    display: flex;
-    padding: 4px 10px;
-    // align-items: flex-start;
-    // gap: 10px;
-
-    border-radius: 22px;
-    border: 1px solid var(--border-tertiary, #e3eaf2);
-    background: var(--background-primary, #fff);
-    // opacity: 1;
-  }
-
-  &_box {
-    height: 25vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 80px;
-  }
-
-  &_actionBox {
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-    gap: 30px;
-  }
-
-  &_action {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-
-  &_icon {
-    display: flex;
-    width: 84px;
-    height: 84px;
-    // padding: 26px;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 48px;
-    background: var(--background-tertiary, #f7f9fc);
-  }
-
-  &_endButton {
-    width: 64px;
-    height: 64px;
-    background: var(--support-danger, #ee3939);
-
-    border-radius: 50%;
-  }
+.videoCall_endButton {
+	width: 64px;
+	height: 64px;
+	background: map-get($color, support-danger-default);
+	border-radius: 50%;
 }

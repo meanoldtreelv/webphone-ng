@@ -9,8 +9,8 @@ const MemberCard = () => {
             </span>
         </div>
         <div className={styles.cont2}>
-            <span className='caption_2' style={{color: "var(--text-primary, #1F2023)"}}>Host</span>
-            <span className='caption_2' style={{color: "var(--text-link, #1480E1)"}}>80984</span>
+            <p>Host</p>
+            <span>80984</span>
         </div>
     </div>
   )

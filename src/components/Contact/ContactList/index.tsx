@@ -1,13 +1,12 @@
 import styles from "./ContactList.module.scss";
 import ContactCard from "../ContactCard";
 import { useDispatch, useSelector } from "react-redux";
-import {openAddContact} from "../../../redux/contact/contactSlice";
+import { openAddContact } from "../../../redux/contact/contactSlice";
 import { contactLists } from "redux/contact/contactSelectors";
 import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
 import SearchIcon from "components/UI/Icons/Search";
-import { RootState } from "redux/store";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
@@ -38,13 +37,13 @@ const ContactList = () => {
 			<div className={styles.contact_search}>
 				<input type="text" placeholder="Search number" />
 
-				<span
-					className={`cursor-pointer ${styles.add_contact}`}
+				<button
+					className={styles.add_contact}
 					onClick={() => {
 						dispatch(openAddContact());
 					}}>
 					<UserAddIcon />
-				</span>
+				</button>
 
 				<div className={styles.search_icon}>
 					<SearchIcon />
@@ -53,12 +52,12 @@ const ContactList = () => {
 			<div className={styles.contact_lists}>
 				{/* favourite contact heading */}
 				<div>
-					<p className={`caption_2 ${styles.contact_favorites}`}>
+					<p className={styles.contact_favorites}>
 						<span>
 							<StarIcon />
 							<span>Favorites (3)</span>
 						</span>
-						<span className={` ${styles.contact_sorting}`}>
+						<span className={styles.contact_sorting}>
 							<SortIcon />
 						</span>
 					</p>
@@ -68,17 +67,15 @@ const ContactList = () => {
 
 				{/* frquently contact heading  */}
 				<div>
-					<p className={`caption_2 ${styles.contact_favorites}`}>
-						<span>
-							<span>Frequently Contacted</span>
-						</span>
+					<p className={styles.contact_favorites}>
+						<span>Frequently Contacted</span>
 					</p>
 				</div>
 
 				{/* frequently contact  */}
 				<div>
-					{contactList?.map(contact => (
-						<ContactCard 
+					{contactList?.map((contact) => (
+						<ContactCard
 							id={contact.id}
 							first_name={contact.first_name}
 							last_name={contact.last_name}
@@ -90,7 +87,7 @@ const ContactList = () => {
 				</div>
 				{/* namewise contact heading  */}
 				<div>
-					<p className={`caption_2 ${styles.contact_favorites}`}>
+					<p className={styles.contact_favorites}>
 						<span>
 							<span>A</span>
 						</span>
@@ -99,7 +96,7 @@ const ContactList = () => {
 
 				{/* frequently contact  */}
 				<div>
-					{contactList?.map(contact => (
+					{contactList?.map((contact) => (
 						<ContactCard
 							id={contact.id}
 							first_name={contact.first_name}

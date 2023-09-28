@@ -44,6 +44,12 @@
 			transform: translateY(-50%);
 		}
 	}
+
+	&_pageName{
+		font-size: 16px;
+		font-weight: 600;
+		color: var(--text-primary, #1F2023);
+	}
 }
 
 @media screen and (max-width: 1440px) {

@@ -1,9 +1,11 @@
+@import "./../../../sass/abstracts/variables";
+
 .dialer {
 	width: 100%;
 	height: 100vh;
 
 	&_detailsBox {
-		// background: var(--accent-yellow-tertiary, #fffaeb);
+		background: var(--accent-blue-tertiary);
 		position: relative;
 		overflow: hidden;
 
@@ -24,12 +26,12 @@
 			height: 100%;
 			z-index: -10;
 			position: absolute;
+			color: map-get($color, blue-color-100);
 		}
 	}
 
 	&_details {
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
-
+		background: map-get($color, linear-bg-2);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -41,26 +43,51 @@
 	}
 
 	&_profile {
-		width: 96px;
-		height: 96px;
 		flex-shrink: 0;
-
 		border-radius: 48px;
-		background: var(--accent-blue-primary, #3b9ef7);
-
+		background: map-get($color, accent-blue-primary);
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		color: map-get($color, background-primary);
+		font-size: 32px;
 
-		color: var(--accent-blue-label, #fff);
+		span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 96px;
+			height: 96px;
+			font-size: 0.85em;
+			background: map-get($color, linear-bg);
+		}
+	}
+
+	h1 {
+		font-size: 28px;
+		color: map-get($color, text-primary);
+	}
+
+	&_number {
+		font-size: 20px;
+		color: map-get($color, text-secondary-2);
+	}
+
+	&_dialing {
+		color: map-get($color, text-secondary-2);
 	}
 
 	&_timer {
 		border-radius: 22px;
-		border: 1px solid var(--border-tertiary, #e3eaf2);
-		background: var(--background-primary, #fff);
-
+		border: 1px solid map-get($color, border-tertiary);
+		background: map-get($color, background-primary);
 		padding: 4px 10px;
+		color: map-get($color, text-primary);
+	}
+
+	&_text {
+		font-size: 11px;
+		color: map-get($color, text-primary);
 	}
 
 	&_box {
@@ -74,7 +101,6 @@
 	&_actionBox {
 		display: flex;
 		justify-content: center;
-		// align-items: center;
 		gap: 30px;
 	}
 
@@ -84,23 +110,16 @@
 		justify-content: center;
 		align-items: center;
 		gap: 10px;
-
-		// cursor: pointer;
+		position: relative;
 	}
 
 	&_icon {
 		display: flex;
 		width: 84px;
 		height: 84px;
-		// padding: 26px;
 		justify-content: center;
 		align-items: center;
-
 		border-radius: 48px;
-		// background: var(--background-tertiary, #f7f9fc);
-		// border-radius: 48px;
-		// border: 1px solid var(--border-disabled, #c8d3e0);
-
 		cursor: pointer;
 	}
 
@@ -111,13 +130,11 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
 		cursor: pointer;
 	}
 
 	&_endButton {
-		background: var(--support-danger, #ee3939);
-
+		background: map-get($color, support-danger-default);
 		border-radius: 50%;
 	}
 }

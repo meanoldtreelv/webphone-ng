@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 // import useAuth
-import { IAuthWrapper } from 'constants/interfaces';
-import { useNavigate } from 'react-router';
+import { IAuthWrapper } from "constants/interfaces";
+import { useNavigate } from "react-router";
 
 const AuthWrapper: React.FC<IAuthWrapper> = ({ children }) => {
-//  const { isAuthenticated } = useAuth();
+	//  const { isAuthenticated } = useAuth();
 
-  const { isAuthenticated } = { isAuthenticated: true};
+	const { isAuthenticated } = { isAuthenticated: true };
 
-  if (!isAuthenticated){
-    // redirect to login page
-  }
+	if (!isAuthenticated) {
+		// redirect to login page
+	}
 
-  return <>{children}</>;
+	return <>{children}</>;
 };
 
 export default AuthWrapper;

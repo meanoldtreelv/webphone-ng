@@ -9,16 +9,15 @@ import GroupDetails from "../../components/Conference/GroupDetails";
 
 const Conference = () => {
 	return (
-		<div
-			style={{ position: "relative", width: "100%", height: "100vh"}}>
+		<div className={styles.conference}>
 			<BaseLayout>
 				{false && <StartConference />}
-				
+
 				{true && (
-					<section className={` flex ${styles.recent}`}>
+					<section className={styles.recent}>
 						<GroupList />
 
-						<div className={`w-[100%] flex flex-col ${styles.rightCont}`}>
+						<div className={styles.rightCont}>
 							<div className={styles.body}>
 								<Header />
 								<Members />

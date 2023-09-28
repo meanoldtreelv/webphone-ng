@@ -7,7 +7,7 @@ import ChevronLeftIcon from "./../../../components/UI/Icons/Navigation/ChevronLe
 const AddCall = () => {
 	return (
 		<section className={styles.dialpad_container}>
-			<p className={`sub_headline_bold ${styles.dialpad_addCall}`}>Add Call</p>
+			<h2 className={styles.dialpad_addCall}>Add Call</h2>
 
 			<div className={styles.dialpad}>
 				<Dialpad />
@@ -15,7 +15,7 @@ const AddCall = () => {
 					<div className={styles.dialpad_key2}>
 						<ChevronLeftIcon />
 					</div>
-					<div className={styles.dialpad_key2} style={{ background: "var(--primary-disabled, #C8D3E0)" }}>
+					<div className={styles.dialpad_key2}>
 						<PhoneAddIcon />
 					</div>
 					<div className={styles.dialpad_key2}>

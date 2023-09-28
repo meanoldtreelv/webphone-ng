@@ -1,16 +1,9 @@
 .profile {
-  //   display: flex;
   width: 256px;
-  //   flex-direction: column;
-  //   align-items: flex-start;
-
   border-radius: 12px;
   border: 1px solid var(--border-secondary, #c8d3e0);
   background: var(--background-secondary, #fff);
-
-  /* ◻️ Light/action_shadow */
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
-
   position: absolute;
   top: 40px;
   right: 0px;
@@ -28,19 +21,18 @@
     width: 38px;
     height: 38px;
     flex-shrink: 0;
-
+    font-size: 16px;
     border-radius: 32px;
     background: var(--accent-green-primary, #75c322);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: var(--accent-green-label, #fff);
   }
 
   &_name {
     color: var(--text-primary, #1f2023);
+    font-size: 14px;
   }
 
   //   Setting box

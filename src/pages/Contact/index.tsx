@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "./Contact.module.scss";
-
 import NoContact from "../../components/Contact/NoContact";
 import NoContactSelected from "../../components/Contact/NoContactSelected";
 import ContactList from "../../components/Contact/ContactList";
 import AddEditContact from "../../components/Contact/AddEditContact";
 import ContactDetails from "../../components/Contact/ContactDetails";
-import DeleteContactPopUp from "../../components/Contact/DeleteContactPopup"; // the code from here needs to be extracted and removed
-import { useDispatch, useSelector } from "react-redux";
+// import DeleteContactPopUp from "../../components/Contact/DeleteContactPopup"; // the code from here needs to be extracted and removed
+import { useSelector } from "react-redux";
 import {
 	contactLists,
 	addContactOpen,
@@ -45,10 +44,10 @@ const Contact = () => {
 	}, []);
 
 	return (
-		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
+		<div className={styles.contact}>
 			<BaseLayout>
 				{contactLists?.length > 0 ? (
-					<section className={`flex ${styles.contact_container}`}>
+					<section className={styles.contact_container}>
 						<ContactList />
 						{isContactSelected ? <ContactDetails /> : <NoContactSelected />}
 					</section>
