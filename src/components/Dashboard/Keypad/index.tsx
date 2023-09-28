@@ -12,8 +12,7 @@ const Keypad = () => {
 	const number = useSelector(callNumber)
 
 	const callingHandler = () => {
-		sip.call(number)
-		dispatch(progressCall());
+		// dispatch(progressCall());
 	}
 
 	const modifyNumber = () => {
@@ -45,7 +44,7 @@ const Keypad = () => {
 				<div
 					className={styles.dialpad_key2}
 					style={{ background: number.length? "var(--primary-active, #074177)" : "var(--primary-disabled, #C8D3E0)"}}
-					onClick={callingHandler}>
+					onClick={()=>{sip.call(number)}}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="fill / phone">

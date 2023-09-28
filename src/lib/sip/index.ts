@@ -233,6 +233,7 @@ function onInviteCancel(lineObj, response) {
   lineObj.SipSession.dispose().catch(function (error) {
     console.log("Failed to dispose the cancel dialog", error);
   });
+  store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   onInviteCanceled(lineObj.lineNumber);
   teardownSession(lineObj);
 }
@@ -725,7 +726,7 @@ function cancelSession(lineNum) {
   }
   console.log("#line-" + lineNum + "-msg:" + "call_cancelled");
 }
-function holdSession(lineNum) {
+function holdSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
   var session = lineObj.SipSession;
@@ -786,6 +787,8 @@ function holdSession(lineNum) {
         // Log Hold
         if (!session.data.hold) session.data.hold = [];
         session.data.hold.push({ event: "hold", eventTime: utcDateNow() });
+
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:true}}})
       },
       onReject: function () {
         session.isOnHold = false;
@@ -798,7 +801,7 @@ function holdSession(lineNum) {
     console.warn("Error attempting to put the call on hold:", error);
   });
 }
-function unholdSession(lineNum) {
+function unholdSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
   var session = lineObj.SipSession;
@@ -860,6 +863,8 @@ function unholdSession(lineNum) {
         // Log Hold
         if (!session.data.hold) session.data.hold = [];
         session.data.hold.push({ event: "unhold", eventTime: utcDateNow() });
+
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:false}}})
       },
       onReject: function () {
         session.isOnHold = true;
@@ -872,7 +877,7 @@ function unholdSession(lineNum) {
     console.warn("Error attempting to take to call off hold", error);
   });
 }
-function MuteSession(lineNum) {
+function MuteSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
 
@@ -901,9 +906,11 @@ function MuteSession(lineNum) {
   session.data.ismute = true;
   lineObj.ismute = 1;
 
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"isMute",data:{lineNum:lineNum, isMute:true}}})
+  store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"isMute",data:{lineNum:lineNum, isMute:true}}})
   console.log("#line-" + lineNum + "-msg:" + "call_on_mute");
 }
-function UnmuteSession(lineNum) {
+function UnmuteSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
 
@@ -933,6 +940,8 @@ function UnmuteSession(lineNum) {
   session.data.ismute = false;
   lineObj.ismute = 0;
 
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"isMute",data:{lineNum:lineNum, isMute:false}}})
+  store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"isMute",data:{lineNum:lineNum, isMute:false}}})
   console.log("#line-" + lineNum + "-msg:" + "call_off_mute");
 }
 
@@ -1034,7 +1043,7 @@ function onSessionReceivedBye(lineObj, response) {
   lineObj.SipSession.data.reasonText = "Normal Call clearing";
 
   response.accept(); // Send OK
-
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   teardownSession(lineObj);
   onCallEndByOtherSide(lineObj.LineNumber);
 }
@@ -1816,7 +1825,7 @@ function ReceiveCall(session) {
   }, 1000);
   lineObj.SipSession.data.earlyReject = false;
   Lines.push(lineObj);
-  store.dispatch({type:"sip/Lines", payload:{action:"add",data:lineObj}})
+  // store.dispatch({type:"sip/Lines", payload:{action:"add",data:lineObj}})
   // Detect Video
   lineObj.SipSession.data.withvideo = false;
   if (EnableVideoCalling === true && lineObj.SipSession.request.body) {
@@ -2097,7 +2106,14 @@ function ReceiveCall(session) {
       lineObj.SipSession.data.ringerObj = ringer;
     }
   }
-  OnReceiveCall(newLineNumber, callerID, did);
+  // OnReceiveCall(newLineNumber, callerID, did);
+  const inboundCall =  {
+    LineNumber: newLineNumber,
+    DisplayName: callerID,
+    DisplayNumber: did,
+  }
+  store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"add",data:inboundCall}})
+  store.dispatch({type:"sip/ringingInboundCallActive", payload:newLineNumber})
   // BackgroundAvailable(0, true);
   // addCallToCallSelectModal(newLineNumber, callerID);
   lineObj.status = "ReceiveCall";
@@ -2126,10 +2142,14 @@ function onInviteAccepted(lineObj, includeVideo, response) {
     var timeStr = formatShortDuration(duration.asSeconds());
     console.log("#line-" + lineObj.LineNumber + "-timer:" + timeStr);
     console.log("#line-" + lineObj.LineNumber + "-datetime:" + timeStr);
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"callTimer",data:{lineNum:lineObj.LineNumber, callTimer:timeStr}}})
     if (getCurrentActiveCallId() === lineObj.LineNumber) {
       //document.getElementById("calling-state").innerHTML = timeStr;
     }
   }, 1000);
+  if(lineObj.SipSession.data.calldirection === "outbound"){
+    store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"answer",data:lineObj.LineNumber}})
+  }
   session.isOnHold = false;
   session.data.started = true;
 
@@ -2510,7 +2530,7 @@ function onInviteRejected(lineObj, response) {
   lineObj.SipSession.data.terminateby = "them";
   lineObj.SipSession.data.reasonCode = response.message.statusCode;
   lineObj.SipSession.data.reasonText = response.message.reasonPhrase;
-
+  store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   teardownSession(lineObj);
   onCallEndByOtherSide();
 }
@@ -2618,6 +2638,13 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
   lineObj.SipSession.data.callstart = startTime.format(
     "YYYY-MM-DD HH:mm:ss UTC"
   );
+  const outboundCall =  {
+    LineNumber: newLineNumber,
+    DisplayName: "",
+    DisplayNumber: dialledNumber,
+  }
+  store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"add",data:outboundCall}})
+  store.dispatch({type:"sip/ringingOutboundCallActive", payload:newLineNumber})
   lineObj.SipSession.data.callTimer = window.setInterval(function () {
     var now = moment.utc();
     var duration = moment.duration(now.diff(startTime));
@@ -3650,8 +3677,8 @@ function answer(id) {
     // onCallUI(id);
     updateVoluemUI()
 }
-function hangupOnRinging(id) {
-    RejectCall(id)
+function hangupOnRinging(LineNumber) {
+    RejectCall(LineNumber)
     // dialpadUI();
 }
 function mute(id, status_interface = null, update_interface = true) {
@@ -3747,9 +3774,10 @@ function onRegistered() {
     if (!userAgent.isReRegister) {
         console.log("Registered!");
         userAgent.registering = false;
-        sessionStorage.setItem("user", userAgent['options']['displayName'])
-        setCookie("user_id", userAgent['options']['displayName']);
+        sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
+        setCookie("user_id", userAgent['options']['authorizationUsername']);
         // loginSuccessUI();
+        store.dispatch({type:"sip/extNumber", payload:userAgent['options']['authorizationUsername']})
         store.dispatch({type:"sip/authMessage", payload:"continue"})
         store.dispatch({type:"sip/authLoading", payload:false})
     }
@@ -3760,19 +3788,12 @@ function onRegistered() {
     userAgent.isReRegister = true;
 }
 function OnReceiveCall(newLineNumber, callerID, did) {
-  const inboundCall =  {
-    LineNumber: newLineNumber,
-    DisplayName: callerID,
-    DisplayNumber: did,
-    muteAfterAnswer: false,
-  }
-  store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"add",data:inboundCall}})
-  store.dispatch({type:"sip/ringingInboundCallActive", payload:newLineNumber})
+
     // incomingCallUI(newLineNumber, callerID, did);
     // outboundCall = false;
 }
 function hungupOnDial(id) {
-    cancelSession(id)
+    
     // outboundCall = false;
 }
 function onInviteCanceled(id=null) {
@@ -3806,7 +3827,7 @@ function onCallAnswered(id) {
     // // outboundCall = false;
 }
 
-function hangup(id:number) {
+function hangup(LineNumber:number) {
     // if (isKeyPadActive) {
     //     keypadSwitch();
     // }
@@ -3815,14 +3836,15 @@ function hangup(id:number) {
     // }
     let outbound = 0;
     try {
-        if(FindLineByNumber(id).SipSession.data.calldirection === "outbound"){
+        if(FindLineByNumber(LineNumber).SipSession.data.calldirection === "outbound"){
             outbound = 1
         }
     } catch (error) {}
-    if(outbound && FindLineByNumber(id).SipSession.state  !== 'Established' ){
-        hungupOnDial(id);
+    if(outbound && FindLineByNumber(LineNumber).SipSession.state  !== 'Established' ){
+        store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"remove",data:LineNumber}})
+        cancelSession(LineNumber)
     }else{
-        endSession(id);
+        endSession(LineNumber);
     }
     // outboundCall = false;
     // onCallEndUI();
@@ -4085,10 +4107,8 @@ const sip = {
     // store.dispatch({type:"call/progressCall"})
     DialByLine("audio", number);
   },
-  hungup: (LineNumber: number | null = null) =>  {
-    if(!LineNumber){
-      LineNumber = newLineNumber
-    }
+  hungup: (LineNumber: number) =>  {
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}})
     hangup(LineNumber)
   },
   rejectCall: (LineNumber: number ) =>  {
@@ -4096,8 +4116,25 @@ const sip = {
     RejectCall(LineNumber)
   },
   answerAudioCall: (LineNumber: number ) =>  {
-    store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"remove",data:LineNumber}})
+    store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"answer",data:LineNumber}})
     AnswerAudioCall(LineNumber)
+  },
+  mute: (LineNumber: number, isMute: Boolean ) =>  {
+    try {
+      isMute ? UnmuteSession(LineNumber) : MuteSession(LineNumber) 
+    } catch (error) {console.log(error)}
+  },
+  hold: (LineNumber: number, isHold: Boolean ) =>  {
+    try {
+      isHold ? unholdSession(LineNumber) : holdSession(LineNumber) 
+    } catch (error) {console.log(error)}
+  },
+  volumeLevel: (LineNumber: number, volumeLevel: string ) =>  {
+    const amount:number = volumeLevel / 100
+    console.log("Volume level", amount)
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"volumeLevel",data:{lineNum:LineNumber, volumeLevel:volumeLevel}}})
+    var audioobject = document.getElementById("line-" + LineNumber + "-remoteAudio");
+    audioobject.volume = amount;
   },
   store:() => {return store}
 }
