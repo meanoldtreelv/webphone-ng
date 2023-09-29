@@ -29,7 +29,7 @@ const Sidebar = () => {
 
 	const [unreadMessage, setUnreadMessage] = useState(true);
 
-	const { extAuth } = useSelector((state: any) => state.sip)
+	const { extAuth } = useSelector((state: any) => state.sip);
 	// the above two functions, they need to be removed
 	// use sass
 	const activeTabStyle = {
@@ -42,83 +42,84 @@ const Sidebar = () => {
 		color: "var(--text-link, #1480e1)",
 	};
 
-	const toggleCollapsed = () => {
-		setIsCollapsed(!isCollapsed);
-	};
+	// const toggleCollapsed = () => {
+	// 	setIsCollapsed(!isCollapsed);
+	// };
 
-	const sidebarTopLinks:ISidebarLinks[] =extAuth? 
-		[
-			{
-				path: routePaths.DASHBOARD.ROUTE,
-				icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Keypad",
-				unread: 2,
-			}
-		] : [
-			{
-				path: routePaths.DASHBOARD.ROUTE,
-				icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Keypad",
-				unread: 2,
-			},
-			{
-				path: routePaths.CONTACT.ROUTE,
-				icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Contacts",
-				unread: 3,
-			},
-			{
-				path: routePaths.CONFERENCE.GROUPS.ROUTE,
-				icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Conference",
-				unread: 3,
-			},
-			{
-				path: routePaths.CONFERENCE.ROUTE,
-				icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Texting",
-				unread: 1,
-			},
-			{
-				path: routePaths.CALL_HISTORY.ROUTE,
-				icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Recent",
-				unread: 1,
-			},
-			{
-				path: routePaths.CONFERENCE.ROUTE,
-				icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Fax",
-				unread: 2,
-			},
-			{
-				path: routePaths.VOICEMAIL.ROUTE,
-				icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				name: "Voicemail",
-				unread: 4,
-			},
-	];
+	const sidebarTopLinks: ISidebarLinks[] = extAuth
+		? [
+				{
+					path: routePaths.DASHBOARD.ROUTE,
+					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Keypad",
+					unread: 2,
+				},
+		  ]
+		: [
+				{
+					path: routePaths.DASHBOARD.ROUTE,
+					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Keypad",
+					unread: 2,
+				},
+				{
+					path: routePaths.CONTACT.ROUTE,
+					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Contacts",
+					unread: 3,
+				},
+				{
+					path: routePaths.CONFERENCE.GROUPS.ROUTE,
+					icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Conference",
+					unread: 3,
+				},
+				{
+					path: routePaths.CONFERENCE.ROUTE,
+					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Texting",
+					unread: 1,
+				},
+				{
+					path: routePaths.CALL_HISTORY.ROUTE,
+					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Recent",
+					unread: 1,
+				},
+				{
+					path: routePaths.CONFERENCE.ROUTE,
+					icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Fax",
+					unread: 2,
+				},
+				{
+					path: routePaths.VOICEMAIL.ROUTE,
+					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Voicemail",
+					unread: 4,
+				},
+		  ];
 
-	const sidebarBtmLinks:ISidebarLinks[] = extAuth? 
-	[
-		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
-		{
-			path: routePaths.SETTINGS.ROUTE,
-			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Settings",
-			unread: 3,
-		},
-	]:
-	[
-		{ path: routePaths.DASHBOARD.ROUTE, icon: <SidecarIcon />, name: 'Sidecar', unread: 2 },
-		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: 'Download RingPlan Meet', unread: 3 },
-		{
-			path: routePaths.SETTINGS.ROUTE,
-			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Settings",
-			unread: 3,
-		},
-	];
+	const sidebarBtmLinks: ISidebarLinks[] = extAuth
+		? [
+				{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
+				{
+					path: routePaths.SETTINGS.ROUTE,
+					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Settings",
+					unread: 3,
+				},
+		  ]
+		: [
+				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
+				{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
+				{
+					path: routePaths.SETTINGS.ROUTE,
+					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Settings",
+					unread: 3,
+				},
+		  ];
 
 	return (
 		<section className={styles.sidebarBox} style={{ width: `${!isCollapsed ? "64px" : "calc(100vw - 15px)"}` }}>
@@ -138,7 +139,8 @@ const Sidebar = () => {
 								className={({ isActive }: { isActive: boolean }) =>
 									[styles.sidebar_tab, isActive ? styles.active_tab : ""].join(" ")
 								}
-								onClick={toggleCollapsed}>
+								// onClick={toggleCollapsed}
+							>
 								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
@@ -156,7 +158,8 @@ const Sidebar = () => {
 								className={({ isActive }: { isActive: boolean }) =>
 									[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
 								}
-								onClick={toggleCollapsed}>
+								// onClick={toggleCollapsed}
+							>
 								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
