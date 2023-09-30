@@ -8,6 +8,7 @@ import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
 import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import { settingsRoutes } from "./settings/routes";
+import { sidecarRoutes } from "./sidecar/routes";
 
 const routes: RouteObject[] = [
 	{
@@ -28,6 +29,7 @@ export default createBrowserRouter([
 			...callHistoryRoutes,
 			...dashboardRoutes,
 			...settingsRoutes,
+			...sidecarRoutes,
 		],
 	},
 ]);

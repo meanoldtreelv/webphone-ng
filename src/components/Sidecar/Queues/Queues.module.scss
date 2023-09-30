@@ -1,0 +1,60 @@
+.header {
+	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
+
+	display: flex;
+	gap: 15px;
+
+	span {
+		color: var(--text-secondary, #5c6168);
+
+		/* Body/Regular */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+
+		padding: 10px 0;
+
+		cursor: pointer;
+	}
+
+	.activeTab {
+		color: var(--text-link, #1480e1);
+
+		/* Body/Bold */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+
+		border-bottom: 2px solid var(--text-link, #1480e1);
+	}
+}
+
+.header2 {
+	border-radius: 8px;
+	background: var(--background-tertiary, #f7f9fc);
+
+	display: flex;
+	margin: 10px 0;
+	padding: 10px 0;
+
+	span {
+		width: 20%;
+		text-align: center;
+
+		color: var(--text-secondary, #5c6168);
+
+		/* Caption 2/Regular */
+		font-family: Poppins;
+		font-size: 11px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 14px; /* 127.273% */
+		letter-spacing: -0.2px;
+	}
+}

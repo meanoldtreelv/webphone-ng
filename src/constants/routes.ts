@@ -38,4 +38,8 @@ export default {
 		__PATH: "settings",
 		ROUTE: "/settings",
 	},
+	SIDECAR: {
+		__PATH: "sidecar",
+		ROUTE: "/sidecar",
+	},
 };
