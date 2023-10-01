@@ -1,6 +1,6 @@
 import styles from "./NoContact.module.scss";
 import { useDispatch } from "react-redux";
-import { openAddContact } from "redux/contact/contactSlice";
+import { openAddEditContact } from "redux/contact/contactSlice";
 
 import noContactsImg from "./../../../assets/images/icon/no_contacts.svg";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
@@ -18,7 +18,7 @@ const NoContact = () => {
 				<button
 					className={styles.button}
 					onClick={() => {
-						dispatch(openAddContact());
+						dispatch(openAddEditContact());
 					}}>
 					<UserAddIcon />
 					Add Contact

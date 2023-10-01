@@ -1,4 +1,5 @@
 import styles from "./ProfileMenu.module.scss";
+
 const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 	return (
 		<div className={styles.profile}>

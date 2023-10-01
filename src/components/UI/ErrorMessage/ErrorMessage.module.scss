@@ -1,5 +1,7 @@
+@import "./../../../sass/abstracts/variables";
+
 .errorMessage {
-  color: var(--text-danger, #ee3939);
-  height: 17px;
-  padding: 0 10px;
+	color: map-get($color, support-danger-default);
+	height: 17px;
+	padding: 0 10px;
 }

@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialCommonState = {
-	modal: false
+	modal: false,
+	playPause: false,
 };
 
 const commonSlice = createSlice({
@@ -9,13 +10,14 @@ const commonSlice = createSlice({
 	initialState: initialCommonState,
 	reducers: {
 		toggleModal(state) {
-            state.modal = !state.modal;
-        }
+			state.modal = !state.modal;
+		},
+		togglePlayPause(state) {
+			state.playPause = !state.playPause;
+		},
 	},
 });
 
-export const {
-	toggleModal
-} = commonSlice.actions;
+export const { toggleModal, togglePlayPause } = commonSlice.actions;
 
 export default commonSlice.reducer;

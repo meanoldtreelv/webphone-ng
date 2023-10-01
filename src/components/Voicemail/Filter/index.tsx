@@ -1,15 +1,24 @@
 import XIcon from "components/UI/Icons/X";
 import styles from "./Filter.module.scss";
+import React from "react";
 
-const Filter = () => {
+interface IFilter {
+	onClose: (filter: boolean) => void;
+}
+
+const Filter: React.FC<IFilter> = ({ onClose }) => {
 	return (
 		<section className={styles.editBox}>
 			<div className={styles.edit}>
 				<div className={styles.edit_heading}>
 					<span>Filters</span>
-					<span className={styles.edit_cross}>
+					<button
+						className={styles.edit_cross}
+						onClick={() => {
+							onClose(false);
+						}}>
 						<XIcon />
-					</span>
+					</button>
 				</div>
 				<div className={styles.extension}>By Extensions</div>
 

@@ -4,38 +4,51 @@ import TrashIcon from "components/UI/Icons/Voicemail/Trash";
 import LinkIcon from "components/UI/Icons/Voicemail/Link";
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
 import EnvelopIcon from "components/UI/Icons/Voicemail/Envelop";
+import ShareIcon from "components/UI/Icons/Voicemail/Share";
 
-const PopupMenu = () => {
+interface IPopupMenu {
+	children: {
+		icon: React.ReactNode;
+		title: string;
+	}[];
+}
+
+const PopupMenu: React.FC<IPopupMenu> = ({ children }) => {
 	return (
 		<div className={styles.popup}>
-			<button className={styles.popup_row}>
+			{/* <button className={styles.popup_row}>
 				<ChatIcon />
 				<p className={`${styles.popup_rowText} ${styles.popup_sendMsg}`}>Send Message</p>
 			</button>
-
 			<button className={styles.popup_row}>
 				<TrashIcon />
 				<p className={`${styles.popup_rowText} ${styles.popup_delete}`}>Delete</p>
 			</button>
-
 			<button className={styles.popup_row}>
+				<ShareIcon />
 				<p className={`${styles.popup_share} ${styles.popup_rowText}`}>Share</p>
 			</button>
-
 			<button className={styles.popup_row}>
 				<LinkIcon />
 				<p className={`${styles.popup_rowText} ${styles.popup_copy}`}>Copy Link</p>
 			</button>
 
-			<div className={styles.popup_row}>
+			<button className={styles.popup_row}>
 				<CopyIcon />
 				<p className={`${styles.popup_rowText} ${styles.popup_copyText}`}>Copy Text</p>
-			</div>
+			</button>
 
-			<div className={styles.popup_row}>
+			<button className={styles.popup_row}>
 				<EnvelopIcon />
 				<p className={`${styles.popup_rowText} ${styles.popup_email}`}>Share via Email</p>
-			</div>
+			</button> */}
+
+			{children.map((opt) => (
+				<button className={styles.popup_row}>
+					{opt.icon}
+					<p className={`${styles.popup_rowText} ${styles.popup_email}`}>{opt.title}</p>
+				</button>
+			))}
 		</div>
 	);
 };

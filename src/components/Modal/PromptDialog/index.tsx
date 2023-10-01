@@ -6,7 +6,7 @@ import Backdrop from "components/UI/Backdrop";
 import { useSelector } from "react-redux";
 import { modalState } from "redux/common/commonSelectors";
 
-const PromptDialog: React.FC<IPromptDialog> = ({ type, title, actionBtnTxt, children }) => {
+const PromptDialog: React.FC<IPromptDialog> = ({ type, title, actionBtnTxt, children, onClick }) => {
 	const modal = useSelector(modalState);
 
 	return (
@@ -25,7 +25,7 @@ const PromptDialog: React.FC<IPromptDialog> = ({ type, title, actionBtnTxt, chil
 					<button className={styles.delete_cancelBtn}>
 						<span>Cancel</span>
 					</button>
-					<button className={styles.delete_deleteBtn}>
+					<button className={styles.delete_deleteBtn} onClick={onClick}>
 						<span>{actionBtnTxt}</span>
 					</button>
 				</div>

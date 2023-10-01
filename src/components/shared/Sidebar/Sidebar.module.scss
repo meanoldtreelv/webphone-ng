@@ -1,15 +1,15 @@
+@import "./../../../sass/abstracts/variables";
+
 .sidebarBox {
 	height: 100%;
-	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
-
+	background: map-get($color, overlay-primary);
 	overflow-x: hidden;
 	// position: absolute;
 	z-index: 10;
 }
 .sidebar {
-	border-right: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-secondary, #fff);
-
+	border-right: 1px solid map-get($color, border-tertiary);
+	background: map-get($color, background-primary);
 	//   margin: 15px;
 	padding: 15px;
 	height: 100%;
@@ -40,27 +40,26 @@
 		padding: 6px 8px 6px 8px;
 		border-radius: 8px;
 		// background: var(--background-active, rgba(25, 138, 240, 0.1));
-	font-size: 14px;
+		font-size: 14px;
 
 		display: flex;
 		// justify-content: center;
 		align-items: center;
 		gap: 10px;
-		color: var(--text-primary, #1f2023);
+		color: map-get($color, text-primary);
 
 		&:hover {
-			background: var(--background-hover, rgba(145, 160, 181, 0.1));
-			color: var(--text-link, #1480e1);
+			background: map-get($color, opacity-neutral-10);
+			color: map-get($color, text-link);
 		}
 		&:visited {
-			background: var(--background-active, rgba(25, 138, 240, 0.1));
-			color: var(--text-link, #1480e1);
+			background: map-get($color, background-active);
+			color: map-get($color, text-link);
 		}
 		&:active {
-			background: var(--background-active, rgba(25, 138, 240, 0.1));
-			color: var(--text-link, #1480e1);
+			background: map-get($color, background-active);
+			color: map-get($color, text-link);
 		}
-
 	}
 
 	&_tabExpanded {
@@ -80,25 +79,25 @@
 			z-index: 100;
 			width: 5px;
 			height: 5px;
-			background: var(--status-danger, #ee3939);
+			background: map-get($color, support-danger-default);
 			border-radius: 100%;
 		}
 	}
 
 	&_unreadMsg {
-		color: var(--text-on-color-disabled, #fff);
+		color: map-get($color, background-primary);
 		text-align: center;
 		display: inline-flex;
 		padding: 1px 6px;
 		justify-content: center;
 		align-items: center;
 		border-radius: 15px;
-		background: var(--status-danger, #ee3939);
+		background: map-get($color, support-danger-default);
 		font-size: 11px;
 	}
 }
 
 .active_tab {
-	background: var(--background-active, rgba(25, 138, 240, 0.1));
-	color: var(--text-link, #1480e1) !important;
+	background: map-get($color, background-active);
+	color: map-get($color, text-link) !important;
 }

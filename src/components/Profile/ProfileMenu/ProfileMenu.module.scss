@@ -1,73 +1,75 @@
+@import "./../../../sass/abstracts/variables";
+
 .profile {
-  width: 256px;
-  border-radius: 12px;
-  border: 1px solid var(--border-secondary, #c8d3e0);
-  background: var(--background-secondary, #fff);
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
-  position: absolute;
-  top: 40px;
-  right: 0px;
-  z-index: 20;
+	width: 256px;
+	border-radius: 12px;
+	border: 1px solid map-get($color, border-secondary);
+	background: map-get($color, background-primary);
+	box-shadow: 0px 0px 16px 0px map-get($color, dark-box-shadow);
+	position: absolute;
+	top: 40px;
+	right: 0px;
+	z-index: 20;
 
-  &_nameBox {
-    padding: 20px;
+	&_nameBox {
+		padding: 20px;
 
-    display: flex;
-    gap: 15px;
-    align-items: center;
-  }
+		display: flex;
+		gap: 15px;
+		align-items: center;
+	}
 
-  &_image {
-    width: 38px;
-    height: 38px;
-    flex-shrink: 0;
-    font-size: 16px;
-    border-radius: 32px;
-    background: var(--accent-green-primary, #75c322);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-green-label, #fff);
-  }
+	&_image {
+		width: 38px;
+		height: 38px;
+		flex-shrink: 0;
+		font-size: 16px;
+		border-radius: 32px;
+		background: map-get($color, green-color-600);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: map-get($color, background-primary);
+	}
 
-  &_name {
-    color: var(--text-primary, #1f2023);
-    font-size: 14px;
-  }
+	&_name {
+		color: map-get($color, text-primary);
+		font-size: 14px;
+	}
 
-  //   Setting box
-  &_settingBox {
-    padding: 10px;
-    border-top: 1px solid var(--border-tertiary, #e3eaf2);
-    border-bottom: 1px solid var(--border-tertiary, #e3eaf2);
+	//   Setting box
+	&_settingBox {
+		padding: 10px;
+		border-top: 1px solid map-get($color, border-tertiary);
+		border-bottom: 1px solid map-get($color, border-tertiary);
 
-    &_item {
-      display: flex;
-      height: 40px;
-      padding: 9px 12px 11px 12px;
-      align-items: center;
-      //   align-self: stretch;
-      gap: 10px;
+		&_item {
+			display: flex;
+			height: 40px;
+			padding: 9px 12px 11px 12px;
+			align-items: center;
+			//   align-self: stretch;
+			gap: 10px;
 
-      border-radius: 8px;
-      cursor: pointer;
+			border-radius: 8px;
+			cursor: pointer;
 
-      &:hover {
-        background: var(--background-hover, rgba(145, 160, 181, 0.1));
-        color: var(--text-link, #1480e1);
-      }
-    }
-  }
+			&:hover {
+				background: map-get($color, opacity-neutral-10);
+				color: map-get($color, text-link);
+			}
+		}
+	}
 
-  &_logout {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+	&_logout {
+		padding: 20px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		cursor: pointer;
 
-    &:hover {
-      color: var(--text-link, #1480e1);
-    }
-  }
+		&:hover {
+			color: map-get($color, text-link);
+		}
+	}
 }

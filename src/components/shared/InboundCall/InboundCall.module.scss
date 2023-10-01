@@ -1,8 +1,10 @@
+@import "./../../../sass/abstracts/variables";
+
 .popUp {
 	width: 100%;
 	height: 100vh;
 	flex-shrink: 0;
-	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+	background: map-get($color, overlay-primary);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -21,11 +23,10 @@
 	gap: 15px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid rgba(255, 255, 255, 0.25);
-	box-shadow: 0px 8px 32px 0px rgba(0, 0, 0, 0.25);
-	background: var(--background-primary, #fff);
+	border: 1px solid map-get($color, border-grey);
+	box-shadow: 0px 8px 32px 0px map-get($color, boxshadow-dark);
+	background: map-get($color, background-primary);
 	padding: 24px;
-	// margin: auto;
 	text-align: center;
 
 	& p,
@@ -36,17 +37,17 @@
 
 	h1 {
 		font-size: 28px;
-		color: var(--text-primary, #1f2023);
+		color: map-get($color, text-primary);
 	}
 
 	p {
 		font-size: 16px;
-		color: var(--text-secondary, #5C6168);
+		color: map-get($color, text-secondary-2);
 	}
 
 	> span {
 		font-size: 14px;
-		color: var(--text-secondary, #5C6168);
+		color: map-get($color, text-secondary-2);
 	}
 }
 
@@ -71,7 +72,7 @@
 	flex-shrink: 0;
 	font-size: 32px;
 	border-radius: 48px;
-	background: var(--accent-blue-primary, #3b9ef7);
+	background: map-get($color, accent-blue-primary);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -79,7 +80,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: var(--accent-blue-label, #fff);
+	color: map-get($color, background-primary);
 }
 
 .button_box {
@@ -88,11 +89,9 @@
 	padding: 4px;
 	justify-content: space-between;
 	align-items: center;
-
 	border-radius: 55px;
-	border: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-tertiary, #f7f9fc);
-
+	border: 1px solid map-get($color, border-tertiary);
+	background: map-get($color, border-tertiary);
 	margin: auto;
 
 	button {
@@ -120,18 +119,18 @@
 	align-items: center;
 	gap: 4px;
 	border-radius: 8px;
-	border: 1px solid var(--border-primary, #91a0b5);
-	
+	border: 1px solid map-get($color, border-primary);
+
 	> span {
 		font-size: 13px;
-		color: var(--text-primary, #1F2023);
+		color: map-get($color, text-primary);
 	}
 }
 
 .answerCall {
-	background: var(--support-approve, #75C322) !important;
+	background: map-get($color, green-color-600) !important;
 }
 
 .cancelCall {
-	background: var(--support-danger, #EE3939);
+	background: map-get($color, support-danger-default);
 }

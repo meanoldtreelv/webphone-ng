@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IContactList, IContactState } from "./contactTypes";
+import { useLazyUpdateContactQuery } from "services/contact";
 
 const initialContactState: IContactState = {
 	addContactPopUpOpen: false,
 	deleteContactPopUpOpen: false,
 	selectedContactOpen: false,
 	contactList: [],
-	selectedContact: {} as IContactList,
+	selectedContact: null as IContactList,
 	deleteContactId: "",
 	editContactNumber: "",
 };
@@ -16,10 +17,10 @@ const contactSlice = createSlice({
 	initialState: initialContactState,
 	// this reducer needs refactoring
 	reducers: {
-		closeAddContact(state) {
+		closeAddEditContact(state) {
 			state.addContactPopUpOpen = false;
 		},
-		openAddContact(state) {
+		openAddEditContact(state) {
 			state.addContactPopUpOpen = true;
 		},
 		closeDeleteContact(state) {
@@ -42,7 +43,7 @@ const contactSlice = createSlice({
 			state.selectedContact = action.payload;
 		},
 		setDeleteContactId(state, action) {
-			state.deleteContactId = action	.payload;
+			state.deleteContactId = action.payload;
 		},
 		setEditContactNumber(state, action) {
 			state.editContactNumber = action.payload;
@@ -55,8 +56,8 @@ const contactSlice = createSlice({
 });
 
 export const {
-	closeAddContact,
-	openAddContact,
+	closeAddEditContact,
+	openAddEditContact,
 	closeDeleteContact,
 	openDeleteContact,
 	openSelectedContact,

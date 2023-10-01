@@ -65,77 +65,54 @@
 	}
 }
 
-// @media screen and (max-width:900px) {
-//     .header{
+.headerBtm {
+	height: 54px;
+	display: flex;
+	align-items: center;
+	padding: 0 24px;
+	position: relative;
+	border-bottom: 1px solid var(--border-tertiary, #e3eaf2);
+	/* Blur/Background Blur */
+	backdrop-filter: blur(16px);
+	opacity: 0.8;
+	background: var(--background-primary, #fff);
 
-// &_cont{
-//     left: calc(100% - 250px - 38%);
-// }
+	&_cont {
+		width: 984px;
+		margin: auto;
+		display: flex;
+		justify-content: space-between;
+		padding: 8px 12px;
+		align-items: center;
 
-// &_search{
-//     width: 250px;
-//     height: 28px;
-// }
+		> p {
+			font-size: 13px;
+		}
+	}
 
-// &_filter{
-//     width: 28px;
-//     height: auto;
-//     margin-left: 5px;
-// }
+	&_actions {
+		display: flex;
+		align-items: center;
 
-// &_calender{
-//     width: 28px;
-//     height:auto ;
-// }
-//     }
-// }
+		button {
+			padding: 0 10px;
+		}
+	}
+}
 
-// @media screen and (max-width:768px) {
-//     .header{
+.actionsDelete {
+	border: 1px solid #ddd;
+	font-size: 13px;
+	display: flex;
+	align-items: center;
+	border-radius: 8px !important;
+	padding: 6px 8px !important;
 
-//         // &_cont{
-//         //     left: calc(100% - 200px - 35%);
-//         // }
-
-//         &_search{
-//             width: 220px;
-//             height: 22px;
-//         }
-
-//         &_filter{
-//             width: 22px;
-//             height: auto;
-//             margin-left: 5px;
-//         }
-
-//         &_calender{
-//             width: 22px;
-//             height:auto ;
-//         }
-//     }
-// }
-
-// @media screen and (max-width:600px) {
-//     .header{
-
-//         // &_cont{
-//         //     left: calc(100% - 170px - 35%);
-//         // }
-
-//         &_search{
-//             width: 180px;
-//             height: 20px;
-//         }
-
-//         &_filter{
-//             width: 20px;
-//             height: auto;
-//             margin-left: 5px;
-//         }
-
-//         &_calender{
-//             width: 20px;
-//             height:auto ;
-//         }
-//     }
-// }
+	&:hover {
+		background: #eee;
+	}
+	
+	> svg {
+		margin-right: 5px;
+	}
+}

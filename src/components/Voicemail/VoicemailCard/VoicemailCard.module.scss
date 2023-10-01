@@ -68,7 +68,7 @@
 		display: flex;
 		column-gap: 4px;
 
-		& span {
+		& button {
 			padding: 4px;
 		}
 	}
@@ -95,5 +95,12 @@
 	&_des {
 		color: var(--text-primary, #1f2023);
 		font-size: 13px;
+	}
+}
+
+.pauseIconBtn {
+	svg {
+		height: 35px;
+		width: 29px;
 	}
 }

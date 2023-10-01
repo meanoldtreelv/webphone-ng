@@ -8,7 +8,6 @@
 .footer {
 	display: flex;
 	justify-content: center;
-
 	width: 100%;
 	height: 64px;
 	padding: 15px 0;
@@ -19,14 +18,20 @@
 	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
 
-	&_name, &_currentprogress, &_totalDuration {
+	&_name,
+	&_currentprogress,
+	&_totalDuration {
 		font-size: 13px;
-		color: var(--text-primary, #1F2023);
+		color: var(--text-primary, #1f2023);
 	}
 
-	&_month, &_date, &_year, &_time, &_morning {
+	&_month,
+	&_date,
+	&_year,
+	&_time,
+	&_morning {
 		font-size: 13px;
-		color: var(--text-secondary, #5C6168);
+		color: var(--text-secondary, #5c6168);
 	}
 
 	&_actionBtn {
@@ -38,12 +43,6 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 5px;
-	}
-
-	&_progress {
-		width: 660px;
-		height: 6px;
-		background: var(--primary-default, #0c6dc7);
 	}
 
 	&_cont {
@@ -66,6 +65,7 @@
 	&_duration {
 		display: flex;
 		column-gap: 3px;
+		align-items: center;
 	}
 
 	&_otherBtns {
@@ -77,4 +77,35 @@
 			padding: 7px;
 		}
 	}
+}
+
+.footer_progress {
+	width: 660px;
+	height: 6px;
+	background: var(--primary-default, #0c6dc7);
+}
+
+.footer_progress::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 3px;
+	cursor: pointer;
+}
+
+.footer_progress::-webkit-slider-thumb {
+	position: relative;
+	-webkit-appearance: none;
+	box-sizing: content-box;
+	opacity: 0;
+}
+
+.footer_play {
+	img {
+		width: 37px;
+		height: 38px;
+	}
+}
+
+.footer_timeSlash {
+	font-size: 10px;
+	margin: 0 5px;
 }

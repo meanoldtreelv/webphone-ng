@@ -3,6 +3,7 @@ import contactReducer from "./contact/contactSlice";
 import callingReducer from "./call/callSlice";
 import settingReducer from "./setting/settingSlice";
 import commonReducer from "./common/commonSlice";
+import voicemailReducer from './voicemail/voicemailSlice';
 import callHistoryReducer from "./call-history/callHistorySlice";
 import { apiService } from "./../services/api";
 import sipReducer from "./sip"
@@ -15,6 +16,7 @@ export const store = configureStore({
 		common: commonReducer,
 		setting: settingReducer,
 		callHistory: callHistoryReducer,
+		voicemail: voicemailReducer,
 		[apiService.reducerPath]: apiService.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),

@@ -1,7 +1,7 @@
 import styles from "./ContactList.module.scss";
 import ContactCard from "../ContactCard";
 import { useDispatch, useSelector } from "react-redux";
-import { openAddContact } from "../../../redux/contact/contactSlice";
+import { openAddEditContact } from "../../../redux/contact/contactSlice";
 import { contactLists } from "redux/contact/contactSelectors";
 import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
@@ -40,7 +40,7 @@ const ContactList = () => {
 				<button
 					className={styles.add_contact}
 					onClick={() => {
-						dispatch(openAddContact());
+						dispatch(openAddEditContact());
 					}}>
 					<UserAddIcon />
 				</button>

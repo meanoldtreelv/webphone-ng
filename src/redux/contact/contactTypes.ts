@@ -40,7 +40,7 @@ export type IContactList = {
         organization: string;
         parent_organization: string;
     }
-}
+} | null;
 
 export interface IContactState {
     addContactPopUpOpen: boolean;

@@ -1,3 +1,5 @@
+@import './../../../../sass/abstracts/variables';
+
 .button {
 	padding: 11px 12px;
 	display: flex;
@@ -11,12 +13,12 @@
 
 .buttonFill {
 	// gap: 4px;
-	background: var(--primary-default, #0c6dc7);
-	color: var(--text-on-color, #fff);
+	background: map-get($color, primary-default);
+	color: map-get($color, background-primary);
 	cursor: pointer;
 	margin-top: 30px;
 }
 
 .buttonBorder {
-	border: 1px solid var(--border-primary, #91a0b5);
+	border: 1px solid map-get($color, border-primary);
 }

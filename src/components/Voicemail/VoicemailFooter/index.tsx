@@ -1,60 +1,124 @@
 import styles from "./VoicemailFooter.module.scss";
-import ShareBtnPopup from "../ShareBtnPopup";
+import ShareBtnPopup from "./../ShareBtnPopup";
 import PlayPrevIcon from "./../../../components/UI/Icons/Voicemail/PlayPrev";
 import PauseIcon from "./../../../components/UI/Icons/Voicemail/Pause";
 import PlayNextIcon from "./../../../components/UI/Icons/Voicemail/PlayNext";
 import ShareIcon from "./../../../components/UI/Icons/Voicemail/Share";
-import SettingsIcon from "../Settings";
+import SettingsIcon from "./../Settings";
+import PlayIcon from "./../../../components/UI/Icons/Voicemail/Play";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedVoicemail } from "./../../../redux/voicemail/voicemailSelectors";
+import React, { MutableRefObject, ReactElement, useRef, useState } from "react";
+import { convertDateFormat, formatDate, formatTime } from "./../../../helpers/formatDateTime";
+import { playPauseState } from "./../../../redux/common/commonSelectors";
+import { togglePlayPause } from "./../../../redux/common/commonSlice";
 
 const VoicemailFooter = () => {
-	return (
+	const [timeProgress, setTimeProgress] = useState(0);
+	const [duration, setDuration] = useState(0);
+	const voicemail = useSelector(selectedVoicemail);
+	const [sharePopup, setSharePopup] = useState(false);
+	const playPause = useSelector(playPauseState);
+	const dispatch = useDispatch();
+	const audioRef = useRef(new Audio(voicemail.link));
+	const progressRef = useRef() as MutableRefObject<HTMLInputElement>;
+
+	const handleTimeRangeSlider = () => {
+		setTimeProgress(parseInt(progressRef.current.value));
+		audioRef.current.currentTime = parseInt(progressRef.current.value);
+	};
+
+	const handlePlayPause = () => {
+		if (playPause) {
+			dispatch(togglePlayPause());
+			audioRef.current.pause();
+		} else {
+			dispatch(togglePlayPause());
+			audioRef.current.play();
+		}
+	};
+
+	const onLoadedMetadata = () => {
+		const seconds = audioRef.current.duration;
+		setDuration(seconds);
+		progressRef.current.max = seconds.toString();
+	};
+
+	const handleAudioTimeUpdate = () => {
+		const val = audioRef.current.currentTime;
+		progressRef.current.value = val.toString();
+		setTimeProgress(val);
+	}
+
+	return Object.keys(voicemail).length ? (
 		<div className={styles.footer}>
 			<div className={styles.cont}>
-				<ShareBtnPopup></ShareBtnPopup>
+				{sharePopup ? <ShareBtnPopup></ShareBtnPopup> : null}
 				<div className={styles.footer_actionBtn}>
-					<span className={styles.footer_action}>
+					<button className={styles.footer_action}>
 						<PlayPrevIcon />
-					</span>
-					<span className={styles.footer_action}>
-						<PauseIcon />
-					</span>
-					<span className={styles.footer_action}>
+					</button>
+					{playPause ? (
+						<button className={styles.footer_action} onClick={handlePlayPause}>
+							<PauseIcon />
+						</button>
+					) : (
+						<button className={`${styles.footer_action} ${styles.footer_play}`} onClick={handlePlayPause}>
+							<PlayIcon />
+						</button>
+					)}
+					<button className={styles.footer_action}>
 						<PlayNextIcon />
-					</span>
+					</button>
 				</div>
 
 				<div className={styles.footer_progressBar}>
-					<div className={styles.footer_progress}></div>
+					<input
+						type="range"
+						className={styles.footer_progress}
+						min="0"
+						onChange={handleTimeRangeSlider}
+						step="1"
+						ref={progressRef}
+					/>
 					<div className={styles.footer_cont}>
 						<div className={styles.footer_details}>
-							<p className={styles.footer_name}>Melisa Townsend</p>
+							<audio 
+								src={voicemail.link}
+								ref={audioRef} autoPlay
+								onLoadedMetadata={onLoadedMetadata}
+								onTimeUpdate={handleAudioTimeUpdate}
+							></audio>
+							<p className={styles.footer_name}>{voicemail.title}</p>
 							<div className={styles.footer_dat}>
-								<p className={styles.footer_month}>March</p>
-								<p className={styles.footer_date}>12,</p>
-								<p className={styles.footer_year}>2023</p>
-								<p className={styles.footer_time}>10:33</p>
-								<p className={styles.footer_morning}>AM</p>
+								<p className={styles.footer_month}>{convertDateFormat(voicemail.time)}</p>
+								<p className={styles.footer_time}>{formatDate(voicemail.time)}</p>
 							</div>
 						</div>
 
 						<div className={styles.footer_duration}>
-							<p className={styles.footer_currentprogress}>00:12 /</p>
-							<p className={styles.footer_totalDuration}>0:15</p>
+							<p className={styles.footer_totalDuration}>{formatTime(timeProgress)} </p>
+							<p className={styles.footer_timeSlash}>/</p>
+							<p className={styles.footer_totalDuration}>{formatTime(duration)}</p>
 						</div>
 					</div>
 				</div>
 
 				<div className={styles.footer_otherBtns}>
-					<span className={styles.footer_shareBtn}>
+					<button
+						className={styles.footer_shareBtn}
+						onClick={() => {
+							setSharePopup((prevState: boolean) => (!prevState));
+						}}>
 						<ShareIcon />
-					</span>
-					<span>
+					</button>
+					<button>
 						<SettingsIcon />
-					</span>
+					</button>
 				</div>
 			</div>
 		</div>
-	);
+	) : null;
 };
 
 export default VoicemailFooter;

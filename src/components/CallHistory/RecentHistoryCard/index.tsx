@@ -41,14 +41,13 @@ const RecentHistoryCard = () => {
 				</div>
 			</div>
 			<div className={styles.cardRight}>
-				<p className={`caption_1`}>7:54PM</p>
+				<p>7:54PM</p>
 				<p
-					className={`caption_1`}
-					// style={
-					// 	callType === "missed"
-					// 		? { color: "var(--text-danger, #EE3939)", textAlign: "right" }
-					// 		: { color: "var(--text-secondary, #5C6168)", textAlign: "right" }
-					// }
+				// style={
+				// 	callType === "missed"
+				// 		? { color: "var(--text-danger, #EE3939)", textAlign: "right" }
+				// 		: { color: "var(--text-secondary, #5C6168)", textAlign: "right" }
+				// }
 				>
 					6m 19sec
 				</p>

@@ -1,8 +1,10 @@
+@import "./../../../sass/abstracts/variables";
+
 .aboutRingplan {
 	width: 100%;
 	height: 100vh;
 	flex-shrink: 0;
-	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+	background: map-get($color, overlay-primary);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -16,15 +18,15 @@
 	width: 460px;
 	padding: 25px;
 	border-radius: 8px;
-	background: var(--background-secondary, #fff);
-	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+	background: map-get($color, background-primary);
+	box-shadow: 0px 0px 16px 0px map-get($color, dark-box-shadow);
 }
 
 .headline {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: var(--text-primary, #1f2023);
+	color: map-get($color, text-primary);
 	margin-bottom: 20px;
 
 	h3 {
@@ -38,74 +40,73 @@
 }
 
 .updateBox {
-  color: var(--text-link, #1480e1);
+	color: map-get($color, text-link);
 	margin-bottom: 20px;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
 
-  button {
-    border-radius: 8px;
-    background: var(--background-quaternary, #f7f9fc);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    margin-bottom: 2px;
-
-  }
+	button {
+		border-radius: 8px;
+		background: map-get($color, background-tertiary);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 15px 20px;
+		margin-bottom: 2px;
+	}
 }
 
 .appInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .appVersion {
-  font-size: 14px;
-  color: var(--text-primary, #1F2023);
-  margin: 15px 0 5px 0;
+	font-size: 14px;
+	color: map-get($color, text-primary);
+	margin: 15px 0 5px 0;
 }
 
 .appDesc {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 15px;
 
-  span {
-    font-size: 13px;
-    color: var(--text-secondary, #5C6168);
-    margin-left: 4px;
-  }
+	span {
+		font-size: 13px;
+		color: map-get($color, text-secondary-2);
+		margin-left: 4px;
+	}
 }
 
 .moreInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 30px;
 
-  &_links {
-    font-size: 13px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--primary-default, #0C6DC7);
+	&_links {
+		font-size: 13px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		color: map-get($color, primary-default);
 
-    // replace p with an appropriate link tag / component (Nav)
-    p {
-      cursor: pointer;
-      margin-bottom: 5px;
-    }
-  }
+		// replace p with an appropriate link tag / component (Nav)
+		p {
+			cursor: pointer;
+			margin-bottom: 5px;
+		}
+	}
 }
 
 .infoFooter {
-  font-size: 13px;
-  color: var(--text-secondary, #5C6168);
-  margin-top: 10px;
+	font-size: 13px;
+	color: map-get($color, text-secondary-2);
+	margin-top: 10px;
 }

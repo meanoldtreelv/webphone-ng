@@ -1,7 +1,11 @@
 import InfoIcon from "components/UI/Icons/Info";
 import styles from "./DeleteVoicemail.module.scss";
 
-const DeleteVoicemail = () => {
+interface IDeleteVoicemail {
+	onClose: (del: boolean) => void;
+}
+
+const DeleteVoicemail: React.FC<IDeleteVoicemail> = ({ onClose }) => {
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.delete}>
@@ -17,9 +21,9 @@ const DeleteVoicemail = () => {
 					<div className={styles.delete_cancelBtn}>
 						<span className={``}>Cancel</span>
 					</div>
-					<div className={styles.delete_deleteBtn}>
+					<button className={styles.delete_deleteBtn} onClick={() => onClose(false)}>
 						<span className={``}>Delete</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>

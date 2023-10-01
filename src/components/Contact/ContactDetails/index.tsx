@@ -3,7 +3,7 @@ import styles from "./ContactDetails.module.scss";
 import HistoryCard from "../HistoryCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	openAddContact,
+	openAddEditContact,
 	setEditContactNumber,
 	openDeleteContact,
 	setDeleteContactId,
@@ -25,8 +25,8 @@ const ContactDetails = () => {
 	const selectedContact = useSelector(selectedContactData);
 
 	const editContactHandler = () => {
-		dispatch(openAddContact());
-		dispatch(setEditContactNumber(null));
+		dispatch(setEditContactNumber(selectedContact?.id));
+		dispatch(openAddEditContact());
 	};
 
 	// styling

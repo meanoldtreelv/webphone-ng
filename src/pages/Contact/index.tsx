@@ -13,11 +13,13 @@ import {
 	contactSelectd,
 	deleteContactOpen,
 	editContactNumber,
+	selectedContactData,
 } from "./../../redux/contact/contactSelectors";
 import { setContactList } from "redux/contact/contactSlice";
 import { GET_Contact_List_API } from "../../effects/apiEffect";
 import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "components/Modal/PromptDialog";
+import { useLazyDeleteContactQuery } from "services/contact";
 
 const Contact = () => {
 	const [isContactLoaded, setIsContactLoaded] = useState(true);
@@ -26,6 +28,14 @@ const Contact = () => {
 	const contactNumber = useSelector(editContactNumber);
 	const isContactSelected = useSelector(contactSelectd);
 	const isDeleteContactOpen = useSelector(deleteContactOpen);
+	const selectedContact = useSelector(selectedContactData);
+	const [deleteContact] = useLazyDeleteContactQuery();
+
+	const deleteContactHandler = () => {
+		if(selectedContact) {
+			deleteContact(selectedContact.id);
+		}
+	}
 
 	useEffect(() => {
 		GET_Contact_List_API(
@@ -59,7 +69,7 @@ const Contact = () => {
 			{(isAddContactOpen || contactNumber) && <AddEditContact />}
 
 			{isDeleteContactOpen && (
-				<PromptDialog type="warning" title="Delete Contact" actionBtnTxt="Delete">
+				<PromptDialog type="warning" title="Delete Contact" actionBtnTxt="Delete" onClick={deleteContactHandler}>
 					Are you sure that you want to delete a contact?
 				</PromptDialog>
 			)}
