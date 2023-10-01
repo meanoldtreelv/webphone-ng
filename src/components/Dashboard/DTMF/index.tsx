@@ -6,12 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { callNumber } from "redux/call/callSelectors";
 import { setCallNumber } from "redux/call/callSlice";
 import CallEndIcon from "components/UI/Icons/Call/CallEnd";
-import sip from "../../../lib/sip"
-import { store } from "redux/store";
 
-const AddCall = ({LineNumber}:{LineNumber:number}) => {
+const AddCall = () => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber)
+
 
 	const modifyNumber = () => {
 		if(number.length) {
@@ -21,13 +20,15 @@ const AddCall = ({LineNumber}:{LineNumber:number}) => {
 	}
 	return (
 		<section className={styles.dialpad_container}>
+			<p className={`sub_headline_bold ${styles.dialpad_addCall}`}>Add Call</p>
+
 			<div className={styles.dialpad}>
-				<Dialpad LineNumber={LineNumber}/>
+				<Dialpad />
 				<div className={styles.dialpad_keypad}>
-					<div className={styles.dialpad_key2} onClick={()=>{store.dispatch({type:"sip/answeredCalls", payload:{action:"showDTMF",data:{lineNum:LineNumber, showDTMF:false}}})}}>
+					<div className={styles.dialpad_key2}>
 						<ChevronLeftIcon />
 					</div>
-					<div className={`${styles.dialpad_key2} ${styles.dialpad_endButton}`} onClick={()=>{sip.hungup(LineNumber)}}>
+					<div className={`${styles.dialpad_key2} ${styles.dialpad_endButton}`}>
 						<CallEndIcon />
 					</div>
 					<div className={styles.dialpad_key2} onClick={modifyNumber}>

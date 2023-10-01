@@ -22,15 +22,8 @@ interface answeredCall {
   isMute?: Boolean,
   isHold?: Boolean,
   volumeLevel?: Number,
-  showDTMF?: Boolean,
-  showAddCall?: Boolean,
-  showTransferCall?: Boolean,
-  showTransferCallAtt?: Boolean,
 }
-interface callEnding{
-  name?: string,
-  callTimer?: string
-}
+
 const sipSlice = createSlice({
   name: 'sip',
   initialState: {
@@ -43,10 +36,8 @@ const sipSlice = createSlice({
     answeredCalls: [] as answeredCall[],
     answeredCallActive:0,
     ringingOutboundCalls: [] as outboundCall[],
-	  callEnding: [] as callEnding[],
     ringingOutboundCallActive:0,
     activeCallLineNumber:0,
-    logoutPopUp: false,
   },
   reducers: {
     authMessage: (state, action) =>  {
@@ -64,20 +55,11 @@ const sipSlice = createSlice({
     activeCallLineNumber: (state, aciton) =>  {
       state.activeCallLineNumber = aciton.payload
     },
-		endCall(state) {
-			state.callEnding = state.callEnding.slice(1)
-		},
-		addEndCall(state, action){
-			state.callEnding = [ ...state.callEnding, action.payload ]
-		},
     ringingInboundCallActive: (state, aciton) =>  {
       state.ringingInboundCallActive = aciton.payload
     },
     ringingOutboundCallActive: (state, aciton) =>  {
       state.ringingOutboundCallActive = aciton.payload
-    },
-    logoutPopUp: (state, action) =>  {
-      state.logoutPopUp = action.payload
     },
     ringingInboundCalls:(state, action) =>  {
       switch(action.payload.action){
@@ -110,7 +92,6 @@ const sipSlice = createSlice({
             if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
                 const answered : answeredCall = state.ringingInboundCalls[index]
                 answered.answered = true
-                answered.callTimer = "00:00"
                 state.answeredCalls = [...state.answeredCalls, answered]; 
                 state.ringingInboundCalls=[
                 ...state.ringingInboundCalls.slice(0, index),
@@ -138,8 +119,6 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum ) {
-                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer }
-                state.callEnding = [ ...state.callEnding, endingCall ]
                 state.answeredCalls=[
                 ...state.answeredCalls.slice(0, index),
                 ...state.answeredCalls.slice(index + 1)
@@ -185,7 +164,7 @@ const sipSlice = createSlice({
           const isHold = action.payload.data.isHold
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum ) {
-              state.answeredCalls[index].isHold = isHold;
+              state.answeredCalls[index].isHold = isHold
               break;
             }
           }
@@ -199,58 +178,6 @@ const sipSlice = createSlice({
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum ) {
               state.answeredCalls[index].volumeLevel = volumeLevel
-              break;
-            }
-          }
-          break
-        }
-        case "showDTMF": {
-          console.log("showDTMF:")
-          console.log(action.payload.data)
-          const lineNum = action.payload.data.lineNum
-          const showDTMF = action.payload.data.showDTMF
-          for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
-              state.answeredCalls[index].showDTMF = showDTMF
-              break;
-            }
-          }
-          break
-        }
-        case "showAddCall": {
-          console.log("showAddCall:")
-          console.log(action.payload.data)
-          const lineNum = action.payload.data.lineNum
-          const showAddCall = action.payload.data.showAddCall
-          for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
-              state.answeredCalls[index].showAddCall = showAddCall
-              break;
-            }
-          }
-          break
-        }
-        case "showTransferCall": {
-          console.log("showTransferCall:")
-          console.log(action.payload.data)
-          const lineNum = action.payload.data.lineNum
-          const showTransferCall = action.payload.data.showTransferCall
-          for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
-              state.answeredCalls[index].showTransferCall = showTransferCall
-              break;
-            }
-          }
-          break
-        }
-        case "showTransferCallAtt": {
-          console.log("showTransferCall:")
-          console.log(action.payload.data)
-          const lineNum = action.payload.data.lineNum
-          const showTransferCallAtt = action.payload.data.showTransferCallAtt
-          for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
-              state.answeredCalls[index].showTransferCallAtt = showTransferCallAtt
               break;
             }
           }
@@ -295,7 +222,6 @@ const sipSlice = createSlice({
             if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
                 const answered:answeredCall =  state.ringingOutboundCalls[index]
                 answered.answered = true
-                answered.callTimer = "00:00"
                 state.answeredCalls = [...state.answeredCalls, answered]; 
                 state.ringingOutboundCalls=[
                 ...state.ringingOutboundCalls.slice(0, index),
@@ -329,5 +255,5 @@ const sipSlice = createSlice({
   },
 })
 
-export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth, logoutPopUp} = sipSlice.actions
+export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth} = sipSlice.actions
 export default  sipSlice.reducer;

@@ -5,11 +5,11 @@ import Input from "components/UI/Forms/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { setCallNumber } from "redux/call/callSlice";
 import { callNumber } from "redux/call/callSelectors";
-import sip from "lib/sip"
 
-const Dialpad = ({LineNumber}:{LineNumber:number|undefined}) => {
+const Dialpad = () => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber);
+
 	const dialpad_arr = [
 		[1, <Dialpad1Icon />],
 		[2, "ABC"],
@@ -36,8 +36,6 @@ const Dialpad = ({LineNumber}:{LineNumber:number|undefined}) => {
 						className={styles.dialpad_key}
 						onClick={() => {
 							dispatch(setCallNumber(number + key_arr[0]));
-              const value:string = typeof key_arr[0] === "string" ? key_arr[0] : (typeof key_arr[0] === "number" ? key_arr[0].toString(): "") 
-              LineNumber && sip.sendDTMF(LineNumber, value)
 						}}>
 						<span className={styles.dialpad_val}>{key_arr[0]}</span>
 						<p className={styles.dialpad_val2}>{key_arr[1]}</p>

@@ -28,9 +28,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { useGetContactsQuery } from "./../../services/contact";
-import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
+import { addCall, callDailer, callEnding, callInProgress, transferCall } from "./../../redux/call/callSelectors";
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
+import DTMF from "components/Dashboard/DTMF";
 
 const Dashboard = () => {
 	const { data } = useGetContactsQuery(null);
@@ -40,12 +41,11 @@ const Dashboard = () => {
 	const isCallInProgress = useSelector(callInProgress);
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
-	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp} = useSelector((state: any) => state.sip)
+	const isCallEnded = useSelector(callEnding);
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip)
 
 	useEffect(() => {
 		dispatch(setContactList(data));
-		
 	}, [data]);
 
 	useEffect(() => {
@@ -137,25 +137,26 @@ const Dashboard = () => {
 
 					{/* This is a dial pad components for calling */}
 					{
-						answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) &&
+						answeredCalls.length < 1 && ringingOutboundCalls.length < 1 ? (
 							<div className={styles.dialpad}>
 								<KeyPad />
 							</div>
+						) : null
 					}
 
 					{/* When call is in progress this component will be shown  */}
 					{/* {isCallInProgress && <Dialer />} */}
 
-					{ (answeredCalls.length > 0 || ringingOutboundCalls.length > 0) && !(callEnding.length > 0) && <Dialer />}
+					{ (answeredCalls.length > 0 || ringingOutboundCalls.length > 0) && !isCallEnded ? <Dialer /> : null}
 
 					{/* to add a call in progress call we will call this component */}
-					{/* {isCallAdded && <AddCall />} */}
+					{isCallAdded && <AddCall />}
 					{/* <DTMF /> */}
 					{/* to transfer the call to another number we call this component */}
-					{/* {isCallTransfer && <TransferCall />} */}
+					{isCallTransfer && <TransferCall />}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} />}
+					{isCallEnded && <EndCall />}
 					
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}
@@ -179,7 +180,7 @@ const Dashboard = () => {
 			{/* {true && <EditExtension />} */}
 
 			{/* component for logout LogoutPopUp */}
-			{ logoutPopUp && <LogoutPopUp />}
+			{/* <LogoutPopUp /> */}
 
 			{/* incoming call components */}
 
