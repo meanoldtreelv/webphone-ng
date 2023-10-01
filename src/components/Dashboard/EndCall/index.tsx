@@ -1,17 +1,15 @@
 import { useEffect } from "react";
 import styles from "./EndCall.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { dialPad } from "redux/call/callSlice";
 
 import dummyProfileImg from "./../../../assets/images/img/dummy/profile.png";
-import { callEnding } from "redux/call/callSelectors";
-import { store } from "redux/store";
 
-const EndCall = ({ name, callTimer }: {name: string, callTimer: string}) => {
+const EndCall = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		setTimeout(() => {
-			store.dispatch({type:"sip/endCall"})
+			dispatch(dialPad());
 		}, 1000);
 	});
 	return (
@@ -46,9 +44,9 @@ const EndCall = ({ name, callTimer }: {name: string, callTimer: string}) => {
 						<span>SG</span>
 					)}
 				</div>
-				<p className={styles.name}>{name}</p>
+				<p className={styles.name}>Matt Wizz</p>
 				<p className={styles.callend}>Call Ended</p>
-				<p className={styles.timer}>{callTimer}</p>
+				<p className={styles.timer}>03:45</p>
 			</div>
 		</div>
 	);

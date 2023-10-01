@@ -1,15 +1,11 @@
-import { store } from "redux/store";
 import styles from "./TransferCallCard.module.scss";
-import { setCallNumber } from "redux/call/callSlice";
-import { useDispatch } from "react-redux";
 
-const TransferCallCard = ({LineNumber}:{LineNumber:number}) => {
-	const dispatch = useDispatch();
+const TransferCallCard = () => {
 	return (
 		<div className={styles.transfer}>
 			<div className={styles.cardTitle}>Transfer</div>
 
-			<button className={styles.cardOptions} onClick={()=>{store.dispatch({type:"sip/answeredCalls", payload:{action:"showTransferCall",data:{lineNum:LineNumber, showTransferCall:true}}}); dispatch(setCallNumber(""))}}>
+			<button className={styles.cardOptions}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer">
 						<path
@@ -25,7 +21,7 @@ const TransferCallCard = ({LineNumber}:{LineNumber:number}) => {
 
 				<span>Transfer Call</span>
 			</button>
-			<button className={styles.cardOptions} onClick={()=>{store.dispatch({type:"sip/answeredCalls", payload:{action:"showTransferCallAtt",data:{lineNum:LineNumber, showTransferCallAtt:true}}}); dispatch(setCallNumber(""))}}>
+			<button className={styles.cardOptions}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer_2">
 						<path
