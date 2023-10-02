@@ -5,8 +5,13 @@ import MicrophoneIcon from "components/UI/Icons/Microphone";
 import RangeSlider from "components/UI/Forms/RangeSlider";
 import Select from "components/UI/Forms/Select";
 import OnOffSwitch from "components/UI/OnOffSwitch";
+import { useSelector } from "react-redux";
 
 const AudioSetting = () => {
+	
+	const { speakerDevice, microphoneDevice} = useSelector((state: any) => state.sip)
+	console.log(speakerDevice)
+	// AudioinputDevices.map((x) => [x.toJSON()["label"], x.toJSON()["deviceId"]]) 
 	return (
 		<div className={styles.audio}>
 			<h1 className={`body_bold ${styles.heading}`}>Playback Devices</h1>
@@ -23,7 +28,7 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={[]} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => { console.log(e.target.value); } } defaultValue={"f51983da7bc4659d88fe08c90e554e6e3eb6bb2f90ba91dfa90b72889d0c1007"} />
 				</div>
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Loud Playback Device</h2>
@@ -37,14 +42,14 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={[]} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined} />
 				</div>
-				<div className={`${styles.setting}`}>
+				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Playback Gain</h2>
 					<div className={`${styles.optionBox}`}>
 						<RangeSlider />
 					</div>
-				</div>
+				</div> */}
 			</div>
 			<h1 className={`body_bold ${styles.heading}`}>Capture Devices</h1>
 			<div className={styles.settingBox}>
@@ -60,24 +65,24 @@ const AudioSetting = () => {
 							<MicrophoneIcon />
 						</span>
 					</div> */}
-					<Select icon={<MicrophoneIcon />} options={[]} />
+					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined}  />
 				</div>
-				<div className={`${styles.setting}`}>
+				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Capture Gain</h2>
 					<div className={`${styles.optionBox}`}>
 						<RangeSlider />
 					</div>
-				</div>
-				<div className={`${styles.setting}`}>
+				</div> */}
+				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Capture Level</h2>
 					<div className={`${styles.optionBox}`}></div>
-				</div>
+				</div> */}
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>
 						<OnOffSwitch />
 						<span className={`caption_1`}>Enable echo cancellation</span>
 					</h2>
-					<div className={`${styles.optionBox}`}>
+					{/* <div className={`${styles.optionBox}`}>
 						<p>
 							<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
 								<path
@@ -88,7 +93,14 @@ const AudioSetting = () => {
 							</svg>
 							<span>Calibrate</span>
 						</p>
-					</div>
+					</div> */}
+				</div>
+
+				<div className={`${styles.setting}`}>
+					<h2 className={`caption_1 ${styles.heading2}`}>
+						<OnOffSwitch />
+						<span className={`caption_1`}>Enable noise suppression</span>
+					</h2>
 				</div>
 			</div>
 			<h1 className={`body_bold ${styles.heading}`}>Ring</h1>
@@ -105,12 +117,12 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={[]} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined} />
 				</div>
-				<div className={`${styles.setting}`}>
+				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Ring Sound</h2>
 					<Select icon={<SpeakerIcon />} options={[]} />
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

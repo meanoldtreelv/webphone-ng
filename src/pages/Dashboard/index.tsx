@@ -33,7 +33,7 @@ import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
 
 const Dashboard = () => {
-	const { data } = useGetContactsQuery(null);
+	// const { data } = useGetContactsQuery(null);
 	const dispatch = useDispatch();
 
 	const isDialerActive = useSelector(callDailer);
@@ -43,96 +43,96 @@ const Dashboard = () => {
 	// const isCallEnded = useSelector(callEnding);
 	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp} = useSelector((state: any) => state.sip)
 
-	useEffect(() => {
-		dispatch(setContactList(data));
+	// useEffect(() => {
+	// 	dispatch(setContactList(data));
 		
-	}, [data]);
+	// }, [data]);
 
-	useEffect(() => {
-		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
-		const userID = "5ed668cd38d0350104cb8789";
-		// instances_API(
-		// 	(res: any) => {
-		// 		console.log(res, "instances API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in instances retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in instances retrieve");
-		// 	},
-		// );
+	// useEffect(() => {
+	// 	const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
+	// 	const userID = "5ed668cd38d0350104cb8789";
+	// 	// instances_API(
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "instances API retrieve");
+	// 	// 		if (res?.status?.code === 200) {
+	// 	// 			console.log("success in instances retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in instances retrieve");
+	// 	// 	},
+	// 	// );
 
-		// account_API(
-		// 	(res: any) => {
-		// 		console.log(res, "account API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in account retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in account retrieve");
-		// 	},
-		// );
+	// 	// account_API(
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "account API retrieve");
+	// 	// 		if (res?.status === 200) {
+	// 	// 			console.log("success in account retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in account retrieve");
+	// 	// 	},
+	// 	// );
 
-		// GET_Contact_List_API(
-		// 	(res: any) => {
-		// 		console.log(res, "contact API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in contact retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in contact retrieve");
-		// 	},
-		// );
+	// 	// GET_Contact_List_API(
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "contact API retrieve");
+	// 	// 		if (res?.status === 200) {
+	// 	// 			console.log("success in contact retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in contact retrieve");
+	// 	// 	},
+	// 	// );
 
-		// extension_API(
-		// 	user_id,
-		// 	(res: any) => {
-		// 		console.log(res, "extension API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in extension retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in extension retrieve");
-		// 	},
-		// );
+	// 	// extension_API(
+	// 	// 	user_id,
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "extension API retrieve");
+	// 	// 		if (res?.status?.code === 200) {
+	// 	// 			console.log("success in extension retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in extension retrieve");
+	// 	// 	},
+	// 	// );
 
-		// callerId_API(
-		// 	user_id,
-		// 	(res: any) => {
-		// 		console.log(res, "user API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in user retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in user retrieve");
-		// 	},
-		// );
+	// 	// callerId_API(
+	// 	// 	user_id,
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "user API retrieve");
+	// 	// 		if (res?.status?.code === 200) {
+	// 	// 			console.log("success in user retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in user retrieve");
+	// 	// 	},
+	// 	// );
 
-		// user_API(
-		// 	userID,
-		// 	(res: any) => {
-		// 		console.log(res, "user API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in user retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in user retrieve");
-		// 	},
-		// );
-	}, []);
+	// 	// user_API(
+	// 	// 	userID,
+	// 	// 	(res: any) => {
+	// 	// 		console.log(res, "user API retrieve");
+	// 	// 		if (res?.status?.code === 200) {
+	// 	// 			console.log("success in user retrieve");
+	// 	// 		}
+	// 	// 	},
+	// 	// 	(err: any) => {
+	// 	// 		console.error(err, "err in user retrieve");
+	// 	// 	},
+	// 	// );
+	// }, []);
 	return (
 		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
-						<ContactList />
+						{/* <ContactList /> */}
 					</div>
 
 					{/* This is a dial pad components for calling */}

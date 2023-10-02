@@ -31,6 +31,18 @@ interface callEnding{
   name?: string,
   callTimer?: string
 }
+interface microphoneDevice{
+  deviceId?: string,
+  groupId?: string,
+  kind?: string,
+  label?: string,
+}
+interface speakerDevice{
+  deviceId?: string,
+  groupId?: string,
+  kind?: string,
+  label?: string,
+}
 const sipSlice = createSlice({
   name: 'sip',
   initialState: {
@@ -47,6 +59,10 @@ const sipSlice = createSlice({
     ringingOutboundCallActive:0,
     activeCallLineNumber:0,
     logoutPopUp: false,
+    microphoneDevice: [] as microphoneDevice[],
+    speakerDevice: [] as speakerDevice[],
+    hasAudioDevice: false,
+    hasSpeakerDevice: false,
   },
   reducers: {
     authMessage: (state, action) =>  {
@@ -78,6 +94,43 @@ const sipSlice = createSlice({
     },
     logoutPopUp: (state, action) =>  {
       state.logoutPopUp = action.payload
+    },
+    hasAudioDevice: (state, action) =>  {
+      state.hasAudioDevice = action.payload
+      console.log(state.hasAudioDevice)
+    },
+    hasSpeakerDevice: (state, action) =>  {
+      state.hasSpeakerDevice = action.payload
+      console.log(state.hasSpeakerDevice)
+    },
+    microphoneDevice: (state, action) =>  {
+      switch(action.payload.action){
+        case "add": {
+          const microphoneDevice = {...action.payload.data}
+          state.microphoneDevice = [...state.microphoneDevice, microphoneDevice]
+          console.log(state.microphoneDevice)
+          break
+        }
+        case "removeAll": {
+          state.microphoneDevice = []
+          break
+        }
+      }
+    },
+    speakerDevice: (state, action) =>  {
+      switch(action.payload.action){
+        case "add": {
+          const speakerDevice = {...action.payload.data}
+          state.speakerDevice = [...state.speakerDevice, speakerDevice]
+          console.log(state.speakerDevice)
+          break
+        }
+        case "removeAll": {
+          state.speakerDevice = []
+          break
+        }
+      }
+
     },
     ringingInboundCalls:(state, action) =>  {
       switch(action.payload.action){
