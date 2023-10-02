@@ -16,22 +16,25 @@ export const voicemailService = apiService.injectEndpoints({
 		}),
 		deleteVoicemails: build.query({
 			query: (data) => ({
-				method: "DELETE",
+				method: "POST",
 				url: "/voicemail/messages/bulk-delete",
 				data,
 			}),
 		}),
 		updateVoicemails: build.query({
 			query: (data) => ({
-				method: "DELETE",
+				method: "PATCH",
 				url: "/voicemail/messages/bulk-update",
-				data,
+				data: {
+					listened: true,
+					message_ids: data,
+				},
 			}),
 		}),
 	}),
 });
 
-export const { 
+export const {
 	useGetVoicemailsQuery,
 	useLazyDeleteVoicemailQuery,
 	useLazyDeleteVoicemailsQuery,

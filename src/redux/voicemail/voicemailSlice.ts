@@ -3,6 +3,9 @@ import { IVoicemailState } from "./voicemailTypes";
 
 const initialVoicemailState: IVoicemailState = {
 	selectedVoicemail: {},
+	moreOptVoicemailId: "",
+	selectVoicemails: false,
+	selectedVoicemailList: [],
 };
 
 const voicemailSlice = createSlice({
@@ -13,9 +16,19 @@ const voicemailSlice = createSlice({
 		setSelectedVoicemail(state, action) {
 			state.selectedVoicemail = action.payload;
 		},
+		setMoreOptVoicemailId(state, action) {
+			state.moreOptVoicemailId = action.payload;
+		},
+		setSelectVoicemails(state) {
+			state.selectVoicemails = !state.selectVoicemails;
+		},
+		setSelectedVoicemailList(state, action) {
+			state.selectedVoicemailList = [...state.selectedVoicemailList, action.payload];
+		},
 	},
 });
 
-export const { setSelectedVoicemail } = voicemailSlice.actions;
+export const { setSelectedVoicemail, setMoreOptVoicemailId, setSelectVoicemails, setSelectedVoicemailList } =
+	voicemailSlice.actions;
 
 export default voicemailSlice.reducer;

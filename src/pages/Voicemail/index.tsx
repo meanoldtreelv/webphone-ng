@@ -12,6 +12,7 @@ import { IVoicemail } from "redux/voicemail/voicemailTypes";
 import VoicemailCardSkeleton from "components/Voicemail/VoicemailCardSkeleton";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { moreOptVoicemail } from "redux/voicemail/voicemailSelectors";
 // import PopupMenu from "components/Voicemail/PopupMenu";
 
 const Voicemail = () => {
@@ -20,13 +21,19 @@ const Voicemail = () => {
 	const [noVoicemail, setNoVoicemail] = useState(false);
 	const [filterSlider, setFilterSlider] = useState(false);
 	const [deleteVoicemailModal, setDeleteVoicemailModal] = useState(false);
+	const voicemailId = useSelector(moreOptVoicemail);
+
+	useEffect(() => {
+		if(voicemailId === "")
+			setDeleteVoicemailModal(false);
+	}, [voicemailId]);
 
 	return (
 		<div className={styles.voicemail}>
 			<BaseLayout>
 				<section className={styles.main}>
 					<div className={styles.header}>
-						<Header filterClicked={setFilterSlider} />
+						<Header filterClicked={setFilterSlider} deleteClicked={setDeleteVoicemailModal} />
 					</div>
 
 					<div className={styles.body}>
@@ -55,6 +62,8 @@ const Voicemail = () => {
 										transcript={voicemail.transcription}
 										time={voicemail.time_received}
 										link={voicemail.voicemail_file.link}
+										deleteModal={setDeleteVoicemailModal}
+										listened={voicemail.listened}
 									/>
 								))
 							)}

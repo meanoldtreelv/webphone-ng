@@ -27,14 +27,12 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
-import { useGetContactsQuery } from "./../../services/contact";
 import { addCall, callDailer, callEnding, callInProgress, transferCall } from "./../../redux/call/callSelectors";
 import { setContactList } from "./../../redux/contact/contactSlice";
 import { contactLists } from "./../../redux/contact/contactSelectors";
 import DTMF from "components/Dashboard/DTMF";
 
 const Dashboard = () => {
-	const { data } = useGetContactsQuery(null);
 	const dispatch = useDispatch();
 
 	const isDialerActive = useSelector(callDailer);
@@ -43,10 +41,6 @@ const Dashboard = () => {
 	const isCallAdded = useSelector(addCall);
 	const isCallEnded = useSelector(callEnding);
 	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip)
-
-	useEffect(() => {
-		dispatch(setContactList(data));
-	}, [data]);
 
 	useEffect(() => {
 		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
@@ -132,7 +126,7 @@ const Dashboard = () => {
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
-						<ContactList />
+						{/* <ContactList /> */}
 					</div>
 
 					{/* This is a dial pad components for calling */}

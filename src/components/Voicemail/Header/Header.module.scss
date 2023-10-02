@@ -18,10 +18,13 @@
 		left: 50%;
 		transform: translateX(-50%);
 		width: fit-content;
+		width: 700px;
 	}
 
 	&_search {
 		position: relative;
+		margin-right: 5px;
+		flex: 1;
 
 		& input {
 			background: var(--background-primary, #fff);
@@ -33,7 +36,7 @@
 			border: 1px solid var(--border-secondary, #c8d3e0);
 			background: var(--background-tertiary, #f7f9fc);
 
-			width: 590px;
+			width: 100%;
 			height: 32px;
 		}
 
@@ -50,9 +53,6 @@
 		font-weight: 600;
 		color: var(--text-primary, #1F2023);
 	}
-}
-
-@media screen and (max-width: 1440px) {
 }
 
 @media screen and (max-width: 1200px) {
@@ -101,6 +101,10 @@
 }
 
 .actionsDelete {
+	margin-right: 10px;
+}
+
+.actionsDelete, .actionsUpdate {
 	border: 1px solid #ddd;
 	font-size: 13px;
 	display: flex;
@@ -114,5 +118,13 @@
 	
 	> svg {
 		margin-right: 5px;
+	}
+}
+
+.checkBtn {
+	margin-left: 7px;
+
+	img {
+		width: 16px;
 	}
 }

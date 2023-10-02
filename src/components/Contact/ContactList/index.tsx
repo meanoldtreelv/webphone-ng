@@ -1,16 +1,20 @@
 import styles from "./ContactList.module.scss";
 import ContactCard from "../ContactCard";
 import { useDispatch, useSelector } from "react-redux";
-import { openAddEditContact } from "../../../redux/contact/contactSlice";
+import { openAddEditContact, setContactList } from "../../../redux/contact/contactSlice";
 import { contactLists } from "redux/contact/contactSelectors";
 import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
 import SearchIcon from "components/UI/Icons/Search";
+import { useGetContactsQuery } from "services/contact";
+import { useEffect } from "react";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const contactList = useSelector(contactLists);
+	const { data } = useGetContactsQuery(null);
+
 
 	// Sort the array based on first name
 	// const sortedContactLists = [...contactList]?.sort((a, b) => {
@@ -72,9 +76,8 @@ const ContactList = () => {
 					</p>
 				</div>
 
-				{/* frequently contact  */}
 				<div>
-					{contactList?.map((contact) => (
+					{data?.map((contact: any) => (
 						<ContactCard
 							id={contact.id}
 							first_name={contact.first_name}
@@ -85,7 +88,7 @@ const ContactList = () => {
 						/>
 					))}
 				</div>
-				{/* namewise contact heading  */}
+
 				<div>
 					<p className={styles.contact_favorites}>
 						<span>
@@ -94,9 +97,8 @@ const ContactList = () => {
 					</p>
 				</div>
 
-				{/* frequently contact  */}
 				<div>
-					{contactList?.map((contact) => (
+					{data?.map((contact: any) => (
 						<ContactCard
 							id={contact.id}
 							first_name={contact.first_name}
