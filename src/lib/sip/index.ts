@@ -1193,13 +1193,17 @@ function DetectDevices() {
       AudioinputDevices = [];
       VideoinputDevices = [];
       SpeakerDevices = [];
+      store.dispatch({type:"sip/microphoneDevice", payload:{action:"removeAll" } })
+      store.dispatch({type:"sip/speakerDevice", payload:{action:"removeAll" }  })
       for (var i = 0; i < deviceInfos.length; ++i) {
         if (deviceInfos[i].kind === "audioinput") {
           HasAudioDevice = true;
           AudioinputDevices.push(deviceInfos[i]);
+          store.dispatch({type:"sip/microphoneDevice", payload:{action:"add",data: deviceInfos[i].toJSON() } })
         } else if (deviceInfos[i].kind === "audiooutput") {
           HasSpeakerDevice = true;
           SpeakerDevices.push(deviceInfos[i]);
+          store.dispatch({type:"sip/speakerDevice", payload:{action:"add",data: deviceInfos[i].toJSON() }  })
         } else if (deviceInfos[i].kind === "videoinput") {
           if (EnableVideoCalling === true) {
             HasVideoDevice = true;
@@ -1207,7 +1211,8 @@ function DetectDevices() {
           }
         }
       }
-      // console.log(AudioinputDevices, VideoinputDevices);
+      store.dispatch({type:"sip/hasSpeakerDevice", payload: HasSpeakerDevice})
+      store.dispatch({type:"sip/hasAudioDevice", payload: HasAudioDevice})
     })
     .catch(function (e) {
       console.error("Error enumerating devices", e);
@@ -3774,8 +3779,10 @@ function onRegistered() {
     if (!userAgent.isReRegister) {
         console.log("Registered!");
         userAgent.registering = false;
-        sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
-        setCookie("user_id", userAgent['options']['authorizationUsername']);
+        // sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
+        setCookie("ext_user_id", userAgent['options']['authorizationUsername']);
+        setCookie("ext_password", userAgent['options']['authorizationPassword']);
+        // console.log(userAgent)
         // loginSuccessUI();
         store.dispatch({type:"sip/extNumber", payload:userAgent['options']['authorizationUsername']})
         store.dispatch({type:"sip/authMessage", payload:"continue"})
@@ -4091,7 +4098,7 @@ function micChangedRefreshDevice(){
 }
 
 const sip = {
-  CreateUserAgent: (username:string, password:string, domain:string) => {
+  CreateUserAgent: (username:string, password:string, domain?:string) => {
     store.dispatch({type:"sip/authLoading", payload:true})
     profileName = username;
     wssServer = "webrtc.ringplan.com";

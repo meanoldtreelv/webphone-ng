@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip"
 import {store} from '../../redux/store'
+import { setCookie } from "utils";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Login = () => {
 	const onContinueWithRingplan = () => {
 		store.dispatch({type:"sip/extAuth", payload:false});
 		navigate("/dashboard"); // Remove the extra parentheses
+		setCookie("extAuth", "false");
 	}
 
 	interface FormData {
@@ -39,6 +41,7 @@ const Login = () => {
 		(form?.server === "") ? setForm((prevState)=>{return{ ...prevState, serverErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, serverErrorMsg: ""}});
 		(form?.secret === "") ? setForm((prevState)=>{return{ ...prevState, secretErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, secretErrorMsg: ""}});
 		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server)
+        setCookie("extAuth", "true");
 		// sip.CreateUserAgent("", "", "")
 	}
 	const { authMessage, authLoading } = useSelector((state: any) => state.sip)

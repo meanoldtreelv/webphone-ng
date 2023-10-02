@@ -1,14 +1,16 @@
 import React from "react";
 import styles from "./Select.module.scss";
-
-const Select = ({ icon, options }) => {
+interface item{
+	value?: string,
+	name?: string,
+	selected?: boolean,
+}
+const Select = ({ icon, options, onChange=undefined, defaultValue}:{icon:any, options:item[], onChange:React.ChangeEventHandler<HTMLSelectElement>|undefined, defaultValue: string}) => {
+	console.log(options) 
 	return (
 		<div className={`${styles.optionBox}`}>
-			<select name="" id="" className={`caption_1`}>
-				{options?.map(() => <option value="">MacBook Pro Speakers</option>)}
-				<option value="">MacBook Pro Speakers</option>
-				<option value="">MacBook Pro Speakers</option>
-				<option value="">MacBook Pro Speakers</option>
+			<select className={`caption_1`} onChange={(e)=>{ onChange && onChange(e)} } defaultValue={defaultValue}>
+				{options?.map((item:item) => <option value={item.value}>{item.name}</option>)}
 			</select>
 			<span>{icon}</span>
 		</div>
