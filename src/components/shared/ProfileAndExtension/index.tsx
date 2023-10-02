@@ -17,7 +17,6 @@ const ProfileAndExtension = () => {
 		{ name: "Test 2", extension: 1002, active: false },
 		{ name: "Test 3", extension: 1003, active: false },
 	];
-  const { logoutPopUp} = useSelector((state: any) => state.sip)
 	return (
 		<div className={styles.profileExtension}>
 			<span
@@ -231,7 +230,7 @@ const ProfileAndExtension = () => {
 				</div>
 			)}
 
-			{isProfileOpen && !logoutPopUp && <ProfileMenu extAuth={extAuth} />}
+			{isProfileOpen && <ProfileMenu extAuth={extAuth} />}
 
 			{/* {isEditBoxOpen && <EditExtension />} */}
 		</div>

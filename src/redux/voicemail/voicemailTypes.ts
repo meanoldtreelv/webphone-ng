@@ -27,4 +27,7 @@ export interface IVoicemailState {
 		duration: number;
 		link: string;
 	};
+	moreOptVoicemailId: string;
+	selectVoicemails: boolean;
+	selectedVoicemailList: string[];
 }

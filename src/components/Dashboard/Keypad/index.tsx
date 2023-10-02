@@ -24,7 +24,7 @@ const Keypad = () => {
 
 	return (
 		<div className={styles.dialpad}>
-			<Dialpad LineNumber={undefined} />
+			<Dialpad />
 			<div className={styles.dialpad_keypad}>
 				<div className={styles.dialpad_key2}>
 					{/* here lies add user icon, pass props and use the icon */}
@@ -43,7 +43,7 @@ const Keypad = () => {
 				</div>
 				<div
 					className={styles.dialpad_key2}
-					style={{ background: number.length? "#75c322" : "var(--primary-disabled, #C8D3E0)"}}
+					style={{ background: number.length? "var(--primary-active, #074177)" : "var(--primary-disabled, #C8D3E0)"}}
 					onClick={()=>{sip.call(number)}}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">

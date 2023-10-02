@@ -7,13 +7,15 @@ import EnvelopIcon from "components/UI/Icons/Voicemail/Envelop";
 import ShareIcon from "components/UI/Icons/Voicemail/Share";
 
 interface IPopupMenu {
+	id: string,
 	children: {
 		icon: React.ReactNode;
 		title: string;
+		clicked?: () => void;
 	}[];
 }
 
-const PopupMenu: React.FC<IPopupMenu> = ({ children }) => {
+const PopupMenu: React.FC<IPopupMenu> = ({ children, id }) => {
 	return (
 		<div className={styles.popup}>
 			{/* <button className={styles.popup_row}>
@@ -44,7 +46,7 @@ const PopupMenu: React.FC<IPopupMenu> = ({ children }) => {
 			</button> */}
 
 			{children.map((opt) => (
-				<button className={styles.popup_row}>
+				<button className={styles.popup_row} onClick={opt.clicked}>
 					{opt.icon}
 					<p className={`${styles.popup_rowText} ${styles.popup_email}`}>{opt.title}</p>
 				</button>

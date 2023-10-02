@@ -1,11 +1,30 @@
-import InfoIcon from "components/UI/Icons/Info";
+import { moreOptVoicemail, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
+import InfoIcon from "./../../../components/UI/Icons/Info";
 import styles from "./DeleteVoicemail.module.scss";
+import { useSelector } from "react-redux";
+import { useLazyDeleteVoicemailQuery, useLazyDeleteVoicemailsQuery } from "services/voicemail";
+import { ClipLoader } from "react-spinners";
 
 interface IDeleteVoicemail {
 	onClose: (del: boolean) => void;
 }
 
 const DeleteVoicemail: React.FC<IDeleteVoicemail> = ({ onClose }) => {
+	const [deleteVoicemail, { isLoading: voicemailLoading }] = useLazyDeleteVoicemailQuery();
+	const [deleteVoicemails, { isLoading: voicemailsLoading }] = useLazyDeleteVoicemailsQuery();
+	const voicemailId = useSelector(moreOptVoicemail);
+	const voicemailIds = useSelector(selectedVoicemails);
+
+	const handleDeleteVoicemail = () => {
+		if(voicemailIds.length) {
+			// const stringify_ids = JSON.stringify({message_ids: voicemailIds});
+			deleteVoicemails({message_ids: voicemailIds});
+			return;
+		}
+
+		deleteVoicemail(voicemailId)
+	}
+
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.delete}>
@@ -18,11 +37,11 @@ const DeleteVoicemail: React.FC<IDeleteVoicemail> = ({ onClose }) => {
 				</div>
 
 				<div className={styles.delete_btnCont}>
-					<div className={styles.delete_cancelBtn}>
-						<span className={``}>Cancel</span>
-					</div>
-					<button className={styles.delete_deleteBtn} onClick={() => onClose(false)}>
-						<span className={``}>Delete</span>
+					<button className={styles.delete_cancelBtn} onClick={() => onClose(false)}>
+						<span>Cancel</span>
+					</button>
+					<button className={styles.delete_deleteBtn} onClick={handleDeleteVoicemail}>
+						{voicemailLoading || voicemailsLoading ? <ClipLoader color="white" size={16} /> : <span>Delete</span>}
 					</button>
 				</div>
 			</div>

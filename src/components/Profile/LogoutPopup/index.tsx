@@ -1,7 +1,5 @@
 import InfoIcon from "components/UI/Icons/Info";
 import styles from "./LogoutPopUp.module.scss";
-import { store } from "redux/store";
-import sip from "lib/sip";
 
 const LogoutPopUp = () => {
 	return (
@@ -13,8 +11,8 @@ const LogoutPopUp = () => {
 					<p>Are you sure that you want to logout ?</p>
 				</div>
 				<div className={styles.popUp_button}>
-					<button className={styles.btnCancel} onClick={()=>{store.dispatch({type:"sip/logoutPopUp", payload:false})}}>Cancel</button>
-					<button className={styles.btnConfirm} onClick={sip.logout}>Logout</button>
+					<button className={styles.btnCancel}>Cancel</button>
+					<button className={styles.btnConfirm}>Logout</button>
 				</div>
 			</div>
 		</section>

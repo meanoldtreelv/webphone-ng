@@ -865,7 +865,6 @@ function unholdSession(lineNum:number) {
         session.data.hold.push({ event: "unhold", eventTime: utcDateNow() });
 
         store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:false}}})
-        session.data.ismute && MuteSession(lineNum) 
       },
       onReject: function () {
         session.isOnHold = true;
@@ -946,7 +945,7 @@ function UnmuteSession(lineNum:number) {
   console.log("#line-" + lineNum + "-msg:" + "call_off_mute");
 }
 
-function sendDTMF(lineNum:number, itemStr:string) {
+function sendDTMF(lineNum, itemStr) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
 
@@ -2708,7 +2707,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
   // document.getElementById("caller-id").style.display = "none";
 }
 
-function BlindTransfer(lineNum:number, dstNo:string) {
+function BlindTransfer(lineNum, dstNo) {
   if (EnableAlphanumericDial) {
     dstNo = dstNo.replace(telAlphanumericRegEx, "").substring(0, MaxDidLength);
   } else {
@@ -2762,7 +2761,6 @@ function BlindTransfer(lineNum:number, dstNo:string) {
         session.bye().catch(function (error) {
           console.warn("Could not BYE after blind transfer:", error);
         });
-        store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
         teardownSession(lineObj);
         onCallEndByOtherSide();
       },
@@ -2790,7 +2788,7 @@ function BlindTransfer(lineNum:number, dstNo:string) {
 
   console.log("#line-" + lineNum + "-msg" + "call_blind_transfered");
 }
-function AttendedTransfer(lineNum:number, dstNo:string) {
+function AttendedTransfer(lineNum, dstNo) {
   if (EnableAlphanumericDial) {
     dstNo = dstNo.replace(telAlphanumericRegEx, "").substring(0, MaxDidLength);
   } else {
@@ -2991,7 +2989,7 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
                 session.bye().catch(function (error) {
                   console.warn("Could not BYE after blind transfer:", error);
                 });
-                store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+
                 teardownSession(lineObj);
                 onCallEndByOtherSide();
               },
@@ -3618,7 +3616,7 @@ function BackgroundAvailable(val=0, auto=false){
         $("#background-call").addClass("d-none");
     }
 }
-function Unregister(skipUnsubscribe:boolean) {
+function Unregister(skipUnsubscribe) {
     if (userAgent === null || !userAgent.isRegistered()) return;
     if (skipUnsubscribe === true) {
         console.log("Skipping Unsubscribe");
@@ -4144,25 +4142,6 @@ const sip = {
     store.dispatch({type:"sip/answeredCalls", payload:{action:"volumeLevel",data:{lineNum:LineNumber, volumeLevel:volumeLevel}}})
     var audioobject = document.getElementById("line-" + LineNumber + "-remoteAudio");
     audioobject.volume = amount;
-  },
-  sendDTMF: (LineNumber: number, value: string ) =>  {
-    sendDTMF(LineNumber, value)
-  },
-  addCall: (LineNumber: number, number: string ) =>  {
-    DialByLine("audio", number);
-  },
-  transferCall: (LineNumber: number, number: string ) =>  {
-    BlindTransfer(LineNumber, number)
-  },
-  transferCallAtt: (LineNumber: number, number: string ) =>  {
-    AttendedTransfer(LineNumber, number)
-  },
-  logout: ()=>{
-    try {Unregister()} catch (error) { }
-    localStorage.clear();
-    sessionStorage.clear();
-    document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, name => window.location.hostname.split('.').reverse().reduce(domain => (domain=domain.replace(/^\.?[^.]+/, ''),document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`,domain), window.location.hostname));
-    window.location = "/";
   },
   store:() => {return store}
 }
