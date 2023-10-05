@@ -1,0 +1,35 @@
+.statusIcon {
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
+
+	border-radius: 32px;
+	border: 1px solid var(--border-tertiary, #e3eaf2);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	position: relative;
+
+	span {
+		display: flex;
+		width: 14px;
+		height: 14px;
+		padding: 3px;
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
+
+		border-radius: 23px;
+		border: 1px solid var(--background-primary, #fff);
+		background: var(--primary-default, #0c6dc7);
+
+		position: absolute;
+		top: -5px;
+		right: -2px;
+		// transform: translate(-50%, -50%);
+
+		cursor: pointer;
+	}
+}
