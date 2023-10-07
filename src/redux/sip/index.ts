@@ -96,14 +96,14 @@ const sipSlice = createSlice({
     activeCallLineNumber: (state, aciton) =>  {
       state.activeCallLineNumber = aciton.payload
     },
-		endCall(state) {
+		endCall: (state) => {
 			state.callEnding = state.callEnding.slice(1)
 		},
-		extAuthList(state, action) {
+		extAuthList: (state, action)=> {
       console.log(action.payload)
 			state.extAuthList = action.payload
 		},
-		addEndCall(state, action){
+		addEndCall: (state, action)=>{
 			state.callEnding = [ ...state.callEnding, action.payload ]
 		},
     ringingInboundCallActive: (state, aciton) =>  {
@@ -181,7 +181,7 @@ const sipSlice = createSlice({
           state.answeredCallActive = lineNum
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
             if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
-                const answered : answeredCall = state.ringingInboundCalls[index]
+                const answered : answeredCallIn = state.ringingInboundCalls[index]
                 answered.answered = true
                 answered.callTimer = "00:00"
                 state.answeredCalls = [...state.answeredCalls, answered]; 
@@ -366,7 +366,7 @@ const sipSlice = createSlice({
           state.answeredCallActive = lineNum
           for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
             if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
-                const answered:answeredCall =  state.ringingOutboundCalls[index]
+                const answered:answeredCallIn =  state.ringingOutboundCalls[index]
                 answered.answered = true
                 answered.callTimer = "00:00"
                 state.answeredCalls = [...state.answeredCalls, answered]; 
