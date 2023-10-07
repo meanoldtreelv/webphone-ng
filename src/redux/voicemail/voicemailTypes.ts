@@ -26,8 +26,19 @@ export interface IVoicemailState {
 		time: string;
 		duration: number;
 		link: string;
+		idx: number;
 	};
 	moreOptVoicemailId: string;
 	selectVoicemails: boolean;
 	selectedVoicemailList: string[];
+	page: number;
+	voicemailResults: IVoicemail[];
+	queries: {
+		from_date: "";
+		to_date: "";
+		sort: "";
+		extension_destination: "";
+	};
+	strQueries: string;
+	newFilter: boolean;
 }

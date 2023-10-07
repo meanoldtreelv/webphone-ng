@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./AddEditContact.module.scss";
-import { Add_contact_API, UPDATE_Contact_API } from "effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import { closeAddEditContact, setEditContactFalse } from "redux/contact/contactSlice";
 import { addContactOpen, editContactNumber, selectedContactData } from "redux/contact/contactSelectors";
-import { GET_Contact_Salutation_API } from "../../../effects/apiEffect";
 import accordionPlusImg from "./../../../assets/images/icon/btn_accordion_plus.svg";
 import accordionMinusImg from "./../../../assets/images/icon/btn_accordion_minus.svg";
 import XIcon from "components/UI/Icons/X";
@@ -12,11 +10,15 @@ import UserIcon from "components/UI/Icons/User/UserSingle";
 import { useLazyCreateContactQuery, useLazyUpdateContactQuery } from "services/contact";
 import { IContactList } from "redux/contact/contactTypes";
 import { PulseLoader } from "react-spinners";
+import { convertErrorString, extractFieldName } from "helpers/extractString";
+// import { setNotification } from "redux/common/commonSlice";
 
 const AddContact = () => {
 	const isAddContactOpen = useSelector(addContactOpen);
 	const contactNumber = useSelector(editContactNumber);
 	const [contactData, setContactData] = useState<IContactList | {}>({});
+	const [contactError, setContactError] = useState<any>();
+	const dispatch = useDispatch();
 
 	const selectedContact = useSelector(selectedContactData);
 
@@ -45,13 +47,17 @@ const AddContact = () => {
 	const organizationRef = useRef<any>(null);
 	const parentOrganizationRef = useRef<any>(null);
 
-	const dispatch = useDispatch();
-
-	const onSaveContact = () => {
+	const onSaveContact = async () => {
 		if (selectedContact) {
 			if (selectedContact != contactData) updateContact(contactData);
 		} else {
-			createContact(contactData);
+			const { error } = await createContact(contactData);
+
+			if (error)
+				setContactError({
+					...contactError,
+					[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
+				});
 		}
 	};
 
@@ -82,7 +88,7 @@ const AddContact = () => {
 						<p className={`body_bold ${styles.box_heding}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 							General
 						</p>
-						<div className={`${styles.inputBox}`}>
+						<div className={`${styles.inputBox}`} style={{ position: "relative", paddingBottom: "20px" }}>
 							<label htmlFor="first_name" className={`caption_1`}>
 								First Name <span style={{ color: "var(--support-danger, #EE3939)" }}>*</span>
 							</label>
@@ -92,6 +98,13 @@ const AddContact = () => {
 								value={contactData?.first_name}
 								onChange={(event) => contactData && setContactData({ ...contactData, first_name: event.target.value })}
 							/>
+							{contactError?.first_name ? (
+								<p
+									className={`caption_2`}
+									style={{ color: "var(--text-danger, #EE3939)", position: "absolute", bottom: "0" }}>
+									{contactError?.first_name}
+								</p>
+							) : null}
 						</div>
 						<div className={`${styles.inputBox}`}>
 							<label htmlFor="last_name" className={`caption_1`}>
@@ -203,13 +216,13 @@ const AddContact = () => {
 									<label htmlFor="position" className={`caption_1`}>
 										Position
 									</label>
-									<input type="text" id="position" value={contactData?.job_details.position || ""} />
+									<input type="text" id="position" value={contactData?.job_details?.position} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="department" className={`caption_1`}>
 										Department
 									</label>
-									<input type="text" id="department" value={contactData?.job_details.department} />
+									<input type="text" id="department" value={contactData?.job_details?.department} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="description" className={`caption_1`}>
@@ -330,25 +343,25 @@ const AddContact = () => {
 									<label htmlFor="city" className={`caption_1`}>
 										city
 									</label>
-									<input type="text" id="city" value={contactData?.address.city} />
+									<input type="text" id="city" value={contactData?.address?.city} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="state" className={`caption_1`}>
 										State
 									</label>
-									<input type="text" id="state" value={contactData?.address.state} />
+									<input type="text" id="state" value={contactData?.address?.state} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="zip" className={`caption_1`}>
 										Zip
 									</label>
-									<input type="text" id="zip" value={contactData?.address.zipcode} />
+									<input type="text" id="zip" value={contactData?.address?.zipcode} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="country" className={`caption_1`}>
 										Country
 									</label>
-									<input type="text" id="country" value={contactData?.address.country} />
+									<input type="text" id="country" value={contactData?.address?.country} />
 								</div>
 								{/* <div className={`${styles.inputBox}`}>
 									<label htmlFor="mailing_address" className={`caption_1`}>

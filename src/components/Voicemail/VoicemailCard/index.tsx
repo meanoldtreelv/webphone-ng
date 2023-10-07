@@ -33,6 +33,7 @@ interface IVoicemailCard {
 	link: string;
 	listened: boolean;
 	deleteModal: (del: boolean) => void | undefined;
+	idx: number;
 }
 
 const VoicemailCard: React.FC<IVoicemailCard> = ({
@@ -45,6 +46,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 	link,
 	deleteModal,
 	listened,
+	idx,
 }) => {
 	let [transcripts, setTranscript] = useState(false);
 	const dispatch = useDispatch();
@@ -60,6 +62,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				time,
 				duration,
 				link,
+				idx
 			}),
 		);
 		dispatch(togglePlayPause());
@@ -91,8 +94,10 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 		dispatch(setMoreOptVoicemailId(id));
 	};
 
-	const handleSelectInput = (event: any) => {
-		dispatch(setSelectedVoicemailList(id));
+	const handleSelectInput = () => {
+		!selectedVoicemailsList.includes(id)
+			? dispatch(setSelectedVoicemailList({ type: "ADD", id }))
+			: dispatch(setSelectedVoicemailList({ id }));
 	};
 
 	return (

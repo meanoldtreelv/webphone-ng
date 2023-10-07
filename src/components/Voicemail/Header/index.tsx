@@ -1,19 +1,15 @@
-import SearchIcon from "components/UI/Icons/Search";
+import SearchIcon from "./../../../components/UI/Icons/Search";
 import styles from "./Header.module.scss";
-import FilterIcon from "components/UI/Icons/Filter";
-import CalendarIcon from "components/UI/Icons/Calendar";
+import FilterIcon from "./../../../components/UI/Icons/Filter";
+import CalendarIcon from "./../../../components/UI/Icons/Calendar";
 import React from "react";
-import DeleteIcon from "components/UI/Icons/Delete";
-import CheckIcon from "components/UI/Icons/Voicemail/Check";
+import DeleteIcon from "./../../../components/UI/Icons/Delete";
+import CheckIcon from "./../../../components/UI/Icons/Voicemail/Check";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectVoicemails } from "redux/voicemail/voicemailSlice";
+import { setSelectVoicemails, setSelectedVoicemailList } from "./../../../redux/voicemail/voicemailSlice";
 import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
-import { useLazyUpdateVoicemailsQuery } from "services/voicemail";
-
-interface IHeader {
-	filterClicked: (filter: boolean) => void;
-	deleteClicked: (del: boolean) => void;
-}
+import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
+import { IHeader } from "./../../../constants/interfaces";
 
 const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked }) => {
 	const dispatch = useDispatch();
@@ -22,8 +18,15 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked }) => {
 	const [bulkVoicemailUpdate] = useLazyUpdateVoicemailsQuery();
 	const voicemail_ids = useSelector(selectedVoicemails);
 
+	const handleSelectToggle = () => {
+		if (!isSelectVoicemails) {
+			selectedVoicemailsCount && dispatch(setSelectedVoicemailList({ type: "RESET" }));
+		}
+		dispatch(setSelectVoicemails());
+	};
+
 	const handleUpdateListened = () => {
-		if(voicemail_ids.length) {
+		if (voicemail_ids.length) {
 			bulkVoicemailUpdate(voicemail_ids);
 		}
 	};
@@ -46,20 +49,26 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked }) => {
 					<button>
 						<CalendarIcon />
 					</button>
-					<button className={styles.checkBtn} onClick={() => dispatch(setSelectVoicemails())}>
+					<button className={styles.checkBtn} onClick={handleSelectToggle}>
 						<CheckIcon />
 					</button>
 				</div>
 			</section>
-			{isSelectVoicemails && (
+			{isSelectVoicemails && Boolean(selectedVoicemailsCount) && (
 				<section className={styles.headerBtm}>
 					<div className={styles.headerBtm_cont}>
 						<p className={styles.headerBtm_count}>{selectedVoicemailsCount} voicemails selected</p>
 						<div className={styles.headerBtm_actions}>
-							<button className={styles.actionsDelete} onClick={() => deleteClicked(true)}>
+							<button
+								className={styles.actionsDelete}
+								onClick={() => deleteClicked(true)}
+								disabled={!selectedVoicemailsCount}>
 								<DeleteIcon /> Delete
 							</button>
-							<button className={styles.actionsUpdate} onClick={handleUpdateListened}>
+							<button
+								className={styles.actionsUpdate}
+								onClick={handleUpdateListened}
+								disabled={!selectedVoicemailsCount}>
 								Mark as Listened
 							</button>
 						</div>

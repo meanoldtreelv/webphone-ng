@@ -7,8 +7,8 @@ import ShareIcon from "./../../../components/UI/Icons/Voicemail/Share";
 import SettingsIcon from "./../Settings";
 import PlayIcon from "./../../../components/UI/Icons/Voicemail/Play";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedVoicemail } from "./../../../redux/voicemail/voicemailSelectors";
-import React, { MutableRefObject, ReactElement, useRef, useState } from "react";
+import { selectedVoicemail, voicemailResults } from "./../../../redux/voicemail/voicemailSelectors";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { convertDateFormat, formatDate, formatTime } from "./../../../helpers/formatDateTime";
 import { playPauseState } from "./../../../redux/common/commonSelectors";
 import { togglePlayPause } from "./../../../redux/common/commonSlice";
@@ -22,6 +22,12 @@ const VoicemailFooter = () => {
 	const dispatch = useDispatch();
 	const audioRef = useRef(new Audio(voicemail.link));
 	const progressRef = useRef() as MutableRefObject<HTMLInputElement>;
+	const [prevNext, setPrevNext] = useState<number>(0);
+	const voicemailListCount = useSelector(voicemailResults).length;
+
+	useEffect(() => {
+		setPrevNext(voicemail.idx);
+	}, [voicemail]);
 
 	const handleTimeRangeSlider = () => {
 		setTimeProgress(parseInt(progressRef.current.value));
@@ -48,7 +54,7 @@ const VoicemailFooter = () => {
 		const val = audioRef.current.currentTime;
 		progressRef.current.value = val.toString();
 		setTimeProgress(val);
-	}
+	};
 
 	return Object.keys(voicemail).length ? (
 		<div className={styles.footer}>
@@ -56,7 +62,7 @@ const VoicemailFooter = () => {
 				{sharePopup ? <ShareBtnPopup></ShareBtnPopup> : null}
 				<div className={styles.footer_actionBtn}>
 					<button className={styles.footer_action}>
-						<PlayPrevIcon />
+						<PlayPrevIcon color={prevNext <= 0 ? "#C8D3E0" : "#0C6DC7"} />
 					</button>
 					{playPause ? (
 						<button className={styles.footer_action} onClick={handlePlayPause}>
@@ -68,7 +74,8 @@ const VoicemailFooter = () => {
 						</button>
 					)}
 					<button className={styles.footer_action}>
-						<PlayNextIcon />
+						{/* continue from this logic ... disable the button */}
+						<PlayNextIcon color={prevNext >= voicemailListCount ? "#0C6DC7" : "#C8D3E0" } />
 					</button>
 				</div>
 
@@ -83,12 +90,12 @@ const VoicemailFooter = () => {
 					/>
 					<div className={styles.footer_cont}>
 						<div className={styles.footer_details}>
-							<audio 
+							<audio
 								src={voicemail.link}
-								ref={audioRef} autoPlay
+								ref={audioRef}
+								autoPlay
 								onLoadedMetadata={onLoadedMetadata}
-								onTimeUpdate={handleAudioTimeUpdate}
-							></audio>
+								onTimeUpdate={handleAudioTimeUpdate}></audio>
 							<p className={styles.footer_name}>{voicemail.title}</p>
 							<div className={styles.footer_dat}>
 								<p className={styles.footer_month}>{convertDateFormat(voicemail.time)}</p>
@@ -108,7 +115,7 @@ const VoicemailFooter = () => {
 					<button
 						className={styles.footer_shareBtn}
 						onClick={() => {
-							setSharePopup((prevState: boolean) => (!prevState));
+							setSharePopup((prevState: boolean) => !prevState);
 						}}>
 						<ShareIcon />
 					</button>

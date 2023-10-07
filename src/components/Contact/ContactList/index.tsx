@@ -13,7 +13,7 @@ import { useEffect } from "react";
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const contactList = useSelector(contactLists);
-	// const { data } = useGetContactsQuery(null);
+	const { data } = useGetContactsQuery(null);
 
 
 	// Sort the array based on first name
@@ -76,7 +76,7 @@ const ContactList = () => {
 					</p>
 				</div>
 
-				{/* <div>
+				<div>
 					{data?.map((contact: any) => (
 						<ContactCard
 							id={contact.id}
@@ -108,7 +108,7 @@ const ContactList = () => {
 							fax={contact.fax}
 						/>
 					))}
-				</div> */}
+				</div>
 			</div>
 		</div>
 	);

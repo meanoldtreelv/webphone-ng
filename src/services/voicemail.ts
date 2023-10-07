@@ -3,9 +3,9 @@ import { apiService } from "./api";
 export const voicemailService = apiService.injectEndpoints({
 	endpoints: (build) => ({
 		getVoicemails: build.query({
-			query: () => ({
+			query: (queries: string) => ({
 				method: "GET",
-				url: "/voicemail/messages",
+				url: `/voicemail/messages?${queries}`,
 			}),
 		}),
 		deleteVoicemail: build.query({
@@ -35,7 +35,7 @@ export const voicemailService = apiService.injectEndpoints({
 });
 
 export const {
-	useGetVoicemailsQuery,
+	useLazyGetVoicemailsQuery,
 	useLazyDeleteVoicemailQuery,
 	useLazyDeleteVoicemailsQuery,
 	useLazyUpdateVoicemailsQuery,

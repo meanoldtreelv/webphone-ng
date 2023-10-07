@@ -1,3 +1,5 @@
+@import "./../../sass/abstracts/variables";
+
 .voicemail {
 	position: relative;
 	width: 100%;
@@ -21,15 +23,12 @@
 	align-items: center;
 	width: 100%;
 	overflow: auto;
-
 	height: calc(100% - 54px);
 	z-index: 0;
-
 	padding-bottom: 64px;
-	
 }
 
-.body_box{
+.body_box {
 	padding-bottom: 250px;
 }
 
@@ -46,4 +45,26 @@
 	bottom: 0;
 	width: 100%;
 	z-index: 3;
+}
+
+.loadMore {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+
+	&_btn {
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		padding: 6px 0 6px 10px;
+		background: map-get($color, accent-blue-primary);
+		border-radius: 5px;
+		text-align: center;
+
+		> span {
+			color: white;
+			margin-right: 10px;
+		}
+	}
 }
