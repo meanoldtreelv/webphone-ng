@@ -16,6 +16,10 @@ import { cookieType } from "../types";
 // 	return formData;
 // };
 
+export 	const nameIcon =(displayname:string)=>{
+	return displayname[0] + ( (displayname.split(" ") && displayname.split(" ")[1])?displayname.split(" ")[1][0] : '')
+}
+
 export const generateFormData = (obj: Record<string, any>): FormData => {
 	let formData = new FormData();
 	for (let [key, value] of Object.entries(obj)) {

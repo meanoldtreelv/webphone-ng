@@ -3,15 +3,15 @@ import styles from "./ProfileAndExtension.module.scss";
 import EditExtension from "components/Extension";
 import ProfileMenu from "components/Profile/ProfileMenu";
 import { useSelector } from "react-redux";
+import { nameIcon } from "utils";
 
 const ProfileAndExtension = () => {
 	const [isExtensionOpen, setIsExtensionOpen] = useState(false);
 	const [isProfileOpen, setIsProfileOpen] = useState(false);
 	const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
-
 	const [editExtension, setEditExtension] = useState(0);
 
-	const { extNumber, extAuth } = useSelector((state: any) => state.sip)
+	const { extNumber, extAuth, apiAuth } = useSelector((state: any) => state.sip)
 	const extensionData = [
 		{ name: "Test 1", extension: 1001, active: true },
 		{ name: "Test 2", extension: 1002, active: false },
@@ -32,7 +32,7 @@ const ProfileAndExtension = () => {
 				onClick={() => {
 					setIsProfileOpen(!isProfileOpen);
 				}}>
-				<span>SG</span>
+				<span>{(apiAuth && nameIcon(apiAuth["displayname"])) || ( extNumber && extNumber[0])}</span>
 				<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="user_status">
 						<g clipPath="url(#clip0_2202_19106)">

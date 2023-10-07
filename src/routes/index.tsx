@@ -12,6 +12,7 @@ import { sidecarRoutes } from "./sidecar/routes";
 import { getCookie } from "utils";
 import sip from "lib/sip";
 import { store } from "redux/store";
+import { callbackRoutes } from "./Callback/routes";
 
 const routes: RouteObject[] = [
 	{
@@ -20,9 +21,15 @@ const routes: RouteObject[] = [
 	},
 ];
 const extAuth = getCookie("extAuth")
+const apiAuth =  getCookie("apiAuth")
 const ext_user_id = getCookie("ext_user_id")
 const ext_password = getCookie("ext_password")
-extAuth && ext_user_id && ext_password && store.dispatch({type:"sip/extAuth", payload:extAuth}) && sip.CreateUserAgent(extAuth, ext_user_id);
+const ext_domain = getCookie("ext_domain") 
+const ext_connected = getCookie("ext_connected");
+apiAuth && store.dispatch({ type: "sip/apiAuth", payload: JSON.parse(apiAuth)});
+ext_connected === "true" && ext_user_id && ext_password && ext_domain && store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) && (
+	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain)
+);
 export default createBrowserRouter([
 	{
 		errorElement: <ErrorBoundaryLayout />,
@@ -36,6 +43,7 @@ export default createBrowserRouter([
 			...dashboardRoutes,
 			...settingsRoutes,
 			...sidecarRoutes,
+			...callbackRoutes,
 		],
 	},
 ]);

@@ -1,12 +1,15 @@
 import { store } from "redux/store";
 import styles from "./ProfileMenu.module.scss";
+import { useSelector } from "react-redux";
+import { nameIcon } from "utils";
 
 const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
+	const { apiAuth, extNumber } = useSelector((state: any) => state.sip)
 	return (
 		<div className={styles.profile}>
 			<div className={styles.profile_nameBox}>
-				<span className={styles.profile_image}>VS</span>
-				<span className={styles.profile_name}>Valentyn S.</span>
+				<span className={styles.profile_image}>{ (apiAuth && nameIcon(apiAuth["displayname"])) || ( extNumber && extNumber[0])}</span>
+				<span className={styles.profile_name}>{ (apiAuth && apiAuth["displayname"]) || extNumber}</span>
 			</div>
 			<div className={styles.profile_settingBox}>
 				{!extAuth &&

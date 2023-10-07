@@ -3782,10 +3782,13 @@ function onRegistered() {
         console.log("Registered!");
         userAgent.registering = false;
         // sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
-        setCookie("ext_user_id", userAgent['options']['authorizationUsername']);
-        setCookie("ext_password", userAgent['options']['authorizationPassword']);
+        // setCookie("ext_user_id", userAgent['options']['authorizationUsername']);
+        // setCookie("ext_password", userAgent['options']['authorizationPassword']);
+        // console.log(userAgent['options'])
         // console.log(userAgent)
         // loginSuccessUI();
+
+        setCookie("ext_connected", "true");
         store.dispatch({type:"sip/extNumber", payload:userAgent['options']['authorizationUsername']})
         store.dispatch({type:"sip/authMessage", payload:"continue"})
         store.dispatch({type:"sip/authLoading", payload:false})
@@ -4100,7 +4103,8 @@ function micChangedRefreshDevice(){
 }
 
 const sip = {
-  CreateUserAgent: (username:string, password:string, domain?:string) => {
+  CreateUserAgent: (username:string, password:string, domain:string) => {
+    domain.includes("zraytechnoloDoobh.ringplan.com") && (domain = "zraytechnoloDoobh.ringplan.com");
     store.dispatch({type:"sip/authLoading", payload:true})
     profileName = username;
     wssServer = "webrtc.ringplan.com";
@@ -4109,7 +4113,22 @@ const sip = {
     SipDomain = domain;
     SipUsername = username;
     SipPassword = password;
+
+    setCookie("ext_user_id", SipUsername);
+    setCookie("ext_password", SipPassword);
+    setCookie("ext_domain", SipDomain);
+    setCookie("ext_connected", "false");
+    // profileName = "301";
+    // wssServer = "localhost";
+    // WebSocketPort = "8089";
+    // ServerPath = "/ws";
+    // SipDomain = "localhost";
+    // SipUsername = "301";
+    // SipPassword = "@300300";
     CreateUserAgent()
+  },
+  LoginWithAPI:(ext?:any)=>{
+    sip.CreateUserAgent(ext["user"],ext["password"],ext["server"])
   },
   call: (number: string) => {
     // console.log(`calling ${number}`)

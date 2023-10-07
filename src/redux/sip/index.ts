@@ -1,19 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface inboundCall {
+interface inboundCallIn {
   LineNumber?: number,
   DisplayName?: string,
   DisplayNumber?: string,
 }
 
-interface outboundCall {
+interface outboundCallIn {
   LineNumber?: number,
   DisplayName?: string,
   DisplayNumber?: string,
   isMute?: Boolean,
 }
 
-interface answeredCall {
+interface answeredCallIn {
   LineNumber?: number,
   DisplayName?: string,
   DisplayNumber?: string,
@@ -27,40 +27,50 @@ interface answeredCall {
   showTransferCall?: Boolean,
   showTransferCallAtt?: Boolean,
 }
-interface callEnding{
+interface callEndingIn{
   name?: string,
   callTimer?: string
 }
-interface microphoneDevice{
+interface microphoneDeviceIn{
   deviceId?: string,
   groupId?: string,
   kind?: string,
   label?: string,
 }
-interface speakerDevice{
+interface speakerDeviceIn{
   deviceId?: string,
   groupId?: string,
   kind?: string,
   label?: string,
+}
+interface extAuthIn{
+  displayname?: string,
+  outbound_server?: string,
+  password?: string,
+  server?: string,
+  user?: string,
 }
 const sipSlice = createSlice({
   name: 'sip',
   initialState: {
     authMessage: "",
     authLoading: false,
-    extAuth: false, //login by ext
+    extAuth: true as boolean, //login by ext
+    apiAuth: undefined as  extAuthIn |undefined,
     extNumber: null as number | null, 
-    ringingInboundCalls: [] as inboundCall[],
+    extAuthList: [] as extAuthIn,
+    loginSelectExtension: "",
+    ringingInboundCalls: [] as inboundCallIn[],
     ringingInboundCallActive:0,
-    answeredCalls: [] as answeredCall[],
+    answeredCalls: [] as answeredCallIn[],
     answeredCallActive:0,
-    ringingOutboundCalls: [] as outboundCall[],
-	  callEnding: [] as callEnding[],
+    ringingOutboundCalls: [] as outboundCallIn[],
+	  callEnding: [] as callEndingIn[],
     ringingOutboundCallActive:0,
     activeCallLineNumber:0,
     logoutPopUp: false,
-    microphoneDevice: [] as microphoneDevice[],
-    speakerDevice: [] as speakerDevice[],
+    microphoneDevice: [] as microphoneDeviceIn[],
+    speakerDevice: [] as speakerDeviceIn[],
     hasAudioDevice: false,
     hasSpeakerDevice: false,
   },
@@ -71,17 +81,27 @@ const sipSlice = createSlice({
     extAuth: (state, action) =>  {
       state.extAuth = action.payload
     },
+    apiAuth: (state, action) =>  {
+      state.apiAuth = action.payload
+    },
     extNumber: (state, action) =>  {
       state.extNumber = action.payload
     },
     authLoading: (state, aciton) =>  {
       state.authLoading = aciton.payload
     },
+    loginSelectExtension: (state, aciton) =>  {
+      state.loginSelectExtension = aciton.payload
+    },
     activeCallLineNumber: (state, aciton) =>  {
       state.activeCallLineNumber = aciton.payload
     },
 		endCall(state) {
 			state.callEnding = state.callEnding.slice(1)
+		},
+		extAuthList(state, action) {
+      console.log(action.payload)
+			state.extAuthList = action.payload
 		},
 		addEndCall(state, action){
 			state.callEnding = [ ...state.callEnding, action.payload ]
@@ -97,18 +117,18 @@ const sipSlice = createSlice({
     },
     hasAudioDevice: (state, action) =>  {
       state.hasAudioDevice = action.payload
-      console.log(state.hasAudioDevice)
+      // console.log(state.hasAudioDevice)
     },
     hasSpeakerDevice: (state, action) =>  {
       state.hasSpeakerDevice = action.payload
-      console.log(state.hasSpeakerDevice)
+      // console.log(state.hasSpeakerDevice)
     },
     microphoneDevice: (state, action) =>  {
       switch(action.payload.action){
         case "add": {
           const microphoneDevice = {...action.payload.data}
           state.microphoneDevice = [...state.microphoneDevice, microphoneDevice]
-          console.log(state.microphoneDevice)
+          // console.log(state.microphoneDevice)
           break
         }
         case "removeAll": {
@@ -122,7 +142,7 @@ const sipSlice = createSlice({
         case "add": {
           const speakerDevice = {...action.payload.data}
           state.speakerDevice = [...state.speakerDevice, speakerDevice]
-          console.log(state.speakerDevice)
+          // console.log(state.speakerDevice)
           break
         }
         case "removeAll": {
@@ -382,5 +402,5 @@ const sipSlice = createSlice({
   },
 })
 
-export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth, logoutPopUp} = sipSlice.actions
+export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth, logoutPopUp, extAuthList} = sipSlice.actions
 export default  sipSlice.reducer;
