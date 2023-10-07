@@ -3,9 +3,9 @@ import { apiService } from "./api";
 export const voicemailService = apiService.injectEndpoints({
 	endpoints: (build) => ({
 		getVoicemails: build.query({
-			query: () => ({
+			query: (queries: string) => ({
 				method: "GET",
-				url: "/voicemail/messages",
+				url: `/voicemail/messages?${queries}`,
 			}),
 		}),
 		deleteVoicemail: build.query({
@@ -16,23 +16,26 @@ export const voicemailService = apiService.injectEndpoints({
 		}),
 		deleteVoicemails: build.query({
 			query: (data) => ({
-				method: "DELETE",
+				method: "POST",
 				url: "/voicemail/messages/bulk-delete",
 				data,
 			}),
 		}),
 		updateVoicemails: build.query({
 			query: (data) => ({
-				method: "DELETE",
+				method: "PATCH",
 				url: "/voicemail/messages/bulk-update",
-				data,
+				data: {
+					listened: true,
+					message_ids: data,
+				},
 			}),
 		}),
 	}),
 });
 
-export const { 
-	useGetVoicemailsQuery,
+export const {
+	useLazyGetVoicemailsQuery,
 	useLazyDeleteVoicemailQuery,
 	useLazyDeleteVoicemailsQuery,
 	useLazyUpdateVoicemailsQuery,

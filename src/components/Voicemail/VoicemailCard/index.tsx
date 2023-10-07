@@ -7,7 +7,11 @@ import TranscriptIcon from "./../../../components/UI/Icons/Voicemail/Transcript"
 import menuIcon from "./../../../assets/images/icon/voicemail_menu.svg";
 import { formatDate, toSecMinAndHr } from "./../../../helpers/formatDateTime";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedVoicemail } from "./../../../redux/voicemail/voicemailSlice";
+import {
+	setMoreOptVoicemailId,
+	setSelectedVoicemail,
+	setSelectedVoicemailList,
+} from "./../../../redux/voicemail/voicemailSlice";
 import { playPauseState } from "./../../../redux/common/commonSelectors";
 import PauseIcon from "./../../../components/UI/Icons/Voicemail/Pause";
 import { togglePlayPause } from "./../../../redux/common/commonSlice";
@@ -17,6 +21,7 @@ import LinkIcon from "./../../../components/UI/Icons/Voicemail/Link";
 import CopyIcon from "./../../../components/UI/Icons/Voicemail/Copy";
 import EnvelopIcon from "./../../../components/UI/Icons/Voicemail/Envelop";
 import ChatIcon from "components/UI/Icons/Voicemail/Chat";
+import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
 
 interface IVoicemailCard {
 	id: string;
@@ -26,13 +31,29 @@ interface IVoicemailCard {
 	time: string;
 	transcript?: string;
 	link: string;
+	listened: boolean;
+	deleteModal: (del: boolean) => void | undefined;
+	idx: number;
 }
 
-const VoicemailCard: React.FC<IVoicemailCard> = ({ id, title, ext, duration, time, transcript, link }) => {
+const VoicemailCard: React.FC<IVoicemailCard> = ({
+	id,
+	title,
+	ext,
+	duration,
+	time,
+	transcript,
+	link,
+	deleteModal,
+	listened,
+	idx,
+}) => {
 	let [transcripts, setTranscript] = useState(false);
 	const dispatch = useDispatch();
 	const playPause = useSelector(playPauseState);
 	const [popupMenu, setPopupMenu] = useState(false);
+	const isSelectVoicemails = useSelector(selectVoicemails);
+	const selectedVoicemailsList = useSelector(selectedVoicemails);
 
 	const handlePlayAudio = () => {
 		dispatch(
@@ -41,6 +62,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({ id, title, ext, duration, tim
 				time,
 				duration,
 				link,
+				idx
 			}),
 		);
 		dispatch(togglePlayPause());
@@ -52,22 +74,43 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({ id, title, ext, duration, tim
 
 	const popupMenuOpts = [
 		{ icon: <ChatIcon />, title: "Send Message" },
-		{ icon: <TrashIcon />, title: "Delete" },
+		{
+			icon: <TrashIcon />,
+			title: "Delete",
+			clicked: () => {
+				deleteModal(true);
+				setPopupMenu(false);
+			},
+		},
 		{ icon: <ShareIcon />, title: "Share" },
 		{ icon: <LinkIcon />, title: "Copy Link" },
 		{ icon: <CopyIcon />, title: "Copy Text" },
+		,
 		{ icon: <EnvelopIcon />, title: "Share via Email" },
 	];
+
+	const handlePopupMenu = () => {
+		setPopupMenu((prevState) => !prevState);
+		dispatch(setMoreOptVoicemailId(id));
+	};
+
+	const handleSelectInput = () => {
+		!selectedVoicemailsList.includes(id)
+			? dispatch(setSelectedVoicemailList({ type: "ADD", id }))
+			: dispatch(setSelectedVoicemailList({ id }));
+	};
 
 	return (
 		<div className={styles.card}>
 			<div className={styles.card_mainCont}>
 				<div className={styles.card_cont1}>
+					{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
+
 					<button onClick={handlePlayAudio}>
 						<img src={playIcon} alt="" />
 					</button>
 
-					<div className={styles.card_unread}></div>
+					{!listened && <div className={styles.card_unread}></div>}
 					<p className={styles.card_name}>{title}</p>
 				</div>
 
@@ -88,7 +131,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({ id, title, ext, duration, tim
 							<TranscriptIcon transcripts />
 						</button>
 
-						<button className={styles.card_menu} onClick={() => setPopupMenu((prevState) => !prevState)}>
+						<button className={styles.card_menu} onClick={handlePopupMenu}>
 							<img src={menuIcon} alt="" />
 						</button>
 					</div>
@@ -100,7 +143,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({ id, title, ext, duration, tim
 					<div className={styles.card_des}>{transcript}</div>
 				</div>
 			)}
-			{popupMenu ? <PopupMenu>{popupMenuOpts}</PopupMenu> : null}
+			{popupMenu ? <PopupMenu id={id}>{popupMenuOpts}</PopupMenu> : null}
 		</div>
 	);
 };

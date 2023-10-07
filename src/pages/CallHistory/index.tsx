@@ -8,6 +8,7 @@ import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "../../components/Modal/PromptDialog";
 import { useSelector } from "react-redux";
 import { callHistory } from "redux/call-history/callHistorySelectors";
+import { useGetContactsQuery } from "services/contact";
 
 const CallHistory = () => {
 	const CallHistory = useSelector(callHistory);

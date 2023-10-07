@@ -1,4 +1,4 @@
-import {ReactNode, CSSProperties, MouseEvent, ChangeEvent, ReactElement} from 'react';
+import { ReactNode, CSSProperties, MouseEvent, ChangeEvent, ReactElement } from "react";
 
 export interface IButton {
 	children: ReactNode;
@@ -27,7 +27,7 @@ export interface IErrorMessage {
 }
 
 export interface ILogo {
-	type?: "ri" | "ri-voice" | 'ri-fill';
+	type?: "ri" | "ri-voice" | "ri-fill";
 }
 
 export interface IPromptDialog {
@@ -53,4 +53,9 @@ export interface IContactCard {
 	phone: string;
 	email: string;
 	fax: string;
+}
+
+export interface IHeader {
+	filterClicked: (filter: boolean) => void;
+	deleteClicked: (del: boolean) => void;
 }

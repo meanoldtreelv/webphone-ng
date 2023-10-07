@@ -13,13 +13,10 @@
 	position: fixed;
 	top: 0px;
 	right: 0;
-
-	width: 460px;
+	width: 350px;
 	height: 100vh;
 	flex-shrink: 0;
-
 	background: var(--background-secondary, #fff);
-
 	display: flex;
 	flex-direction: column;
 
@@ -37,19 +34,6 @@
 		padding: 10px;
 		cursor: pointer;
 	}
-
-	&_save {
-		display: flex;
-		padding: 7px 8px;
-		justify-content: center;
-		align-items: center;
-		font-size: 13px;
-		border-radius: 8px;
-		background: var(--primary-default, #0c6dc7);
-		color: var(--text-on-color, #fff);
-		width: 83px;
-		height: 32px;
-	}
 }
 
 .extension {
@@ -63,12 +47,23 @@
 	}
 }
 
-.deleteSave {
+.applyFilters {
 	position: absolute;
 	bottom: 15px;
+	right: 15px;
 	width: calc(100% - 50px);
+	width: 100px;
 	display: flex;
 	justify-content: flex-end;
+	display: flex;
+	padding: 7px 8px;
+	justify-content: center;
+	align-items: center;
+	font-size: 13px;
+	border-radius: 8px;
+	background: var(--primary-default, #0c6dc7);
+	color: var(--text-on-color, #fff);
+	height: 32px;
 }
 
 .filters {
@@ -84,11 +79,16 @@
 	display: flex;
 	column-gap: 8px;
 	label {
-		color: var(--text-primary, #1F2023);
+		color: var(--text-primary, #1f2023);
+	}
+
+	input,
+	label {
+		cursor: pointer;
 	}
 }
 
-label{
+label {
 	font-family: Poppins;
 	font-size: 15px;
 	font-style: normal;

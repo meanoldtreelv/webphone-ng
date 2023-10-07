@@ -1,16 +1,42 @@
-import styles from "./notificationModel.module.scss";
+import XIcon from "components/UI/Icons/X";
+import styles from "./NotificationMsg.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { notification } from "redux/common/commonSelectors";
+import { useEffect } from "react";
+import { setNotification } from "redux/common/commonSlice";
 
-const NotificationModel = () => {
+const NotificationMsg = () => {
+	const notificationDetails = useSelector(notification);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			dispatch(
+				setNotification({
+					type: "",
+					msg: "",
+				}),
+			);
+		}, 3000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	});
+
 	return (
-		<section>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-			standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-			type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-			remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-			Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-			of Lorem Ipsum
+		<section className={styles.notification}>
+			<div>
+				<div className={styles.notification_main}>
+					<h3>{notificationDetails.type === "ERROR" ? "Issue Found" : "Success"}</h3>
+					<p>{notificationDetails.msg}</p>
+				</div>
+				<button>
+					<XIcon stroke="white" />
+				</button>
+			</div>
 		</section>
 	);
 };
 
-export default NotificationModel;
+export default NotificationMsg;
