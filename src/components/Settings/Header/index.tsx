@@ -40,13 +40,13 @@ const Header = () => {
 					}}>
 					User Interface
 				</span>
-				<span
+				{/* <span
 					className={`${tabSelected === "advance" ? styles.activeTab : ""}`}
 					onClick={() => {
 						dispatch(setSettingTab("advance"));
 					}}>
 					Advance
-				</span>
+				</span> */}
 			</div>
 		</div>
 	);

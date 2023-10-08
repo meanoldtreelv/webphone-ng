@@ -4,33 +4,40 @@ import EditExtension from "components/Extension";
 import ProfileMenu from "components/Profile/ProfileMenu";
 import { useSelector } from "react-redux";
 import { nameIcon } from "utils";
+import sip from "lib/sip";
+import AboutRingplan from "components/Profile/AboutRingplan";
+import { store } from "redux/store";
 
 const ProfileAndExtension = () => {
-	const [isExtensionOpen, setIsExtensionOpen] = useState(false);
-	const [isProfileOpen, setIsProfileOpen] = useState(false);
-	const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
+	// const [isExtensionOpen, setIsExtensionOpen] = useState(false);
+	// const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 	const [editExtension, setEditExtension] = useState(0);
-
-	const { extNumber, extAuth, apiAuth } = useSelector((state: any) => state.sip)
-	const extensionData = [
-		{ name: "Test 1", extension: 1001, active: true },
-		{ name: "Test 2", extension: 1002, active: false },
-		{ name: "Test 3", extension: 1003, active: false },
-	];
+  // editExtension
+	const { extNumber, extAuth, apiAuth, extAuthList, aboutRingplan, isProfileOpen,  isExtensionOpen, isEditBoxOpen} = useSelector((state: any) => state.sip)
+	// const extensionData = [
+	// 	{ name: "Test 1", extension: 1001, active: true },
+	// 	{ name: "Test 2", extension: 1002, active: false },
+	// 	{ name: "Test 3", extension: 1003, active: false },
+	// ];
+  // displayname?: string,
+  // outbound_server?: string,
+  // password?: string,
+  // server?: string,
+  // user?: string,
   const { logoutPopUp} = useSelector((state: any) => state.sip)
 	return (
 		<div className={styles.profileExtension}>
 			<span
 				className={styles.extension}
 				onClick={() => {
-          setIsExtensionOpen(extAuth?false:!isExtensionOpen) ;
+          store.dispatch({type:"sip/isExtensionOpen", payload:extAuth?false:!isExtensionOpen})
 				}}>
 				{extNumber ? extNumber : "Not Registered"}
 			</span>
 			<span
 				className={styles.profile}
 				onClick={() => {
-					setIsProfileOpen(!isProfileOpen);
+					store.dispatch({type:"sip/isProfileOpen", payload:!isProfileOpen})
 				}}>
 				<span>{(apiAuth && nameIcon(apiAuth["displayname"])) || ( extNumber && extNumber[0])}</span>
 				<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,33 +76,41 @@ const ProfileAndExtension = () => {
               </g>
             </svg> */}
 					</div>
-					<div className={styles.extensionOption}>
-						{extensionData.map((item) => (
+					<div className={styles.extensionOption}  style={{ maxHeight: "50vh",  overflowY: "auto" }}>
+						{extAuthList.map((item:any) => (
 							<label
 								className={styles.label}
 								onMouseOver={() => {
-									setEditExtension(item.extension);
+									setEditExtension(item);
+                  store.dispatch({type:"sip/editExtension", payload:item})
 								}}
 								onMouseOut={() => {
 									setEditExtension(0);
 								}}>
 								<input
+                  onClick={() => {
+                    store.dispatch({type:"sip/isExtensionOpen", payload:!isExtensionOpen})
+                    // alert("change")//edit extension
+                    sip.LoginWithAPI(item)
+                  }}
 									type="radio"
 									className={`${styles.input} ${styles.option_input} ${styles.radio}`}
 									name="extension"
-									checked={item.active ? true : false}
+									checked={item.user == extNumber ? true : false}
 								/>
 								<div>
-									<p>{item.name}</p>
-									<span>{item.extension}</span>
+									<p>{item.displayname}</p>
+									<span>{item.user}</span>
 								</div>
-								{editExtension === item.extension && (
+								{editExtension === item && (
 									<span
 										className={styles.edit}
 										onClick={() => {
-											setIsExtensionOpen(!isExtensionOpen);
-											setIsEditBoxOpen(!isEditBoxOpen);
-										}}>
+                      store.dispatch({type:"sip/isExtensionOpen", payload:false})
+                      store.dispatch({type:"sip/isEditBoxOpen", payload:true})
+                      // alert(item.user)//edit extension
+										}}
+                    >
 										<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<g id="line / edit" clipPath="url(#clip0_2202_16656)">
 												<path
@@ -231,9 +246,9 @@ const ProfileAndExtension = () => {
 				</div>
 			)}
 
-			{isProfileOpen && !logoutPopUp && <ProfileMenu extAuth={extAuth} />}
+			{isProfileOpen && !logoutPopUp &&  !aboutRingplan && <ProfileMenu extAuth={extAuth} />}
 
-			{/* {isEditBoxOpen && <EditExtension />} */}
+			{isEditBoxOpen && <EditExtension />}
 		</div>
 	);
 };

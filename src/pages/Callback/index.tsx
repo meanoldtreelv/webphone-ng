@@ -15,7 +15,7 @@ import ErrorMessage from "components/UI/ErrorMessage";
 import { setCookie } from "utils";
 
 const Callback = () => {
-	const uuid = useGetInstancesQuery(null).data?.[0]["uuid"]
+	const uuid:string = useGetInstancesQuery(null).data?.[0]["uuid"]
 	const navigate = useNavigate();
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip)
 	const loginWithExtensionandSecret = () => {
@@ -27,10 +27,6 @@ const Callback = () => {
 		console.log(extAuthList)
 		for (const ext of extAuthList) {
 			if (ext["user"] == loginSelectExtension) {
-				store.dispatch({type:"sip/extAuth", payload:false});
-				setCookie("extAuth", "false");
-				store.dispatch({ type: "sip/apiAuth", payload: ext });
-				setCookie("apiAuth", JSON.stringify(ext) );
 				sip.LoginWithAPI(ext)
 			}
 		}
@@ -75,7 +71,7 @@ const Callback = () => {
 						<h2 style={{ minWidth: "18rem", fontWeight: 500, fontSize: "1.125rem", color: "#6a7077", lineHeight: "1.75rem", fontFamily: "Roboto, sans-serif", marginBottom: "1rem" }}>Select Extension</h2>
 						{uuid ? <ExtensionList uuid={uuid} /> : null}
 						{ authMessage && authMessage !== "continue" ? <ErrorMessage msg={ authMessage } /> : ''}
-						<Button fill onClick={loginWithAPI}>Sign In</Button>
+						<Button fill onClick={loginWithAPI}>Continue</Button>
 					</div>
 				</div>
 			</section>

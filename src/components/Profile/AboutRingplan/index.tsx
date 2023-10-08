@@ -3,6 +3,7 @@ import styles from "./AboutRingplan.module.scss";
 import XIcon from "components/UI/Icons/X";
 import ChevronRightIcon from "components/UI/Icons/Profile/ChevronRight";
 import InfoIcon from "components/UI/Icons/Profile/Info";
+import { store } from "redux/store";
 
 const AboutRingplan = () => {
 	const [isLatestVersion, setIsLatestVersion] = useState(true);
@@ -12,7 +13,7 @@ const AboutRingplan = () => {
 			<div className={styles.aboutBox}>
 				<div className={styles.headline}>
 					<h3>About RingPlan</h3>
-					<button className={styles.close}>
+					<button className={styles.close} onClick={()=>{store.dispatch({type:"sip/aboutRingplan", payload:false})}}>
 						<XIcon />
 					</button>
 				</div>

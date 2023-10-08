@@ -50,7 +50,7 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 					</svg>
 					<span>Set Status</span>
 				</div>
-				<div className={styles.profile_settingBox_item}>
+				<div className={styles.profile_settingBox_item} onClick={()=>{store.dispatch({type:"sip/aboutRingplan", payload:true})}}>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / info" clipPath="url(#clip0_2254_30473)">
 							<path

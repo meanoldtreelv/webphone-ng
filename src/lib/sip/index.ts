@@ -2034,7 +2034,9 @@ function ReceiveCall(session) {
         //   return;
         // }
         inComingCallNotification.onclick = function () {
-          sidebar.classList.toggle("-translate-x-full");
+			  store.dispatch({type:"sip/navigatePush", payload:"/dashboard"});
+          // sidebar.classList.toggle("-translate-x-full");
+          // focus to dial pad
           //document.getElementById("hamburger").checked = false;
           //document.getElementById("phone-tab").click()
           window.focus();
@@ -4104,7 +4106,7 @@ function micChangedRefreshDevice(){
 
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
-    domain.includes("zraytechnoloDoobh.ringplan.com") && (domain = "zraytechnoloDoobh.ringplan.com");
+    domain = domain.split(".").slice(-3).join(".");
     store.dispatch({type:"sip/authLoading", payload:true})
     profileName = username;
     wssServer = "webrtc.ringplan.com";
@@ -4118,16 +4120,13 @@ const sip = {
     setCookie("ext_password", SipPassword);
     setCookie("ext_domain", SipDomain);
     setCookie("ext_connected", "false");
-    // profileName = "301";
-    // wssServer = "localhost";
-    // WebSocketPort = "8089";
-    // ServerPath = "/ws";
-    // SipDomain = "localhost";
-    // SipUsername = "301";
-    // SipPassword = "@300300";
     CreateUserAgent()
   },
   LoginWithAPI:(ext?:any)=>{
+    store.dispatch({type:"sip/extAuth", payload:false});
+    setCookie("extAuth", "false");
+    store.dispatch({ type: "sip/apiAuth", payload: ext });
+    setCookie("apiAuth", JSON.stringify(ext) );
     sip.CreateUserAgent(ext["user"],ext["password"],ext["server"])
   },
   call: (number: string) => {

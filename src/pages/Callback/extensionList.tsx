@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { store } from "redux/store";
 import { useGetInstancesBulksQuery, useGetInstancesQuery } from "services/callback";
+import { setCookie } from "utils";
 
 const ExtensionList = ({ uuid }: { uuid: string }) => {
 	const instances = useGetInstancesBulksQuery(uuid).data;
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip)
 	useEffect(() => {
 		if (instances) {
-			store.dispatch({ type: "sip/extAuthList", payload: instances.map((instance: any) => instance["qr-config"]) })
+			const instancesVal = instances.map((instance: any) => instance["qr-config"])
+			setCookie("instancesVal", JSON.stringify(instancesVal) );
+			store.dispatch({ type: "sip/extAuthList", payload: instancesVal })
 		}
 	}, [instances]);
 	return (
