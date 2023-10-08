@@ -58,4 +58,11 @@ export interface IContactCard {
 export interface IHeader {
 	filterClicked: (filter: boolean) => void;
 	deleteClicked: (del: boolean) => void;
+	dateClicked: (filter: boolean) => void;
+}
+
+export interface IExtensionList {
+	data: {
+		extension: number;
+	};
 }

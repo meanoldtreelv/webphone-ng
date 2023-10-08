@@ -57,14 +57,15 @@
 		align-items: center;
 		justify-content: center;
 		display: flex;
-		padding: 6px 0 6px 10px;
+		padding: 6px 15px 6px 5px;
 		background: map-get($color, accent-blue-primary);
 		border-radius: 5px;
 		text-align: center;
 
 		> span {
 			color: white;
-			margin-right: 10px;
+			margin-left: 10px;
+			font-size: 0.9em;
 		}
 	}
 }

@@ -38,7 +38,7 @@ export const contactService = apiService.injectEndpoints({
 });
 
 export const {
-	useGetContactsQuery,
+	useLazyGetContactsQuery,
 	useGetContactQuery,
 	useLazyUpdateContactQuery,
 	useLazyDeleteContactQuery,

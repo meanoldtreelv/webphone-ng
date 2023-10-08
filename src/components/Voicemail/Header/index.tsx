@@ -11,7 +11,7 @@ import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailS
 import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
 import { IHeader } from "./../../../constants/interfaces";
 
-const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked }) => {
+const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked }) => {
 	const dispatch = useDispatch();
 	const isSelectVoicemails = useSelector(selectVoicemails);
 	const selectedVoicemailsCount = useSelector(selectedVoicemails).length;
@@ -46,7 +46,9 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked }) => {
 						}}>
 						<FilterIcon />
 					</button>
-					<button>
+					<button onClick={() => {
+						dateClicked(true);
+					}}>
 						<CalendarIcon />
 					</button>
 					<button className={styles.checkBtn} onClick={handleSelectToggle}>

@@ -53,3 +53,10 @@ export const formatTime = (time: number) => {
 
 	return "00:00";
 };
+
+export const convertInputDateFormat = (str: string) => {
+	const date = new Date(str);
+	const convertedDateStr = date.toISOString() + "Z";
+	const millisecondsRegex = /\.\d+$/;
+	return convertedDateStr.replace(millisecondsRegex, ".868000");
+};

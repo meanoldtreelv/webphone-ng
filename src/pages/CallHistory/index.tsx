@@ -6,17 +6,36 @@ import RecentsSidebar from "../../components/CallHistory/RecentsSidebar";
 import ContactDetails from "../../components/CallHistory/ContactDetails";
 import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "../../components/Modal/PromptDialog";
-import { useSelector } from "react-redux";
-import { callHistory } from "redux/call-history/callHistorySelectors";
-import { useGetContactsQuery } from "services/contact";
+import { useDispatch, useSelector } from "react-redux";
+import { callHistory, selectedCallHistory } from "redux/call-history/callHistorySelectors";
+import { useEffect, useState } from "react";
+import { useLazyGetCallHistoryQuery } from "services/call";
+import { setCallHistory } from "redux/call-history/callHistorySlice";
 
 const CallHistory = () => {
+	const dispatch = useDispatch();
 	const CallHistory = useSelector(callHistory);
+	const callHistoryDetails = useSelector(selectedCallHistory);
+	const [detailsOn, setDetailsOn] = useState(false);
+	const [getCallHistories, { data, isFetching }] = useLazyGetCallHistoryQuery();
+
+	useEffect(() => {
+		const fetchCallHistory = async () => {
+			await getCallHistories("page=1");
+			if (data) dispatch(setCallHistory(data));
+		};
+
+		fetchCallHistory();
+	}, [data]);
+
+	useEffect(() => {
+		setDetailsOn(Object.keys(callHistoryDetails).length > 1);
+	}, [callHistoryDetails]);
 
 	return (
 		<div className={styles.callHistory}>
 			<BaseLayout>
-				{CallHistory.length === 0 ? (
+				{!CallHistory.length ? (
 					<>
 						<NoRecentActivity />
 						<div className={styles.header}>
@@ -32,9 +51,9 @@ const CallHistory = () => {
 								<Header />
 							</div>
 
-							{false && <ContactDetails />}
+							{detailsOn && <ContactDetails />}
 
-							{true && (
+							{!detailsOn && (
 								<div className={styles.noRecords}>
 									<NoRecordSelected />
 								</div>

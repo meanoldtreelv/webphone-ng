@@ -4,9 +4,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { voicemailQueries } from "redux/voicemail/voicemailSelectors";
 import { setNewFilter, setVoicemailQueries } from "redux/voicemail/voicemailSlice";
+import { IExtensionList } from "constants/interfaces";
+import { ClipLoader } from "react-spinners";
 
 interface IFilter {
 	onClose: (filter: boolean) => void;
+	extensionList: IExtensionList[];
+	filterAnim: boolean;
 }
 
 interface IFilterObj {
@@ -14,7 +18,7 @@ interface IFilterObj {
 	extension_source?: string;
 }
 
-const Filter: React.FC<IFilter> = ({ onClose }) => {
+const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 	const dispatch = useDispatch();
 	const queries = useSelector(voicemailQueries);
 	const [ext, setExt] = useState("");
@@ -30,16 +34,13 @@ const Filter: React.FC<IFilter> = ({ onClose }) => {
 			...queries,
 			page: 1,
 			extension_source: ext,
-		}
+		};
 
 		if (ext == "all") {
 			delete filterObj.extension_source;
 		}
 
-		if (ext)
-			dispatch(
-				setVoicemailQueries(filterObj),
-			);
+		if (ext) dispatch(setVoicemailQueries(filterObj));
 	};
 
 	return (
@@ -62,25 +63,29 @@ const Filter: React.FC<IFilter> = ({ onClose }) => {
 						<input type="radio" id="all" name="filter" value="all" onChange={handleExtensionFilter} />
 						<label htmlFor="all">All</label>
 					</div>
-
-					<div className={styles.filter1}>
-						<input type="radio" id="80984" name="filter" value="80984" onChange={handleExtensionFilter} />
-						<label htmlFor="80984">80984</label>
-					</div>
-
-					<div className={styles.filter1}>
-						<input type="radio" id="1004" name="filter" value="1004" onChange={handleExtensionFilter} />
-						<label htmlFor="1004">1004</label>
-					</div>
-
-					<div className={styles.filter1}>
-						<input type="radio" id="783" name="filter" value="783" onChange={handleExtensionFilter} />
-						<label htmlFor="783">783</label>
-					</div>
+					{extensionList?.map((extension) => (
+						<div className={styles.filter1}>
+							<input
+								type="radio"
+								id={`${extension.data.extension}`}
+								name="filter"
+								value={extension.data.extension}
+								onChange={handleExtensionFilter}
+							/>
+							<label htmlFor={`${extension.data.extension}`}>{extension.data.extension}</label>
+						</div>
+					))}
 				</div>
 
 				<button className={styles.applyFilters} onClick={applyFilters}>
-					Apply Filter
+					{filterAnim ? (
+						<div>
+							<ClipLoader color="white" size={14} />
+							<span>Applying Filters...</span>
+						</div>
+					) : (
+						<span>Apply Filter</span>
+					)}
 				</button>
 			</div>
 		</section>

@@ -1,8 +1,14 @@
 import styles from "./ContactDetails.module.scss";
 import PhoneIcon from "components/UI/Icons/Phone";
 import ChatIcon from "components/UI/Icons/Chat";
+import { useSelector } from "react-redux";
+import { selectedCallHistory } from "redux/call-history/callHistorySelectors";
+import { useGetAccountQuery } from "services/system";
 
 const ContactDetails = () => {
+	const callHistoryDetails = useSelector(selectedCallHistory);
+	const { data } = useGetAccountQuery(null);
+
 	return (
 		<section className={styles.contactDetails}>
 			<div className={styles.contactDetails_box}>
@@ -11,7 +17,7 @@ const ContactDetails = () => {
 						<div className={styles.row}>
 							<div>
 								<p className={styles.cardLabel}>Name</p>
-								<p className={styles.cardValue}>Luis Arnold</p>
+								<p className={styles.cardValue}>{`${data?.first_name} ${data?.last_name}`}</p>
 							</div>
 							<span className={styles.contactInfoText}>Contact Info</span>
 						</div>

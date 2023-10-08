@@ -4,8 +4,15 @@ import DeleteIcon from "components/UI/Icons/Delete";
 import Calendar from "components/UI/Icons/Calendar";
 import SearchBar from "components/UI/SearchBar";
 import SearchIcon from "components/UI/Icons/Search";
+import { useLazyGetCallHistoryQuery } from "services/call";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCallHistory, setSelectedCallHistory } from "redux/call-history/callHistorySlice";
+import { callHistory } from "redux/call-history/callHistorySelectors";
 
 const RecentsSidebar = () => {
+	const allCallHistory = useSelector(callHistory);
+	
 	return (
 		<div className={styles.contact}>
 			{/* <div className={styles.contact_search}>
@@ -28,24 +35,17 @@ const RecentsSidebar = () => {
 				</div>
 
 				<div>
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
-					<RecentHistoryCard />
+					{allCallHistory?.map((call) => (
+						// <RecentHistoryCard time={call?.cdr?.starttime} number={call?.cdr?.dst} duration={99} />
+						<RecentHistoryCard details={call} />
+					))}
 				</div>
 
-				<div className={styles.contact_sectionInfo}>
+				{/* <div className={styles.contact_sectionInfo}>
 					<span>Yesterday (4)</span>
-				</div>
+				</div> */}
 
-				<div>
+				{/* <div>
 					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />
@@ -59,7 +59,7 @@ const RecentsSidebar = () => {
 					<RecentHistoryCard />
 					<RecentHistoryCard />
 					<RecentHistoryCard />
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

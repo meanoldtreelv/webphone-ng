@@ -7,14 +7,17 @@ import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
 import SearchIcon from "components/UI/Icons/Search";
-import { useGetContactsQuery } from "services/contact";
+import { useLazyGetContactsQuery } from "services/contact";
 import { useEffect } from "react";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const contactList = useSelector(contactLists);
-	const { data } = useGetContactsQuery(null);
+	const [getContacts, { data }] = useLazyGetContactsQuery();
 
+	useEffect(() => {
+		getContacts(null);
+	}, []);
 
 	// Sort the array based on first name
 	// const sortedContactLists = [...contactList]?.sort((a, b) => {

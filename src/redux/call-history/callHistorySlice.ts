@@ -3,6 +3,7 @@ import { ICallHistoryState } from "./callHistoryTypes";
 
 const initialCallHistoryState: ICallHistoryState = {
 	callHistory: [],
+	selectedCallHistory: {}
 };
 
 const callHistorySlice = createSlice({
@@ -13,9 +14,12 @@ const callHistorySlice = createSlice({
 		setCallHistory(state, action) {
 			state.callHistory = action.payload;
 		},
+		setSelectedCallHistory(state, action) {
+			state.selectedCallHistory= action.payload;
+		}
 	},
 });
 
-export const { setCallHistory } = callHistorySlice.actions;
+export const { setCallHistory, setSelectedCallHistory } = callHistorySlice.actions;
 
 export default callHistorySlice.reducer;

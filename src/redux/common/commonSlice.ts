@@ -7,6 +7,7 @@ const initialCommonState = {
 		type: "",
 		msg: "",
 	},
+	simpleNotification: ""
 };
 
 const commonSlice = createSlice({
@@ -22,9 +23,12 @@ const commonSlice = createSlice({
 		setNotification(state, action) {
 			state.notification = action.payload;
 		},
+		setSimpleNotification(state, action) {
+			state.simpleNotification = action.payload;
+		}
 	},
 });
 
-export const { toggleModal, togglePlayPause, setNotification } = commonSlice.actions;
+export const { toggleModal, togglePlayPause, setNotification, setSimpleNotification } = commonSlice.actions;
 
 export default commonSlice.reducer;

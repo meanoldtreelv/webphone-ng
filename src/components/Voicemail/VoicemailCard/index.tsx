@@ -14,7 +14,7 @@ import {
 } from "./../../../redux/voicemail/voicemailSlice";
 import { playPauseState } from "./../../../redux/common/commonSelectors";
 import PauseIcon from "./../../../components/UI/Icons/Voicemail/Pause";
-import { togglePlayPause } from "./../../../redux/common/commonSlice";
+import { setSimpleNotification, togglePlayPause } from "./../../../redux/common/commonSlice";
 import TrashIcon from "./../../../components/UI/Icons/Voicemail/Trash";
 import ShareIcon from "./../../../components/UI/Icons/Voicemail/Share";
 import LinkIcon from "./../../../components/UI/Icons/Voicemail/Link";
@@ -22,6 +22,8 @@ import CopyIcon from "./../../../components/UI/Icons/Voicemail/Copy";
 import EnvelopIcon from "./../../../components/UI/Icons/Voicemail/Envelop";
 import ChatIcon from "components/UI/Icons/Voicemail/Chat";
 import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
+import copy from 'copy-to-clipboard';
+import { useNavigate } from "react-router";
 
 interface IVoicemailCard {
 	id: string;
@@ -71,6 +73,23 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 	const handlePauseAudio = () => {
 		dispatch(togglePlayPause());
 	};
+	
+	const handleCopyLink = () => {
+		copy(link)
+		setPopupMenu(false);
+		dispatch(setSimpleNotification("Link copied to clipboard"));
+	}
+
+	const handleCopyText = () => {
+		copy(transcript || "");
+		setPopupMenu(false);
+		dispatch(setSimpleNotification("Transcript copied to clipboard"));
+	}
+
+	const handleShare = () => {
+		const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(link)}`;
+    	window.open(mailtoUrl, "_blank");
+	}
 
 	const popupMenuOpts = [
 		{ icon: <ChatIcon />, title: "Send Message" },
@@ -82,11 +101,10 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				setPopupMenu(false);
 			},
 		},
-		{ icon: <ShareIcon />, title: "Share" },
-		{ icon: <LinkIcon />, title: "Copy Link" },
-		{ icon: <CopyIcon />, title: "Copy Text" },
+		{ icon: <LinkIcon />, title: "Copy Link", clicked: handleCopyLink },
+		{ icon: <CopyIcon />, title: "Copy Text", clicked: handleCopyText },
 		,
-		{ icon: <EnvelopIcon />, title: "Share via Email" },
+		{ icon: <EnvelopIcon />, title: "Share via Email", clicked: handleShare },
 	];
 
 	const handlePopupMenu = () => {

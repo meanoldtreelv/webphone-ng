@@ -16,32 +16,45 @@ import {
 	moreOptVoicemail,
 	voicemailNewFilter,
 	voicemailPage,
+	voicemailQueries,
 	voicemailResults,
 	voicemailStrQueries,
 } from "redux/voicemail/voicemailSelectors";
 import { setNewFilter, setPage, setVoicemailQueries, setVoicemailResults } from "redux/voicemail/voicemailSlice";
 // import PopupMenu from "components/Voicemail/PopupMenu";
 import { ClipLoader } from "react-spinners";
+import FormModal from "components/FormModal";
+import SimpleNotification from "components/SimpleNotification/inex";
+import { simpleNotification } from "redux/common/commonSelectors";
+import { useGetExtensionsQuery } from "services/extension";
 
 const Voicemail = () => {
 	const dispatch = useDispatch();
 	const [noVoicemail, setNoVoicemail] = useState(false);
 	const [filterSlider, setFilterSlider] = useState(false);
 	const [deleteVoicemailModal, setDeleteVoicemailModal] = useState(false);
+	const [filterDate, setFilterDate] = useState(false);
 	const voicemailId = useSelector(moreOptVoicemail);
 	const page = useSelector(voicemailPage);
 	const strQueries = useSelector(voicemailStrQueries);
-	const [getVoicemails, { data, isLoading, isFetching }] = useLazyGetVoicemailsQuery();
+	const queries = useSelector(voicemailQueries);
+	const [getVoicemails, { data: data, isLoading, isFetching }] = useLazyGetVoicemailsQuery();
 	const voicemailResultsList = useSelector(voicemailResults);
 	const newResult = useSelector(voicemailNewFilter);
+	const simpleMsg = useSelector(simpleNotification);
+	const [filterAnim, setFilterAnim] = useState(false);
+
+	// to be removed when auth cookies are implemented
+	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
 
 	useEffect(() => {
 		dispatch(
 			setVoicemailQueries({
 				page,
+				...queries,
 			}),
 		);
-	}, []);
+	}, [page]);
 
 	useEffect(() => {
 		if (voicemailId === "") setDeleteVoicemailModal(false);
@@ -50,7 +63,6 @@ const Voicemail = () => {
 	useEffect(() => {
 		if (data) {
 			if (newResult) {
-				console.log('new result')
 				dispatch(setVoicemailResults([...data]));
 			} else {
 				dispatch(setVoicemailResults([...voicemailResultsList, ...data]));
@@ -59,15 +71,19 @@ const Voicemail = () => {
 
 		return () => {
 			dispatch(setNewFilter(false));
-		};	
+		};
 	}, [data]);
 
 	useEffect(() => {
 		const fetchVoicemails = async () => {
+			setFilterAnim(true);
 			await getVoicemails(strQueries);
+			setFilterAnim(false);
+			setFilterSlider(false);
 		};
 		fetchVoicemails();
-	}, [strQueries]);
+
+	}, [queries]);
 
 	const handleScroll = (e: any) => {
 		const scrollTop = e.target.scrollTop;
@@ -75,7 +91,7 @@ const Voicemail = () => {
 		const clientHeight = e.target.clientHeight;
 
 		if (scrollTop + clientHeight >= scrollHeight && !isFetching) {
-			dispatch(setPage(page + 1));
+			if (page == 1) dispatch(setPage(page + 1));
 		}
 	};
 
@@ -84,7 +100,11 @@ const Voicemail = () => {
 			<BaseLayout>
 				<section className={styles.main}>
 					<div className={styles.header}>
-						<Header filterClicked={setFilterSlider} deleteClicked={setDeleteVoicemailModal} />
+						<Header
+							filterClicked={setFilterSlider}
+							deleteClicked={setDeleteVoicemailModal}
+							dateClicked={setFilterDate}
+						/>
 					</div>
 
 					<div className={styles.body} onScroll={handleScroll}>
@@ -123,8 +143,8 @@ const Voicemail = () => {
 							{page > 1 && isFetching ? (
 								<div className={styles.loadMore}>
 									<button className={styles.loadMore_btn}>
-										<span>Loding</span>
-										<ClipLoader color="white" size={16} />
+										<ClipLoader color="white" size={14} />
+										<span>Loding...</span>
 									</button>
 								</div>
 							) : null}
@@ -137,8 +157,10 @@ const Voicemail = () => {
 				</section>
 			</BaseLayout>
 
-			{filterSlider ? <Filter onClose={setFilterSlider} /> : null}
+			{filterSlider ? <Filter extensionList={extListData} onClose={setFilterSlider} filterAnim={filterAnim} /> : null}
 			{deleteVoicemailModal ? <DeleteVoicemail onClose={setDeleteVoicemailModal} /> : null}
+			{filterDate ? <FormModal onClose={setFilterDate} /> : null}
+			{simpleMsg && <SimpleNotification msg={simpleMsg} />}
 		</div>
 	);
 };

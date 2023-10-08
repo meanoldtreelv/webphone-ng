@@ -52,7 +52,6 @@
 	bottom: 15px;
 	right: 15px;
 	width: calc(100% - 50px);
-	width: 100px;
 	display: flex;
 	justify-content: flex-end;
 	display: flex;
@@ -64,6 +63,15 @@
 	background: var(--primary-default, #0c6dc7);
 	color: var(--text-on-color, #fff);
 	height: 32px;
+
+	> div {
+		display: flex;
+		align-items: center;
+
+		span {
+			margin-left: 10px;
+		}
+	}
 }
 
 .filters {

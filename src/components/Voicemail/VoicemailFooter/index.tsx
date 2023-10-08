@@ -12,6 +12,7 @@ import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { convertDateFormat, formatDate, formatTime } from "./../../../helpers/formatDateTime";
 import { playPauseState } from "./../../../redux/common/commonSelectors";
 import { togglePlayPause } from "./../../../redux/common/commonSlice";
+import { setSelectedVoicemail } from "redux/voicemail/voicemailSlice";
 
 const VoicemailFooter = () => {
 	const [timeProgress, setTimeProgress] = useState(0);
@@ -23,7 +24,7 @@ const VoicemailFooter = () => {
 	const audioRef = useRef(new Audio(voicemail.link));
 	const progressRef = useRef() as MutableRefObject<HTMLInputElement>;
 	const [prevNext, setPrevNext] = useState<number>(0);
-	const voicemailListCount = useSelector(voicemailResults).length;
+	const voicemailList = useSelector(voicemailResults);
 
 	useEffect(() => {
 		setPrevNext(voicemail.idx);
@@ -56,12 +57,38 @@ const VoicemailFooter = () => {
 		setTimeProgress(val);
 	};
 
+	const handlePrevNext = (opt: string) => {
+		if (opt === "next" && prevNext < voicemailList.length) {
+			const nextVoicemail = voicemailList[voicemail.idx + 1];
+			dispatch(
+				setSelectedVoicemail({
+					title: nextVoicemail.source_representation_name,
+					time: nextVoicemail.time_received,
+					duration: nextVoicemail.voicemail_file.duration,
+					link: nextVoicemail.voicemail_file.link,
+					idx: voicemail.idx + 1,
+				}),
+			);
+		} else if (opt === "prev" && prevNext > 0) {
+			const nextVoicemail = voicemailList[voicemail.idx - 1];
+			dispatch(
+				setSelectedVoicemail({
+					title: nextVoicemail.source_representation_name,
+					time: nextVoicemail.time_received,
+					duration: nextVoicemail.voicemail_file.duration,
+					link: nextVoicemail.voicemail_file.link,
+					idx: voicemail.idx - 1,
+				}),
+			);
+		}
+	};
+
 	return Object.keys(voicemail).length ? (
 		<div className={styles.footer}>
 			<div className={styles.cont}>
 				{sharePopup ? <ShareBtnPopup></ShareBtnPopup> : null}
 				<div className={styles.footer_actionBtn}>
-					<button className={styles.footer_action}>
+					<button className={styles.footer_action} onClick={() => handlePrevNext("prev")} disabled={prevNext <= 0}>
 						<PlayPrevIcon color={prevNext <= 0 ? "#C8D3E0" : "#0C6DC7"} />
 					</button>
 					{playPause ? (
@@ -73,9 +100,11 @@ const VoicemailFooter = () => {
 							<PlayIcon />
 						</button>
 					)}
-					<button className={styles.footer_action}>
-						{/* continue from this logic ... disable the button */}
-						<PlayNextIcon color={prevNext >= voicemailListCount ? "#0C6DC7" : "#C8D3E0" } />
+					<button
+						className={styles.footer_action}
+						disabled={prevNext >= voicemailList.length}
+						onClick={() => handlePrevNext("next")}>
+						<PlayNextIcon color={prevNext >= voicemailList.length ? "#C8D3E0" : "#0C6DC7"} />
 					</button>
 				</div>
 
