@@ -28,7 +28,9 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => { console.log(e.target.value); } } defaultValue={"f51983da7bc4659d88fe08c90e554e6e3eb6bb2f90ba91dfa90b72889d0c1007"} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => {
+						//  console.log(e.target.value);
+						  } } defaultValue={"f51983da7bc4659d88fe08c90e554e6e3eb6bb2f90ba91dfa90b72889d0c1007"} />
 				</div>
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Loud Playback Device</h2>
@@ -42,7 +44,7 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""} />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Playback Gain</h2>
@@ -65,7 +67,7 @@ const AudioSetting = () => {
 							<MicrophoneIcon />
 						</span>
 					</div> */}
-					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined}  />
+					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""}  />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Capture Gain</h2>
@@ -117,7 +119,7 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x:any) => [{name:x["label"], value:x["deviceId"]}]).map((y:any)=>y[0])} onChange={undefined} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""} />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Ring Sound</h2>

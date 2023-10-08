@@ -33,15 +33,15 @@ const InboundCall = () => {
 					</p>
 
 					<div className={styles.button_box}>
-						<span onClick={()=>{sip.answerAudioCall(item.LineNumber)}} style={{ background: "var(--support-approve, #75C322)" }}>
+						<button onClick={()=>{sip.answerAudioCall(item.LineNumber)}} style={{ background: "var(--support-approve, #75C322)" }}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
 								<path
 									d="M43.6874 33.6864V39.5927C43.6896 40.141 43.5773 40.6837 43.3576 41.1861C43.138 41.6885 42.8158 42.1394 42.4118 42.5101C42.0078 42.8808 41.5308 43.163 41.0114 43.3386C40.492 43.5143 39.9416 43.5795 39.3955 43.5302C33.3373 42.8719 27.518 40.8018 22.4052 37.4861C17.6484 34.4634 13.6154 30.4305 10.5927 25.6736C7.26547 20.5376 5.19486 14.69 4.54863 8.60457C4.49944 8.06014 4.56414 7.51144 4.73862 6.99339C4.9131 6.47534 5.19354 5.9993 5.56208 5.59557C5.93062 5.19184 6.37919 4.86927 6.87922 4.64841C7.37926 4.42754 7.9198 4.31321 8.46645 4.31269H14.3727C15.3281 4.30329 16.2544 4.64163 16.9789 5.26465C17.7033 5.88766 18.1765 6.75285 18.3102 7.69894C18.5595 9.58907 19.0218 11.4449 19.6883 13.2311C19.9532 13.9358 20.0105 14.7016 19.8535 15.4379C19.6965 16.1741 19.3317 16.8499 18.8024 17.3852L16.3021 19.8855C19.1047 24.8144 23.1857 28.8954 28.1146 31.698L30.6149 29.1977C31.1502 28.6684 31.826 28.3036 32.5622 28.1466C33.2985 27.9895 34.0643 28.0469 34.7689 28.3118C36.5551 28.9783 38.411 29.4406 40.3011 29.6899C41.2575 29.8248 42.1309 30.3065 42.7552 31.0434C43.3796 31.7803 43.7113 32.7209 43.6874 33.6864Z"
 									fill="white"
 								/>
 							</svg>
-						</span>
-						<span onClick={()=>sip.rejectCall(item.LineNumber)} style={{ background: "var(--support-danger, #EE3939)" }}>
+						</button>
+						<button onClick={()=>sip.rejectCall(item.LineNumber)} style={{ background: "var(--support-danger, #EE3939)" }}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
 								<g clipPath="url(#clip0_2401_8731)">
 									<path
@@ -55,7 +55,7 @@ const InboundCall = () => {
 									</clipPath>
 								</defs>
 							</svg>
-						</span>
+						</button>
 					</div>
 					<div className={styles.silent_box}>
 						<span className={styles.silent}>

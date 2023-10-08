@@ -16,14 +16,17 @@ import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip"
 import {store} from '../../redux/store'
 import { setCookie } from "utils";
+import { getGoBackUrl, getLoginUrl } from "config/env.config";
 
 const Login = () => {
 	const navigate = useNavigate();
 
 	const onContinueWithRingplan = () => {
-		store.dispatch({type:"sip/extAuth", payload:false});
-		navigate("/dashboard"); // Remove the extra parentheses
-		setCookie("extAuth", "false");
+		store.dispatch({type:"sip/authMessage", payload:""});
+		// navigate("/dashboard"); // Remove the extra parentheses
+		const loginUrl = getLoginUrl();
+		const backUrl = getGoBackUrl();
+		window.location.href = `${loginUrl}/login?back=${backUrl}`;
 	}
 
 	interface FormData {
@@ -37,11 +40,11 @@ const Login = () => {
 	const [form, setForm] = useState<FormData>({extension:"", secret:"", server:"zraytechnoloDoobh.ringplan.com"});
 	const loginWithExtension = ()=>{
 		store.dispatch({type:"sip/extAuth", payload:true});
+		setCookie("extAuth", "true");
 		(form?.extension === "") ? setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: ""}});
 		(form?.server === "") ? setForm((prevState)=>{return{ ...prevState, serverErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, serverErrorMsg: ""}});
 		(form?.secret === "") ? setForm((prevState)=>{return{ ...prevState, secretErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, secretErrorMsg: ""}});
 		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server)
-        setCookie("extAuth", "true");
 		// sip.CreateUserAgent("", "", "")
 	}
 	const { authMessage, authLoading } = useSelector((state: any) => state.sip)

@@ -1,14 +1,18 @@
+import { store } from "redux/store";
 import styles from "./ProfileMenu.module.scss";
+import { useSelector } from "react-redux";
+import { nameIcon } from "utils";
 
 const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
+	const { apiAuth, extNumber } = useSelector((state: any) => state.sip)
 	return (
 		<div className={styles.profile}>
 			<div className={styles.profile_nameBox}>
-				<span className={styles.profile_image}>VS</span>
-				<span className={styles.profile_name}>Valentyn S.</span>
+				<span className={styles.profile_image}>{ (apiAuth && nameIcon(apiAuth["displayname"])) || ( extNumber && extNumber[0])}</span>
+				<span className={styles.profile_name}>{ (apiAuth && apiAuth["displayname"]) || extNumber}</span>
 			</div>
 			<div className={styles.profile_settingBox}>
-				{!extAuth?(
+				{!extAuth &&
 					<div className={styles.profile_settingBox_item}>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / user">
@@ -24,7 +28,7 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 					</svg>
 					<span>Account Settings</span>
 				</div>
-				):null}
+				}
 				
 				<div className={styles.profile_settingBox_item}>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +71,7 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 					<span>About Ringplan</span>
 				</div>
 			</div>
-			<div className={styles.profile_logout}>
+			<div className={styles.profile_logout} onClick={()=>{store.dispatch({type:"sip/logoutPopUp", payload:true})}} >
 				<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / sign_out">
 						<path

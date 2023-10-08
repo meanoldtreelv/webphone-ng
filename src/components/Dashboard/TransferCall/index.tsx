@@ -1,27 +1,45 @@
 import styles from "./TransferCall.module.scss";
 import Dialpad from "../Dialpad";
-import { useDispatch } from "react-redux";
-import { transferCall } from "redux/call/callSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCallNumber, transferCall } from "redux/call/callSlice";
+import { callNumber } from "redux/call/callSelectors";
+import { store } from "redux/store";
+import sip from "lib/sip";
 
-const TransferCall = () => {
+const TransferCall = ({LineNumber, attTransfer}:{LineNumber:number, attTransfer:boolean}) => {
 	const dispatch = useDispatch();
 
+	const number = useSelector(callNumber)
+
+	const modifyNumber = () => {
+		if(number.length) {
+			const modified_number = number.slice(0, number.length - 1);
+			dispatch(setCallNumber(modified_number));
+		}
+	}
+	const goBack =()=>{
+		attTransfer ? (
+				store.dispatch({type:"sip/answeredCalls", payload:{action:"showTransferCallAtt",data:{lineNum:LineNumber, showTransferCallAtt:false}}})
+			) :(
+				store.dispatch({type:"sip/answeredCalls", payload:{action:"showTransferCall",data:{lineNum:LineNumber, showTransferCall:false}}})
+			) 
+	}
 	const transferCallHandler = () => {
-		dispatch(transferCall());
+		attTransfer ? (
+			sip.transferCallAtt(LineNumber, number)
+		):(
+			sip.transferCall(LineNumber, number)
+		)
+		goBack();
 	};
-
-	const transferAttendedCallHandler = () => {
-		dispatch(transferCall());
-	};
-
 	return (
 		<section className={styles.dialpad_container}>
-			<p className={styles.dialpad_transferCall}>Transfer Call</p>
+			<p className={styles.dialpad_transferCall}>{attTransfer ? "Transfer Attended Call":"Transfer Call"}</p>
 
 			<div className={styles.dialpad}>
-				<Dialpad />
+				<Dialpad LineNumber={undefined}  />
 				<div className={styles.dialpad_keypad}>
-					<div className={styles.dialpad_key2}>
+					<div className={styles.dialpad_key2}  onClick={goBack}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 							<path
 								d="M14.5 6L8.5 12L14.5 18"
@@ -32,7 +50,7 @@ const TransferCall = () => {
 							/>
 						</svg>
 					</div>
-					<div className={styles.dialpad_key2} onClick={transferCallHandler}>
+					<div className={styles.dialpad_key2} style={{ background: number.length? "#0c6dc7" : "var(--primary-disabled, #C8D3E0)"}} onClick={transferCallHandler}>
 						<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="fill / call_transfer">
 								<g id="Vector">
@@ -48,7 +66,7 @@ const TransferCall = () => {
 							</g>
 						</svg>
 					</div>
-					<div className={styles.dialpad_key2} onClick={transferAttendedCallHandler}>
+					<div className={styles.dialpad_key2} onClick={modifyNumber}>
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path
 								d="M23.5 19C23.5 19.3978 23.342 19.7794 23.0607 20.0607C22.7794 20.342 22.3978 20.5 22 20.5H7.07036C6.56883 20.5 6.10049 20.2494 5.82229 19.8321L0.785831 12.2775C0.673863 12.1095 0.673862 11.8907 0.785831 11.7228L5.8223 4.16814C6.10049 3.75085 6.56883 3.50021 7.07035 3.5002L22 3.5C22.3978 3.5 22.7794 3.65804 23.0607 3.93934C23.342 4.22064 23.5 4.60218 23.5 5V19Z"
