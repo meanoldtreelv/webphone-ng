@@ -6,6 +6,7 @@ import RangeSlider from "components/UI/Forms/RangeSlider";
 import Select from "components/UI/Forms/Select";
 import OnOffSwitch from "components/UI/OnOffSwitch";
 import { useSelector } from "react-redux";
+import { getCookie, setCookie } from "utils";
 
 const AudioSetting = () => {
 	
@@ -29,8 +30,9 @@ const AudioSetting = () => {
 						</span>
 					</div> */}
 					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => {
-						//  console.log(e.target.value);
-						  } } defaultValue={"f51983da7bc4659d88fe08c90e554e6e3eb6bb2f90ba91dfa90b72889d0c1007"} />
+						 	console.log(e.target.value);
+							setCookie("speakerDevice", e.target.value);
+						  } } defaultValue={ getCookie("speakerDevice") || "" } />
 				</div>
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Loud Playback Device</h2>
@@ -44,7 +46,10 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => {
+						 	console.log(e.target.value);
+							setCookie("loudPlaybackDevice", e.target.value);
+						  } } defaultValue={ getCookie("loudPlaybackDevice") || "" } />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Playback Gain</h2>
@@ -67,7 +72,10 @@ const AudioSetting = () => {
 							<MicrophoneIcon />
 						</span>
 					</div> */}
-					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""}  />
+					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}  onChange={(e) => {
+						 	console.log(e.target.value);
+							setCookie("microphoneDevice", e.target.value);
+						  } } defaultValue={ getCookie("microphoneDevice") || "" } />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Capture Gain</h2>
@@ -81,7 +89,7 @@ const AudioSetting = () => {
 				</div> */}
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>
-						<OnOffSwitch />
+						<OnOffSwitch checked={true}/>
 						<span className={`caption_1`}>Enable echo cancellation</span>
 					</h2>
 					{/* <div className={`${styles.optionBox}`}>
@@ -100,8 +108,14 @@ const AudioSetting = () => {
 
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>
-						<OnOffSwitch />
+						<OnOffSwitch checked={true} />
 						<span className={`caption_1`}>Enable noise suppression</span>
+					</h2>
+				</div>
+				<div className={`${styles.setting}`}>
+					<h2 className={`caption_1 ${styles.heading2}`}>
+						<OnOffSwitch checked={true} />
+						<span className={`caption_1`}>Enable auto gain control</span>
 					</h2>
 				</div>
 			</div>
@@ -119,7 +133,10 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={undefined} defaultValue={""} />
+					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}  onChange={(e) => {
+						 	console.log(e.target.value);
+							setCookie("ringerDevice", e.target.value);
+						  } } defaultValue={ getCookie("ringerDevice") || "" } />
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Ring Sound</h2>

@@ -41,7 +41,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp} = useSelector((state: any) => state.sip)
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan} = useSelector((state: any) => state.sip)
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
@@ -173,7 +173,7 @@ const Dashboard = () => {
 			{/* <StatusMenu /> */}
 
 			{/* this is a component to show about the ringplan  */}
-			{/* <AboutRingplan /> */}
+			{ aboutRingplan && <AboutRingplan />}
 
 			{/* component for edit the extension  */}
 			{/* {true && <EditExtension />} */}

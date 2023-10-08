@@ -58,7 +58,7 @@ const sipSlice = createSlice({
     extAuth: true as boolean, //login by ext
     apiAuth: undefined as  extAuthIn |undefined,
     extNumber: null as number | null, 
-    extAuthList: [] as extAuthIn,
+    extAuthList: [] as extAuthIn[],
     loginSelectExtension: "",
     ringingInboundCalls: [] as inboundCallIn[],
     ringingInboundCallActive:0,
@@ -73,10 +73,37 @@ const sipSlice = createSlice({
     speakerDevice: [] as speakerDeviceIn[],
     hasAudioDevice: false,
     hasSpeakerDevice: false,
+    navigatePush:"",
+    aboutRingplan: false,
+    isProfileOpen: false,
+    isExtensionOpen: false,
+    isEditBoxOpen: false,
+    editExtension: [] as extAuthIn,
   },
   reducers: {
     authMessage: (state, action) =>  {
       state.authMessage = action.payload
+    },
+    aboutRingplan: (state, action) =>  {
+      state.aboutRingplan = action.payload
+      state.isProfileOpen = false
+    },
+    isExtensionOpen: (state, action) =>  {
+      state.isExtensionOpen = action.payload
+      state.isProfileOpen = false
+    },
+    isEditBoxOpen: (state, action) =>  {
+      state.isEditBoxOpen = action.payload
+    },
+    editExtension: (state, action) =>  {
+      state.editExtension = action.payload
+    },
+    isProfileOpen: (state, action) =>  {
+      state.isProfileOpen = action.payload
+      state.isExtensionOpen = false
+    },
+    navigatePush: (state, action) =>  {
+      state.navigatePush = action.payload
     },
     extAuth: (state, action) =>  {
       state.extAuth = action.payload
@@ -114,6 +141,7 @@ const sipSlice = createSlice({
     },
     logoutPopUp: (state, action) =>  {
       state.logoutPopUp = action.payload
+      state.isProfileOpen = false
     },
     hasAudioDevice: (state, action) =>  {
       state.hasAudioDevice = action.payload

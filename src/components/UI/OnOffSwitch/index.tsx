@@ -7,6 +7,7 @@ interface SwitchProps {
 	onClick?: () => void;
 	onChange?: () => void;
 	name?: string;
+	checked?: boolean;
 }
 
 function OnOffSwitch({
@@ -14,11 +15,12 @@ function OnOffSwitch({
 	onChange = emptyFunction,
 	type = "checkbox",
 	name = "",
+	checked = false,
 	...restProps
 }: SwitchProps) {
 	return (
 		<label className={classes.switch}>
-			<input onClick={onClick} onChange={onChange} type={type} {...restProps} />
+			<input onClick={onClick} onChange={onChange} checked={checked} type={type} {...restProps} />
 			<span className={`${classes.slider} ${classes.round}`}></span>
 		</label>
 	);
