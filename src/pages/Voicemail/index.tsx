@@ -43,6 +43,7 @@ const Voicemail = () => {
 	const newResult = useSelector(voicemailNewFilter);
 	const simpleMsg = useSelector(simpleNotification);
 	const [filterAnim, setFilterAnim] = useState(false);
+	const [search, setSearch] = useState("");
 
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
@@ -82,7 +83,6 @@ const Voicemail = () => {
 			setFilterSlider(false);
 		};
 		fetchVoicemails();
-
 	}, [queries]);
 
 	const handleScroll = (e: any) => {
@@ -104,6 +104,7 @@ const Voicemail = () => {
 							filterClicked={setFilterSlider}
 							deleteClicked={setDeleteVoicemailModal}
 							dateClicked={setFilterDate}
+							search={setSearch}
 						/>
 					</div>
 
@@ -124,20 +125,24 @@ const Voicemail = () => {
 										))}
 								</>
 							) : (
-								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => (
-									<VoicemailCard
-										id={voicemail._id}
-										title={voicemail.source_representation_name}
-										ext={voicemail.extension_source}
-										duration={voicemail.voicemail_file.duration}
-										transcript={voicemail.transcription}
-										time={voicemail.time_received}
-										link={voicemail.voicemail_file.link}
-										deleteModal={setDeleteVoicemailModal}
-										listened={voicemail.listened}
-										idx={idx}
-									/>
-								))
+								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => {
+									idx == 1 && console.log(Array.from(voicemail.source_representation_name));
+
+									return voicemail.source_representation_name.toLowerCase().includes(search.toLowerCase()) ? (
+										<VoicemailCard
+											id={voicemail._id}
+											title={voicemail.source_representation_name}
+											ext={voicemail.extension_source}
+											duration={voicemail.voicemail_file.duration}
+											transcript={voicemail.transcription}
+											time={voicemail.time_received}
+											link={voicemail.voicemail_file.link}
+											deleteModal={setDeleteVoicemailModal}
+											listened={voicemail.listened}
+											idx={idx}
+										/>
+									) : null;
+								})
 							)}
 
 							{page > 1 && isFetching ? (

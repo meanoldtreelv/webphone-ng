@@ -21,9 +21,10 @@ import LinkIcon from "./../../../components/UI/Icons/Voicemail/Link";
 import CopyIcon from "./../../../components/UI/Icons/Voicemail/Copy";
 import EnvelopIcon from "./../../../components/UI/Icons/Voicemail/Envelop";
 import ChatIcon from "components/UI/Icons/Voicemail/Chat";
-import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
-import copy from 'copy-to-clipboard';
+import { selectVoicemails, selectedVoicemail, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
+import copy from "copy-to-clipboard";
 import { useNavigate } from "react-router";
+import sip from "lib/sip";
 
 interface IVoicemailCard {
 	id: string;
@@ -56,6 +57,8 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 	const [popupMenu, setPopupMenu] = useState(false);
 	const isSelectVoicemails = useSelector(selectVoicemails);
 	const selectedVoicemailsList = useSelector(selectedVoicemails);
+	const playing = useSelector(selectedVoicemail);
+	const navigate = useNavigate();
 
 	const handlePlayAudio = () => {
 		dispatch(
@@ -64,35 +67,35 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				time,
 				duration,
 				link,
-				idx
+				idx,
 			}),
 		);
-		dispatch(togglePlayPause());
+		dispatch(togglePlayPause(true));
 	};
 
 	const handlePauseAudio = () => {
-		dispatch(togglePlayPause());
+		dispatch(togglePlayPause(false));
 	};
-	
+
 	const handleCopyLink = () => {
-		copy(link)
+		copy(link);
 		setPopupMenu(false);
 		dispatch(setSimpleNotification("Link copied to clipboard"));
-	}
+	};
 
 	const handleCopyText = () => {
 		copy(transcript || "");
 		setPopupMenu(false);
 		dispatch(setSimpleNotification("Transcript copied to clipboard"));
-	}
+	};
 
 	const handleShare = () => {
 		const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(link)}`;
-    	window.open(mailtoUrl, "_blank");
-	}
+		window.open(mailtoUrl, "_blank");
+	};
 
 	const popupMenuOpts = [
-		{ icon: <ChatIcon />, title: "Send Message" },
+		// { icon: <ChatIcon />, title: "Send Message" },
 		{
 			icon: <TrashIcon />,
 			title: "Delete",
@@ -118,15 +121,26 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 			: dispatch(setSelectedVoicemailList({ id }));
 	};
 
+	const handleCall = () => {
+		sip.call(String(ext));
+		navigate("/dashboard");
+	};
+
 	return (
-		<div className={styles.card}>
+		<div className={styles.card} style={{ background: playing.idx === idx ? "rgb(245, 245, 253)" : "" }}>
 			<div className={styles.card_mainCont}>
 				<div className={styles.card_cont1}>
 					{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
 
-					<button onClick={handlePlayAudio}>
-						<img src={playIcon} alt="" />
-					</button>
+					{playPause && playing.idx === idx ? (
+						<button onClick={handlePauseAudio} className={styles.pauseIconBtn}>
+							<PauseIcon />
+						</button>
+					) : (
+						<button onClick={handlePlayAudio}>
+							<img src={playIcon} alt="" />
+						</button>
+					)}
 
 					{!listened && <div className={styles.card_unread}></div>}
 					<p className={styles.card_name}>{title}</p>
@@ -137,7 +151,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 					<p className={styles.card_duration}>{toSecMinAndHr(duration)}</p>
 					<p className={styles.card_time}>{formatDate(time)}</p>
 					<div className={styles.card_icons}>
-						<button className={styles.card_phone}>
+						<button className={styles.card_phone} onClick={handleCall}>
 							<img src={phoneIcon} alt="" />
 						</button>
 

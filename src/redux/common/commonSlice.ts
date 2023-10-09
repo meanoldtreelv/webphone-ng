@@ -17,8 +17,8 @@ const commonSlice = createSlice({
 		toggleModal(state) {
 			state.modal = !state.modal;
 		},
-		togglePlayPause(state) {
-			state.playPause = !state.playPause;
+		togglePlayPause(state, action) {
+			state.playPause = action.payload;
 		},
 		setNotification(state, action) {
 			state.notification = action.payload;

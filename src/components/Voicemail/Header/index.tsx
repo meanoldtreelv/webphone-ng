@@ -7,16 +7,17 @@ import DeleteIcon from "./../../../components/UI/Icons/Delete";
 import CheckIcon from "./../../../components/UI/Icons/Voicemail/Check";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVoicemails, setSelectedVoicemailList } from "./../../../redux/voicemail/voicemailSlice";
-import { selectVoicemails, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
+import { selectVoicemails, selectedVoicemails, voicemailResults } from "redux/voicemail/voicemailSelectors";
 import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
 import { IHeader } from "./../../../constants/interfaces";
 
-const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked }) => {
+const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, search }) => {
 	const dispatch = useDispatch();
 	const isSelectVoicemails = useSelector(selectVoicemails);
 	const selectedVoicemailsCount = useSelector(selectedVoicemails).length;
 	const [bulkVoicemailUpdate] = useLazyUpdateVoicemailsQuery();
 	const voicemail_ids = useSelector(selectedVoicemails);
+	const voicemails = useSelector(voicemailResults);
 
 	const handleSelectToggle = () => {
 		if (!isSelectVoicemails) {
@@ -31,13 +32,18 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked }
 		}
 	};
 
+	const handleVoicemailSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const filterStr = e.target.value.trim();
+		search(filterStr);
+	}
+
 	return (
 		<>
 			<section className={styles.header}>
 				<div className={styles.header_pageName}>Voicemail</div>
 				<div className={styles.header_cont}>
 					<div className={styles.header_search}>
-						<input type="text" placeholder="Search number" />
+						<input type="text" placeholder="Search voicemails..." onChange={handleVoicemailSearch} />
 						<SearchIcon />
 					</div>
 					<button

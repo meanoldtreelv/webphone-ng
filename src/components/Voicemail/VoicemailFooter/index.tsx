@@ -30,18 +30,27 @@ const VoicemailFooter = () => {
 		setPrevNext(voicemail.idx);
 	}, [voicemail]);
 
+	useEffect(() => {
+		if(audioRef.current.paused && playPause) {
+			dispatch(togglePlayPause(true));
+		}else {
+			dispatch(togglePlayPause(false));
+			console.log('it should be paused niggachu')
+		}
+	}, [audioRef, voicemail, prevNext]);
+
 	const handleTimeRangeSlider = () => {
 		setTimeProgress(parseInt(progressRef.current.value));
 		audioRef.current.currentTime = parseInt(progressRef.current.value);
 	};
 
 	const handlePlayPause = () => {
-		if (playPause) {
-			dispatch(togglePlayPause());
-			audioRef.current.pause();
-		} else {
-			dispatch(togglePlayPause());
+		if (!playPause && audioRef.current.paused) {
+			dispatch(togglePlayPause(true));
 			audioRef.current.play();
+		} else {
+			dispatch(togglePlayPause(false));
+			audioRef.current.pause();
 		}
 	};
 
@@ -69,6 +78,7 @@ const VoicemailFooter = () => {
 					idx: voicemail.idx + 1,
 				}),
 			);
+			dispatch(togglePlayPause(true));
 		} else if (opt === "prev" && prevNext > 0) {
 			const nextVoicemail = voicemailList[voicemail.idx - 1];
 			dispatch(
@@ -80,6 +90,7 @@ const VoicemailFooter = () => {
 					idx: voicemail.idx - 1,
 				}),
 			);
+			dispatch(togglePlayPause(true));
 		}
 	};
 

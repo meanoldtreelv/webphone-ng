@@ -9,13 +9,13 @@ import { useGetContactQuery } from "services/contact";
 
 const ContactCard: React.FC<IContactCard> = ({ id, first_name, last_name, phone, email, fax }: any) => {
 	const dispatch = useDispatch();
-	const { data } = useGetContactQuery(id);
+	// const { data } = useGetContactQuery(id);
 	
 	return (
 		<button
 			className={styles.contact}
 			onClick={() => {
-				dispatch(setSelectedContact(data[0]));
+				// dispatch(setSelectedContact(data[0]));
 				dispatch(openSelectedContact());
 			}}>
 			<span className={styles.contact_circle}>

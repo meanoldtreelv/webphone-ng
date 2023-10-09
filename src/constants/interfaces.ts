@@ -59,6 +59,7 @@ export interface IHeader {
 	filterClicked: (filter: boolean) => void;
 	deleteClicked: (del: boolean) => void;
 	dateClicked: (filter: boolean) => void;
+	search: (search: string) => void;
 }
 
 export interface IExtensionList {
