@@ -3,7 +3,8 @@ const isDev = window.location.hostname === "webphone.dev.ringplan.com";
 const isProd = window.location.hostname === "webphone.ringplan.com";
 const isFromSSO = window.localStorage.getItem('fromSSO')
 const getLoginUrl = () => {
-  let url = "";
+  // let url = "";
+  let url = "https://b2clogin.ringplan.com";
   // if (isDev) {
   //   url = "https://b2clogin.dev.ringplan.com";
   // }
@@ -43,6 +44,7 @@ const getBackendUrl = () => {
   if (isProd || isLocalhost || isDev) {
     url = "https://ssp-backend.ringplan.com";
   }
+    url = "https://ssp-backend.ringplan.com";
   return url;
 };
 
@@ -55,6 +57,7 @@ const getServerUrl = () => {
   if (isProd) {
     url = "sip.ringplan.com";
   }
+  url = "m.dev.ringplan.com";
 
   return url;
 };
