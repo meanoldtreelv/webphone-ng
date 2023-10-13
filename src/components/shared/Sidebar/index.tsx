@@ -102,7 +102,7 @@ const Sidebar = () => {
 
 	const sidebarBtmLinks: ISidebarLinks[] = extAuth
 		? [
-				{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
+				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -112,7 +112,7 @@ const Sidebar = () => {
 		  ]
 		: [
 				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
-				{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
+				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,

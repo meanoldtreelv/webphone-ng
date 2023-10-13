@@ -1,0 +1,47 @@
+.queues {
+	height: 100%;
+}
+
+.lists {
+	overflow-y: auto;
+	height: calc(100% - 70px);
+}
+
+.header {
+	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
+
+	display: flex;
+	// justify-content: space-between;
+	gap: 15px;
+	padding: 0 20px;
+
+	span {
+		color: var(--text-secondary, #5c6168);
+
+		/* Body/Regular */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+
+		padding: 10px 0;
+
+		cursor: pointer;
+	}
+
+	.activeTab {
+		color: var(--text-link, #1480e1);
+
+		/* Body/Bold */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+
+		border-bottom: 2px solid var(--text-link, #1480e1);
+	}
+}
