@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./AddEditContact.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { closeAddEditContact, setEditContactFalse } from "redux/contact/contactSlice";
+import { addContact, closeAddEditContact, setEditContactFalse } from "redux/contact/contactSlice";
 import { addContactOpen, editContactNumber, selectedContactData } from "redux/contact/contactSelectors";
 import accordionPlusImg from "./../../../assets/images/icon/btn_accordion_plus.svg";
 import accordionMinusImg from "./../../../assets/images/icon/btn_accordion_minus.svg";
@@ -9,7 +9,7 @@ import XIcon from "components/UI/Icons/X";
 import UserIcon from "components/UI/Icons/User/UserSingle";
 import { useLazyCreateContactQuery, useLazyUpdateContactQuery } from "services/contact";
 import { IContactList } from "redux/contact/contactTypes";
-import { PulseLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { convertErrorString, extractFieldName } from "helpers/extractString";
 // import { setNotification } from "redux/common/commonSlice";
 
@@ -18,7 +18,9 @@ const AddContact = () => {
 	const contactNumber = useSelector(editContactNumber);
 	const [contactData, setContactData] = useState<IContactList | {}>({});
 	const [contactError, setContactError] = useState<any>();
+	const [contactSrvrError, setContactSrvrError] = useState<string[]>([]);
 	const dispatch = useDispatch();
+	const salutations = ["Mr.", "Ms.", "Mrs."];
 
 	const selectedContact = useSelector(selectedContactData);
 
@@ -38,26 +40,33 @@ const AddContact = () => {
 		address: false,
 	});
 
-	const [salutationList, setSalutationList] = useState([]);
-
 	// to be removed later
 	const salutationRef = useRef<any>(null);
 	const jobReportsRef = useRef<any>(null);
-	const streetRef = useRef<any>(null);
 	const organizationRef = useRef<any>(null);
 	const parentOrganizationRef = useRef<any>(null);
 
 	const onSaveContact = async () => {
 		if (selectedContact) {
-			if (selectedContact != contactData) updateContact(contactData);
+			if (selectedContact != contactData) {
+				const { error } = await updateContact(contactData);
+			}
 		} else {
 			const { error } = await createContact(contactData);
+		}
 
-			if (error)
-				setContactError({
-					...contactError,
-					[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
-				});
+		if (error) {
+			// this should be used for local validation and be extracted to another function
+			// setContactError({
+			// 	...contactError,
+			// 	[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
+			// });
+
+			setContactSrvrError([convertErrorString(error.response.data.detail)]);
+		} else {
+			setContactSrvrError([]);
+			dispatch(closeAddEditContact());
+			dispatch(addContact(contactData));
 		}
 	};
 
@@ -76,14 +85,14 @@ const AddContact = () => {
 					</button>
 				</div>
 				<div className={styles.contact_data}>
-					<div className={`flex justify-between items-center`}>
+					{/* <div className={`flex justify-between items-center`}>
 						<span className={styles.profile}>
 							<UserIcon />
 						</span>
 						<button className={`footnote ${styles.uploadButton}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 							Upload Image
 						</button>
-					</div>
+					</div> */}
 					<div className={styles.box}>
 						<p className={`body_bold ${styles.box_heding}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 							General
@@ -127,7 +136,7 @@ const AddContact = () => {
 								value={contactData?.email || ""}
 								onChange={(event) => contactData && setContactData({ ...contactData, email: event.target.value })}
 							/>
-							{true && (
+							{false && (
 								<p
 									className={`caption_2`}
 									style={{ color: "var(--text-danger, #EE3939)", position: "absolute", bottom: "0" }}>
@@ -206,7 +215,7 @@ const AddContact = () => {
 									<input
 										type="date"
 										id="birthday"
-										value={contactData?.birthday || ""}
+										value={contactData?.birthday}
 										onChange={(event) =>
 											contactData && setContactData({ ...contactData, birthday: event.target.value })
 										}
@@ -228,17 +237,32 @@ const AddContact = () => {
 									<label htmlFor="description" className={`caption_1`}>
 										Description
 									</label>
-									<input type="text" id="description" value={contactData?.description} />
+									<input
+										type="text"
+										id="description"
+										value={contactData?.description}
+										onChange={(event) =>
+											contactData && setContactData({ ...contactData, description: event.target.value })
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="salutation" className={`caption_1`}>
 										Salutation
 									</label>
-									{/* <input type="text" id="salutation" ref={salutationRef} /> */}
 									<select name="" id="salutation" ref={salutationRef}>
-										<option value=""></option>
-										{salutationList?.map((item) => (
-											<option value={item} key={item}>
+										{salutations?.map((item) => (
+											<option
+												value={item}
+												key={item}
+												selected={item === contactData?.salutation}
+												onChange={(event) =>
+													contactData &&
+													setContactData({
+														...contactData,
+														salutation: item,
+													})
+												}>
 												{item}
 											</option>
 										))}
@@ -333,7 +357,21 @@ const AddContact = () => {
 									<label htmlFor="street" className={`caption_1`}>
 										Street
 									</label>
-									<input type="text" id="street" ref={streetRef} />
+									<input
+										type="text"
+										id="street"
+										value={contactData?.address?.street}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												address: {
+													...contactData.address,
+													street: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								{/* on-hold -> the input component's styles should be edited  */}
 								{/* <div className={`${styles.inputBox}`}>
@@ -343,25 +381,81 @@ const AddContact = () => {
 									<label htmlFor="city" className={`caption_1`}>
 										city
 									</label>
-									<input type="text" id="city" value={contactData?.address?.city} />
+									<input
+										type="text"
+										id="city"
+										value={contactData?.address?.city}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												address: {
+													...contactData.address,
+													city: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="state" className={`caption_1`}>
 										State
 									</label>
-									<input type="text" id="state" value={contactData?.address?.state} />
+									<input
+										type="text"
+										id="state"
+										value={contactData?.address?.state}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												address: {
+													...contactData.address,
+													state: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="zip" className={`caption_1`}>
 										Zip
 									</label>
-									<input type="text" id="zip" value={contactData?.address?.zipcode} />
+									<input
+										type="text"
+										id="zip"
+										value={contactData?.address?.zipcode}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												address: {
+													...contactData.address,
+													zipcode: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="country" className={`caption_1`}>
 										Country
 									</label>
-									<input type="text" id="country" value={contactData?.address?.country} />
+									<input
+										type="text"
+										id="country"
+										value={contactData?.address?.country}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												address: {
+													...contactData.address,
+													country: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								{/* <div className={`${styles.inputBox}`}>
 									<label htmlFor="mailing_address" className={`caption_1`}>
@@ -372,6 +466,13 @@ const AddContact = () => {
 							</>
 						)}
 					</div>
+
+					{contactSrvrError?.length ? (
+						<div className={`${styles.box} ${styles.error_box}`}>
+							<h3>Please fix the following errors:</h3>
+							<ul>{contactSrvrError?.map((error) => <li>{error}</li>)}</ul>
+						</div>
+					) : null}
 				</div>
 				<div className={styles.buttonBox}>
 					<button
@@ -384,7 +485,14 @@ const AddContact = () => {
 						className={`footnote_bold ${styles.save}`}
 						style={{ color: "var(--text-on-color, #FFF)" }}
 						onClick={onSaveContact}>
-						{isLoading ? <PulseLoader color="white" size={6} /> : "Save"}
+						{isLoading ? (
+							<>
+								<ClipLoader color="white" size={13} />
+								<span style={{ marginLeft: "5px" }}>Saving...</span>
+							</>
+						) : (
+							<span>Save</span>
+						)}
 					</button>
 				</div>
 			</div>

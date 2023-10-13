@@ -1,0 +1,40 @@
+@import "./../../../sass/abstracts/variables";
+
+.contact {
+	height: 54px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding-left: 10px;
+	width: 100%;
+
+	&_circle {
+		width: 38px;
+		height: 38px;
+		border-radius: 32px;
+	}
+
+	&_name {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		width: 100%;
+		
+		span {
+			display: flex;
+			width: 85%;
+			align-items: center;
+		}
+
+		div {
+			display: flex;
+			align-items: center;
+			width: 30px;
+			height: 10px;
+		}
+	}
+
+	&:hover {
+		background: map-get($color, background-active);
+	}
+}

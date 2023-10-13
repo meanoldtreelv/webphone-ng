@@ -1,0 +1,52 @@
+.noVoice {
+	width: 280px;
+	height: 160px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&_boldText {
+		color: var(--text-primary, #1f2023);
+		margin-top: 24px;
+		margin-bottom: 8px;
+		font-size: 20px;
+		font-weight: 600;
+	}
+
+	&_text {
+		color: var(--text-secondary, #5c6168);
+		max-width: 280px;
+		text-align: center;
+		font-size: 14px;
+	}
+}
+
+// @media screen and (max-width:1440px) {
+//     .noVoice{
+//         left: calc(100vw - 280px  - 43vw + 77px) ;
+//     }
+// }
+
+// @media screen and (max-width:1200px) {
+//     .noVoice{
+//         left: calc(100vw - 280px  - 41vw + 77px) ;
+//     }
+// }
+
+// @media screen and (max-width:900px) {
+//     .noVoice{
+//         left: calc(100vw - 280px  - 39.5vw + 77px) ;
+//     }
+// }
+
+// @media screen and (max-width:768px) {
+//     .noVoice{
+//         left: calc(100vw - 280px  - 38.5vw + 77px) ;
+//     }
+// }
+
+// @media screen and (max-width:600px) {
+//     .noVoice{
+//         left: calc(100vw - 280px  - 33vw + 77px) ;
+//     }
+// }

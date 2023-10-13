@@ -108,3 +108,17 @@
 		width: 27px;
 	}
 }
+
+.transcriptHighlight {
+	display: block;
+	padding-left: 50px;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	p{
+		font-size: 0.8em;
+		color: #5c5e6e;
+	}
+}

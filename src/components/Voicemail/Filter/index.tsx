@@ -2,8 +2,8 @@ import XIcon from "components/UI/Icons/X";
 import styles from "./Filter.module.scss";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { voicemailQueries } from "redux/voicemail/voicemailSelectors";
-import { setNewFilter, setVoicemailQueries } from "redux/voicemail/voicemailSlice";
+import { voicemailFilterExt, voicemailQueries } from "redux/voicemail/voicemailSelectors";
+import { setFilterExt, setNewFilter, setVoicemailQueries } from "redux/voicemail/voicemailSlice";
 import { IExtensionList } from "constants/interfaces";
 import { ClipLoader } from "react-spinners";
 
@@ -21,10 +21,10 @@ interface IFilterObj {
 const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 	const dispatch = useDispatch();
 	const queries = useSelector(voicemailQueries);
-	const [ext, setExt] = useState("");
+	const ext = useSelector(voicemailFilterExt);
 
 	const handleExtensionFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setExt(event.target.value);
+		dispatch(setFilterExt(event.target.value));
 	};
 
 	const applyFilters = () => {
@@ -60,7 +60,14 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 
 				<div className={styles.filters}>
 					<div className={styles.filter1}>
-						<input type="radio" id="all" name="filter" value="all" onChange={handleExtensionFilter} />
+						<input
+							type="radio"
+							id="all"
+							name="filter"
+							value="all"
+							onChange={handleExtensionFilter}
+							checked={!ext && true}
+						/>
 						<label htmlFor="all">All</label>
 					</div>
 					{extensionList?.map((extension) => (
@@ -71,6 +78,7 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 								name="filter"
 								value={extension.data.extension}
 								onChange={handleExtensionFilter}
+								checked={ext === String(extension.data.extension) && true}
 							/>
 							<label htmlFor={`${extension.data.extension}`}>{extension.data.extension}</label>
 						</div>

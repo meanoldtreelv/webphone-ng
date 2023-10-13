@@ -110,14 +110,14 @@
 	justify-content: flex-end;
 
 	button {
-		padding: 16px;
 		justify-content: center;
 		align-items: center;
 		gap: 4px;
-		width: fit-co5tent;
+		width: fit-content;
 		height: 32px;
 		display: flex;
 		border-radius: 8px;
+		padding: 16px;
 	}
 }
 
@@ -129,6 +129,10 @@
 .save {
 	border: 1px solid transparent;
 	background: map-get($color, primary-default);
+
+	// span {
+	// 	padding: 17px;
+	// }
 }
 
 select {
@@ -140,4 +144,26 @@ select {
 	font-size: 16px;
 	font-weight: 600;
 	color: map-get($color, text-primary);
+}
+
+.error_box {
+	border: 1px solid red;
+	padding: 15px;
+	border-radius: 6px;
+
+	h3,
+	li {
+		color: rgb(255, 76, 76);
+		font-size: 0.85em;
+	}
+
+	ul {
+		margin-top: 10px;
+	}
+
+	ul,
+	li {
+		list-style-type: circle;
+		padding-left: 20px;
+	}
 }

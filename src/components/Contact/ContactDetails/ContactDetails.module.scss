@@ -132,13 +132,18 @@
 
 	& span {
 		display: flex;
-		padding: 7px;
+		padding: 3px;
 		justify-content: center;
 		align-items: center;
 		gap: 4px;
 		border-radius: 8px;
 		background: map-get($color, primary-default);
 		cursor: pointer;
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
 	}
 }
 
@@ -167,4 +172,11 @@
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+}
+
+.rowValue {
+	font-size: 14px;
+	font-weight: 400;
+	color: #1f2023;
+	height: 20px;
 }

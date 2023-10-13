@@ -25,7 +25,7 @@ const contactSlice = createSlice({
 		},
 		closeDeleteContact(state) {
 			state.deleteContactPopUpOpen = false;
-			state.selectedContactOpen = false;
+			// state.selectedContactOpen = false;
 		},
 		openDeleteContact(state) {
 			state.deleteContactPopUpOpen = true;
@@ -52,6 +52,17 @@ const contactSlice = createSlice({
 			state.editContactNumber = null;
 			state.addContactPopUpOpen = false;
 		},
+		removeContact(state, action) {
+			const modifiedContactList = state.contactList?.filter((contact) => contact?.id !== action.payload);
+			state.contactList = modifiedContactList || [];
+		},
+		clearSelectedContact(state) {
+			state.selectedContact = null;
+		},
+		addContact(state, action) {
+			const newContact = { ...action.payload, id: Math.floor(Math.random() * 1000001) };
+			if (state.contactList?.length) state.contactList = [...state.contactList, newContact];
+		},
 	},
 });
 
@@ -67,6 +78,9 @@ export const {
 	setDeleteContactId,
 	setEditContactNumber,
 	setEditContactFalse,
+	removeContact,
+	clearSelectedContact,
+	addContact,
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

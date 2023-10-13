@@ -53,11 +53,9 @@ const ContactDetails = () => {
 						</div>
 						<div className={styles.profileInfo}>
 							<p>
-								{`${selectedContact?.salutation || ""} ${selectedContact?.first_name || ""} ${
-									selectedContact?.last_name || ""
-								}`}
+								{selectedContact?.salutation} {selectedContact?.first_name} {selectedContact?.last_name}
 							</p>
-							<span>{selectedContact?.email || "null"}</span>
+							<span>{selectedContact?.email}</span>
 						</div>
 					</div>
 
@@ -94,9 +92,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Phone
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.phone || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.phone}</p>
 								</div>
 								<div className={styles.iconBox}>
 									<span>
@@ -126,9 +122,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Fax
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.fax || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.fax}</p>
 								</div>
 								<div className={styles.iconBox}>
 									<span>
@@ -143,9 +137,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Birthday
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.birthday || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.birthday}</p>
 								</div>
 							</div>
 							<div className={styles.row}>
@@ -153,9 +145,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Position
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.job_details?.position || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.job_details?.position}</p>
 								</div>
 							</div>
 							<div className={styles.row}>
@@ -163,9 +153,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Department
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.job_details?.department || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.job_details?.department}</p>
 								</div>
 							</div>
 						</div>
@@ -175,9 +163,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Company
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.organization_details?.organization || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.organization_details?.organization}</p>
 								</div>
 							</div>
 						</div>
@@ -187,9 +173,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										City
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.address?.city || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.address?.city}</p>
 								</div>
 							</div>
 							<div className={styles.row}>
@@ -197,9 +181,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										State
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.address?.state || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.address?.state}</p>
 								</div>
 							</div>
 							<div className={styles.row}>
@@ -207,9 +189,7 @@ const ContactDetails = () => {
 									<p className={`caption_1`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 										Country
 									</p>
-									<p className={`body`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{selectedContact?.address?.country || "null"}
-									</p>
+									<p className={styles.rowValue}>{selectedContact?.address?.country}</p>
 								</div>
 							</div>
 							{/* <div className={styles.row}>
