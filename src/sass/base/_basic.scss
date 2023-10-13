@@ -1,26 +1,34 @@
 @import "./../abstracts/variables";
 
 * {
-  padding: 0px;
-  margin: 0px;
-  box-sizing: border-box;
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-display: swap;
+	font-family: "Poppins";
+	line-height: 1.5;
+	max-width: 100vw;
 }
 
 .Wrapper {
-  // width: $sc-lg;
-  margin: auto;
+	// width: $sc-lg;
+	margin: auto;
 }
 
 ul,
 li {
-  list-style: none;
-  list-style-type: none;
+	list-style: none;
+	list-style-type: none;
 }
 
 img {
-  vertical-align: middle;
+	vertical-align: middle;
 }
 
 button {
-  cursor: pointer;
+	cursor: pointer;
 }

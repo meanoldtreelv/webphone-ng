@@ -3,20 +3,22 @@ import contactReducer from "./contact/contactSlice";
 import callingReducer from "./call/callSlice";
 import settingReducer from "./setting/settingSlice";
 import commonReducer from "./common/commonSlice";
-import voicemailReducer from './voicemail/voicemailSlice';
+import voicemailReducer from "./voicemail/voicemailSlice";
 import callHistoryReducer from "./call-history/callHistorySlice";
+import sidecarReducer from "./sidecar/sidecarSlice";
 import { apiService } from "./../services/api";
-import sipReducer from "./sip"
+import sipReducer from "./sip";
 
 export const store = configureStore({
 	reducer: {
 		contact: contactReducer,
 		calling: callingReducer,
-        sip: sipReducer,
+		sip: sipReducer,
 		common: commonReducer,
 		setting: settingReducer,
 		callHistory: callHistoryReducer,
 		voicemail: voicemailReducer,
+		sidecar: sidecarReducer,
 		[apiService.reducerPath]: apiService.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),

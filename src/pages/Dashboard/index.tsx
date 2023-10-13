@@ -18,6 +18,8 @@ import LogoutPopUp from "../../components/Profile/LogoutPopup";
 import InboundCall from "../../components/shared/InboundCall";
 import {
 	GET_Contact_List_API,
+	GET_user_extension_API,
+	extension_API,
 	// account_API,
 	// callerId_API,
 	// extension_API,
@@ -40,91 +42,81 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan} = useSelector((state: any) => state.sip)
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan } =
+		useSelector((state: any) => state.sip);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
-		
+
 	// }, [data]);
 
-	// useEffect(() => {
-	// 	const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
-	// 	const userID = "5ed668cd38d0350104cb8789";
-	// 	// instances_API(
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "instances API retrieve");
-	// 	// 		if (res?.status?.code === 200) {
-	// 	// 			console.log("success in instances retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in instances retrieve");
-	// 	// 	},
-	// 	// );
+	useEffect(() => {
+		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
+		const userID = "5ed668cd38d0350104cb8789";
 
-	// 	// account_API(
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "account API retrieve");
-	// 	// 		if (res?.status === 200) {
-	// 	// 			console.log("success in account retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in account retrieve");
-	// 	// 	},
-	// 	// );
+		const cnt_id = "5ed668cd38d0350104cb8789";
+		// instances_API(
+		// 	(res: any) => {
+		// 		console.log(res, "instances API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in instances retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in instances retrieve");
+		// 	},
+		// );
 
-	// 	// GET_Contact_List_API(
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "contact API retrieve");
-	// 	// 		if (res?.status === 200) {
-	// 	// 			console.log("success in contact retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in contact retrieve");
-	// 	// 	},
-	// 	// );
+		// account_API(
+		// 	(res: any) => {
+		// 		console.log(res, "account API retrieve");
+		// 		if (res?.status === 200) {
+		// 			console.log("success in account retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in account retrieve");
+		// 	},
+		// );
 
-	// 	// extension_API(
-	// 	// 	user_id,
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "extension API retrieve");
-	// 	// 		if (res?.status?.code === 200) {
-	// 	// 			console.log("success in extension retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in extension retrieve");
-	// 	// 	},
-	// 	// );
+		// GET_Contact_List_API(
+		// 	(res: any) => {
+		// 		console.log(res, "contact API retrieve");
+		// 		if (res?.status === 200) {
+		// 			console.log("success in contact retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in contact retrieve");
+		// 	},
+		// );
 
-	// 	// callerId_API(
-	// 	// 	user_id,
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "user API retrieve");
-	// 	// 		if (res?.status?.code === 200) {
-	// 	// 			console.log("success in user retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in user retrieve");
-	// 	// 	},
-	// 	// );
+		// callerId_API(
+		// 	user_id,
+		// 	(res: any) => {
+		// 		console.log(res, "user API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in user retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in user retrieve");
+		// 	},
+		// );
 
-	// 	// user_API(
-	// 	// 	userID,
-	// 	// 	(res: any) => {
-	// 	// 		console.log(res, "user API retrieve");
-	// 	// 		if (res?.status?.code === 200) {
-	// 	// 			console.log("success in user retrieve");
-	// 	// 		}
-	// 	// 	},
-	// 	// 	(err: any) => {
-	// 	// 		console.error(err, "err in user retrieve");
-	// 	// 	},
-	// 	// );
-	// }, []);
+		// user_API(
+		// 	userID,
+		// 	(res: any) => {
+		// 		console.log(res, "user API retrieve");
+		// 		if (res?.status?.code === 200) {
+		// 			console.log("success in user retrieve");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in user retrieve");
+		// 	},
+		// );
+	}, []);
 	return (
 		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
@@ -135,17 +127,16 @@ const Dashboard = () => {
 					</div>
 
 					{/* This is a dial pad components for calling */}
-					{
-						answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) &&
-							<div className={styles.dialpad}>
-								<KeyPad />
-							</div>
-					}
+					{answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) && (
+						<div className={styles.dialpad}>
+							<KeyPad />
+						</div>
+					)}
 
 					{/* When call is in progress this component will be shown  */}
 					{/* {isCallInProgress && <Dialer />} */}
 
-					{ (answeredCalls.length > 0 || ringingOutboundCalls.length > 0) && !(callEnding.length > 0) && <Dialer />}
+					{(answeredCalls.length > 0 || ringingOutboundCalls.length > 0) && !(callEnding.length > 0) && <Dialer />}
 
 					{/* to add a call in progress call we will call this component */}
 					{/* {isCallAdded && <AddCall />} */}
@@ -155,7 +146,7 @@ const Dashboard = () => {
 
 					{/* after clicking on end button this screen will be shown  */}
 					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} />}
-					
+
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}
 
@@ -172,13 +163,13 @@ const Dashboard = () => {
 			{/* <StatusMenu /> */}
 
 			{/* this is a component to show about the ringplan  */}
-			{ aboutRingplan && <AboutRingplan />}
+			{aboutRingplan && <AboutRingplan />}
 
 			{/* component for edit the extension  */}
 			{/* {true && <EditExtension />} */}
 
 			{/* component for logout LogoutPopUp */}
-			{ logoutPopUp && <LogoutPopUp />}
+			{logoutPopUp && <LogoutPopUp />}
 
 			{/* incoming call components */}
 

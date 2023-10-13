@@ -13,9 +13,14 @@ import SendMessageDialogue from "components/Sidecar/ActionsDialogue/SendMessageD
 import KeypressDialogue from "components/Sidecar/ActionsDialogue/KeypressDialogue";
 import TransferDialogue from "components/Sidecar/ActionsDialogue/TransferDialogue";
 import PromptDialog from "components/Modal/PromptDialog";
+import { useEffect } from "react";
+import { GET_user_extension_API } from "effects/apiEffect";
+import { useSelector } from "react-redux";
+import { sidecarSidebar } from "redux/sidecar/sidecarSelectors";
 
 const Sidecar = () => {
 	const deleteActionBtnHandler = () => {};
+	const isSidecarTrue = useSelector(sidecarSidebar);
 	return (
 		<div className={styles.sidecar}>
 			<BaseLayout>
@@ -24,7 +29,8 @@ const Sidecar = () => {
 					<SidecarManage />
 				</section>
 			</BaseLayout>
-			{/* <SidecarSidebar /> */}
+			{isSidecarTrue && <SidecarSidebar />}
+
 			{/* <ButtonProgramming /> */}
 			{/* <ChooseActions /> */}
 			{/* <PauseDialogue /> */}
