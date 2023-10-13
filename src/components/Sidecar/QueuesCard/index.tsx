@@ -1,13 +1,14 @@
 import React from "react";
 import styles from "./QueuesCard.module.scss";
+import { toSecMinAndHr } from "helpers/formatDateTime";
 
-const QueuesCard = () => {
+const QueuesCard = ({ queuesData }) => {
 	return (
 		<div className={styles.card}>
-			<span>Ring All</span>
-			<span>0</span>
-			<span>00:00:00</span>
-			<span>0</span>
+			<span>{queuesData.name}</span>
+			<span>{queuesData.calls}</span>
+			<span>{toSecMinAndHr(queuesData.holdtime)}</span>
+			<span>{queuesData.members.length}</span>
 			<span>0</span>
 		</div>
 	);

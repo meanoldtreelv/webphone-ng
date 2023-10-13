@@ -1,3 +1,3 @@
-export type cookieType = {
-	accessToken?: string;
-};
+// export type cookieType = {
+// 	accessToken?: string;
+// };
