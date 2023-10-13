@@ -6,8 +6,13 @@ import DetachUndock from "components/UI/Icons/DetachUndock";
 import NoActions from "../NoActions";
 import Extension from "../Extension";
 import Queues from "../Queues";
+import { useDispatch, useSelector } from "react-redux";
+import { tabSelected } from "redux/sidecar/sidecarSelectors";
+import { setTabSelected } from "redux/sidecar/sidecarSlice";
 
 const SidecarSidebar = () => {
+	const selectedTab = useSelector(tabSelected);
+	const dispatch = useDispatch();
 	return (
 		<>
 			{/* <div className={styles.backdrop}></div> */}
@@ -23,15 +28,33 @@ const SidecarSidebar = () => {
 						</span>
 					</h1>
 					<div className={styles.tabBox}>
-						<span className={`${true && styles.activeTab}`}>General</span>
-						<span className={`${false && styles.activeTab}`}>Extension</span>
-						<span className={`${false && styles.activeTab}`}>Queues</span>
+						<span
+							className={`${selectedTab === "general" ? styles.activeTab : ""}`}
+							onClick={() => {
+								dispatch(setTabSelected("general"));
+							}}>
+							General
+						</span>
+						<span
+							className={`${selectedTab === "extension" && styles.activeTab}`}
+							onClick={() => {
+								dispatch(setTabSelected("extension"));
+							}}>
+							Extension
+						</span>
+						<span
+							className={`${selectedTab === "queues" && styles.activeTab}`}
+							onClick={() => {
+								dispatch(setTabSelected("queues"));
+							}}>
+							Queues
+						</span>
 					</div>
 				</div>
 				<div className={styles.btmSection}>
-					{/* {true ? <NoActions /> : <></>} */}
-					{/* <Extension /> */}
-					<Queues />
+					{selectedTab === "general" ? <NoActions /> : <></>}
+					{selectedTab === "extension" && <Extension />}
+					{selectedTab === "queues" && <Queues />}
 				</div>
 			</div>
 		</>

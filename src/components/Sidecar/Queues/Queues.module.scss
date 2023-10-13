@@ -1,3 +1,12 @@
+.queues {
+	height: 100%;
+}
+
+.lists {
+	overflow-y: auto;
+	height: calc(100% - 70px);
+}
+
 .header {
 	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
 

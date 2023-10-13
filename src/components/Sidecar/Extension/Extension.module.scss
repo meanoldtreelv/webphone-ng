@@ -1,0 +1,17 @@
+.extension {
+	// background-color: green;
+	height: 100%;
+}
+
+.activeExtension {
+	display: flex;
+	align-items: center;
+	padding: 20px 0;
+	gap: 8px;
+	justify-content: flex-end;
+}
+
+.list {
+	overflow-y: auto;
+	height: calc(100% - 70px);
+}
