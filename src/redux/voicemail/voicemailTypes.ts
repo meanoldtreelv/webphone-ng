@@ -41,4 +41,5 @@ export interface IVoicemailState {
 	};
 	strQueries: string;
 	newFilter: boolean;
+	filterExt: string;
 }

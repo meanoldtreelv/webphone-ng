@@ -6,7 +6,7 @@ import ContactList from "../../components/Contact/ContactList";
 import AddEditContact from "../../components/Contact/AddEditContact";
 import ContactDetails from "../../components/Contact/ContactDetails";
 // import DeleteContactPopUp from "../../components/Contact/DeleteContactPopup"; // the code from here needs to be extracted and removed
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	contactLists,
 	addContactOpen,
@@ -15,43 +15,35 @@ import {
 	editContactNumber,
 	selectedContactData,
 } from "./../../redux/contact/contactSelectors";
-import { setContactList } from "redux/contact/contactSlice";
-import { GET_Contact_List_API } from "../../effects/apiEffect";
+import { clearSelectedContact, closeDeleteContact, closeSelectedContact, removeContact, setSelectedContact } from "redux/contact/contactSlice";
 import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "components/Modal/PromptDialog";
-import { useLazyDeleteContactQuery } from "services/contact";
+import { useLazyDeleteContactQuery, useLazyGetContactQuery } from "services/contact";
 
 const Contact = () => {
-	const [isContactLoaded, setIsContactLoaded] = useState(true);
-
+	const dispatch = useDispatch();
 	const isAddContactOpen = useSelector(addContactOpen);
 	const contactNumber = useSelector(editContactNumber);
 	const isContactSelected = useSelector(contactSelectd);
 	const isDeleteContactOpen = useSelector(deleteContactOpen);
 	const selectedContact = useSelector(selectedContactData);
-	const [deleteContact] = useLazyDeleteContactQuery();
+	const [deleteContact, { isLoading }] = useLazyDeleteContactQuery();
 
-	const deleteContactHandler = () => {
-		if(selectedContact) {
-			deleteContact(selectedContact.id);
+	const deleteContactHandler = async () => {
+		if (selectedContact) {
+			await deleteContact(selectedContact.id);
+			dispatch(clearSelectedContact());
+			dispatch(removeContact(selectedContact.id))
 		}
-	}
+	};
 
 	useEffect(() => {
-		GET_Contact_List_API(
-			(res: any) => {
-				console.log(res, "contact API retrieve");
-				if (res?.status === 200) {
-					console.log("success in contact retrieve");
-					setContactList(res.data);
-					// dispatch(setContactList(res?.data));
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in contact retrieve");
-			},
-		);
-	}, []);
+		if (!isLoading) {
+			dispatch(closeDeleteContact());
+			dispatch(setSelectedContact(null))
+			dispatch(closeSelectedContact())
+		}
+	}, [isLoading]);
 
 	return (
 		<div className={styles.contact}>
@@ -59,7 +51,7 @@ const Contact = () => {
 				{contactLists?.length > 0 ? (
 					<section className={styles.contact_container}>
 						<ContactList />
-						{isContactSelected ? <ContactDetails /> : <NoContactSelected />}
+						{isContactSelected && selectedContact ? <ContactDetails /> : <NoContactSelected />}
 					</section>
 				) : (
 					<NoContact />
@@ -69,7 +61,12 @@ const Contact = () => {
 			{(isAddContactOpen || contactNumber) && <AddEditContact />}
 
 			{isDeleteContactOpen && (
-				<PromptDialog type="warning" title="Delete Contact" actionBtnTxt="Delete" onClick={deleteContactHandler}>
+				<PromptDialog
+					type="warning"
+					title="Delete Contact"
+					actionBtnTxt="Delete"
+					onClick={deleteContactHandler}
+					loading={isLoading}>
 					Are you sure that you want to delete a contact?
 				</PromptDialog>
 			)}

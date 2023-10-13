@@ -1,28 +1,32 @@
 import { moreOptVoicemail, selectedVoicemails } from "redux/voicemail/voicemailSelectors";
 import InfoIcon from "./../../../components/UI/Icons/Info";
 import styles from "./DeleteVoicemail.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLazyDeleteVoicemailQuery, useLazyDeleteVoicemailsQuery } from "services/voicemail";
 import { ClipLoader } from "react-spinners";
+import { removeVoicemail } from "redux/voicemail/voicemailSlice";
 
 interface IDeleteVoicemail {
 	onClose: (del: boolean) => void;
 }
 
 const DeleteVoicemail: React.FC<IDeleteVoicemail> = ({ onClose }) => {
+	const dispatch = useDispatch();
 	const [deleteVoicemail, { isLoading: voicemailLoading }] = useLazyDeleteVoicemailQuery();
 	const [deleteVoicemails, { isLoading: voicemailsLoading }] = useLazyDeleteVoicemailsQuery();
 	const voicemailId = useSelector(moreOptVoicemail);
 	const voicemailIds = useSelector(selectedVoicemails);
 
-	const handleDeleteVoicemail = () => {
+	const handleDeleteVoicemail = async () => {
 		if(voicemailIds.length) {
-			// const stringify_ids = JSON.stringify({message_ids: voicemailIds});
-			deleteVoicemails({message_ids: voicemailIds});
+			await deleteVoicemails({message_ids: voicemailIds});
+			onClose(false)
 			return;
 		}
 
-		deleteVoicemail(voicemailId)
+		await deleteVoicemail(voicemailId)
+		onClose(false);
+		dispatch(removeVoicemail(voicemailId));
 	}
 
 	return (

@@ -11,6 +11,7 @@ const initialVoicemailState: IVoicemailState = {
 	queries: {},
 	strQueries: "",
 	newFilter: false,
+	filterExt: "",
 };
 
 const voicemailSlice = createSlice({
@@ -47,6 +48,13 @@ const voicemailSlice = createSlice({
 		},
 		setNewFilter(state, action) {
 			state.newFilter = action.payload;
+		},
+		removeVoicemail(state, action) {
+			const modifiedVoicemailList = state.voicemailResults?.filter((voicemail) => voicemail?._id !== action.payload);
+			state.voicemailResults = modifiedVoicemailList || [];
+		},
+		setFilterExt(state, action) {
+			state.filterExt = action.payload;
 		}
 	},
 });
@@ -59,7 +67,9 @@ export const {
 	setPage,
 	setVoicemailResults,
 	setVoicemailQueries,
-	setNewFilter
+	setNewFilter,
+	removeVoicemail,
+	setFilterExt,
 } = voicemailSlice.actions;
 
 export default voicemailSlice.reducer;

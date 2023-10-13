@@ -36,6 +36,7 @@ export interface IPromptDialog {
 	children: ReactNode;
 	onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 	actionBtnTxt: string;
+	loading: boolean;
 }
 
 export interface IAuthWrapper {
@@ -53,6 +54,7 @@ export interface IContactCard {
 	phone: string;
 	email: string;
 	fax: string;
+	clicked: () => void;
 }
 
 export interface IHeader {
@@ -60,6 +62,8 @@ export interface IHeader {
 	deleteClicked: (del: boolean) => void;
 	dateClicked: (filter: boolean) => void;
 	search: (search: string) => void;
+	filterSilder: boolean;
+	filterDate: boolean;
 }
 
 export interface IExtensionList {

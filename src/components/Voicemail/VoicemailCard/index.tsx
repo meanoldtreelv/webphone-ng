@@ -169,10 +169,14 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 					</div>
 				</div>
 			</div>
-			{transcripts && (
+			{transcripts ? (
 				<div className={styles.card_transcript}>
 					<div className={styles.card_head}>Transcript</div>
 					<div className={styles.card_des}>{transcript}</div>
+				</div>
+			) : (
+				<div className={styles.transcriptHighlight}>
+					<p>{transcript}</p>
 				</div>
 			)}
 			{popupMenu ? <PopupMenu id={id}>{popupMenuOpts}</PopupMenu> : null}

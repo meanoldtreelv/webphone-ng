@@ -27,6 +27,7 @@ import FormModal from "components/FormModal";
 import SimpleNotification from "components/SimpleNotification/inex";
 import { simpleNotification } from "redux/common/commonSelectors";
 import { useGetExtensionsQuery } from "services/extension";
+import NoVoicemailSearch from "components/Voicemail/NoVoicemailSearch";
 
 const Voicemail = () => {
 	const dispatch = useDispatch();
@@ -44,6 +45,7 @@ const Voicemail = () => {
 	const simpleMsg = useSelector(simpleNotification);
 	const [filterAnim, setFilterAnim] = useState(false);
 	const [search, setSearch] = useState("");
+	const [results, setResults] = useState<boolean>(false);
 
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
@@ -102,14 +104,16 @@ const Voicemail = () => {
 					<div className={styles.header}>
 						<Header
 							filterClicked={setFilterSlider}
+							filterSlider={filterSlider}
 							deleteClicked={setDeleteVoicemailModal}
 							dateClicked={setFilterDate}
+							filterDate={filterDate}
 							search={setSearch}
 						/>
 					</div>
 
 					<div className={styles.body} onScroll={handleScroll}>
-						{noVoicemail && (
+						{!voicemailResultsList?.length && !isLoading && (
 							<div className={styles.noVoiceBox}>
 								<NoVoicemail />
 							</div>
@@ -126,9 +130,9 @@ const Voicemail = () => {
 								</>
 							) : (
 								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => {
-									idx == 1 && console.log(Array.from(voicemail.source_representation_name));
-
-									return voicemail.source_representation_name.toLowerCase().includes(search.toLowerCase()) ? (
+									const loResults = voicemail.source_representation_name
+										.toLowerCase()
+										.includes(search.toLowerCase()) ? (
 										<VoicemailCard
 											id={voicemail._id}
 											title={voicemail.source_representation_name}
@@ -142,8 +146,12 @@ const Voicemail = () => {
 											idx={idx}
 										/>
 									) : null;
+									
+									return loResults;
 								})
 							)}
+
+							{/* {search && !results ? <NoVoicemailSearch str={search} /> : null} */}
 
 							{page > 1 && isFetching ? (
 								<div className={styles.loadMore}>
