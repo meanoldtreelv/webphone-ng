@@ -2,6 +2,7 @@ import styles from "./InboundCall.module.scss";
 import Signal from "components/TinyComponents/Signal";
 import { useDispatch, useSelector } from "react-redux";
 import sip from "../../../lib/sip"
+import { nameIcon } from "utils";
 
 const InboundCall = () => {
 	const { ringingInboundCalls, ringingInboundCallActive } = useSelector((state: any) => state.sip)
@@ -19,7 +20,7 @@ const InboundCall = () => {
 							<ellipse cx="69" cy="69" rx="56.6154" ry="61.9231" fill="#3B9EF7" fill-opacity="0.15" />
 							<ellipse cx="69" cy="69" rx="46" ry="69" fill="#3B9EF7" fill-opacity="0.2" />
 						</svg>
-						<span className={`large_title ${styles.profile}`}>SG</span>
+						<span className={`large_title ${styles.profile}`}>{item.DisplayName? nameIcon(item.DisplayName):nameIcon(item.DisplayNumber)}</span>
 					</div>
 					<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
 						{item.DisplayName}
@@ -58,7 +59,7 @@ const InboundCall = () => {
 						</button>
 					</div>
 					<div className={styles.silent_box}>
-						<span className={styles.silent}>
+						<span className={styles.silent} style={item.ringtone?{ backgroundColor: "var(--background-danger, #FFEBEB)" }:{}}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
 								<path
 									d="M14.8355 13.773C15.4623 13.1462 15.9595 12.4021 16.2987 11.5831C16.638 10.7642 16.8126 9.88641 16.8126 8.99998C16.8126 8.11355 16.638 7.2358 16.2987 6.41684C16.1107 5.96279 15.874 5.53173 15.5936 5.13092M12.8473 11.784C13.5855 11.0456 14.0003 10.0442 14.0003 8.99998C14.0003 8.33929 13.8342 7.69572 13.5252 7.12506M10.0625 8.25006V3.04498C10.0624 2.9338 10.0294 2.82514 9.96755 2.73273C9.90573 2.64032 9.81792 2.56829 9.7152 2.52576C9.61247 2.48323 9.49945 2.47209 9.3904 2.49375C9.28135 2.51542 9.18117 2.56891 9.1025 2.64748L5.5625 6.18748H3.8825C3.2225 6.18748 2.6045 6.56698 2.429 7.20298C2.2715 7.77523 2.1875 8.37748 2.1875 8.99998C2.18691 9.60711 2.26814 10.2115 2.429 10.797C2.6045 11.4322 3.2225 11.8125 3.8825 11.8125H5.5625L6.12509 12.3751M10.0625 10.5001V14.955C10.0624 15.0662 10.0294 15.1748 9.96755 15.2672C9.90573 15.3596 9.81792 15.4317 9.7152 15.4742C9.61247 15.5167 9.49945 15.5279 9.3904 15.5062C9.28135 15.4845 9.18117 15.431 9.1025 15.3525L7.25 13.5M3.5 15L15.5 2.99998"
@@ -67,7 +68,7 @@ const InboundCall = () => {
 									strokeLinejoin="round"
 								/>
 							</svg>
-							<span className={`footnote`} style={{ color: "var(--text-primary, #1F2023)" }}>
+							<span className={`footnote`} style={{ color: "var(--text-primary, #1F2023)" }}  onClick={()=>sip.ringtone(item.LineNumber, !item.ringtone)}>
 								Silent
 							</span>
 						</span>
@@ -76,6 +77,6 @@ const InboundCall = () => {
 			</section>) : null
 		)) 
 	);
-};
+}; 
 
 export default InboundCall;

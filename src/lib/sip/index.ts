@@ -4,6 +4,19 @@ import { setCookie, getCookie } from 'utils';
 import $ from "jquery";
 import moment from "moment"
 
+import Alert from "../../assets/media/Alert.mp3";
+import Ringtone_1 from "../../assets/media/Ringtone_1.mp3";
+import Speech_orig from "../../assets/media/speech_orig.mp3";
+import Tone_Busy_UK from "../../assets/media/Tone_Busy-UK.mp3";
+import Tone_Busy_US from "../../assets/media/Tone_Busy-US.mp3";
+import Tone_CallWaiting from "../../assets/media/Tone_CallWaiting.mp3";
+import Tone_Congestion_UK from "../../assets/media/Tone_Congestion-UK.mp3";
+import Tone_Congestion_US from "../../assets/media/Tone_Congestion-US.mp3";
+import Tone_EarlyMedia_Australia from "../../assets/media/Tone_EarlyMedia-Australia.mp3";
+import Tone_EarlyMedia_European from "../../assets/media/Tone_EarlyMedia-European.mp3";
+import Tone_EarlyMedia_Japan from "../../assets/media/Tone_EarlyMedia-Japan.mp3";
+import Tone_EarlyMedia_UK from "../../assets/media/Tone_EarlyMedia-UK.mp3";
+import Tone_EarlyMedia_US from "../../assets/media/Tone_EarlyMedia-US.mp3";
 // Create User Agent
 // =================
 let userAgent:any = null;
@@ -78,58 +91,57 @@ let selectedLine = "";
 
 
 function PreloadAudioFiles() {
-  return
   audioBlobs.Alert = {
     file: "Alert.mp3",
-    url: hostingPrefix + "media/Alert.mp3",
+    url: hostingPrefix + {Alert}['Alert'],
   };
   audioBlobs.Ringtone = {
     file: "Ringtone_1.mp3",
-    url: hostingPrefix + "media/Ringtone_1.mp3",
+    url: hostingPrefix + {Ringtone_1}['Ringtone_1'],
   };
   audioBlobs.speech_orig = {
     file: "speech_orig.mp3",
-    url: hostingPrefix + "media/speech_orig.mp3",
+    url: hostingPrefix + {Speech_orig}['Speech_orig'],
   };
   audioBlobs.Busy_UK = {
     file: "Tone_Busy-UK.mp3",
-    url: hostingPrefix + "media/Tone_Busy-UK.mp3",
+    url: hostingPrefix + {Tone_Busy_UK}['Tone_Busy_UK'],
   };
   audioBlobs.Busy_US = {
     file: "Tone_Busy-US.mp3",
-    url: hostingPrefix + "media/Tone_Busy-US.mp3",
+    url: hostingPrefix + {Tone_Busy_US}['Tone_Busy_US'],
   };
   audioBlobs.CallWaiting = {
     file: "Tone_CallWaiting.mp3",
-    url: hostingPrefix + "media/Tone_CallWaiting.mp3",
+    url: hostingPrefix + {Tone_CallWaiting}['Tone_CallWaiting'],
   };
   audioBlobs.Congestion_UK = {
     file: "Tone_Congestion-UK.mp3",
-    url: hostingPrefix + "media/Tone_Congestion-UK.mp3",
+    url: hostingPrefix + {Tone_Congestion_UK}['Tone_Congestion_UK'],
   };
   audioBlobs.Congestion_US = {
     file: "Tone_Congestion-US.mp3",
-    url: hostingPrefix + "media/Tone_Congestion-US.mp3",
+    url: hostingPrefix + {Tone_Congestion_US}['Tone_Congestion_US'],
   };
   audioBlobs.EarlyMedia_Australia = {
     file: "Tone_EarlyMedia-Australia.mp3",
-    url: hostingPrefix + "media/Tone_EarlyMedia-Australia.mp3",
+    url: hostingPrefix + {Tone_EarlyMedia_Australia}['Tone_EarlyMedia_Australia'],
   };
   audioBlobs.EarlyMedia_European = {
     file: "Tone_EarlyMedia-European.mp3",
-    url: hostingPrefix + "media/Tone_EarlyMedia-European.mp3",
+    url: hostingPrefix + {Tone_EarlyMedia_European}['Tone_EarlyMedia_European'],
   };
   audioBlobs.EarlyMedia_Japan = {
     file: "Tone_EarlyMedia-Japan.mp3",
-    url: hostingPrefix + "media/Tone_EarlyMedia-Japan.mp3",
+    url: hostingPrefix + {Tone_EarlyMedia_Japan}['Tone_EarlyMedia_Japan'],
   };
   audioBlobs.EarlyMedia_UK = {
     file: "Tone_EarlyMedia-UK.mp3",
-    url: hostingPrefix + "media/Tone_EarlyMedia-UK.mp3",
+    url: hostingPrefix + {Tone_EarlyMedia_UK}['Tone_EarlyMedia_UK'],
   };
   audioBlobs.EarlyMedia_US = {
     file: "Tone_EarlyMedia-US.mp3",
-    url: hostingPrefix + "media/Tone_EarlyMedia-US.mp3",
+    url:  hostingPrefix + {Tone_EarlyMedia_US}['Tone_EarlyMedia_US'],
   };
 
   $.each(audioBlobs, function (i, item) {
@@ -2049,7 +2061,7 @@ function ReceiveCall(session) {
 
 
   // Play Ring Tone if not on the phone
-  if (EnableRingtone === false) {
+  if (EnableRingtone == true) {
     if (CurrentCalls >= 1) {
       // Play Alert
       console.log("Audio:", audioBlobs.CallWaiting.url);
@@ -2059,7 +2071,7 @@ function ReceiveCall(session) {
       ringer.oncanplaythrough = function (e) {
         if (
           typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() !== "default"
+          getRingerOutputID() != "default"
         ) {
           ringer
             .setSinkId(getRingerOutputID())
@@ -2090,7 +2102,7 @@ function ReceiveCall(session) {
       ringer.oncanplaythrough = function (e) {
         if (
           typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() !== "default"
+          getRingerOutputID() != "default"
         ) {
           ringer
             .setSinkId(getRingerOutputID())
@@ -2119,6 +2131,7 @@ function ReceiveCall(session) {
     LineNumber: newLineNumber,
     DisplayName: callerID,
     DisplayNumber: did,
+    ringtone: false ,
   }
   store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"add",data:inboundCall}})
   store.dispatch({type:"sip/ringingInboundCallActive", payload:newLineNumber})
@@ -2469,8 +2482,8 @@ function onInviteProgress(lineObj, response) {
   // response.message.reasonPhrase
   if (response.message.statusCode === 180) {
     console.log("#line-" + lineObj.LineNumber + "-msg:" + "ringing");
-    // var soundFile = audioBlobs.EarlyMedia_European;
-    var soundFile = '';
+    var soundFile = audioBlobs.EarlyMedia_European;
+    // var soundFile = '';
 
     // Play Early Media
     console.log("Audio:", soundFile.url);
@@ -4174,6 +4187,22 @@ const sip = {
   },
   transferCallAtt: (LineNumber: number, number: string ) =>  {
     AttendedTransfer(LineNumber, number)
+  },
+  ringtone: (LineNumber: number, status: boolean ) =>  {
+    const lineObj = FindLineByNumber(LineNumber)
+    console.log(lineObj)
+    const session = lineObj.SipSession
+    console.log(status)
+    if (session.data.ringerObj) {
+      if(status==true){
+        session.data.ringerObj.pause();
+        store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOff",data:lineObj.LineNumber}})
+      }else{
+        session.data.ringerObj.play();
+        store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOn",data:lineObj.LineNumber}})
+      }
+      
+    }
   },
   logout: ()=>{
     try {Unregister()} catch (error) { }
