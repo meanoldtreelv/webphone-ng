@@ -7,7 +7,7 @@ import DeleteIcon from "./../../../components/UI/Icons/Delete";
 import CheckIcon from "./../../../components/UI/Icons/Voicemail/Check";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVoicemails, setSelectedVoicemailList } from "./../../../redux/voicemail/voicemailSlice";
-import { selectVoicemails, selectedVoicemails, voicemailResults } from "redux/voicemail/voicemailSelectors";
+import { selectVoicemails, selectedVoicemails, voicemailFilterExt, voicemailQueries, voicemailResults } from "redux/voicemail/voicemailSelectors";
 import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
 import { IHeader } from "./../../../constants/interfaces";
 
@@ -18,6 +18,8 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 	const [bulkVoicemailUpdate] = useLazyUpdateVoicemailsQuery();
 	const voicemail_ids = useSelector(selectedVoicemails);
 	const voicemails = useSelector(voicemailResults);
+	const filtered = useSelector(voicemailFilterExt);
+	const queries = useSelector(voicemailQueries);
 
 	const handleSelectToggle = () => {
 		if (!isSelectVoicemails) {
@@ -50,16 +52,16 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 						onClick={() => {
 							filterClicked(true);
 						}}>
-						<FilterIcon active={filterSlider} />
+						<FilterIcon active={filtered} />
 					</button>
 					<button
 						onClick={() => {
 							dateClicked(true);
 						}}>
-						<CalendarIcon />
+						<CalendarIcon active={queries.from_date || queries.to_date} />
 					</button>
 					<button className={styles.checkBtn} onClick={handleSelectToggle}>
-						<CheckIcon />
+						<CheckIcon active={isSelectVoicemails} />
 					</button>
 				</div>
 			</section>

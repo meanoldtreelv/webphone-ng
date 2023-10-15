@@ -17,12 +17,14 @@ const CallHistory = () => {
 	const CallHistory = useSelector(callHistory);
 	const callHistoryDetails = useSelector(selectedCallHistory);
 	const [detailsOn, setDetailsOn] = useState(false);
-	const [getCallHistories, { data, isFetching }] = useLazyGetCallHistoryQuery();
+	const [getCallHistories, { data, isLoading, isFetching }] = useLazyGetCallHistoryQuery();
 
 	useEffect(() => {
 		const fetchCallHistory = async () => {
 			await getCallHistories("page=1");
-			if (data) dispatch(setCallHistory(data));
+			if (data) {
+				dispatch(setCallHistory(data));
+			}
 		};
 
 		fetchCallHistory();
@@ -35,7 +37,7 @@ const CallHistory = () => {
 	return (
 		<div className={styles.callHistory}>
 			<BaseLayout>
-				{!CallHistory.length ? (
+				{!CallHistory.length && !isLoading && !isFetching ? (
 					<>
 						<NoRecentActivity />
 						<div className={styles.header}>
@@ -44,7 +46,7 @@ const CallHistory = () => {
 					</>
 				) : (
 					<section className={styles.recent}>
-						<RecentsSidebar />
+						<RecentsSidebar loading={isLoading} callLen={CallHistory.length} />
 
 						<div className={styles.rightCont}>
 							<div className={styles.header}>

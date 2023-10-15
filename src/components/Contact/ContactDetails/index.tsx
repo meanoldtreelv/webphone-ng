@@ -15,10 +15,13 @@ import ChatIcon from "components/UI/Icons/Chat";
 import FileIcon from "components/UI/Icons/File";
 import HistoryTimeIcon from "components/UI/Icons/Call/CallHistory";
 import { selectedContactData } from "redux/contact/contactSelectors";
+import sip from "lib/sip";
+import { useNavigate } from "react-router";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
 	const [isCallHistory, setIsCallHistory] = useState(false);
+	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
 
@@ -36,6 +39,12 @@ const ContactDetails = () => {
 		color: "var(--text-on-color, #FFF)",
 		fontWeight: "500",
 	};
+
+	const handleCall = () => {
+		sip.call(String(selectedContact?.phone));
+		navigate("/dashboard");
+	};
+
 	return (
 		<section className={styles.contactDetails}>
 			<div className={styles.contactDetails_box}>
@@ -81,9 +90,6 @@ const ContactDetails = () => {
 					</span>
 				</div>
 
-				{/* time to remove this line of code */}
-				<HistoryCard />
-
 				{activeButton === "1" ? (
 					<div className={styles.contactInfo}>
 						<div className={styles.rowBox}>
@@ -95,7 +101,7 @@ const ContactDetails = () => {
 									<p className={styles.rowValue}>{selectedContact?.phone}</p>
 								</div>
 								<div className={styles.iconBox}>
-									<span>
+									<span onClick={handleCall}>
 										{/* fix the padding for this icon */}
 										<PhoneIcon />
 										{/* <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -203,7 +209,7 @@ const ContactDetails = () => {
 								</div>
 							</div> */}
 						</div>
-						<p
+						<button
 							className={`footnote_bold cursor-pointer`}
 							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}
 							onClick={() => {
@@ -211,7 +217,7 @@ const ContactDetails = () => {
 								dispatch(setDeleteContactId(selectedContact?.id));
 							}}>
 							Delete Contact
-						</p>
+						</button>
 					</div>
 				) : (
 					<div className={styles.callHistory}>

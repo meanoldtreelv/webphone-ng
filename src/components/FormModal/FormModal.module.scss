@@ -94,6 +94,12 @@
 		& span {
 			color: var(--text-on-color, #fff);
 		}
+
+		> div {
+			display: flex;
+			align-items: center;
+			margin-right: 8px;
+		}
 	}
 }
 

@@ -31,7 +31,6 @@ import NoVoicemailSearch from "components/Voicemail/NoVoicemailSearch";
 
 const Voicemail = () => {
 	const dispatch = useDispatch();
-	const [noVoicemail, setNoVoicemail] = useState(false);
 	const [filterSlider, setFilterSlider] = useState(false);
 	const [deleteVoicemailModal, setDeleteVoicemailModal] = useState(false);
 	const [filterDate, setFilterDate] = useState(false);
@@ -45,7 +44,7 @@ const Voicemail = () => {
 	const simpleMsg = useSelector(simpleNotification);
 	const [filterAnim, setFilterAnim] = useState(false);
 	const [search, setSearch] = useState("");
-	const [results, setResults] = useState<boolean>(false);
+	const [filteredVoicemailResults, setFilteredVoicemailResults] = useState<any>();
 
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
@@ -64,18 +63,20 @@ const Voicemail = () => {
 	}, [voicemailId]);
 
 	useEffect(() => {
-		if (data) {
+		if (data && !isLoading) {
 			if (newResult) {
 				dispatch(setVoicemailResults([...data]));
+				setFilteredVoicemailResults([...data]);
 			} else {
 				dispatch(setVoicemailResults([...voicemailResultsList, ...data]));
+				setFilteredVoicemailResults([...voicemailResultsList, ...data]);
 			}
 		}
 
 		return () => {
 			dispatch(setNewFilter(false));
 		};
-	}, [data]);
+	}, [data, page]);
 
 	useEffect(() => {
 		const fetchVoicemails = async () => {
@@ -83,9 +84,23 @@ const Voicemail = () => {
 			await getVoicemails(strQueries);
 			setFilterAnim(false);
 			setFilterSlider(false);
+			dispatch(setNewFilter(false));
+
+			if(queries.from_date || queries.to_date) {
+				setFilterDate(false);
+			}
 		};
 		fetchVoicemails();
 	}, [queries]);
+
+	useEffect(() => {
+		const filteredRes = voicemailResultsList.filter((voicemail) => {
+			return voicemail.source_representation_name.toLowerCase().includes(search.toLowerCase());
+		});
+
+		setFilteredVoicemailResults(filteredRes);
+		console.log(filteredVoicemailResults?.length);
+	}, [search]);
 
 	const handleScroll = (e: any) => {
 		const scrollTop = e.target.scrollTop;
@@ -129,29 +144,23 @@ const Voicemail = () => {
 										))}
 								</>
 							) : (
-								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => {
-									const loResults = voicemail.source_representation_name
-										.toLowerCase()
-										.includes(search.toLowerCase()) ? (
-										<VoicemailCard
-											id={voicemail._id}
-											title={voicemail.source_representation_name}
-											ext={voicemail.extension_source}
-											duration={voicemail.voicemail_file.duration}
-											transcript={voicemail.transcription}
-											time={voicemail.time_received}
-											link={voicemail.voicemail_file.link}
-											deleteModal={setDeleteVoicemailModal}
-											listened={voicemail.listened}
-											idx={idx}
-										/>
-									) : null;
-									
-									return loResults;
-								})
+								filteredVoicemailResults?.map((voicemail: IVoicemail, idx: number) => (
+									<VoicemailCard
+										id={voicemail._id}
+										title={voicemail.source_representation_name}
+										ext={voicemail.extension_source}
+										duration={voicemail.voicemail_file.duration}
+										transcript={voicemail.transcription}
+										time={voicemail.time_received}
+										link={voicemail.voicemail_file.link}
+										deleteModal={setDeleteVoicemailModal}
+										listened={voicemail.listened}
+										idx={idx}
+									/>
+								))
 							)}
 
-							{/* {search && !results ? <NoVoicemailSearch str={search} /> : null} */}
+							{search && !filteredVoicemailResults?.length ? <NoVoicemailSearch str={search} /> : null}
 
 							{page > 1 && isFetching ? (
 								<div className={styles.loadMore}>
@@ -172,7 +181,7 @@ const Voicemail = () => {
 
 			{filterSlider ? <Filter extensionList={extListData} onClose={setFilterSlider} filterAnim={filterAnim} /> : null}
 			{deleteVoicemailModal ? <DeleteVoicemail onClose={setDeleteVoicemailModal} /> : null}
-			{filterDate ? <FormModal onClose={setFilterDate} /> : null}
+			{filterDate ? <FormModal loading={isFetching} onClose={setFilterDate} /> : null}
 			{simpleMsg && <SimpleNotification msg={simpleMsg} />}
 		</div>
 	);

@@ -80,9 +80,13 @@
 	height: 32px;
 }
 
-.box_heding {
+.box_header {
 	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
+
 .inputBox {
 	display: flex;
 	align-items: center;

@@ -22,8 +22,13 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 	const dispatch = useDispatch();
 	const queries = useSelector(voicemailQueries);
 	const ext = useSelector(voicemailFilterExt);
+	const [prev, setPrev] = useState('');
 
 	const handleExtensionFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (ext) {
+			setPrev(ext);
+		}
+
 		dispatch(setFilterExt(event.target.value));
 	};
 
@@ -36,8 +41,11 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 			extension_source: ext,
 		};
 
-		if (ext == "all") {
+		if (ext === "" && prev) {
 			delete filterObj.extension_source;
+			dispatch(setVoicemailQueries(filterObj));
+			dispatch(setFilterExt(""));
+			setPrev('')
 		}
 
 		if (ext) dispatch(setVoicemailQueries(filterObj));
@@ -64,9 +72,9 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 							type="radio"
 							id="all"
 							name="filter"
-							value="all"
+							value=""
 							onChange={handleExtensionFilter}
-							checked={!ext && true}
+							checked={!ext}
 						/>
 						<label htmlFor="all">All</label>
 					</div>
@@ -78,7 +86,7 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 								name="filter"
 								value={extension.data.extension}
 								onChange={handleExtensionFilter}
-								checked={ext === String(extension.data.extension) && true}
+								checked={ext === String(extension.data.extension)}
 							/>
 							<label htmlFor={`${extension.data.extension}`}>{extension.data.extension}</label>
 						</div>
