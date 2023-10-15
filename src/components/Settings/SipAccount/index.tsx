@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./SipAccount.module.scss";
 import EditIcon from "components/UI/Icons/Edit";
 import DeleteIcon from "components/UI/Icons/Delete";
+import { getCookie } from "utils";
 
 const SipAccount = () => {
 	return (
@@ -11,10 +12,10 @@ const SipAccount = () => {
 				<p className={`caption_1 ${styles.addressHeading}`}>SIP Address:</p>
 				<p className={`body ${styles.address}`}>
 					<span>sip:</span>
-					{"valentynsebalo@192.168.0.1"}
+					{getCookie('ext_user_id')}@{getCookie('ext_domain')}
 				</p>
 			</div>
-			<h1 className={`body_bold ${styles.heading}`}>Proxy</h1>
+			{/* <h1 className={`body_bold ${styles.heading}`}>Proxy</h1>
 			<div className={`caption_2 ${styles.heading2}`}>
 				<span>SIP Account</span>
 				<span>Actions</span>
@@ -33,7 +34,7 @@ const SipAccount = () => {
 						<DeleteIcon />
 					</span>
 				</span>
-			</div>
+			</div> */}
 		</div>
 	);
 };

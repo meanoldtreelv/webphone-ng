@@ -4,6 +4,7 @@ interface inboundCallIn {
   LineNumber?: number,
   DisplayName?: string,
   DisplayNumber?: string,
+  ringtone?: boolean,
 }
 
 interface outboundCallIn {
@@ -196,6 +197,30 @@ const sipSlice = createSlice({
                 ...state.ringingInboundCalls.slice(index + 1)
                 ]
               break;
+            }
+          }
+          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
+          }
+          break
+        }
+        case "ringtoneOff": {
+          const lineNum = action.payload.data
+          for (let index = 0; index < state.ringingInboundCalls.length; index++) {
+            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
+                state.ringingInboundCalls[index].ringtone = true
+            }
+          }
+          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
+          }
+          break
+        }
+        case "ringtoneOn": {
+          const lineNum = action.payload.data
+          for (let index = 0; index < state.ringingInboundCalls.length; index++) {
+            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
+                state.ringingInboundCalls[index].ringtone = false
             }
           }
           if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){

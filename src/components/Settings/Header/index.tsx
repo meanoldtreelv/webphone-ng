@@ -26,13 +26,13 @@ const Header = () => {
 					}}>
 					Audio
 				</span>
-				<span
+				{/* <span
 					className={`${tabSelected === "video" ? styles.activeTab : ""}`}
 					onClick={() => {
 						dispatch(setSettingTab("video"));
 					}}>
 					Video
-				</span>
+				</span> */}
 				<span
 					className={`${tabSelected === "ui" ? styles.activeTab : ""}`}
 					onClick={() => {
