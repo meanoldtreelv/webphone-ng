@@ -7,6 +7,7 @@ import { notification } from "redux/common/commonSelectors";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { store } from "redux/store";
+import BottomNav from "components/shared/BottomNav";
 
 const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
@@ -28,6 +29,10 @@ const BaseLayout = ({ children }: any) => {
 			<div>
 				<div className={styles.sidebar}>
 					<Sidebar />
+				</div>
+
+				<div className={styles.bottomNav}>
+					<BottomNav />
 				</div>
 
 				<div className={styles.children}>{children}</div>

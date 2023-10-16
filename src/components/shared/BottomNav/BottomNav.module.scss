@@ -1,0 +1,19 @@
+.bottomNav {
+    display: flex;
+    padding: 10px 20px;
+    justify-content: space-between;
+
+    a {
+        display: flex;
+        flex-direction: column;
+        font-size: 0.7em;
+        align-items: center;
+    }
+
+
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 5px;
+    }
+}
