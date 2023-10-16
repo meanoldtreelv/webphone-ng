@@ -76,15 +76,15 @@
 .tabBox {
 	display: flex;
 	gap: 10px;
-	width: 100%;
-	padding: 2px;
+	width: 600px;
+	// padding: 2px;
 	align-items: flex-start;
 
-	border-radius: 8px;
-	border: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-tertiary, #f7f9fc);
+	// border-radius: 8px;
+	// border: 1px solid var(--border-tertiary, #e3eaf2);
+	// background: var(--background-tertiary, #f7f9fc);
 
-	span {
+	div {
 		width: 33%;
 
 		display: flex;
@@ -107,6 +107,9 @@
 		letter-spacing: -0.2px;
 
 		cursor: pointer;
+		background: var(--primary-default, #0c6dc7);
+
+		color: var(--text-on-color, #fff);
 	}
 
 	.activeTab {

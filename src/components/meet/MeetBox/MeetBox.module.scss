@@ -1,15 +1,21 @@
 .queues {
-	height: 100%;
+	height: calc(100% - 115px);
+	// background-color: red;
 }
 
 .lists {
 	overflow-y: auto;
 	height: calc(100% - 70px);
 }
+.headerBox {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
+	align-items: center;
+	padding-right: 20px;
+}
 
 .header {
-	border-bottom: 1px solid var(--border-secondary, #c8d3e0);
-
 	display: flex;
 	// justify-content: space-between;
 	gap: 15px;
@@ -44,4 +50,8 @@
 
 		border-bottom: 2px solid var(--text-link, #1480e1);
 	}
+}
+
+.meetBox {
+	padding: 20px;
 }

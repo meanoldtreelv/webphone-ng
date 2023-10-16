@@ -9,7 +9,7 @@ const Header = () => {
 			<h1>Meet</h1>
 
 			<div className={styles.searchComp}>
-				<div className={styles.tabBox}>
+				{/* <div className={styles.tabBox}>
 					<span
 						className={`${selectedTab === "schedule" ? styles.activeTab : ""}`}
 						onClick={() => {
@@ -31,7 +31,7 @@ const Header = () => {
 						}}>
 						Start Meeting
 					</span>
-				</div>
+				</div> */}
 			</div>
 
 			<div className={styles.profile}>

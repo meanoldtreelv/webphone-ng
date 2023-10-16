@@ -1,9 +1,12 @@
 import Select from "components/UI/Forms/Select";
 import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
-import ChevronRightIcon from "components/UI/Icons/Profile/ChevronRight";
+// import ChevronRightIcon from "components/UI/Icons/Profile/ChevronRight";
 import React, { useState } from "react";
 import styles from "./MeetHeader.module.scss";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
+import ConferenceIcon from "components/UI/Icons/Sidecar/Conference";
+import RecentsIcon from "components/UI/Icons/Sidebar/Recents";
+import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 
 const MeetHeader = () => {
 	const [selectedTab, setSelectedTab] = useState("");
@@ -35,31 +38,34 @@ const MeetHeader = () => {
 					<Select options={["Day", "Week", "Month", "Year"]} />
 				</div>
 			</div>
-			{/* <div className={styles.rightBox}>
+			<div className={styles.rightBox}>
 				<div className={styles.tabBox}>
-					<span
+					<div
 						className={`${selectedTab === "schedule" ? styles.activeTab : ""}`}
 						onClick={() => {
 							setSelectedTab("schedule");
 						}}>
-						General
-					</span>
-					<span
+						<RecentsIcon />
+						<span>Schedule</span>
+					</div>
+					<div
 						className={`${selectedTab === "join" && styles.activeTab}`}
 						onClick={() => {
 							setSelectedTab("join");
 						}}>
-						Extension
-					</span>
-					<span
+						<></>
+						<span>Join</span>
+					</div>
+					<div
 						className={`${selectedTab === "start_meeting" && styles.activeTab}`}
 						onClick={() => {
 							setSelectedTab("start_meeting");
 						}}>
-						Queues
-					</span>
+						<ConferenceIcon />
+						<span>Start Meeting</span>
+					</div>
 				</div>
-			</div> */}
+			</div>
 		</div>
 	);
 };

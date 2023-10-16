@@ -4,6 +4,8 @@ import styles from "./Meet.module.scss";
 import Header from "components/meet/Header";
 import MeetHeader from "components/meet/MeetHeader";
 import MeetBox from "components/meet/MeetBox";
+import JoinMeetingDialogue from "components/meet/JoinMeetingDialogue";
+import ScheduleMeetingDialogue from "components/meet/ScheduleMeetingDialogue";
 
 const Meet = () => {
 	return (
@@ -13,6 +15,8 @@ const Meet = () => {
 				<MeetHeader />
 				<MeetBox />
 			</BaseLayout>
+			{/* <JoinMeetingDialogue /> */}
+			<ScheduleMeetingDialogue />
 		</div>
 	);
 };
