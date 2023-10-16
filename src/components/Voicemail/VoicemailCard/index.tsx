@@ -68,6 +68,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				duration,
 				link,
 				idx,
+				transcript
 			}),
 		);
 		dispatch(togglePlayPause(true));

@@ -47,26 +47,25 @@ const AddContact = () => {
 	const parentOrganizationRef = useRef<any>(null);
 
 	const onSaveContact = async () => {
-		if (selectedContact) {
-			if (selectedContact != contactData) {
-				const { error } = await updateContact(contactData);
-			}
+		if (selectedContact && selectedContact != contactData) {
+			await updateContact(contactData);
+			console.log('why isnt this updating, that is jut weird...')
 		} else {
 			const { error } = await createContact(contactData);
-		}
 
-		if (error) {
-			// this should be used for local validation and be extracted to another function
-			// setContactError({
-			// 	...contactError,
-			// 	[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
-			// });
-
-			setContactSrvrError([convertErrorString(error.response.data.detail)]);
-		} else {
-			setContactSrvrError([]);
-			dispatch(closeAddEditContact());
-			dispatch(addContact(contactData));
+			if (error) {
+				// this should be used for local validation and be extracted to another function
+				// setContactError({
+				// 	...contactError,
+				// 	[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
+				// });
+	
+				setContactSrvrError([convertErrorString(error.response.data.detail)]);
+			} else {
+				setContactSrvrError([]);
+				dispatch(closeAddEditContact());
+				dispatch(addContact(contactData));
+			}
 		}
 	};
 
@@ -94,7 +93,7 @@ const AddContact = () => {
 						</button>
 					</div> */}
 					<div className={styles.box}>
-						<p className={`body_bold ${styles.box_heding}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+						<p className={`body_bold ${styles.box_header}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 							General
 						</p>
 						<div className={`${styles.inputBox}`} style={{ position: "relative", paddingBottom: "20px" }}>
@@ -148,7 +147,7 @@ const AddContact = () => {
 
 					<div className={styles.box}>
 						<p
-							className={`body_bold flex justify-between ${styles.box_heding}`}
+							className={`body_bold flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Numbers</span>{" "}
 							{/* <span
@@ -190,7 +189,7 @@ const AddContact = () => {
 
 					<div className={styles.box}>
 						<p
-							className={`body_bold  flex justify-between ${styles.box_heding}`}
+							className={`body_bold  flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Additional Fields</span>
 
@@ -274,7 +273,7 @@ const AddContact = () => {
 
 					<div className={styles.box}>
 						<p
-							className={`body_bold  flex justify-between ${styles.box_heding}`}
+							className={`body_bold  flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Company</span>
 							<span
@@ -308,7 +307,7 @@ const AddContact = () => {
 					</div>
 					<div className={styles.box}>
 						<p
-							className={`body_bold  flex justify-between ${styles.box_heding}`}
+							className={`body_bold  flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Manager</span>
 							<span
@@ -336,7 +335,7 @@ const AddContact = () => {
 					</div>
 					<div className={styles.box}>
 						<p
-							className={`body_bold  flex justify-between ${styles.box_heding}`}
+							className={`body_bold  flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
 							<span>Address Fields</span>
 							<span

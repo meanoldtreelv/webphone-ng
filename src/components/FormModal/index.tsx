@@ -1,4 +1,9 @@
-import { moreOptVoicemail, selectedVoicemails, voicemailQueries } from "redux/voicemail/voicemailSelectors";
+import {
+	moreOptVoicemail,
+	selectedVoicemails,
+	voicemailNewFilter,
+	voicemailQueries,
+} from "redux/voicemail/voicemailSelectors";
 import InfoIcon from "./../UI/Icons/Info";
 import styles from "./FormModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,26 +12,30 @@ import { ClipLoader } from "react-spinners";
 import { useState } from "react";
 import { setVoicemailQueries } from "redux/voicemail/voicemailSlice";
 import { convertInputDateFormat } from "helpers/formatDateTime";
+import { setNewFilter } from "redux/voicemail/voicemailSlice";
 
 interface IFormModal {
 	onClose: (save: boolean) => void;
+	loading: boolean;
 }
 
-const FormModal: React.FC<IFormModal> = ({ onClose }) => {
+const FormModal: React.FC<IFormModal> = ({ onClose, loading }) => {
 	const dispatch = useDispatch();
 	const queries = useSelector(voicemailQueries);
 	const [filterDate, setFilterDate] = useState({
 		from_date: "",
 		to_date: "",
 	});
+	const newFilter = useSelector(voicemailNewFilter);
 
 	const handleSaveForm = () => {
-		if (filterDate.from_date && filterDate.to_date) {
+		if (filterDate.from_date || filterDate.to_date) {
+			dispatch(setNewFilter(true));
 			dispatch(
 				setVoicemailQueries({
 					...queries,
-					from_date: convertInputDateFormat(filterDate.from_date),
-					to_date: convertInputDateFormat(filterDate.to_date),
+					from_date: filterDate.from_date,
+					to_date: filterDate.to_date,
 				}),
 			);
 		}
@@ -75,11 +84,17 @@ const FormModal: React.FC<IFormModal> = ({ onClose }) => {
 						<span>Cancel</span>
 					</button>
 					<button className={styles.form_formBtn} onClick={handleSaveForm}>
-						<span>Save</span>
+						{newFilter && loading ? (
+							<>
+								<div>
+									<ClipLoader color="white" size={16} />
+								</div>
+								<span>Filtering...</span>
+							</>
+						) : (
+							<span>Filter</span>
+						)}
 					</button>
-					{/* <button className={styles.form_formBtn} onClick={handleSaveForm}>
-						{voicemailLoading || voicemailsLoading ? <ClipLoader color="white" size={16} /> : <span>Save</span>}
-					</button> */}
 				</div>
 			</div>
 		</div>

@@ -60,3 +60,13 @@ export const convertInputDateFormat = (str: string) => {
 	const millisecondsRegex = /\.\d+$/;
 	return convertedDateStr.replace(millisecondsRegex, ".868000");
 };
+
+export const longDateTimeFormat = (str: string) => {
+	const date = new Date(str);
+	const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+	const month = date.toLocaleDateString("en-US", { month: "long" });
+	const day = date.getDate();
+	const year = date.getFullYear();
+	const formattedDateString = `${weekday}, ${month} ${day}, ${year}`;
+	return formattedDateString;
+};
