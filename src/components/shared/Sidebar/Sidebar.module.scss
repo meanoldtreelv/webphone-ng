@@ -101,3 +101,9 @@
 	background: map-get($color, background-active);
 	color: map-get($color, text-link) !important;
 }
+
+@media only screen and (max-width: 500px) {
+	.sidebar, .sidebarBox {
+		display: none;
+	}
+}
