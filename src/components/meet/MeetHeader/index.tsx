@@ -4,9 +4,12 @@ import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
 import React, { useState } from "react";
 import styles from "./MeetHeader.module.scss";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
-import ConferenceIcon from "components/UI/Icons/Sidecar/Conference";
-import RecentsIcon from "components/UI/Icons/Sidebar/Recents";
+// import ConferenceIcon from "components/UI/Icons/Sidecar/Conference";
+// import RecentsIcon from "components/UI/Icons/Sidebar/Recents";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
+import OutputIcon from "components/UI/Icons/meet/Output";
+import RecentsIcon from "components/UI/Icons/meet/Recents";
+import ConferenceIcon from "components/UI/Icons/meet/Conference";
 
 const MeetHeader = () => {
 	const [selectedTab, setSelectedTab] = useState("");
@@ -53,7 +56,7 @@ const MeetHeader = () => {
 						onClick={() => {
 							setSelectedTab("join");
 						}}>
-						<></>
+						<OutputIcon />
 						<span>Join</span>
 					</div>
 					<div
