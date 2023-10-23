@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getCookie } from 'utils'
 
 interface inboundCallIn {
   LineNumber?: number,
@@ -27,6 +28,8 @@ interface answeredCallIn {
   showAddCall?: Boolean,
   showTransferCall?: Boolean,
   showTransferCallAtt?: Boolean,
+  audioSettingOnCallModal?: Boolean,
+  callSpeakerDevice?:string,
 }
 interface callEndingIn{
   name?: string,
@@ -80,10 +83,26 @@ const sipSlice = createSlice({
     isExtensionOpen: false,
     isEditBoxOpen: false,
     editExtension: [] as extAuthIn,
+    showMultipleCallListModal: false,
+    audioAutoGainControl: getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true, 
+    audioNoiseSuppression: getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true, 
+    audioEchoCancellation: getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true,
   },
   reducers: {
+    audioAutoGainControl: (state, action) =>  {
+      state.audioAutoGainControl = action.payload
+    },
+    audioNoiseSuppression: (state, action) =>  {
+      state.audioNoiseSuppression = action.payload
+    },
+    audioEchoCancellation: (state, action) =>  {
+      state.audioEchoCancellation = action.payload
+    },
     authMessage: (state, action) =>  {
       state.authMessage = action.payload
+    },
+    showMultipleCallListModal: (state, action) =>  {
+      state.showMultipleCallListModal = action.payload
     },
     aboutRingplan: (state, action) =>  {
       state.aboutRingplan = action.payload
@@ -186,6 +205,8 @@ const sipSlice = createSlice({
         case "add": {
           const inboundCall = {...action.payload.data}
           state.ringingInboundCalls = [...state.ringingInboundCalls, inboundCall]
+          state.ringingInboundCallActive = inboundCall.LineNumber
+          state.activeCallLineNumber = inboundCall.LineNumber
           break
         }
         case "remove": {
@@ -200,7 +221,20 @@ const sipSlice = createSlice({
             }
           }
           if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+            //Inbound Call
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
+            state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
+          }else if(state.ringingInboundCalls.length > 0 ){
+            //Inbound Call
+            state.activeCallLineNumber = state.ringingInboundCallActive
+          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+            //Answered
+            state.activeCallLineNumber = state.answeredCalls[0].LineNumber
+            state.answeredCallActive = state.answeredCalls[0].LineNumber
+          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+            //Outbound Call
+            state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
+            state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
           }
           break
         }
@@ -211,9 +245,6 @@ const sipSlice = createSlice({
                 state.ringingInboundCalls[index].ringtone = true
             }
           }
-          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
-            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
-          }
           break
         }
         case "ringtoneOn": {
@@ -223,15 +254,13 @@ const sipSlice = createSlice({
                 state.ringingInboundCalls[index].ringtone = false
             }
           }
-          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
-            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
-          }
           break
         }
         case "answer": {
           const lineNum = action.payload.data
           console.log("ans:"+lineNum)
           state.answeredCallActive = lineNum
+          state.activeCallLineNumber = lineNum
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
             if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
                 const answered : answeredCallIn = state.ringingInboundCalls[index]
@@ -247,6 +276,7 @@ const sipSlice = createSlice({
           }
           if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
+            state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
           }
           console.log(state.answeredCalls)
           break
@@ -274,7 +304,20 @@ const sipSlice = createSlice({
             }
           }
           if(state.answeredCallActive === lineNum && state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+            //Answered
             state.answeredCallActive = state.answeredCalls[0].LineNumber
+            state.activeCallLineNumber = state.answeredCalls[0].LineNumber
+          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+            //Answered
+            state.activeCallLineNumber = state.answeredCallActive
+          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+            //Outbound Call
+            state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
+            state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
+          }else if(state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+            //Inbound Call
+            state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
+            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
           }
           break
         }
@@ -382,6 +425,32 @@ const sipSlice = createSlice({
           }
           break
         }
+        case "audioSettingOnCallModal": {
+          console.log("audioSettingOnCallModal:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const audioSettingOnCallModal = action.payload.data.audioSettingOnCallModal
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum ) {
+              state.answeredCalls[index].audioSettingOnCallModal = audioSettingOnCallModal
+              break;
+            }
+          }
+          break
+        }
+        case "callSpeakerDevice": {
+          console.log("callSpeakerDevice:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const callSpeakerDevice = action.payload.data.callSpeakerDevice
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum ) {
+              state.answeredCalls[index].callSpeakerDevice = callSpeakerDevice
+              break;
+            }
+          }
+          break
+        }
       }
     },
 
@@ -390,10 +459,8 @@ const sipSlice = createSlice({
         case "add": {
           const outboundCall = {...action.payload.data}
           state.ringingOutboundCalls = [...state.ringingOutboundCalls, outboundCall]
-
-          console.log(state.ringingOutboundCalls)
-          console.log(state.ringingOutboundCalls)
-          console.log(state.ringingOutboundCalls)
+          state.ringingOutboundCallActive = outboundCall.LineNumber
+          state.activeCallLineNumber = outboundCall.LineNumber
           break
         }
         case "remove": {
@@ -410,13 +477,27 @@ const sipSlice = createSlice({
           }
           console.log(state.ringingOutboundCalls)
           if(state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+            //Outbound Call
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
+            state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
+          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+            //Outbound Call
+            state.activeCallLineNumber = state.ringingOutboundCallActive
+          }else if(state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+            //Inbound Call
+            state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
+            state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
+          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+            //Answered
+            state.activeCallLineNumber = state.answeredCalls[0].LineNumber
+            state.answeredCallActive = state.answeredCalls[0].LineNumber
           }
           break
         }
         case "answer": {
           const lineNum = action.payload.data
           state.answeredCallActive = lineNum
+          state.activeCallLineNumber = lineNum
           for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
             if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
                 const answered:answeredCallIn =  state.ringingOutboundCalls[index]
@@ -432,6 +513,7 @@ const sipSlice = createSlice({
           }
           if(state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
+            state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
           }
           console.log(state.answeredCalls)
           break

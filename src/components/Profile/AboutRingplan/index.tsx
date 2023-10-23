@@ -10,7 +10,10 @@ const AboutRingplan = () => {
 
 	return (
 		<div className={styles.aboutRingplan}>
-			<div className={styles.aboutBox}>
+			<div style={{position: "fixed",bottom: "0px",left: "0px",height: "100vh",width: "100%"}}
+				onClick={()=>{store.dispatch({type:"sip/aboutRingplan", payload:false})}}>
+			</div>
+			<div className={styles.aboutBox} style={{zIndex:"1000"}}>
 				<div className={styles.headline}>
 					<h3>About RingPlan</h3>
 					<button className={styles.close} onClick={()=>{store.dispatch({type:"sip/aboutRingplan", payload:false})}}>

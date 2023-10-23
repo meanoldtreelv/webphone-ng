@@ -58,7 +58,7 @@ const Keypad = () => {
 				</div>
 				<div >
 					<button className={styles.dialpad_key2} onClick={modifyNumber}>
-						<BackspaceIcon />
+						<BackspaceIcon active={number.length>0}/>
 					</button>
 					{/* replace the above button with this, the above is only for testing */}
 					{/* <Button>
