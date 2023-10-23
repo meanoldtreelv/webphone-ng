@@ -8,13 +8,14 @@
 	z-index: 10;
 }
 .sidebar {
-	border-right: 1px solid map-get($color, border-tertiary);
-	background: map-get($color, background-primary);
+	border: 1px solid var(--border-tertiary);
+	background: var(--background-primary);
 	//   margin: 15px;
 	padding: 15px;
 	height: 100%;
 	max-width: 280px;
-	transition: all 0.3s;
+	// uncomment the line below to make the sidebar animation smoother
+	// transition: all 0.3s;
 	width: 64px;
 
 	&_logoIcon {
@@ -46,7 +47,7 @@
 		// justify-content: center;
 		align-items: center;
 		gap: 10px;
-		color: map-get($color, text-primary);
+		color: var(--text-primary);
 
 		&:hover {
 			background: map-get($color, opacity-neutral-10);
@@ -85,7 +86,7 @@
 	}
 
 	&_unreadMsg {
-		color: map-get($color, background-primary);
+		color: var(--background-primary);
 		text-align: center;
 		display: inline-flex;
 		padding: 1px 6px;
@@ -103,7 +104,8 @@
 }
 
 @media only screen and (max-width: 500px) {
-	.sidebar, .sidebarBox {
+	.sidebar,
+	.sidebarBox {
 		display: none;
 	}
 }

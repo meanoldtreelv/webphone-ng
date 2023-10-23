@@ -13,22 +13,22 @@ interface IRecentHistoryCard {
 	details: CallHistoryCDR;
 }
 
-const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({details}) => {
+const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({ details }) => {
 	const dispatch = useDispatch();
 	const [callType, setCallType] = useState("incoming");
 
 	const handleSelectCallHistoryDetails = () => {
-		dispatch(setSelectedCallHistory(details))
-	}
+		dispatch(setSelectedCallHistory(details));
+	};
 
 	return (
 		<button className={styles.historyCard} onClick={handleSelectCallHistoryDetails}>
 			<div className={styles.cardLeft}>
 				<div className={styles.cardLeft_circle}>
-					<ContactProfile abbreviation={details?.cdr?.dst.slice(0,2)} />
+					<ContactProfile abbreviation={details?.cdr?.dst.slice(0, 2)} />
 				</div>
 				<div className={styles.cardLeft_right}>
-					<p>Inbound Call</p>
+					<p>{details?.cdr?.dst}</p>
 					<p>
 						{/* <span>
 							{callType === "missed" ? (
@@ -46,7 +46,7 @@ const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({details}) => {
 									? { color: "var(--text-danger, #EE3939)" }
 									: { color: "var(--text-secondary, #5C6168)" }
 							}>
-							{details?.cdr?.dst}
+							Inbound Call
 						</span>
 					</p>
 				</div>

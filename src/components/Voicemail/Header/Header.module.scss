@@ -48,20 +48,10 @@
 		}
 	}
 
-	&_pageName{
+	&_pageName {
 		font-size: 16px;
 		font-weight: 600;
-		color: var(--text-primary, #1F2023);
-	}
-}
-
-@media screen and (max-width: 1200px) {
-	.header {
-		&_search {
-			& input {
-				width: 350px;
-			}
-		}
+		color: var(--text-primary, #1f2023);
 	}
 }
 
@@ -104,7 +94,8 @@
 	margin-right: 10px;
 }
 
-.actionsDelete, .actionsUpdate {
+.actionsDelete,
+.actionsUpdate {
 	border: 1px solid #ddd;
 	font-size: 13px;
 	display: flex;
@@ -115,7 +106,7 @@
 	&:hover {
 		background: #eee;
 	}
-	
+
 	> svg {
 		margin-right: 5px;
 	}
@@ -138,4 +129,15 @@
 	background: rgb(182, 195, 255);
 	padding: 5px;
 	border-radius: 30px;
+}
+
+@media only screen and (max-width: 1160px) {
+	.header_cont {
+		flex: 1;
+		width: unset;
+		position: static;
+		left: 0;
+		transform: unset;
+		padding: 0 20px;
+	}
 }

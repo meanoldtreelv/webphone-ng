@@ -26,13 +26,12 @@ import {
 	// instances_API,
 	// user_API,
 } from "./../../effects/apiEffect";
-
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
-import { useLazyGetContactsQuery } from "./../../services/contact";
 import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
-import { setContactList } from "./../../redux/contact/contactSlice";
-import { contactLists } from "./../../redux/contact/contactSelectors";
+import RecentsSidebar from "components/CallHistory/RecentsSidebar";
+// import { setContactList } from "./../../redux/contact/contactSlice";
+// import { contactLists } from "./../../redux/contact/contactSelectors";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -123,7 +122,7 @@ const Dashboard = () => {
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
-						<ContactList />
+						<RecentsSidebar loading={false} callLen={4} />
 					</div>
 
 					{/* This is a dial pad components for calling */}
@@ -142,7 +141,7 @@ const Dashboard = () => {
 					{/* {isCallAdded && <AddCall />} */}
 					{/* <DTMF /> */}
 					{/* to transfer the call to another number we call this component */}
-					{/* {isCallTransfer && <TransferCall />} */}
+					{isCallTransfer && <TransferCall />}
 
 					{/* after clicking on end button this screen will be shown  */}
 					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} />}
@@ -162,7 +161,6 @@ const Dashboard = () => {
 			{/* this is a status menu components to update the status like available, on lunch etc */}
 			{/* <StatusMenu /> */}
 
-			{/* this is a component to show about the ringplan  */}
 			{aboutRingplan && <AboutRingplan />}
 
 			{/* component for edit the extension  */}
@@ -173,7 +171,7 @@ const Dashboard = () => {
 
 			{/* incoming call components */}
 
-			{ringingInboundCalls.length > 0 ? <InboundCall /> : null}
+			{/* {ringingInboundCalls.length > 0 ? <InboundCall /> : null} */}
 		</div>
 	);
 };

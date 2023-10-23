@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ContactDetails.module.scss";
 import HistoryCard from "../HistoryCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import {
 	setEditContactNumber,
 	openDeleteContact,
 	setDeleteContactId,
+	setSelectedContact,
 } from "redux/contact/contactSlice";
 import { contactAbbreviation } from "../../../utils";
 import EditIcon from "components/UI/Icons/Edit";
@@ -14,17 +15,17 @@ import PhoneIcon from "components/UI/Icons/Phone";
 import ChatIcon from "components/UI/Icons/Chat";
 import FileIcon from "components/UI/Icons/File";
 import HistoryTimeIcon from "components/UI/Icons/Call/CallHistory";
-import { selectedContactData } from "redux/contact/contactSelectors";
+import { contactSelectd, selectedContactData } from "redux/contact/contactSelectors";
 import sip from "lib/sip";
 import { useNavigate } from "react-router";
+import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
 	const [isCallHistory, setIsCallHistory] = useState(false);
 	const navigate = useNavigate();
-
+	const isContactSelected = useSelector(contactSelectd);
 	const dispatch = useDispatch();
-
 	const selectedContact = useSelector(selectedContactData);
 
 	const editContactHandler = () => {
@@ -32,7 +33,7 @@ const ContactDetails = () => {
 		dispatch(openAddEditContact());
 	};
 
-	// styling
+	// needs to be removed
 	const contactActiveButton = {
 		background: "var(--primary-default, #0c6dc7)",
 		boxShadow: "0px 4px 4px 0px rgba(12, 109, 199, 0.15)",
@@ -46,32 +47,39 @@ const ContactDetails = () => {
 	};
 
 	return (
-		<section className={styles.contactDetails}>
+		<section className={`${styles.contactDetails} ${isContactSelected ? styles.contactDetailsSml : ""}`}>
 			<div className={styles.contactDetails_box}>
 				<div className={styles.contactDetails_header}>
-					<div className={styles.headerLeft}>
-						<div className={styles.profile}>
-							<span>
-								{contactAbbreviation(
-									selectedContact?.first_name,
-									selectedContact?.last_name,
-									selectedContact?.phone,
-									selectedContact?.email,
-								)}
-							</span>
-						</div>
-						<div className={styles.profileInfo}>
-							<p>
-								{selectedContact?.salutation} {selectedContact?.first_name} {selectedContact?.last_name}
-							</p>
-							<span>{selectedContact?.email}</span>
-						</div>
-					</div>
-
-					<button className={styles.edit} onClick={editContactHandler}>
-						<EditIcon />
-						<span>Edit</span>
+					<button
+						onClick={() => {
+							dispatch(setSelectedContact(null));
+						}}>
+						<ChevronLeftIcon />
 					</button>
+					<div className={styles.contactDetails_headerLeft}>
+						<div className={styles.headerLeft}>
+							<div className={styles.profile}>
+								<span>
+									{contactAbbreviation(
+										selectedContact?.first_name,
+										selectedContact?.last_name,
+										selectedContact?.phone,
+										selectedContact?.email,
+									)}
+								</span>
+							</div>
+							<div className={styles.profileInfo}>
+								<p>
+									{selectedContact?.salutation} {selectedContact?.first_name} {selectedContact?.last_name}
+								</p>
+								<span>{selectedContact?.email}</span>
+							</div>
+						</div>
+						<button className={styles.edit} onClick={editContactHandler}>
+							<EditIcon />
+							<span>Edit</span>
+						</button>
+					</div>
 				</div>
 				<div className={styles.contactButton}>
 					<span

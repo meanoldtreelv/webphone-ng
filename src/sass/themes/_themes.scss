@@ -1,8 +1,451 @@
+@import "./../abstracts/colors";
+
 $themes: (
-	light: (
-		test: pink,
+	default-primary: (
+		light: $primary-600,
+		dark: $primary-500,
 	),
-	dark: (
-		test: black,
+
+	primary-hover: (
+		light: $primary-700,
+		dark: $primary-600,
+	),
+
+	primary-active: (
+		light: $primary-800,
+		dark: $primary-700,
+	),
+
+	primary-disabled: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	primary-rpm-default: (
+		light: $accent-green-700,
+		dark: $accent-green-600,
+	),
+
+	primary-rpm-hover: (
+		light: $accent-green-800,
+		dark: $accent-green-700,
+	),
+
+	primary-rpm-active: (
+		light: $accent-green-900,
+		dark: $accent-green-800,
+	),
+
+	primary-rpm-disabled: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	background-primary: (
+		light: $neutral-0,
+		dark: $neutral-120,
+	),
+
+	background-secondary: (
+		light: $neutral-0,
+		dark: $neutral-110,
+	),
+
+	background-tertiary: (
+		light: $neutral-10,
+		dark: $neutral-110,
+	),
+
+	background-quaternary: (
+		light: $neutral-10,
+		dark: $neutral-100,
+	),
+
+	background-emphasis: (
+		light: $neutral-30,
+		dark: $neutral-80,
+	),
+
+	background-hover: (
+		light: $opacity-dark-10,
+		dark: $opacity-dark-10,
+	),
+
+	background-active: (
+		light: $opacity-blue-10,
+		dark: $opacity-blue-20,
+	),
+
+	background-rpm-active: (
+		light: $opacity-green-10,
+		dark: $opacity-green-20,
+	),
+
+	background-disabled: (
+		light: $neutral-10,
+		dark: $neutral-110,
+	),
+
+	background-tinted: (
+		light: $accent-blue-100,
+		dark: $accent-blue-1000,
+	),
+
+	background-danger: (
+		light: $accent-red-100,
+		dark: $accent-red-1000,
+	),
+
+	background-danger-active: (
+		light: $opacity-red-10,
+		dark: $opacity-red-20,
+	),
+
+	background-emphasis-strong: (
+		light: $neutral-120,
+		dark: $neutral-10,
+	),
+
+	border-primary: (
+		light: $neutral-50,
+		dark: $neutral-60,
+	),
+
+	border-secondary: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	border-tertiary: (
+		light: $neutral-30,
+		dark: $neutral-100,
+	),
+
+	border-quaternary: (
+		light: $neutral-20,
+		dark: $neutral-110,
+	),
+
+	border-hover: (
+		light: $primary-500,
+		dark: $primary-400,
+	),
+
+	border-active: (
+		light: $primary-500,
+		dark: $primary-400,
+	),
+
+	border-danger: (
+		light: $accent-red-600,
+		dark: $accent-red-500,
+	),
+
+	border-disabled: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	text-primary: (
+		light: $grey-100,
+		dark: $grey-20,
+	),
+
+	text-secondary: (
+		light: $grey-70,
+		dark: $grey-60,
+	),
+
+	text-tertiary: (
+		light: $grey-60,
+		dark: $grey-80,
+	),
+
+	text-disabled: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	text-danger: (
+		light: $accent-red-600,
+		dark: $accent-red-500,
+	),
+
+	text-on-color: (
+		light: $neutral-0,
+		dark: $neutral-0,
+	),
+
+	text-on-color-disabled: (
+		light: $neutral-0,
+		dark: $neutral-120,
+	),
+
+	text-link: (
+		light: $primary-500,
+		dark: $primary-400,
+	),
+
+	icon-primary: (
+		light: $neutral-60,
+		dark: $grey-50,
+	),
+
+	icon-emphasis: (
+		light: $neutral-110,
+		dark: $neutral-10,
+	),
+
+	icon-accent: (
+		light: $primary-500,
+		dark: $primary-400,
+	),
+
+	icon-disabled: (
+		light: $neutral-40,
+		dark: $neutral-80,
+	),
+
+	icon-on-color: (
+		light: $neutral-0,
+		dark: $neutral-0,
+	),
+
+	icon-color-disabled: (
+		light: $neutral-0,
+		dark: $neutral-80,
+	),
+
+	support-danger-default: (
+		light: $accent-red-600,
+		dark: $accent-red-500,
+	),
+
+	support-danger-hover: (
+		light: $accent-red-700,
+		dark: $accent-red-600,
+	),
+
+	support-danger-active: (
+		light: $accent-red-800,
+		dark: $accent-red-700,
+	),
+
+	support-approve-default: (
+		light: $accent-green-600,
+		dark: $accent-green-600,
+	),
+
+	support-approve-hover: (
+		light: $accent-green-700,
+		dark: $accent-green-700,
+	),
+
+	support-approve-active: (
+		light: $accent-green-800,
+		dark: $accent-green-800,
+	),
+
+	status-success: (
+		light: $accent-green-600,
+		dark: $accent-green-500,
+	),
+
+	status-warning: (
+		light: $accent-yellow-600,
+		dark: $accent-yellow-500,
+	),
+
+	status-information: (
+		light: $accent-blue-600,
+		dark: $accent-blue-500,
+	),
+
+	status-danger: (
+		light: $accent-red-600,
+		dark: $accent-red-500,
+	),
+
+	status-disabled: (
+		light: $neutral-50,
+		dark: $neutral-50,
+	),
+
+	accent-red-primary: (
+		light: $accent-red-600,
+		dark: $accent-red-500,
+	),
+
+	accent-red-secondary: (
+		light: $accent-red-300,
+		dark: $accent-red-900,
+	),
+
+	accent-red-tertiary: (
+		light: $accent-red-100,
+		dark: $accent-red-1000,
+	),
+
+	accent-red-label: (
+		light: $neutral-0,
+		dark: $accent-red-1000,
+	),
+
+	accent-orange-primary: (
+		light: $accent-orange-600,
+		dark: $accent-orange-500,
+	),
+
+	accent-orange-secondary: (
+		light: $accent-orange-300,
+		dark: $accent-orange-900,
+	),
+
+	accent-orange-tertiary: (
+		light: $accent-orange-100,
+		dark: $accent-orange-1000,
+	),
+
+	accent-orange-label: (
+		light: $neutral-0,
+		dark: $accent-orange-1000,
+	),
+
+	accent-yellow-primary: (
+		light: $accent-yellow-600,
+		dark: $accent-yellow-500,
+	),
+
+	accent-yellow-secondary: (
+		light: $accent-yellow-300,
+		dark: $accent-yellow-900,
+	),
+
+	accent-yellow-tertiary: (
+		light: $accent-yellow-100,
+		dark: $accent-yellow-1000,
+	),
+
+	accent-yellow-label: (
+		light: $neutral-0,
+		dark: $accent-yellow-1000,
+	),
+
+	accent-green-primary: (
+		light: $accent-green-600,
+		dark: $accent-green-500,
+	),
+
+	accent-green-secondary: (
+		light: $accent-green-300,
+		dark: $accent-green-900,
+	),
+
+	accent-green-tertiary: (
+		light: $accent-green-100,
+		dark: $accent-green-1000,
+	),
+
+	accent-green-label: (
+		light: $neutral-0,
+		dark: $accent-green-1000,
+	),
+
+	accent-blue-primary: (
+		light: $accent-blue-600,
+		dark: $accent-blue-500,
+	),
+
+	accent-blue-secondary: (
+		light: $accent-blue-300,
+		dark: $accent-blue-800,
+	),
+
+	accent-blue-tertiary: (
+		light: $accent-blue-100,
+		dark: $accent-blue-1000,
+	),
+
+	accent-blue-label: (
+		light: $neutral-0,
+		dark: $accent-blue-1000,
+	),
+
+	accent-purple-primary: (
+		light: $accent-purple-600,
+		dark: $accent-purple-500,
+	),
+
+	accent-purple-secondary: (
+		light: $accent-purple-300,
+		dark: $accent-purple-900,
+	),
+
+	accent-purple-tertiary: (
+		light: $accent-purple-100,
+		dark: $accent-purple-1000,
+	),
+
+	accent-purple-label: (
+		light: $neutral-0,
+		dark: $accent-purple-1000,
+	),
+
+	accent-grey-primary: (
+		light: $neutral-50,
+		dark: $neutral-60,
+	),
+
+	accent-grey-secondary: (
+		light: $neutral-30,
+		dark: $neutral-80,
+	),
+
+	accent-grey-tertiary: (
+		light: $neutral-10,
+		dark: $neutral-100,
+	),
+
+	accent-grey-label: (
+		light: $neutral-0,
+		dark: $neutral-100,
+	),
+
+	overlay-primary: (
+		light: $opacity-neutral-100-10,
+		dark: $opacity-neutral-120-70,
+	),
+
+	overlay-secondary: (
+		light: $opacity-neutral-100-30,
+		dark: $opacity-neutral-120-80,
+	),
+
+	hover-primary: (
+		light: $grey-hover-light1,
+		dark: $grey-hover-dark2,
+	),
+
+	scroll-primary: (
+		light: $grey-scroll-light,
+		dark: $grey-scroll-dark,
 	),
 );
+
+@mixin styles($mode) {
+	@each $key, $map in $themes {
+		@each $prop, $color in $map {
+			@if $prop == $mode {
+				--#{$key}: #{$color};
+			}
+		}
+	}
+}
+
+.dark-mode {
+	@include styles("dark");
+}
+
+.light-mode {
+	@include styles("light");
+}

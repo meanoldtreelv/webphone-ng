@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./UserInterface.module.scss";
 import FileIcon from "components/UI/Icons/File";
 import OnOffSwitch from "components/UI/OnOffSwitch";
 import FolderIcon from "components/UI/Icons/Folder";
 import Input from "components/UI/Forms/Input";
+import useDarkMode from "use-dark-mode";
 
 const UserInterface = () => {
+	const darkMode = useDarkMode(false);
+
 	return (
 		<section className={styles.ui}>
 			<h2 className={`body_bold ${styles.heading}`}>Paths</h2>
@@ -39,7 +42,7 @@ const UserInterface = () => {
 					<span>Sync with OS setting</span>
 				</p>
 				<p>
-					<OnOffSwitch />
+					<OnOffSwitch onChange={darkMode.toggle} checked={darkMode.value} />
 					<span>Use Dark Mode</span>
 				</p>
 				<p>

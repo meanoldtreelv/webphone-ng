@@ -46,6 +46,8 @@ const Sidebar = () => {
 	// 	setIsCollapsed(!isCollapsed);
 	// };
 
+	// const sidebarTopLinks: ISidebarLinks[] = extAuth
+
 	const sidebarTopLinks: ISidebarLinks[] = extAuth
 		? [
 				{

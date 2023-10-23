@@ -1,4 +1,4 @@
-@import "./../../../sass/abstracts/variables";
+@import "./../../../sass/abstracts/colors";
 
 .historyCard {
 	display: flex;
@@ -11,7 +11,7 @@
 	padding: 7px 16px 7px 7px;
 
 	&:hover {
-		background: map-get($color, background-active);
+		background: var(--background-active);
 	}
 }
 
@@ -26,12 +26,12 @@
 		align-items: center;
 		width: 38px;
 		height: 38px;
-		background: map-get($color, accent-blue-primary);
+		background: var(--accent-blue-primary);
 		border-radius: 32px;
-		// this needs fixing
 
 		& span {
-			color: map-get($color, accent-blue-label);
+			color: $neutral-0;
+			border-radius: 32px;
 		}
 	}
 
@@ -39,10 +39,11 @@
 		p {
 			display: flex;
 			align-items: center;
+			color: var(--text-primary);
 
 			span {
 				margin-right: 4px;
-				color: map-get($color, text-secondary);
+				color: var(--text-secondary);
 			}
 		}
 	}
@@ -51,7 +52,7 @@
 .cardRight {
 	p {
 		text-align: right;
-		color: map-get($color, text-tertiary);
+		color: var(--text-secondary);
 		font-size: 13px;
 	}
 }

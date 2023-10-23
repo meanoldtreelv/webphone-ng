@@ -1,5 +1,1 @@
 @import "./../themes/themes";
-
-@mixin theme($theme) {
-	$color: map-get($themes, $theme);
-}

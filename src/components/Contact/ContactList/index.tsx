@@ -8,7 +8,7 @@ import {
 	setContactList,
 	setSelectedContact,
 } from "../../../redux/contact/contactSlice";
-import { contactLists } from "redux/contact/contactSelectors";
+import { contactLists, contactSelectd } from "redux/contact/contactSelectors";
 import StarIcon from "components/UI/Icons/Star";
 import SortIcon from "components/UI/Icons/Sort";
 import UserAddIcon from "components/UI/Icons/User/UserAdd";
@@ -23,26 +23,56 @@ const ContactList = () => {
 	const [getContacts, { data: contactsData, isLoading: contactsLoading }] = useLazyGetContactsQuery();
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
+	const isContactSelected = useSelector(contactSelectd);
 
 	useEffect(() => {
+		const contactsJson = localStorage?.getItem("contacts");
+		let contactsParsed: [];
+
+		try {
+			contactsParsed = JSON.parse(contactsJson);
+		} catch (e) {
+			contactsParsed = [];
+		}
+
 		const fetchContacts = async () => {
 			await getContacts(null);
 		};
-		fetchContacts();
+
+		if (contactsParsed && contactsParsed.length) {
+			dispatch(setContactList(contactsParsed));
+		} else {
+			console.log("this is something else");
+			fetchContacts();
+		}
 	}, []);
 
 	useEffect(() => {
-		if (!contactsLoading) {
+		if (!contactsLoading && contactsData) {
+			localStorage.setItem("contacts", JSON.stringify(contactsData));
 			dispatch(setContactList(contactsData));
 		}
 	}, [contactsLoading]);
 
 	const contactDetails = (id: string) => {
-		const fetchContact = async () => {
-			await getContact(id);
-		};
+		try {
+			const contacts = JSON.parse(localStorage?.getItem("contacts"));
+			const contact = contacts.filter((contact) => contact.id == id);
 
-		fetchContact();
+			if (contact.length) {
+				dispatch(setSelectedContact(contact[0]));
+				dispatch(openSelectedContact());
+			} else {
+				throw new Error();
+			}
+			console.log("here is your contact :", contact);
+		} catch (e) {
+			const fetchContact = async () => {
+				await getContact(id);
+			};
+
+			fetchContact();
+		}
 	};
 
 	useEffect(() => {
@@ -86,21 +116,24 @@ const ContactList = () => {
 	// 	.sort((a, b) => a.first_name.localeCompare(b.first_name));
 
 	return (
-		<div className={styles.contact}>
-			<div className={styles.contact_search}>
-				<input type="text" placeholder="Search contact..." onChange={handleContactsSearch} />
+		<div className={`${styles.contact} ${isContactSelected ? styles.contactListSml : ""}`}>
+			<div className={styles.contact_header}>
+				<h1 className={styles.respContacts_header}>Contacts</h1>
+				<div className={styles.contact_search}>
+					<input type="text" placeholder="Search contact..." onChange={handleContactsSearch} />
 
-				<button
-					className={styles.add_contact}
-					onClick={() => {
-						dispatch(clearSelectedContact());
-						dispatch(openAddEditContact());
-					}}>
-					<UserAddIcon />
-				</button>
+					<button
+						className={styles.add_contact}
+						onClick={() => {
+							dispatch(clearSelectedContact());
+							dispatch(openAddEditContact());
+						}}>
+						<UserAddIcon />
+					</button>
 
-				<div className={styles.search_icon}>
-					<SearchIcon />
+					<div className={styles.search_icon}>
+						<SearchIcon />
+					</div>
 				</div>
 			</div>
 			<div className={styles.contact_lists} style={{ overflowY: contactsLoading ? "hidden" : undefined }}>

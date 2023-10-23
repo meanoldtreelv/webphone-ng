@@ -1,19 +1,124 @@
 .bottomNav {
-    display: flex;
-    padding: 10px 20px;
-    justify-content: space-between;
+	display: flex;
+	padding: 8px 0;
+	justify-content: space-between;
+	z-index: 2000;
+	background: var(--background-tertiary);
 
-    a {
-        display: flex;
-        flex-direction: column;
-        font-size: 0.7em;
-        align-items: center;
-    }
+	a {
+		display: flex;
+		flex-direction: column;
+		font-size: 0.63em;
+		align-items: center;
+		width: 20%;
+		justify-content: center;
+		color: var(--text-secondary);
+		font-weight: 500;
+	}
 
+	svg {
+		width: 20px;
+		height: 20px;
+		margin-bottom: 5px;
+		stroke: var(--icon-primary) !important;
 
-    svg {
-        width: 20px;
-        height: 20px;
-        margin-bottom: 5px;
-    }
+		path {
+			stroke: var(--icon-primary) !important;
+		}
+	}
+}
+
+.moreOpt {
+	width: 20%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	button {
+		display: flex;
+		flex-direction: column;
+		font-size: 0.63em;
+		align-items: center;
+		justify-content: center;
+		color: var(--text-secondary);
+	}
+}
+
+.moreOptIn {
+	position: fixed;
+	left: 0;
+	bottom: -300px;
+	width: 100%;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	background: var(--background-tertiary);
+	border-top: 1px solid var(--border-primary);
+	box-shadow: 0 0 8px 2px #ddd;
+
+	> div {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	button {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		padding: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+.more_wrapper {
+	display: flex;
+	padding: 60px 20px;
+	flex-wrap: wrap;
+	justify-content: center;
+
+	a {
+		width: 110px;
+		margin-bottom: 20px;
+		text-align: center;
+
+		svg,
+		img {
+			width: 25px;
+			height: 25px;
+		}
+	}
+
+	.sidebar_icon {
+		margin-bottom: 5px;
+	}
+}
+
+.moreOptIn_remove {
+	animation: slidedown 0.3s;
+}
+
+.moreOptIn_on {
+	animation: slideup 0.3s;
+}
+
+@keyframes slidedown {
+	from {
+		bottom: 0px;
+	}
+
+	to {
+		bottom: -300px;
+	}
+}
+
+@keyframes slideup {
+	from {
+		bottom: -300px;
+	}
+
+	to {
+		bottom: 0px;
+	}
 }

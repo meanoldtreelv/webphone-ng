@@ -8,20 +8,24 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { store } from "redux/store";
 import BottomNav from "components/shared/BottomNav";
+import { useTheme } from "hooks/useTheme";
 
 const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
-	const { navigatePush } = useSelector((state: any) => state.sip)
+	const { navigatePush } = useSelector((state: any) => state.sip);
+	const theme = useTheme();
 
-	useEffect(()=>{
-		if(navigatePush !== ""){
-			navigate(navigatePush)
-			store.dispatch({type:"sip/navigatePush", payload:""});
+	useEffect(() => {
+		if (navigatePush !== "") {
+			navigate(navigatePush);
+			store.dispatch({ type: "sip/navigatePush", payload: "" });
 		}
-	}, [navigatePush])
+	}, [navigatePush]);
+
 	const navigate = useNavigate();
+
 	return (
-		<div className={styles.wrapper}>
+		<div className={`${styles.wrapper} ${theme}`}>
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
 				{/* <ProgressCallPopUpBar /> */}

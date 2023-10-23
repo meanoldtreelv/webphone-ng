@@ -1,9 +1,11 @@
+@import "./../../../sass/abstracts/colors";
+
 .card {
 	width: 984px;
 	display: flex;
 	flex-direction: column;
 	row-gap: 7px;
-	border-bottom: 1px solid var(--border-tertiary, #e3eaf2);
+	border-bottom: 1px solid var(--border-tertiary);
 	padding: 8px 12px;
 	height: fit-content;
 	position: relative;
@@ -11,7 +13,7 @@
 	&_mainCont {
 		display: flex;
 		justify-content: space-between;
-
+		align-items: center;
 		margin-top: 4px;
 		padding: 8px 12px;
 	}
@@ -30,13 +32,13 @@
 	&_unread {
 		width: 8px;
 		height: 8px;
-		background-color: #3b9ef7;
+		background-color: $accent-blue-600;
 		border-radius: 50%;
 	}
 
 	&_name {
 		font-size: 13px;
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 	}
 
 	&_cont2 {
@@ -49,19 +51,19 @@
 	&_ext {
 		width: 127px;
 		font-size: 13px;
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 	}
 
 	&_duration {
 		width: 88px;
 		font-size: 13px;
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 	}
 
 	&_time {
 		width: 72px;
 		font-size: 13px;
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 	}
 
 	&_ext {
@@ -88,16 +90,16 @@
 		gap: 8px;
 
 		border-radius: 8px;
-		background: var(--background-tertiary, #f7f9fc);
+		background: var(--background-tertiary);
 	}
 
 	&_head {
-		color: var(--text-secondary, #5c6168);
+		color: var(--text-secondary);
 		font-size: 11px;
 	}
 
 	&_des {
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 		font-size: 13px;
 	}
 }
@@ -117,8 +119,76 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 
-	p{
+	p {
 		font-size: 0.8em;
 		color: #5c5e6e;
+	}
+}
+
+.voicemailActive {
+	background: var(--hover-primary);
+}
+
+@media only screen and (max-width: 1140px) {
+	.card {
+		width: 100%;
+		padding: 8px 12px;
+	}
+}
+
+.smlInf {
+	display: none;
+	align-items: center;
+
+	span {
+		font-size: 0.7em;
+	}
+
+	> div {
+		width: 3px !important;
+		height: 3px !important;
+		background: #777;
+		margin: 0 6px;
+		border-radius: 50%;
+	}
+}
+
+@media only screen and (max-width: 840px) {
+	.smlInf {
+		display: flex;
+	}
+
+	.card_cont1 {
+		button {
+			width: 55px;
+			height: 55px;
+
+			svg,
+			img {
+				width: 100% !important;
+				height: 100% !important;
+			}
+		}
+	}
+
+	.card_ext {
+		display: none;
+	}
+
+	.card_time {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 630px) {
+	.card_duration {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 530px) {
+	.card_phone,
+	.card_transcriptIcon {
+		display: none;
 	}
 }

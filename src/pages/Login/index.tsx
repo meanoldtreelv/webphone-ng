@@ -10,84 +10,132 @@ import Input from "./../../components/UI/Forms/Input";
 import Button from "./../../components/UI/Forms/Button";
 import Logo from "./../../components/UI/Logo";
 import ErrorMessage from "components/UI/ErrorMessage";
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
-import sip from "../../lib/sip"
-import {store} from '../../redux/store'
+import sip from "../../lib/sip";
+import { store } from "../../redux/store";
 import { setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
+import { useTheme } from "hooks/useTheme";
 
 const Login = () => {
 	setCookie("id_token", "");
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const onContinueWithRingplan = () => {
-		store.dispatch({type:"sip/authMessage", payload:""});
+		store.dispatch({ type: "sip/authMessage", payload: "" });
 		// navigate("/dashboard"); // Remove the extra parentheses
 		const loginUrl = getLoginUrl();
 		const backUrl = getGoBackUrl();
 		window.location.href = `${loginUrl}/login?back=${backUrl}`;
-	}
+	};
 
 	interface FormData {
-		extension?: string,
-		server?: string,
-		secret?: string,
-		extensionErrorMsg?: string,
-		serverErrorMsg?: string,
-		secretErrorMsg?: string,
+		extension?: string;
+		server?: string;
+		secret?: string;
+		extensionErrorMsg?: string;
+		serverErrorMsg?: string;
+		secretErrorMsg?: string;
 	}
-	const [form, setForm] = useState<FormData>({extension:"", secret:"", server:"zraytechnoloDoobh.ringplan.com"});
-	const loginWithExtension = ()=>{
-		store.dispatch({type:"sip/extAuth", payload:true});
+	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
+	const loginWithExtension = () => {
+		store.dispatch({ type: "sip/extAuth", payload: true });
 		setCookie("extAuth", "true");
-		(form?.extension === "") ? setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, extensionErrorMsg: ""}});
-		(form?.server === "") ? setForm((prevState)=>{return{ ...prevState, serverErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, serverErrorMsg: ""}});
-		(form?.secret === "") ? setForm((prevState)=>{return{ ...prevState, secretErrorMsg: "This field is required"}}) :  setForm((prevState)=>{return{ ...prevState, secretErrorMsg: ""}});
-		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server)
+		form?.extension === ""
+			? setForm((prevState) => {
+					return { ...prevState, extensionErrorMsg: "This field is required" };
+			  })
+			: setForm((prevState) => {
+					return { ...prevState, extensionErrorMsg: "" };
+			  });
+		form?.server === ""
+			? setForm((prevState) => {
+					return { ...prevState, serverErrorMsg: "This field is required" };
+			  })
+			: setForm((prevState) => {
+					return { ...prevState, serverErrorMsg: "" };
+			  });
+		form?.secret === ""
+			? setForm((prevState) => {
+					return { ...prevState, secretErrorMsg: "This field is required" };
+			  })
+			: setForm((prevState) => {
+					return { ...prevState, secretErrorMsg: "" };
+			  });
+		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server);
 		// sip.CreateUserAgent("", "", "")
-	}
-	const { authMessage, authLoading } = useSelector((state: any) => state.sip)
+	};
+	const { authMessage, authLoading } = useSelector((state: any) => state.sip);
 
-	useEffect(()=>{
-		if(authMessage === "continue"){
+	useEffect(() => {
+		if (authMessage === "continue") {
 			navigate("/dashboard");
 		}
-	}, [authMessage])
-	const login = ()=> {return (
-		<section className={styles.login}>
-			<div className={styles.login_image}>
-				<img src={loginSideImage} alt="" />
-			</div>
-			<div className={styles.login_textBox}>
-				<div className={styles.login_text}>
-					<h1 className={styles.login_join}>Join the RingPlan Team</h1>
-					<p className={styles.login_doMore}>Do more with Ringplan.</p>
+	}, [authMessage]);
+	const login = () => {
+		return (
+			<section className={`${styles.login} ${theme}`}>
+				<div className={styles.login_image}>
+					<img src={loginSideImage} alt="" />
+				</div>
+				<div className={styles.login_textBox}>
+					<div className={styles.login_text}>
+						<h1 className={styles.login_join}>Join the RingPlan Team</h1>
+						<p className={styles.login_doMore}>Do more with Ringplan.</p>
 
-					<div className={styles.continueRingplan}>
-						<Button onClick={onContinueWithRingplan} icon={<Logo type="ri" />} border>
-							<span>Continue with Ringplan</span>
+						<div className={styles.continueRingplan}>
+							<Button onClick={onContinueWithRingplan} icon={<Logo type="ri" />} border>
+								<span>Continue with Ringplan</span>
+							</Button>
+						</div>
+
+						<p className={styles.login_withExtension}>Or login with extension and secret</p>
+
+						<Input
+							type="text"
+							errorMsg={form?.extensionErrorMsg}
+							value={form?.extension}
+							onChange={(e) => setForm({ ...form, extension: e.target.value })}
+							placeholder="Enter extension here..."
+							required
+							icon={<ExtensionIcon />}
+						/>
+						<Input
+							type="text"
+							errorMsg={form?.serverErrorMsg}
+							value={form?.server}
+							onChange={(e) => setForm({ ...form, server: e.target.value })}
+							placeholder="Enter server address here..."
+							required
+							icon={<EnvelopeIcon />}
+						/>
+						<Input
+							type="password"
+							errorMsg={form?.secretErrorMsg}
+							value={form?.secret}
+							onChange={(e) => setForm({ ...form, secret: e.target.value })}
+							placeholder="Enter secret code here..."
+							required
+							icon={<LockIcon />}
+						/>
+						{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+						<Button fill onClick={loginWithExtension}>
+							Sign In
 						</Button>
-					</div>
-
-					<p className={styles.login_withExtension}>Or login with extension and secret</p>
-
-					<Input type="text" errorMsg={form?.extensionErrorMsg} value={form?.extension} onChange={(e) => setForm({...form, extension: e.target.value})} placeholder="Enter extension here..." required icon={<ExtensionIcon  />} />
-					<Input type="text" errorMsg={form?.serverErrorMsg} value={form?.server} onChange={(e) => setForm({...form, server: e.target.value})} placeholder="Enter server address here..." required icon={<EnvelopeIcon />} />
-					<Input type="password" errorMsg={form?.secretErrorMsg} value={form?.secret} onChange={(e) => setForm({...form, secret: e.target.value})} placeholder="Enter secret code here..." required icon={<LockIcon />} />
-					{ authMessage && authMessage !== "continue" ? <ErrorMessage msg={ authMessage } /> : ''}
-					<Button fill onClick={loginWithExtension}>Sign In</Button>
-					{/* 
+						{/* 
 						<p className={`caption_1 ${styles.login_forgotPassword}`}>
 							Forgot your password? <span>Click here</span>
 						</p> 
 					*/}
+					</div>
 				</div>
-			</div>
-		</section>
-	)}
-	return authLoading ? <Loader/> : login();
+			</section>
+		);
+	};
+	return authLoading ? <Loader /> : login();
 };
 
 export default Login;
