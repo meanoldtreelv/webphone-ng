@@ -22,6 +22,8 @@ import { useDispatch } from "react-redux";
 import { setCallNumber } from "redux/call/callSlice";
 import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
+import Setting from "components/UI/Icons/Call/Setting";
+import AudioSettingOnCallModal from "../AudioSettingOnCallModal ";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -34,13 +36,14 @@ const Dialer = () => {
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	}
-	const { answeredCalls, answeredCallActive , ringingOutboundCalls, ringingOutboundCallActive } = useSelector((state: any) => state.sip)
-	const [volume, setVolumeButtonClicked] = useState(false)
-	const volumeButtonHandler = ()=>{
-		setVolumeButtonClicked(!volume)
-	}
+	const { answeredCalls, answeredCallActive , ringingOutboundCalls, ringingOutboundCallActive, activeCallLineNumber } = useSelector((state: any) => state.sip)
+	// const [volume, setVolumeButtonClicked] = useState(false)
+	// const volumeButtonHandler = ()=>{
+	// 	setVolumeButtonClicked(!volume)
+	// }
 	for( const item of [...answeredCalls, ...ringingOutboundCalls] ){
-		if(answeredCallActive === item.LineNumber || ringingOutboundCallActive === item.LineNumber){
+		// if(answeredCallActive === item.LineNumber || ringingOutboundCallActive === item.LineNumber){
+		if(activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber){
 			return(
 				(
 					item.showDTMF && <DTMF LineNumber={item.LineNumber} /> 
@@ -52,6 +55,7 @@ const Dialer = () => {
 					item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />
 				)||(
 					<section className={styles.dialer}>
+						{item.audioSettingOnCallModal && <AudioSettingOnCallModal LineNumber={item.LineNumber} volumeLevel={item.volumeLevel} callSpeakerDevice={item.callSpeakerDevice}/>}
 						<div
 							className={styles.dialer_detailsBox}
 							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
@@ -157,12 +161,12 @@ const Dialer = () => {
 										{item.isHold ? "Resume" : "Hold"}
 									</p>
 								</div>
-								<div className={styles.dialer_action} onClick={() => {item.answered && volumeButtonHandler()}}>
-									<span className={styles.dialer_icon} style={volume ?  { background: "#f0f8ff" , border: "1px solid var(--border-disabled, #c8d3e0)"  } : IconDisableStyle}>
+								<div className={styles.dialer_action} onClick={() => {item.answered && store.dispatch({type:"sip/answeredCalls", payload:{action:"audioSettingOnCallModal",data:{lineNum:item.LineNumber, audioSettingOnCallModal:true}}})}}>
+									<span className={styles.dialer_icon} style={item.audioSettingOnCallModal ?  { background: "#f0f8ff" , border: "1px solid var(--border-disabled, #c8d3e0)"  } : IconDisableStyle}>
 										<CallVolume volumeLevel={item.volumeLevel}  answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{volume?(<input type="range" style={{width: "82px", height: "2px"}} min="0" max="100" step="1" value={item.volumeLevel === undefined? "100": item.volumeLevel} onChange={(e)=>{sip.volumeLevel(item.LineNumber, e.target.value )}}/>):("Volume ")}
+										{"Volume"}
 									</p> 
 								</div>
 							</div>
@@ -184,7 +188,7 @@ const Dialer = () => {
 								<div className={`${styles.dialer_control} ${styles.dialer_endButton}`} onClick={()=>{sip.hungup(item.LineNumber)}}>
 									<CallEndIcon />
 								</div>
-								<div className={styles.dialer_control} onClick={()=>{store.dispatch({type:"sip/answeredCalls", payload:{action:"showDTMF",data:{lineNum:item.LineNumber, showDTMF:true}}}); dispatch(setCallNumber(""))}}>
+								<div className={styles.dialer_control} onClick={()=>{item.answered && store.dispatch({type:"sip/answeredCalls", payload:{action:"showDTMF",data:{lineNum:item.LineNumber, showDTMF:true}}}); dispatch(setCallNumber(""))}}>
 									<CallDialpad />
 								</div>
 							</div>

@@ -6,7 +6,7 @@ interface item{
 	selected?: boolean,
 }
 const Select = ({ icon, options, onChange=undefined, defaultValue}:{icon:any, options:item[], onChange:React.ChangeEventHandler<HTMLSelectElement>|undefined, defaultValue: string}) => {
-	console.log(options) 
+	// console.log(options) 
 	return (
 		<div className={`${styles.optionBox}`}>
 			<select className={`caption_1`} onChange={(e)=>{ onChange && onChange(e)} } defaultValue={defaultValue}>

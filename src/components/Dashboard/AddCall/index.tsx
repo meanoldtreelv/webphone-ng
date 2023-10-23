@@ -40,7 +40,7 @@ const AddCall = ({LineNumber}:{LineNumber:number}) => {
 						<PhoneAddIcon answered={true} fill={"#fff"} />
 					</div>
 					<div className={styles.dialpad_key2} onClick={modifyNumber}>
-						<BackspaceIcon />
+						<BackspaceIcon active={number.length>0}/>
 					</div>
 				</div>
 			</div>

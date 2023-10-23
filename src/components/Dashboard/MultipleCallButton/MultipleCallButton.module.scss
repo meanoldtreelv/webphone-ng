@@ -1,0 +1,42 @@
+.backgroundCallButton {
+	position:fixed; 
+	right: 40px; 
+	bottom: 40px;
+	padding:3px;
+	cursor:pointer;
+	display: flex;
+	background-color: #72C515;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	z-index: 1000;
+  }
+  .blink {
+	animation-duration: 1500ms;
+	animation-name: blink;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	-webkit-animation:blink 1500ms infinite; /* Safari and Chrome */
+  }
+  @keyframes blink {
+	from {
+	  background-color:#72c515;
+	}
+	to {
+	  background-color:#4ade80;
+	}
+  }
+  @-webkit-keyframes blink {
+	from {
+	  background-color:#72c515;
+	}
+	to {
+	  background-color:#4ade80;
+	}
+  }
