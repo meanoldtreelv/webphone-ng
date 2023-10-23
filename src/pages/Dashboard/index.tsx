@@ -32,6 +32,8 @@ import { addCall, callDailer, callInProgress, transferCall } from "./../../redux
 import RecentsSidebar from "components/CallHistory/RecentsSidebar";
 // import { setContactList } from "./../../redux/contact/contactSlice";
 // import { contactLists } from "./../../redux/contact/contactSelectors";
+import MultipleCallButton from "components/Dashboard/MultipleCallButton";
+import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan } =
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan, showMultipleCallListModal } =
 		useSelector((state: any) => state.sip);
 
 	// useEffect(() => {
@@ -49,11 +51,11 @@ const Dashboard = () => {
 
 	// }, [data]);
 
-	useEffect(() => {
-		const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
-		const userID = "5ed668cd38d0350104cb8789";
+	// useEffect(() => {
+	// 	const user_id = "bfea21d6-21bd-55c9-bda6-85529ce9d06f";
+	// 	const userID = "5ed668cd38d0350104cb8789";
 
-		const cnt_id = "5ed668cd38d0350104cb8789";
+	// 	const cnt_id = "5ed668cd38d0350104cb8789";
 		// instances_API(
 		// 	(res: any) => {
 		// 		console.log(res, "instances API retrieve");
@@ -115,7 +117,7 @@ const Dashboard = () => {
 		// 		console.error(err, "err in user retrieve");
 		// 	},
 		// );
-	}, []);
+	// }, []);
 	return (
 		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
@@ -171,7 +173,9 @@ const Dashboard = () => {
 
 			{/* incoming call components */}
 
-			{/* {ringingInboundCalls.length > 0 ? <InboundCall /> : null} */}
+			{ringingInboundCalls.length > 0 ? <InboundCall /> : null}
+			{ ( answeredCalls.length + ringingOutboundCalls.length + ringingInboundCalls.length > 1 ) && <MultipleCallButton/> }
+			{ showMultipleCallListModal && <MultipleCallListModal/> }
 		</div>
 	);
 };

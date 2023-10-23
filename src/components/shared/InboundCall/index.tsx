@@ -5,10 +5,11 @@ import sip from "../../../lib/sip"
 import { nameIcon } from "utils";
 
 const InboundCall = () => {
-	const { ringingInboundCalls, ringingInboundCallActive } = useSelector((state: any) => state.sip)
+	const { ringingInboundCalls, ringingInboundCallActive, activeCallLineNumber} = useSelector((state: any) => state.sip)
 	return (
 		ringingInboundCalls.map((item:any, i:number) => (
-			ringingInboundCallActive === item.LineNumber? (
+			activeCallLineNumber === item.LineNumber? (
+			// ringingInboundCallActive === item.LineNumber? (
 			<section className={styles.popUp}>
 				<div className={styles.inboundCall}>
 					<div className={`flex justify-center ${styles.signal_box}`}>

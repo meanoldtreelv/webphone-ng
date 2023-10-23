@@ -55,9 +55,9 @@ let AutoAnswerEnabled = false; // Automatically answers the phone when the call 
 let IntercomPolicy = "enabled"; // disabled = feature is disabled | enabled = feature is always on
 let EnableRingtone = true; // Enables a ring tone when an inbound call comes in.  (media/Ringtone_1.mp3)
 let hostingPrefix = ""; // Use if hosting off root directory. eg: "/phone/" or "/static/"
-let AutoGainControl = true; // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
-let EchoCancellation = true; // Attempts to remove echo over the line.
-let NoiseSuppression = true; // Attempts to clear the call quality of noise.
+let AutoGainControl = ()=>{return getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true;} // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
+let EchoCancellation = ()=>{return getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true;} // Attempts to remove echo over the line.
+let NoiseSuppression = ()=>{return getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true;} // Attempts to clear the call quality of noise.
 let EnableAlphanumericDial = false; // Allows calling /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g default is /[^\d\*\#\+]/g
 let telNumericRegEx = /[^\d\*\#\+]/g;
 let telAlphanumericRegEx = /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g;
@@ -161,6 +161,9 @@ function PreloadAudioFiles() {
 }
 PreloadAudioFiles();
 function getRingerOutputID() {
+  if(getCookie("ringerDevice") && getCookie("ringerDevice")!=''){
+    return getCookie("ringerDevice")
+  }
   return "default";
 }
 function getAudioSrcID() {
@@ -1057,6 +1060,7 @@ function onSessionReceivedBye(lineObj, response) {
 
   response.accept(); // Send OK
   store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+  SelectLine(store.getState().sip.activeCallLineNumber)
   teardownSession(lineObj);
   onCallEndByOtherSide(lineObj.LineNumber);
 }
@@ -1194,7 +1198,8 @@ function onSessionReceivedMessage(lineObj, response) {
 // Device Detection
 // ================
 function DetectDevices() {
-  navigator.mediaDevices
+  try {
+    navigator.mediaDevices
     .enumerateDevices()
     .then(function (deviceInfos) {
       // deviceInfos will not have a populated lable unless to accept the permission
@@ -1230,6 +1235,8 @@ function DetectDevices() {
     .catch(function (e) {
       console.error("Error enumerating devices", e);
     });
+  } catch (error) { 
+  }
 }
 DetectDevices();
 window.setInterval(function () {
@@ -1280,6 +1287,7 @@ function SelectLine(lineNum) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null) return;
 
+  store.dispatch({type:"sip/activeCallLineNumber", payload:lineNum})
   var displayLineNumber = 0;
   for (var l = 0; l < Lines.length; l++) {
     if (Lines[l].LineNumber === lineObj.LineNumber) displayLineNumber = l + 1;
@@ -1293,18 +1301,17 @@ function SelectLine(lineNum) {
   }
 
   console.log("Selecting Line : " + lineObj.LineNumber);
-
   // Switch the SIP Sessions
   SwitchLines(lineObj.LineNumber);
 
   // Update Lines List
   for (var l = 0; l < Lines.length; l++) {
-    var classStr =
-      Lines[l].LineNumber === lineObj.LineNumber ? "buddySelected" : "buddy";
-    if (Lines[l].SipSession !== null)
-      classStr = Lines[l].SipSession.isOnHold
-        ? "buddyActiveCallHollding"
-        : "buddyActiveCall";
+    // var classStr =
+    //   Lines[l].LineNumber === lineObj.LineNumber ? "buddySelected" : "buddy";
+    // if (Lines[l].SipSession !== null)
+    //   classStr = Lines[l].SipSession.isOnHold
+    //     ? "buddyActiveCallHollding"
+    //     : "buddyActiveCall";
 
     Lines[l].IsSelected = Lines[l].LineNumber === lineObj.LineNumber;
   }
@@ -1409,6 +1416,7 @@ function onTrackAddedEvent(lineObj, includeVideo) {
           .setSinkId(getAudioOutputID())
           .then(function () {
             console.log("sinkId applied: " + getAudioOutputID());
+            store.dispatch({type:"sip/answeredCalls", payload:{action:"callSpeakerDevice",data:{lineNum:lineObj.LineNumber, callSpeakerDevice:getAudioOutputID()}}});
           })
           .catch(function (e) {
             console.warn("Error using setSinkId: ", e);
@@ -2134,7 +2142,7 @@ function ReceiveCall(session) {
     ringtone: false ,
   }
   store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"add",data:inboundCall}})
-  store.dispatch({type:"sip/ringingInboundCallActive", payload:newLineNumber})
+  // store.dispatch({type:"sip/ringingInboundCallActive", payload:newLineNumber})
   // BackgroundAvailable(0, true);
   // addCallToCallSelectModal(newLineNumber, callerID);
   lineObj.status = "ReceiveCall";
@@ -2223,6 +2231,7 @@ function onInviteAccepted(lineObj, includeVideo, response) {
   if(lineObj.muteAfterAnswer && !lineObj.ismute){
       mute(lineObj.LineNumber) 
   }
+  SelectLine(lineObj.LineNumber)
 }
 function AnswerAudioCall(lineNumber) {
   // CloseWindow();
@@ -2280,15 +2289,15 @@ function AnswerAudioCall(lineNumber) {
   // Add additional Constraints
   if (supportedConstraints.autoGainControl) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.autoGainControl =
-      AutoGainControl;
+      AutoGainControl();
   }
   if (supportedConstraints.echoCancellation) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.echoCancellation =
-      EchoCancellation;
+      EchoCancellation();
   }
   if (supportedConstraints.noiseSuppression) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.noiseSuppression =
-      NoiseSuppression;
+      NoiseSuppression();
   }
 
   // Save Devices
@@ -2370,15 +2379,15 @@ function AnswerVideoCall(lineNumber) {
   // Add additional Constraints
   if (supportedConstraints.autoGainControl) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.autoGainControl =
-      AutoGainControl;
+      AutoGainControl();
   }
   if (supportedConstraints.echoCancellation) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.echoCancellation =
-      EchoCancellation;
+      EchoCancellation();
   }
   if (supportedConstraints.noiseSuppression) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.noiseSuppression =
-      NoiseSuppression;
+      NoiseSuppression();
   }
 
   // Configure Video
@@ -2553,6 +2562,7 @@ function onInviteRejected(lineObj, response) {
   lineObj.SipSession.data.reasonText = response.message.reasonPhrase;
   store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   teardownSession(lineObj);
+  SelectLine(store.getState().sip.activeCallLineNumber)
   onCallEndByOtherSide();
 }
 function CancelTransferSession(lineNum) {
@@ -2628,15 +2638,15 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
   // Add additional Constraints
   if (supportedConstraints.autoGainControl) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.autoGainControl =
-      AutoGainControl;
+      AutoGainControl();
   }
   if (supportedConstraints.echoCancellation) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.echoCancellation =
-      EchoCancellation;
+      EchoCancellation();
   }
   if (supportedConstraints.noiseSuppression) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.noiseSuppression =
-      NoiseSuppression;
+      NoiseSuppression();
   }
   // Extra Headers
   if (extraHeaders) {
@@ -2665,7 +2675,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
     DisplayNumber: dialledNumber,
   }
   store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"add",data:outboundCall}})
-  store.dispatch({type:"sip/ringingOutboundCallActive", payload:newLineNumber})
+  // store.dispatch({type:"sip/ringingOutboundCallActive", payload:newLineNumber})
   lineObj.SipSession.data.callTimer = window.setInterval(function () {
     var now = moment.utc();
     var duration = moment.duration(now.diff(startTime));
@@ -2780,6 +2790,7 @@ function BlindTransfer(lineNum:number, dstNo:string) {
         store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
         teardownSession(lineObj);
         onCallEndByOtherSide();
+        SelectLine(store.getState().sip.activeCallLineNumber)
       },
       onReject: function (sip) {
         console.warn("REFER rejected:", sip);
@@ -2857,15 +2868,15 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
   // Add additional Constraints
   if (supportedConstraints.autoGainControl) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.autoGainControl =
-      AutoGainControl;
+      AutoGainControl();
   }
   if (supportedConstraints.echoCancellation) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.echoCancellation =
-      EchoCancellation;
+      EchoCancellation();
   }
   if (supportedConstraints.noiseSuppression) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.noiseSuppression =
-      NoiseSuppression;
+      NoiseSuppression();
   }
 
   // Not sure if its possible to transfer a Video call???
@@ -3008,6 +3019,7 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
                 });
                 store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
                 teardownSession(lineObj);
+                SelectLine(store.getState().sip.activeCallLineNumber)
                 onCallEndByOtherSide();
               },
               onReject: function (sip) {
@@ -3216,15 +3228,15 @@ function ConferenceDial(lineNum, phoneNo) {
   // Add additional Constraints
   if (supportedConstraints.autoGainControl) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.autoGainControl =
-      AutoGainControl;
+      AutoGainControl();
   }
   if (supportedConstraints.echoCancellation) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.echoCancellation =
-      EchoCancellation;
+      EchoCancellation();
   }
   if (supportedConstraints.noiseSuppression) {
     spdOptions.sessionDescriptionHandlerOptions.constraints.audio.noiseSuppression =
-      NoiseSuppression;
+      NoiseSuppression();
   }
 
   // Unlikely this will work
@@ -4150,6 +4162,7 @@ const sip = {
   hungup: (LineNumber: number) =>  {
     store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}})
     hangup(LineNumber)
+    SelectLine(store.getState().sip.activeCallLineNumber)
   },
   rejectCall: (LineNumber: number ) =>  {
     store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"remove",data:LineNumber}})
@@ -4169,6 +4182,9 @@ const sip = {
       isHold ? unholdSession(LineNumber) : holdSession(LineNumber) 
     } catch (error) {console.log(error)}
   },
+  selectLine: (LineNumber: number ) =>  {
+    SelectLine(newLineNumber)
+  },
   volumeLevel: (LineNumber: number, volumeLevel: string ) =>  {
     const amount:number = volumeLevel / 100
     console.log("Volume level", amount)
@@ -4187,6 +4203,20 @@ const sip = {
   },
   transferCallAtt: (LineNumber: number, number: string ) =>  {
     AttendedTransfer(LineNumber, number)
+  },
+  selectLine: (LineNumber: number) =>{
+    SelectLine(LineNumber)
+  },
+  callSpeakerDevice: (LineNumber: number, value: string) => {
+    var remoteAudio = $("#line-" + LineNumber + "-remoteAudio").get(0);
+    remoteAudio.setSinkId(value)
+    .then(function () {
+      console.log("sinkId applied: " + value);
+      store.dispatch({type:"sip/answeredCalls", payload:{action:"callSpeakerDevice",data:{lineNum:LineNumber, callSpeakerDevice:value}}});
+    })
+    .catch(function (e) {
+      console.warn("Error using setSinkId: ", e);
+    });
   },
   ringtone: (LineNumber: number, status: boolean ) =>  {
     const lineObj = FindLineByNumber(LineNumber)
