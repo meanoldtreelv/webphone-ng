@@ -1,6 +1,7 @@
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
 import React, { useState } from "react";
 import styles from "./MeetingCard.module.scss";
+import LinkIcon from "components/UI/Icons/Voicemail/Link";
 
 const MeetingCard = () => {
 	const [iconVisible, setIconVisible] = useState(false);
@@ -25,10 +26,10 @@ const MeetingCard = () => {
 			</div>
 			<div className={styles.iconBox}>
 				{iconVisible && (
-					<div>
+					<>
 						<CopyIcon />
-						<></>
-					</div>
+						<LinkIcon />
+					</>
 				)}
 			</div>
 		</div>

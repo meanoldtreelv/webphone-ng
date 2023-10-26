@@ -13,7 +13,7 @@ const AFK = () => {
 						<path
 							d="M1.125 1.125L4.875 4.875M4.875 1.125L1.125 4.875"
 							stroke="white"
-							stroke-width="1.5"
+							strokeWidth="1.5"
 							stroke-linecap="round"
 						/>
 					</g>

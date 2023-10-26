@@ -55,3 +55,9 @@
 .meetBox {
 	padding: 20px;
 }
+.calendar {
+	// background-color: red;
+	height: calc(100% - 40px);
+	overflow: auto;
+	padding: 20px;
+}

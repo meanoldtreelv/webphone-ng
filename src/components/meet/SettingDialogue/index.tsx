@@ -5,8 +5,11 @@ import CloseIcon from "components/UI/Icons/Close";
 import OnOffSwitch from "components/UI/OnOffSwitch";
 import gsuite from "assets/images/img/calender.png";
 import outlook from "assets/images/img/outlook.png";
+import { useDispatch } from "react-redux";
+import { setSettingsDialogue } from "redux/meet/meetSlice";
 
 const SettingDialogue = () => {
+	const dispatch = useDispatch();
 	return (
 		<>
 			<Backdrop />
@@ -16,7 +19,10 @@ const SettingDialogue = () => {
 						<span>Manage Calendar</span>
 					</span>
 
-					<span>
+					<span
+						onClick={() => {
+							dispatch(setSettingsDialogue(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -50,7 +56,12 @@ const SettingDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button>Close</button>
+					<button
+						onClick={() => {
+							dispatch(setSettingsDialogue(false));
+						}}>
+						Close
+					</button>
 				</div>
 			</div>
 		</>

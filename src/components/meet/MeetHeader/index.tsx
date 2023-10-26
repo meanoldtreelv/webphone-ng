@@ -10,9 +10,32 @@ import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import OutputIcon from "components/UI/Icons/meet/Output";
 import RecentsIcon from "components/UI/Icons/meet/Recents";
 import ConferenceIcon from "components/UI/Icons/meet/Conference";
+import { useDispatch } from "react-redux";
+import { setJoinDialogue, setScheduleDialogue } from "redux/meet/meetSlice";
+import { createMeet } from "effects/apiEffect";
 
 const MeetHeader = () => {
 	const [selectedTab, setSelectedTab] = useState("");
+	const dispatch = useDispatch();
+	const [meetingCode, setMeetingCode] = useState("");
+
+	const startMeetingHandler = () => {
+		createMeet(
+			{},
+			(res: any) => {
+				console.log(res, "meet created ");
+
+				if (res?.status === 201) {
+					console.log("success in account retrieve");
+					setMeetingCode(res?.data?.[0]?.jitsi_meeting_room_id);
+					window.open(`https://meet.ringplan.com/auth/?id=${res?.data?.[0]?.jitsi_meeting_room_id}`, "_blank");
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in meet creation");
+			},
+		);
+	};
 	return (
 		<div className={styles.meet}>
 			<div className={styles.dateBox}>
@@ -46,7 +69,8 @@ const MeetHeader = () => {
 					<div
 						className={`${selectedTab === "schedule" ? styles.activeTab : ""}`}
 						onClick={() => {
-							setSelectedTab("schedule");
+							// setSelectedTab("schedule");
+							dispatch(setScheduleDialogue(true));
 						}}>
 						<RecentsIcon />
 						<span>Schedule</span>
@@ -55,15 +79,12 @@ const MeetHeader = () => {
 						className={`${selectedTab === "join" && styles.activeTab}`}
 						onClick={() => {
 							setSelectedTab("join");
+							dispatch(setJoinDialogue(true));
 						}}>
 						<OutputIcon />
 						<span>Join</span>
 					</div>
-					<div
-						className={`${selectedTab === "start_meeting" && styles.activeTab}`}
-						onClick={() => {
-							setSelectedTab("start_meeting");
-						}}>
+					<div className={`${selectedTab === "start_meeting" && styles.activeTab}`} onClick={startMeetingHandler}>
 						<ConferenceIcon />
 						<span>Start Meeting</span>
 					</div>

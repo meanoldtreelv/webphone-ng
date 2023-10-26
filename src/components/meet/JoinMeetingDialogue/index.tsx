@@ -1,10 +1,25 @@
 import Backdrop from "components/UI/Backdrop";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./JoinMeetingDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import ContactBookIcon from "components/UI/Icons/ContactBook";
+import { useDispatch } from "react-redux";
+import { setJoinDialogue } from "redux/meet/meetSlice";
+import { joinDialogue } from "redux/meet/meetSelectors";
 
 const JoinMeetingDialogue = () => {
+	const dispatch = useDispatch();
+	const [meetingCode, setMeetingCode] = useState("");
+
+	const joinHandler = () => {
+		if (+meetingCode <= 99999999) {
+			return;
+		} else {
+			window.open(`https://meet.ringplan.com/auth/?id=${meetingCode}`, "_blank");
+			setMeetingCode("");
+			dispatch(setJoinDialogue(false));
+		}
+	};
 	return (
 		<>
 			<Backdrop />
@@ -14,7 +29,10 @@ const JoinMeetingDialogue = () => {
 						<span>Join Meeting</span>
 					</span>
 
-					<span>
+					<span
+						onClick={() => {
+							dispatch(setJoinDialogue(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -22,14 +40,20 @@ const JoinMeetingDialogue = () => {
 
 				<div className={styles.row}>
 					<label htmlFor="">Code</label>
-					<input type="text" />
+					<input
+						type="text"
+						value={meetingCode}
+						onChange={(e) => {
+							setMeetingCode(e.target.value);
+						}}
+					/>
 					{/* <span>
 						<ContactBookIcon />
 					</span> */}
 				</div>
 
 				<div className={styles.btnBox}>
-					<button>Join</button>
+					<button onClick={joinHandler}>Join</button>
 				</div>
 			</div>
 		</>

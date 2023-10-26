@@ -8,8 +8,25 @@ import JoinMeetingDialogue from "components/meet/JoinMeetingDialogue";
 import ScheduleMeetingDialogue from "components/meet/ScheduleMeetingDialogue";
 import SettingDialogue from "components/meet/SettingDialogue";
 import PromptDialog from "components/Modal/PromptDialog";
+import { useSelector } from "react-redux";
+import {
+	deleteDialogue,
+	editDialogue,
+	joinDialogue,
+	scheduleDialogue,
+	settingsDialogue,
+} from "redux/meet/meetSelectors";
+import DescriptionDialogue from "components/meet/DescriptionDialogue";
+import DeleteMeet from "components/meet/DeleteMeet";
+import EditMeet from "components/meet/EditMeet";
 
 const Meet = () => {
+	const settings = useSelector(settingsDialogue);
+	const join = useSelector(joinDialogue);
+	const schedule = useSelector(scheduleDialogue);
+	const edit = useSelector(editDialogue);
+	const deleteMeet = useSelector(deleteDialogue);
+
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
 			<BaseLayout>
@@ -17,9 +34,14 @@ const Meet = () => {
 				<MeetHeader />
 				<MeetBox />
 			</BaseLayout>
-			{/* <JoinMeetingDialogue /> */}
-			{/* <ScheduleMeetingDialogue /> */}
-			<SettingDialogue />
+			{settings && <SettingDialogue />}
+			{join && <JoinMeetingDialogue />}
+			{schedule && <ScheduleMeetingDialogue />}
+			{edit && <EditMeet />}
+			{deleteMeet && <DeleteMeet />}
+			{/* <DescriptionDialogue />
+			 */}
+
 			{/* <PromptDialog type="info" title="" actionBtnTxt="Proceed">
 				Are you sure you want to connect GSuite Calendar ?
 			</PromptDialog> */}
