@@ -7,12 +7,19 @@
 	border-radius: 8px;
 	height: 40px;
 	overflow: hidden;
+	cursor: pointer;
 
 	&:hover {
 		background-color: var(--background-emphasis);
 	}
 }
 
+.leftDiv {
+	display: flex;
+	justify-content: space-between;
+	// background-color: red;
+	width: 80%;
+}
 .statusIcon {
 	display: block;
 	// width: 5px;

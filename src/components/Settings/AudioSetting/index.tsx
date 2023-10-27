@@ -9,10 +9,9 @@ import { useSelector } from "react-redux";
 import { getCookie, setCookie } from "utils";
 
 const AudioSetting = () => {
-	
-	const { speakerDevice, microphoneDevice} = useSelector((state: any) => state.sip)
-	console.log(speakerDevice)
-	// AudioinputDevices.map((x) => [x.toJSON()["label"], x.toJSON()["deviceId"]]) 
+	const { speakerDevice, microphoneDevice } = useSelector((state: any) => state.sip);
+	console.log(speakerDevice);
+	// AudioinputDevices.map((x) => [x.toJSON()["label"], x.toJSON()["deviceId"]])
 	return (
 		<div className={styles.audio}>
 			<h1 className={`body_bold ${styles.heading}`}>Playback Devices</h1>
@@ -29,10 +28,15 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => {
-						 	console.log(e.target.value);
+					<Select
+						icon={<SpeakerIcon />}
+						options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}
+						onChange={(e) => {
+							console.log(e.target.value);
 							setCookie("speakerDevice", e.target.value);
-						  } } defaultValue={ getCookie("speakerDevice") || "" } />
+						}}
+						defaultValue={getCookie("speakerDevice") || ""}
+					/>
 				</div>
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Loud Playback Device</h2>
@@ -46,10 +50,15 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])} onChange={(e) => {
-						 	console.log(e.target.value);
+					<Select
+						icon={<SpeakerIcon />}
+						options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}
+						onChange={(e) => {
+							console.log(e.target.value);
 							setCookie("loudPlaybackDevice", e.target.value);
-						  } } defaultValue={ getCookie("loudPlaybackDevice") || "" } />
+						}}
+						defaultValue={getCookie("loudPlaybackDevice") || ""}
+					/>
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Playback Gain</h2>
@@ -72,10 +81,17 @@ const AudioSetting = () => {
 							<MicrophoneIcon />
 						</span>
 					</div> */}
-					<Select icon={<MicrophoneIcon />} options={microphoneDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}  onChange={(e) => {
-						 	console.log(e.target.value);
+					<Select
+						icon={<MicrophoneIcon />}
+						options={microphoneDevice
+							.map((x: any) => [{ name: x["label"], value: x["deviceId"] }])
+							.map((y: any) => y[0])}
+						onChange={(e) => {
+							console.log(e.target.value);
 							setCookie("microphoneDevice", e.target.value);
-						  } } defaultValue={ getCookie("microphoneDevice") || "" } />
+						}}
+						defaultValue={getCookie("microphoneDevice") || ""}
+					/>
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Capture Gain</h2>
@@ -89,7 +105,7 @@ const AudioSetting = () => {
 				</div> */}
 				<div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>
-						<OnOffSwitch checked={true}/>
+						<OnOffSwitch checked={true} />
 						<span className={`caption_1`}>Enable echo cancellation</span>
 					</h2>
 					{/* <div className={`${styles.optionBox}`}>
@@ -98,7 +114,7 @@ const AudioSetting = () => {
 								<path
 									d="M3.5 8.25V9.75M6.5 6.75V11.25M9.5 3V15M12.5 8.25V9.75M15.5 6V12"
 									stroke="#C8D3E0"
-									stroke-linecap="round"
+									strokeLinecap="round"
 								/>
 							</svg>
 							<span>Calibrate</span>
@@ -133,10 +149,15 @@ const AudioSetting = () => {
 							<SpeakerIcon />
 						</span>
 					</div> */}
-					<Select icon={<SpeakerIcon />} options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}  onChange={(e) => {
-						 	console.log(e.target.value);
+					<Select
+						icon={<SpeakerIcon />}
+						options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}
+						onChange={(e) => {
+							console.log(e.target.value);
 							setCookie("ringerDevice", e.target.value);
-						  } } defaultValue={ getCookie("ringerDevice") || "" } />
+						}}
+						defaultValue={getCookie("ringerDevice") || ""}
+					/>
 				</div>
 				{/* <div className={`${styles.setting}`}>
 					<h2 className={`caption_1 ${styles.heading2}`}>Ring Sound</h2>

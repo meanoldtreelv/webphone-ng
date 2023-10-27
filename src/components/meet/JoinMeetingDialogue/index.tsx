@@ -32,7 +32,8 @@ const JoinMeetingDialogue = () => {
 					<span
 						onClick={() => {
 							dispatch(setJoinDialogue(false));
-						}}>
+						}}
+						style={{ cursor: "pointer" }}>
 						<CloseIcon />
 					</span>
 				</h1>

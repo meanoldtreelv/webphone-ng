@@ -5,4 +5,8 @@ export interface IMeetState {
 	editDialogue: boolean;
 	deleteDialogue: boolean;
 	descriptionDialogue: boolean;
+	dateRange: { start: string; end: string };
+	calendarView: string;
+	meetingDetails: Object;
+	eventId: string;
 }

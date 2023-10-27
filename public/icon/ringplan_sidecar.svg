@@ -1,8 +1,8 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="social / ringplan_sidecar" clip-path="url(#clip0_2129_3097)">
+    <g id="social / ringplan_sidecar" clipPath="url(#clip0_2129_3097)">
         <path id="Vector"
             d="M4.5 9.66683L1 11.3335L8 14.6668L15 11.3335L11.5 9.66683M4.5 6.3335L1 8.00016L8 11.3335L15 8.00016L11.5 6.3335M8 1.3335L1 4.66683L8 8.00016L15 4.66683L8 1.3335Z"
-            stroke="#0C6DC7" strokeWidth="1.5" stroke-linejoin="round" />
+            stroke="#0C6DC7" strokeWidth="1.5" strokeLinejoin="round" />
     </g>
     <defs>
         <clipPath id="clip0_2129_3097">

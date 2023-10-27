@@ -24,4 +24,4 @@ export const meetService = apiService.injectEndpoints({
 	}),
 });
 
-export const { useLazyGetMeetQuery, useLazyCreateMeetQuery } = meetService;
+export const { useLazyGetMeetQuery, useLazyCreateMeetQuery, lazyDeleteMeetQuery } = meetService;

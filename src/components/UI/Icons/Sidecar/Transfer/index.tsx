@@ -7,8 +7,8 @@ const TransferIcon = () => {
 				d="M12.75 8.25L15.75 5.25M15.75 5.25L12.75 2.25M15.75 5.25H6.75M5.25 15.75L2.25 12.75M2.25 12.75L5.25 9.75M2.25 12.75H11.25"
 				stroke="#6C7A8B"
 				strokeWidth="1.5"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);

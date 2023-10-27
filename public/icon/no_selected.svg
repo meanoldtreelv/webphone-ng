@@ -5,14 +5,14 @@
             fill="#ECF5FE" />
         <path id="Vector_2"
             d="M20.5988 37.8288C15.8734 31.2797 16.6464 6.22885 28.3002 5.07355C34.0836 4.5002 37.7636 8.42761 39.622 13.5672M39.622 13.5672C43.0907 23.1605 40.2132 36.9771 32.8232 33.6312C25.4438 30.29 29.129 16.7744 39.622 13.5672ZM39.622 13.5672C45.2669 11.8418 52.8821 13.0998 61.8048 20.5303"
-            stroke="#AFD6FA" strokeWidth="2" stroke-linecap="round" stroke-dasharray="4 4" />
+            stroke="#AFD6FA" strokeWidth="2" strokeLinecap="round" stroke-dasharray="4 4" />
         <path id="Vector_3"
             d="M43.7368 21.3333C43.7368 18.5209 46.021 16.2381 48.8421 16.2381H83.9473C86.7685 16.2381 89.0526 18.5209 89.0526 21.3333V27.4286C89.0526 30.241 86.7685 32.5238 83.9473 32.5238H48.8421C46.021 32.5238 43.7368 30.241 43.7368 27.4286V21.3333Z"
             fill="white" stroke="#AFD6FA" strokeWidth="2" />
         <path id="Vector_4" d="M49.6052 32H68.6842" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_5" d="M49.6052 36.5714H56.4736" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <ellipse id="Vector_6" cx="39.6841" cy="34.2857" rx="5.34211" ry="5.33333" stroke="#AFD6FA"
             strokeWidth="2" />
         <path id="Vector_7"
@@ -22,17 +22,17 @@
             d="M28.4736 35.0476C28.4736 32.2351 30.7578 29.9524 33.5789 29.9524H74.0263C76.8474 29.9524 79.1315 32.2351 79.1315 35.0476V44.1905C79.1315 47.0029 76.8474 49.2857 74.0263 49.2857H33.5789C30.7578 49.2857 28.4736 47.0029 28.4736 44.1905V35.0476Z"
             fill="white" stroke="#AFD6FA" strokeWidth="2" />
         <path id="Vector_9" d="M49.6052 37.3333H68.6842" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_10" d="M49.6052 22.0952H68.6842" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_11" d="M42.7368 54.0952H61.8158" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_12" d="M49.6052 41.9048H56.4736" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_13" d="M49.6052 26.6667H56.4736" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <path id="Vector_14" d="M42.7368 58.6667H49.6052" stroke="#AFD6FA" strokeWidth="2"
-            stroke-linecap="round" />
+            strokeLinecap="round" />
         <ellipse id="Vector_15" cx="39.6841" cy="39.619" rx="5.34211" ry="5.33333" stroke="#AFD6FA"
             strokeWidth="2" />
         <path id="Vector 34"

@@ -4,6 +4,7 @@ import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import Select from "components/UI/Forms/Select";
 import moment from "moment-timezone";
+import { DateTime } from "luxon";
 
 //timezone list import
 import * as ct from "countries-and-timezones";
@@ -13,20 +14,27 @@ import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 import { createMeet } from "effects/apiEffect";
 import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
-moment.tz.names();
-const timezones = ct.getAllTimezones();
+const timezones = moment.tz.names();
+// const timezones = ct.getAllTimezones();
 console.log(timezones);
 
 // import { listTimeZones } from "timezone-support";
 
 // List canonical time zone names: [ 'Africa/Abidjan', ... ]
-const timeZones2 = listTimeZones();
-console.log(timeZones2);
+// const timeZones2 = listTimeZones();
+// console.log(timeZones2);
 
 const ScheduleMeetingDialogue = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
+
+	const [list, setList] = useState([
+		{ value: "Daily", name: "Daily", selected: true },
+		{ value: "Weekly on Thursday", name: "Weekly on Thursday", selected: false },
+		{ value: "Monday to Friday", name: "Monday to Friday", selected: false },
+		{ value: "Custom Range", name: "Custom", selected: false },
+	]);
 
 	const dispatch = useDispatch();
 
@@ -42,6 +50,10 @@ const ScheduleMeetingDialogue = () => {
 	const [byWeek, setByWeek] = useState("");
 	const [count, setCount] = useState("1");
 	const [interval, setInterval] = useState("1");
+	const [timezone, setTimezone] = useState("");
+
+	const dateTime = DateTime.fromISO(start, { zone: timezone });
+	console.log(dateTime.toString());
 
 	const handleOptionChange = (event) => {
 		setSelectedOption(event.target.value);
@@ -59,7 +71,7 @@ const ScheduleMeetingDialogue = () => {
 	const data = {
 		title: title,
 		description: description,
-		start: start,
+		start: dateTime.toString(),
 		end: end,
 		password: password,
 		attendees: attendeesList,
@@ -89,6 +101,8 @@ const ScheduleMeetingDialogue = () => {
 		);
 		// dispatch(setScheduleDialogue(false));
 	};
+	console.log(start);
+
 	return (
 		<>
 			<Backdrop />
@@ -101,7 +115,8 @@ const ScheduleMeetingDialogue = () => {
 					<span
 						onClick={() => {
 							dispatch(setScheduleDialogue(false));
-						}}>
+						}}
+						style={{ cursor: "pointer" }}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -144,7 +159,14 @@ const ScheduleMeetingDialogue = () => {
 				</div>
 				<label>Time Zone</label>
 				<div className={styles.row2}>
-					<Select />
+					<Select
+						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
+						value={timezone}
+						onChange={(e) => {
+							console.log(e.target.value);
+							setTimezone(e.target.value);
+						}}
+					/>
 				</div>
 				<label htmlFor="">Attendees emails</label>
 				<div className={styles.emailBox}>
@@ -177,10 +199,10 @@ const ScheduleMeetingDialogue = () => {
 						{isRepeat && (
 							<span>
 								<Select
-									options={["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]}
-									defaultValue={"WEEKLY"}
+									options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 									value={frequency}
 									onChange={(e) => {
+										console.log(e.target.value);
 										setFrequency(e.target.value);
 									}}
 								/>

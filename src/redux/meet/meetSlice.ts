@@ -8,6 +8,10 @@ const initialMeetState: IMeetState = {
 	editDialogue: false,
 	deleteDialogue: false,
 	descriptionDialogue: false,
+	dateRange: { start: "", end: "" },
+	calendarView: "day",
+	meetingDetails: {},
+	eventId: "",
 };
 
 const meetSlice = createSlice({
@@ -33,6 +37,20 @@ const meetSlice = createSlice({
 		setDescriptionDialogue(state, action) {
 			state.descriptionDialogue = action.payload;
 		},
+		setDateRange(state, action) {
+			const { start, end } = action.payload;
+
+			state.dateRange = { start: start, end: end };
+		},
+		setCalendarView(state, action) {
+			state.calendarView = action.payload;
+		},
+		setMeetingDetails(state, action) {
+			state.meetingDetails = action.payload;
+		},
+		seteventId(state, action) {
+			state.eventId = action.payload;
+		},
 	},
 });
 
@@ -43,6 +61,10 @@ export const {
 	setEditDialogue,
 	setDeleteDialogue,
 	setDescriptionDialogue,
+	setDateRange,
+	setCalendarView,
+	setMeetingDetails,
+	seteventId,
 } = meetSlice.actions;
 
 export default meetSlice.reducer;

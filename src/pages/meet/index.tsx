@@ -11,6 +11,7 @@ import PromptDialog from "components/Modal/PromptDialog";
 import { useSelector } from "react-redux";
 import {
 	deleteDialogue,
+	descriptionDialogue,
 	editDialogue,
 	joinDialogue,
 	scheduleDialogue,
@@ -26,6 +27,7 @@ const Meet = () => {
 	const schedule = useSelector(scheduleDialogue);
 	const edit = useSelector(editDialogue);
 	const deleteMeet = useSelector(deleteDialogue);
+	const description = useSelector(descriptionDialogue);
 
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
@@ -39,8 +41,7 @@ const Meet = () => {
 			{schedule && <ScheduleMeetingDialogue />}
 			{edit && <EditMeet />}
 			{deleteMeet && <DeleteMeet />}
-			{/* <DescriptionDialogue />
-			 */}
+			{description && <DescriptionDialogue />}
 
 			{/* <PromptDialog type="info" title="" actionBtnTxt="Proceed">
 				Are you sure you want to connect GSuite Calendar ?

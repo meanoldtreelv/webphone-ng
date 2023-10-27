@@ -4,22 +4,42 @@ import styles from "./DescriptionDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import LockIcon from "components/UI/Icons/Lock";
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
-import { useDispatch } from "react-redux";
-import { setDescriptionDialogue } from "redux/meet/meetSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setDeleteDialogue, setDescriptionDialogue, setEditDialogue, seteventId } from "redux/meet/meetSlice";
+import { editDialogue, meetingDetails } from "redux/meet/meetSelectors";
+import { convertDateFormat, convertToHourMinuteFormat } from "helpers/formatDateTime";
 
 const DescriptionDialogue = () => {
 	const dispatch = useDispatch();
-	const [meetingCode, setMeetingCode] = useState("");
+	const details = useSelector(meetingDetails);
+	// const [meetingCode, setMeetingCode] = useState("");
 
 	const joinHandler = () => {
-		if (+meetingCode <= 99999999) {
-			return;
-		} else {
-			window.open(`https://meet.ringplan.com/auth/?id=${meetingCode}`, "_blank");
-			setMeetingCode("");
-			// dispatch(setJoinDialogue(false));
-		}
+		window.open(`https://meet.ringplan.com/auth/?id=${details?.jitsi_meeting_room_id}`, "_blank");
+		// if (+meetingCode <= 99999999) {
+		// 	return;
+		// } else {
+		// 	// setMeetingCode("");
+		// 	// dispatch(setJoinDialogue(false));
+		// }
 	};
+
+	const deleteHandler = () => {
+		dispatch(seteventId(details?.id));
+		dispatch(setDeleteDialogue(true));
+	};
+
+	console.log(details, "details");
+
+	const filteredAttendees = details?.attendees?.filter((item) => item.is_organizer === false);
+	const filteredOrganizer = details?.attendees?.filter((item) => item.is_organizer === true);
+
+	const editHandler = () => {
+		dispatch(setDescriptionDialogue(false));
+		dispatch(setEditDialogue(true));
+	};
+
+	const acceptedData = details?.attendees?.filter((item) => item.status === "accepted");
 
 	return (
 		<>
@@ -27,46 +47,65 @@ const DescriptionDialogue = () => {
 			<div className={styles.dialogueBox}>
 				<h1 className={styles.topHeading}>
 					<span>
-						<LockIcon />
-						<span>Test Meet</span>
+						{details?.jitsi_meeting_room?.common_password ? <LockIcon /> : <></>}
+
+						<span>{details?.title}</span>
 					</span>
 
 					<span
 						onClick={() => {
 							dispatch(setDescriptionDialogue(false));
-						}}>
+						}}
+						style={{ cursor: "pointer" }}>
 						<CloseIcon />
 					</span>
 				</h1>
 				<div className={styles.dateBox}>
 					<div>
-						<div className={styles.date}>Tuesday, October 24 - 10:15-11:15</div>
+						<div className={styles.date}>
+							{convertDateFormat(details?.start)} - {convertToHourMinuteFormat(details?.start)}-
+							{convertToHourMinuteFormat(details?.end)}
+						</div>
 						<div className={styles.date}>Daily, until Oct 24, 2023</div>
 					</div>
-					<button className={styles.edit}>Edit</button>
+					<button className={styles.edit} onClick={editHandler}>
+						Edit
+					</button>
 				</div>
 
 				<label>Description</label>
-				<div className={styles.date}>Hello I am testing</div>
-				<label>Password</label>
-				<div className={styles.password}>
-					<span>************</span>
+				<div className={styles.date}>{details.description}</div>
+				{details?.jitsi_meeting_room?.common_password ? (
+					<>
+						<label>Password</label>
+						<div className={styles.password}>
+							<span>{details.jitsi_meeting_room.common_password}</span>
+							<></>
+							<CopyIcon />
+						</div>
+					</>
+				) : (
 					<></>
-					<CopyIcon />
-				</div>
+				)}
+
 				<div className={styles.date}>
-					2 Attendees, <span>1 Yes, 1 Awaiting</span>
+					{details?.attendees?.length} Attendees,{" "}
+					<span>
+						{acceptedData.length} Yes, {details?.attendees?.length - acceptedData?.length} Awaiting
+					</span>
 				</div>
 				<div className={styles.organizer}>
 					<p>
-						Shivam Gupta <span>(Organizer)</span>
+						{filteredOrganizer?.[0]?.email} <span>(Organizer)</span>
 					</p>
-					<p className={styles.email}>gshivam@startxlabs.in</p>
+					<p className={styles.email}>{filteredOrganizer?.[0]?.first_name + " " + filteredOrganizer?.[0]?.last_name}</p>
 				</div>
-				<div className={styles.attendee}>shivamguptakrm@gmail.com</div>
+				{filteredAttendees?.map((item) => <div className={styles.attendee}>{item.email}</div>)}
 
 				<div className={styles.btnBox}>
-					<button className={styles.delete}>Delete</button>
+					<button className={styles.delete} onClick={deleteHandler}>
+						Delete
+					</button>
 					<button onClick={joinHandler}>Join</button>
 				</div>
 			</div>

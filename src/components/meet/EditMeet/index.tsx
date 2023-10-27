@@ -11,8 +11,9 @@ import * as ct from "countries-and-timezones";
 import { listTimeZones } from "timezone-support";
 import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 import { createMeet } from "effects/apiEffect";
-import { useDispatch } from "react-redux";
-import { setScheduleDialogue } from "redux/meet/meetSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditDialogue, setScheduleDialogue } from "redux/meet/meetSlice";
+import { meetingDetails } from "redux/meet/meetSelectors";
 moment.tz.names();
 const timezones = ct.getAllTimezones();
 console.log(timezones);
@@ -29,10 +30,27 @@ const EditMeet = () => {
 	const [selectedOption, setSelectedOption] = useState("never");
 
 	const dispatch = useDispatch();
+	const editData = useSelector(meetingDetails);
+	console.log(editData, "editData");
+	const convertToDateTime = (inputDateString) => {
+		// Create a Date object from the input string
+		const inputDate = new Date(inputDateString);
 
-	const [title, setTitle] = useState<string | null>("");
-	const [description, setDescription] = useState("");
-	const [start, setStart] = useState("");
+		// Extract the date and time components
+		const year = inputDate.getFullYear();
+		const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+		const day = String(inputDate.getDate()).padStart(2, "0");
+		const hours = String(inputDate.getHours()).padStart(2, "0");
+		const minutes = String(inputDate.getMinutes()).padStart(2, "0");
+
+		// Create the output date string in the desired format
+		const outputDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
+		return outputDateString;
+	};
+
+	const [title, setTitle] = useState<string | null>(editData?.title);
+	const [description, setDescription] = useState(editData?.description);
+	const [start, setStart] = useState(convertToDateTime(editData?.start));
 	const [end, setEnd] = useState("");
 	const [password, setPassword] = useState("");
 	const [attendees, setAttendees] = useState<string | null>(null);
@@ -42,6 +60,7 @@ const EditMeet = () => {
 	const [byWeek, setByWeek] = useState("");
 	const [count, setCount] = useState("1");
 	const [interval, setInterval] = useState("1");
+	const [timezone, setTimezone] = useState("");
 
 	const handleOptionChange = (event) => {
 		setSelectedOption(event.target.value);
@@ -56,10 +75,13 @@ const EditMeet = () => {
 		]);
 	};
 
+	const dateTime = DateTime.fromISO(start, { zone: timezone });
+	console.log(dateTime.toString());
+
 	const data = {
 		title: title,
 		description: description,
-		start: start,
+		start: dateTime.toString(),
 		end: end,
 		password: password,
 		attendees: attendeesList,
@@ -87,8 +109,15 @@ const EditMeet = () => {
 				console.error(err, "err in meet creation");
 			},
 		);
-		// dispatch(setScheduleDialogue(false));
+		// dispatch(setEditDialogue(false));
 	};
+	console.log(editData?.start, "test", start);
+
+	// Input date string
+	// const inputDateString = "2023-10-20T10:10:12+00:00";
+
+	console.log(convertToDateTime(editData?.start)); // Output: "2023-10-20T10:10"
+
 	return (
 		<>
 			<Backdrop />
@@ -100,8 +129,9 @@ const EditMeet = () => {
 
 					<span
 						onClick={() => {
-							dispatch(setScheduleDialogue(false));
-						}}>
+							dispatch(setEditDialogue(false));
+						}}
+						style={{ cursor: "pointer" }}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -144,7 +174,14 @@ const EditMeet = () => {
 				</div>
 				<label>Time Zone</label>
 				<div className={styles.row2}>
-					<Select />
+					<Select
+						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
+						value={timezone}
+						onChange={(e) => {
+							console.log(e.target.value);
+							setTimezone(e.target.value);
+						}}
+					/>
 				</div>
 				<label htmlFor="">Attendees emails</label>
 				<div className={styles.emailBox}>
@@ -172,7 +209,7 @@ const EditMeet = () => {
 					<button
 						className={styles.cancel}
 						onClick={() => {
-							dispatch(setScheduleDialogue(false));
+							dispatch(setEditDialogue(false));
 						}}>
 						Close
 					</button>
