@@ -105,41 +105,8 @@ const sipSlice = createSlice({
     status: (state, action) =>  {
       if(state.status != action.payload){
         state.status = action.payload
-        if(state.status.main_status=="Available"){
-          setCookie("DoNotDisturbEnabled", false)
-        }else{
-          setCookie("DoNotDisturbEnabled", true)
-        }
+        state.statusMenu = false
       }
-		  // if(state.status != action.payload){
-      //   switch(action.payload){
-      //     case "Lunch":
-      //     case "Holiday":
-      //     case "Do not disturb":{
-      //       state.status = action.payload
-      //       state.statusMenu = false
-      //       setCookie("DoNotDisturbEnabled", true)
-      //       setCookie("status", action.payload)
-      //       break
-      //     }
-      //     case "On a call":
-      //     case "In a meeting":
-      //     case "AFK":
-      //     case "Away":
-      //     case "Available":{
-      //       state.status = action.payload
-      //       state.statusMenu = false
-      //       setCookie("DoNotDisturbEnabled", false)
-      //       setCookie("status", action.payload)
-      //       break
-      //     }
-      //     case "clearStatus":{
-      //       state.status = "Available"
-      //       setCookie("DoNotDisturbEnabled", false)
-      //       setCookie("status", "Available")
-      //     }
-      //   }
-      // }
     },
     audioNoiseSuppression: (state, action) =>  {
       state.audioNoiseSuppression = action.payload

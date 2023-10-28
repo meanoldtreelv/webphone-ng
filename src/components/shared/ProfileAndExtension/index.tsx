@@ -43,7 +43,7 @@ const ProfileAndExtension = () => {
 				<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="user_status">
 						<g clipPath="url(#clip0_2202_19106)">
-							<circle id="Ellipse" cx="5" cy="5" r="4" fill={status == "Available" ? "#75C322" : (status =="Do not disturb" ? "rgb(238, 57, 57)" : "#91A0B5") } stroke="white" strokeWidth="2" />
+							<circle id="Ellipse" cx="5" cy="5" r="4" fill={status.main_status == "available" ? "#75C322" : (status.main_status =="do_not_disturb" ? "rgb(238, 57, 57)" : "#91A0B5") } stroke="white" strokeWidth="2" />
 						</g>
 					</g>
 					<defs>

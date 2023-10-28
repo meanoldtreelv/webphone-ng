@@ -51,7 +51,7 @@ let RegisterExpires = 300; // Registration expiry time (in seconds)
 let RegisterExtraHeaders = "{}"; // Parsable Json string of headers to include in register process. eg: '{"foo":"bar"}'
 let RegisterExtraContactParams = "{}"; // Parsable Json string of extra parameters add to the end (after >) of contact header during register. eg: '{"foo":"bar"}'
 let EnableVideoCalling = true; // Enables Video during a call
-let DoNotDisturbEnabled = ()=>{return getCookie("DoNotDisturbEnabled") ? getCookie("DoNotDisturbEnabled") == "true" : false;} ; // Rejects any inbound call, while allowing outbound calls
+let DoNotDisturbEnabled = ()=>{return store.getState().sip.status.main_status ? store.getState().sip.status.main_status == "do_not_disturb" : false;} ; // Rejects any inbound call, while allowing outbound calls
 let AutoAnswerEnabled = false; // Automatically answers the phone when the call comes in, if you are not on a call already
 let IntercomPolicy = "enabled"; // disabled = feature is disabled | enabled = feature is always on
 let EnableRingtone = true; // Enables a ring tone when an inbound call comes in.  (media/Ringtone_1.mp3)
@@ -4316,51 +4316,9 @@ if (true) {
     console.log(data)
     try {
       console.log("Received status update:", data);
-      const userStatus = {
-          additionalStatus: data.additional_status.status,
-          mainStatus: data.main_status.status,
-        }
-      console.log("userStatus")
-      console.log(userStatus)
       const status = {
-        main_status:"",
-        additional_status:""
-      }
-      switch(userStatus.additionalStatus){
-        case "on_a_call" : {
-          status.additional_status = "On a call"
-          break
-        }
-        case "in_a_meeting" : {
-          status.additional_status = "In a meeting"
-          break
-        }
-        case "lunch" : {
-          status.additional_status = "Lunch"
-          break
-        }
-        case "holiday" : {
-          status.additional_status = "Holiday"
-          break
-        }
-        case "afk" : {
-          status.additional_status = "AFK"
-          break
-        }
-      }
-      switch(userStatus.mainStatus){
-        case "available" : {
-          status.main_status = "Available"
-          break
-        }
-        case "away" : {
-          status.main_status = "Away"
-          break
-        }
-        case "do_not_disturb" : {
-          status.main_status = "Do not disturb"
-          break
-        }
+        main_status:data.main_status.status,
+        additional_status:data.additional_status.status
       }
       store.dispatch({type:"sip/status", payload:status})
     } catch (error) {

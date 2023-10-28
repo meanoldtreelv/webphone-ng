@@ -15,12 +15,12 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip";
 import { store } from "../../redux/store";
-import { setCookie } from "utils";
+import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
 
 const Login = () => {
-	// setCookie("id_token", "");
+	setCookie("id_token", getCookie("id_token"));
 	const navigate = useNavigate();
 	const theme = useTheme();
 

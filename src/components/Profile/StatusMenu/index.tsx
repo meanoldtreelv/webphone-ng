@@ -10,38 +10,10 @@ const StatusMenu = () => {
 	const update = (status:string, additional_status:string|null = "") =>{
 		if(additional_status == "" || additional_status == null || additional_status == undefined){
 			let userStatusMainStatus = status;
-			switch(userStatusMainStatus){
-				case "available" : {
-					userStatusMainStatus = "Available"
-				  break
-				}
-				case "away" : {
-					userStatusMainStatus = "Away"
-				  break
-				}
-				case "do_not_disturb" : {
-					userStatusMainStatus = "Do not disturb"
-				  break
-				}
-			}
 			store.dispatch({type:"sip/status", payload:{
 				main_status:userStatusMainStatus,
 				additional_status:additional_status
 			}})
-		}
-		switch(status){
-			case "Available" : {
-				status = "available"
-			  break
-			}
-			case "Away" : {
-				status = "away"
-			  break
-			}
-			case "Do not disturb" : {
-				status = "do_not_disturb"
-			  break
-			}
 		}
 		const sendData = additional_status != "" ? 
 		{
@@ -92,7 +64,7 @@ const StatusMenu = () => {
 				</div>
 				<p className={`footnote ${styles.heading}`}>Status</p>
 				<div className={`body ${styles.status}`}>
-					<div onClick={()=>{update("available") }}  className={`${styles.status_type}`} style={status.main_status === "Available"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update("available") }}  className={`${styles.status_type}`} style={status.main_status == "available"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -102,7 +74,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Available</span>
 						</span>
 					</div>
-					<div onClick={()=>{update("away") }} className={`${styles.status_type}`} style={status.main_status === "Away"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update("away") }} className={`${styles.status_type}`} style={status.main_status == "away"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -112,7 +84,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Away</span>
 						</span>
 					</div>
-					<div onClick={()=>{update("do_not_disturb") }}  className={`${styles.status_type}`} style={status.main_status === "Do not disturb"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update("do_not_disturb") }}  className={`${styles.status_type}`} style={status.main_status == "do_not_disturb"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -128,7 +100,7 @@ const StatusMenu = () => {
 				</div>
 				<p className={`footnote ${styles.heading}`}>Additional Status</p>
 				<div className={`body ${styles.status}`}>
-					<div onClick={()=>{update(status.main_status, "on_a_call") }}  className={`${styles.status_type}`} style={status.additional_status === "On a call"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update(status.main_status, "on_a_call") }}  className={`${styles.status_type}`} style={status.additional_status == "on_a_call"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / call">
@@ -143,7 +115,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>On a call</span>
 						</span>
 					</div>
-					<div onClick={()=>{update(status.main_status, "in_a_meeting") }}  className={`${styles.status_type}`} style={status.additional_status === "In a meeting"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update("do_not_disturb", "in_a_meeting") }}  className={`${styles.status_type}`} style={status.additional_status == "in_a_meeting"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / meet">
@@ -162,7 +134,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>In a meeting</span>
 						</span>
 					</div>
-					<div onClick={()=>{update(status.main_status, "lunch") }}  className={`${styles.status_type}`} style={status.additional_status === "Lunch"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update("do_not_disturb", "lunch") }}  className={`${styles.status_type}`} style={status.additional_status == "lunch"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / lunch">
@@ -182,7 +154,7 @@ const StatusMenu = () => {
 							{/* <span>DND :</span> */}
 						</span>
 					</div>
-					<div onClick={()=>{update(status.main_status, "holiday") }}  className={`${styles.status_type}`} style={status.additional_status === "Holiday"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update(status.main_status, "holiday") }}  className={`${styles.status_type}`} style={status.additional_status == "holiday"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / holiday">
@@ -205,7 +177,7 @@ const StatusMenu = () => {
 							{/* <span>DND :</span> */}
 						</span>
 					</div>
-					<div onClick={()=>{update(status.main_status, "afk") }} className={`${styles.status_type}`} style={status.additional_status === "AFK"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
+					<div onClick={()=>{update(status.main_status, "afk") }} className={`${styles.status_type}`} style={status.additional_status == "afk"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / afk">
