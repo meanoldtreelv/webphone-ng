@@ -22,6 +22,7 @@ const routes: RouteObject[] = [
 ];
 const extAuth = getCookie("extAuth")
 const apiAuth =  getCookie("apiAuth")
+const status =  getCookie("status")
 const ext_user_id = getCookie("ext_user_id")
 const ext_password = getCookie("ext_password")
 const ext_domain = getCookie("ext_domain") 
@@ -29,7 +30,7 @@ const ext_connected = getCookie("ext_connected");
 const instancesVal = getCookie("instancesVal");
 
 instancesVal && store.dispatch({ type: "sip/extAuthList", payload: JSON.parse(instancesVal) });
-
+status && store.dispatch({type:"sip/status", payload: status})
 apiAuth && store.dispatch({ type: "sip/apiAuth", payload: JSON.parse(apiAuth)});
 ext_connected === "true" && ext_user_id && ext_password && ext_domain && store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) && (
 	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain)

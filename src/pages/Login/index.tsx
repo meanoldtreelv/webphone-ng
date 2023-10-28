@@ -19,7 +19,7 @@ import { setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 
 const Login = () => {
-	setCookie("id_token", "");
+	// setCookie("id_token", "");
 	const navigate = useNavigate();
 
 	const onContinueWithRingplan = () => {

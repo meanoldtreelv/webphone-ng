@@ -59,7 +59,7 @@ const InboundCall = () => {
 							</svg>
 						</button>
 					</div>
-					<div className={styles.silent_box}>
+					<div className={styles.silent_box} onClick={()=>sip.ringtone(item.LineNumber, !item.ringtone)}>
 						<span className={styles.silent} style={item.ringtone?{ backgroundColor: "var(--background-danger, #FFEBEB)" }:{}}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
 								<path
@@ -69,7 +69,7 @@ const InboundCall = () => {
 									strokeLinejoin="round"
 								/>
 							</svg>
-							<span className={`footnote`} style={{ color: "var(--text-primary, #1F2023)" }}  onClick={()=>sip.ringtone(item.LineNumber, !item.ringtone)}>
+							<span className={`footnote`} style={{ color: "var(--text-primary, #1F2023)" }}>
 								Silent
 							</span>
 						</span>

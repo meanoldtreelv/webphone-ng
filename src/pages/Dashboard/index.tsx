@@ -36,6 +36,7 @@ import { contactLists } from "./../../redux/contact/contactSelectors";
 import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 
+
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan, showMultipleCallListModal } =
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan, showMultipleCallListModal, statusMenu } =
 		useSelector((state: any) => state.sip);
 
 	// useEffect(() => {
@@ -162,7 +163,7 @@ const Dashboard = () => {
 				</section>
 			</BaseLayout>
 			{/* this is a status menu components to update the status like available, on lunch etc */}
-			{/* <StatusMenu /> */}
+			{ statusMenu && <StatusMenu />} 
 
 			{/* this is a component to show about the ringplan  */}
 			{aboutRingplan && <AboutRingplan />}

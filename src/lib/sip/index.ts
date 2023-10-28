@@ -17,6 +17,7 @@ import Tone_EarlyMedia_European from "../../assets/media/Tone_EarlyMedia-Europea
 import Tone_EarlyMedia_Japan from "../../assets/media/Tone_EarlyMedia-Japan.mp3";
 import Tone_EarlyMedia_UK from "../../assets/media/Tone_EarlyMedia-UK.mp3";
 import Tone_EarlyMedia_US from "../../assets/media/Tone_EarlyMedia-US.mp3";
+import io from "socket.io-client"
 // Create User Agent
 // =================
 let userAgent:any = null;
@@ -50,7 +51,7 @@ let RegisterExpires = 300; // Registration expiry time (in seconds)
 let RegisterExtraHeaders = "{}"; // Parsable Json string of headers to include in register process. eg: '{"foo":"bar"}'
 let RegisterExtraContactParams = "{}"; // Parsable Json string of extra parameters add to the end (after >) of contact header during register. eg: '{"foo":"bar"}'
 let EnableVideoCalling = true; // Enables Video during a call
-let DoNotDisturbEnabled = false; // Rejects any inbound call, while allowing outbound calls
+let DoNotDisturbEnabled = ()=>{return getCookie("DoNotDisturbEnabled") ? getCookie("DoNotDisturbEnabled") == "true" : false;} ; // Rejects any inbound call, while allowing outbound calls
 let AutoAnswerEnabled = false; // Automatically answers the phone when the call comes in, if you are not on a call already
 let IntercomPolicy = "enabled"; // disabled = feature is disabled | enabled = feature is always on
 let EnableRingtone = true; // Enables a ring tone when an inbound call comes in.  (media/Ringtone_1.mp3)
@@ -89,7 +90,35 @@ let SpeakerDevices = [];
 
 let selectedLine = "";
 
-
+$(window).on("beforeunload", function(event) {
+  var CurrentCalls = countSessions("0");
+  if(CurrentCalls > 0){
+      console.warn("Warning, you have current calls open");
+      // The best we can do is throw up a system alert question.
+      event.preventDefault();
+      return event.returnValue = "";
+  }
+  Unregister(true);
+});
+$(window).on("offline", function(){
+  alert("offline")
+  console.warn('Offline!');
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Disconnected from Web Socket!"})
+  // $("#WebRtcFailed").show();
+  // If there is an issue with the WS connection
+  // We unregister, so that we register again once its up
+  console.log("Disconnect Transport...");
+  try{
+      // userAgent.registerer.unregister();
+      userAgent.transport.disconnect();
+  } catch(e){
+      // I know!!!
+  }
+});
+$(window).on("online", function(){
+  console.log('Online!');
+  ReconnectTransport();
+});
 function PreloadAudioFiles() {
   audioBlobs.Alert = {
     file: "Alert.mp3",
@@ -266,12 +295,14 @@ function Register() {
   };
 
   console.log("Sending Registration...");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Sending Registration..."})
   // document.getElementById("status").innerHTML = "Sending Registration...";
   userAgent.registering = true;
   userAgent.registerer.register(RegistererRegisterOptions);
 }
 function CreateUserAgent() {
   console.log("Creating User Agent...");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Creating User Agent..."})
   // document.getElementById("status").innerHTML = "Creating User Agent...";
   if (
     SipDomain === null ||
@@ -368,6 +399,7 @@ function CreateUserAgent() {
   userAgent.lastVoicemailCount = 0;
 
   console.log("Creating User Agent... Done");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Creating User Agent... Done"})
   // document.getElementById("status").innerHTML = "Creating User Agent... Done";
   userAgent.transport.onConnect = function () {
     onTransportConnected();
@@ -422,9 +454,11 @@ function CreateUserAgent() {
 
   userAgent.registerer = new SIP.Registerer(userAgent, RegistererOptions);
   console.log("Creating Registerer... Done");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Creating Registerer... Done"})
   // document.getElementById("status").innerHTML = "Creating Registerer... Done";
   userAgent.registerer.stateChange.addListener(function (newState) {
     console.log("User Agent Registration State:", newState);
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:newState})
     // document.getElementById("status").innerHTML = newState;
     switch (newState) {
       case SIP.RegistererState.Initial:
@@ -443,6 +477,7 @@ function CreateUserAgent() {
   });
 
   console.log("User Agent Connecting to WebSocket...");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"User Agent Connecting to WebSocket..."})
   // document.getElementById("status").innerHTML = "User Agent Connecting to WebSocket...";
   userAgent.start().catch(function (error) {
     onTransportConnectError(error);
@@ -453,6 +488,7 @@ function CreateUserAgent() {
 // ================
 function onTransportConnected() {
   console.log("Connected to Web Socket!");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Connected to Web Socket!"})
   // document.getElementById("status").innerHTML = "Connected to Web Socket!";
   // Reset the ReconnectionAttempts
   userAgent.isReRegister = false;
@@ -475,6 +511,7 @@ function onTransportConnected() {
 }
 function onTransportConnectError(error) {
   console.warn("WebSocket Connection Failed:", error);
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"WebSocket Connection Failed"})
 
   // We set this flag here so that the re-register attempts are fully completed.
   userAgent.isReRegister = false;
@@ -482,6 +519,7 @@ function onTransportConnectError(error) {
   // If there is an issue with the WS connection
   // We unregister, so that we register again once its up
   console.log("Unregister...");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Unregister..."})
   // document.getElementById("status").innerHTML = "Unregister...";
   try {
     userAgent.registerer.unregister();
@@ -497,6 +535,7 @@ function onTransportConnectError(error) {
 }
 function onTransportDisconnected() {
   console.log("Disconnected from Web Socket!");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Disconnected from Web Socket!"})
   // document.getElementById("status").innerHTML = "Disconnected from Web Socket!";
   userAgent.isReRegister = false;
 }
@@ -510,10 +549,12 @@ function ReconnectTransport() {
     return;
   }
   console.log("Reconnect Transport...");
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Reconnect Transport..."})
   // document.getElementById("status").innerHTML = "Reconnect Transport...";
 
   window.setTimeout(function () {
     console.log("ReConnecting to WebSocket...");
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"ReConnecting to WebSocket..."})
     // document.getElementById("status").innerHTML = "ReConnecting to WebSocket...";
 
     if (userAgent.transport && userAgent.transport.isConnected()) {
@@ -525,6 +566,7 @@ function ReconnectTransport() {
       userAgent.reconnect().catch(function (error) {
         userAgent.transport.attemptingReconnection = false;
         console.warn("Failed to reconnect", error);
+        store.dispatch({type:"sip/sipRegistrationStatus", payload:"Failed to reconnect"})
         // document.getElementById("status").innerHTML = "Failed to reconnect";
 
         // Try Again
@@ -563,6 +605,7 @@ function ReconnectTransport() {
     "Attempt remaining",
     userAgent.transport.ReconnectionAttempts
   );
+  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Waiting to Re-connect..."})
   // document.getElementById("status").innerHTML = "Waiting to Re-connect...";
   userAgent.transport.ReconnectionAttempts =
     userAgent.transport.ReconnectionAttempts - 1;
@@ -570,6 +613,7 @@ function ReconnectTransport() {
 function onUnregistered() {
   if (userAgent.registrationCompleted) {
     console.log("Unregistered, bye!");
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Not Registered"})
     // document.getElementById("status").innerHTML = "Unregistered, bye!";
   } else {
     // Was never really registered, so cant really say unregistered
@@ -1062,7 +1106,7 @@ function onSessionReceivedBye(lineObj, response) {
   store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   SelectLine(store.getState().sip.activeCallLineNumber)
   teardownSession(lineObj);
-  onCallEndByOtherSide(lineObj.LineNumber);
+  // onCallEndByOtherSide(lineObj.LineNumber);
 }
 
 function onSessionReceivedMessage(lineObj, response) {
@@ -1264,8 +1308,9 @@ function SwitchLines(lineNum) {
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
     if (session.state === SIP.SessionState.Established) {
+      MuteSession(lineNum) //remove this when hold started working
       if (session.isOnHold === false && session.data.line !== lineNum) {
-        holdSession(session.data.line);
+        // holdSession(session.data.line); // uncomment this when hold started working
       }
     }
     session.data.IsCurrentCall = false;
@@ -1275,8 +1320,9 @@ function SwitchLines(lineNum) {
   if (lineObj !== null && lineObj.SipSession !== null) {
     var session = lineObj.SipSession;
     if (session.state === SIP.SessionState.Established) {
+      UnmuteSession(lineNum) //remove this when hold started working
       if (session.isOnHold === true) {
-        unholdSession(lineNum);
+        // unholdSession(lineNum); // uncomment this when hold started working
       }
     }
     session.data.IsCurrentCall = true;
@@ -1890,11 +1936,11 @@ function ReceiveCall(session) {
   };
 
   // Possible Early Rejection options
-  if (DoNotDisturbEnabled === true) {
+  if (DoNotDisturbEnabled() === true) {
     console.log("Do Not Disturb Enabled, rejecting call.");
     // document.getElementById("statusReceiveCall").innerHTML += "Do Not Disturb Enabled, rejecting call.";
     lineObj.SipSession.data.earlyReject = true;
-    RejectCall(lineObj.LineNumber, true);
+    RejectCall(lineObj.LineNumber);
     return;
   }
   if (CurrentCalls >= 1) {
@@ -1902,7 +1948,7 @@ function ReceiveCall(session) {
       console.log("Call Waiting Disabled, rejecting call.");
       // document.getElementById("statusReceiveCall").innerHTML += "Call Waiting Disabled, rejecting call.";
       lineObj.SipSession.data.earlyReject = true;
-      RejectCall(lineObj.LineNumber, true);
+      RejectCall(lineObj.LineNumber);
       return;
     }
   }
@@ -2563,7 +2609,7 @@ function onInviteRejected(lineObj, response) {
   store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   teardownSession(lineObj);
   SelectLine(store.getState().sip.activeCallLineNumber)
-  onCallEndByOtherSide();
+  // onCallEndByOtherSide();
 }
 function CancelTransferSession(lineNum) {
   var lineObj = FindLineByNumber(lineNum);
@@ -2789,7 +2835,7 @@ function BlindTransfer(lineNum:number, dstNo:string) {
         });
         store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
         teardownSession(lineObj);
-        onCallEndByOtherSide();
+        // onCallEndByOtherSide();
         SelectLine(store.getState().sip.activeCallLineNumber)
       },
       onReject: function (sip) {
@@ -3020,7 +3066,7 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
                 store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
                 teardownSession(lineObj);
                 SelectLine(store.getState().sip.activeCallLineNumber)
-                onCallEndByOtherSide();
+                // onCallEndByOtherSide();
               },
               onReject: function (sip) {
                 console.warn("Attended transfer rejected:", sip);
@@ -3649,13 +3695,16 @@ function Unregister(skipUnsubscribe:boolean) {
     if (userAgent === null || !userAgent.isRegistered()) return;
     if (skipUnsubscribe === true) {
         console.log("Skipping Unsubscribe");
+        store.dispatch({type:"sip/sipRegistrationStatus", payload:"Skipping Unsubscribe"})
         // document.getElementById("status").innerHTML = "Skipping Unsubscribe";
     } else {
         console.log("Unsubscribing...");
+        store.dispatch({type:"sip/sipRegistrationStatus", payload:"Unsubscribing..."})
         // document.getElementById("status").innerHTML = "Unsubscribing...";
     }
 
     console.log("Unregister...");
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Unregister..."})
     //   //document.getElementById("status").innerHTML = "Unregister...";
     userAgent.registerer.unregister();
 
@@ -3666,9 +3715,11 @@ function Unregister(skipUnsubscribe:boolean) {
 function RefreshRegistration() {
     Unregister();
     console.log("Unregister complete...");
-    //   //document.getElementById("status").innerHTML = "Unregister complete...";
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Unregister complete..."})
+    //document.getElementById("status").innerHTML = "Unregister complete...";
     window.setTimeout(function () {
         console.log("Starting registration...");
+        store.dispatch({type:"sip/sipRegistrationStatus", payload:"Starting registration..."})
         // document.getElementById("status").innerHTML = "Starting registration...";
         Register();
     }, 1000);
@@ -4242,5 +4293,79 @@ const sip = {
     window.location = "/";
   },
   store:() => {return store}
+}
+if (true) {
+  const socket = io("https://ssp-backend.ringplan.com", {
+    path: "/ws",
+    transports: ["websocket"],
+    secure: true,
+    autoConnect: false,
+    reconnectionDelay: 1500,
+  });
+
+  // if (!sessionStorage.getItem("allExtensions")) {
+  //   fetchUnFilteredExtensions();
+  // }
+
+  socket.connect();
+
+  socket.emit("authenticate", { token: getCookie("id_token") });
+
+  socket.on("status.status.updated.v2", (data) => {
+    // alert(data)
+    console.log(data)
+    try {
+      console.log("Received status update:", data);
+      const userStatus = {
+          additionalStatus: data.additional_status.status,
+          mainStatus: data.main_status.status,
+        }
+      console.log("userStatus")
+      console.log(userStatus)
+      const status = {
+        main_status:"",
+        additional_status:""
+      }
+      switch(userStatus.additionalStatus){
+        case "on_a_call" : {
+          status.additional_status = "On a call"
+          break
+        }
+        case "in_a_meeting" : {
+          status.additional_status = "In a meeting"
+          break
+        }
+        case "lunch" : {
+          status.additional_status = "Lunch"
+          break
+        }
+        case "holiday" : {
+          status.additional_status = "Holiday"
+          break
+        }
+        case "afk" : {
+          status.additional_status = "AFK"
+          break
+        }
+      }
+      switch(userStatus.mainStatus){
+        case "available" : {
+          status.main_status = "Available"
+          break
+        }
+        case "away" : {
+          status.main_status = "Away"
+          break
+        }
+        case "do_not_disturb" : {
+          status.main_status = "Do not disturb"
+          break
+        }
+      }
+      store.dispatch({type:"sip/status", payload:status})
+    } catch (error) {
+      console.log(error)
+    }
+  });
 }
 export default sip

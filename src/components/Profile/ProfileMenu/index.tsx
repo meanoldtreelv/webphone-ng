@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { nameIcon } from "utils";
 
 const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
-	const { apiAuth, extNumber } = useSelector((state: any) => state.sip)
+	const { apiAuth, extNumber, sipRegistrationStatus } = useSelector((state: any) => state.sip)
 	return (
 		<div>
 			<div style={{position: "fixed",bottom: "0px",left: "0px",height: "100vh",width: "100%"}}
@@ -13,7 +13,10 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 			<div className={styles.profile}>
 				<div className={styles.profile_nameBox}>
 					<span className={styles.profile_image}>{ (apiAuth && nameIcon(apiAuth["displayname"])) || ( extNumber && extNumber[0])}</span>
-					<span className={styles.profile_name}>{ (apiAuth && apiAuth["displayname"]) || extNumber}</span>
+					<div style={{display:"flex", flexDirection:"column"}}>
+						<span className={styles.profile_name}>{ (apiAuth && apiAuth["displayname"]) || extNumber}</span>
+						<span style={{color: "#808080", fontSize: "12px",  whiteSpace: "nowrap",position: "absolute", marginTop: "17px"}}>{sipRegistrationStatus}</span>						
+					</div>
 				</div>
 				<div className={styles.profile_settingBox}>
 					{!extAuth &&
@@ -34,7 +37,7 @@ const ProfileMenu = ({extAuth}:{extAuth:Boolean}) => {
 					</div>
 					}
 					
-					<div className={styles.profile_settingBox_item}>
+					<div className={styles.profile_settingBox_item} onClick={()=>{store.dispatch({type:"sip/statusMenu", payload:true})}}>
 						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="line / add_emoji" clipPath="url(#clip0_2254_30482)">
 								<path
