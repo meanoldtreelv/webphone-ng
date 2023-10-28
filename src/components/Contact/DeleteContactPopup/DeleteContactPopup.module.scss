@@ -1,10 +1,11 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .popUp {
 	width: 100%;
 	height: 100vh;
 	flex-shrink: 0;
-	background: map-get($color, overlay-primary);
+	// background: map-get($color, overlay-primary);
+	background: var(--overlay-primary);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -20,8 +21,10 @@
 		gap: 30px;
 		align-items: flex-start;
 		border-radius: 12px;
-		border: 1px solid map-get($color, border-secondary);
-		background: map-get($color, background-primary);
+		// border: 1px solid map-get($color, border-secondary);
+		border: 1px solid var(--border-secondary);
+		// background: map-get($color, background-primary);
+		background: var(--background-primary);
 		box-shadow: 0px 0px 16px 0px map-get($color, dark-box-shadow);
 		padding: 32px;
 		text-align: center;
@@ -54,7 +57,8 @@
 			gap: 4px;
 			flex: 1 0 0;
 			border-radius: 8px;
-			border: 1px solid map-get($color, border-primary);
+			// border: 1px solid map-get($color, border-primary);
+			border: 1px solid var(--border-primary);
 			width: 135px;
 			cursor: pointer;
 		}
@@ -62,23 +66,29 @@
 
 	&_headerText {
 		font-size: 14px;
-		color: map-get($color, text-primary);
+		// color: map-get($color, text-primary);
+		color: var(--text-primary);
 	}
 
 	&_headerMsg {
 		font-size: 13px;
-		color: map-get($color, text-secondary-2);
+		// color: map-get($color, text-secondary-2);
+		color: var(--text-tertiary);
 	}
 }
 
 .cancelBtn {
 	font-size: 14px;
-	color: map-get($color, text-primary);
+	// color: map-get($color, text-primary);
+	color: var(--text-primary);
 }
 
 .deleteBtn {
 	font-size: 14px;
-	color: map-get($color, background-primary);
-	background: map-get($color, support-danger-default);
-	border: 1px solid map-get($color, support-danger-default);
+	// color: map-get($color, background-primary);
+	color: var(--background-primary);
+	// background: map-get($color, support-danger-default);
+	background: var(--support-danger-default);
+	// border: 1px solid map-get($color, support-danger-default);
+	border: 1px solid var(--support-danger-default);
 }

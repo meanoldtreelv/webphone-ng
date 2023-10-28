@@ -1,4 +1,4 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .historyCard {
 	display: flex;
@@ -15,7 +15,7 @@
 	}
 
 	&:hover {
-		background: map-get($color, background-active);
+		background: var(--background-active);
 	}
 
 	&_circle {
@@ -25,9 +25,10 @@
 		padding: 9px;
 		justify-content: center;
 		align-items: center;
-		background: map-get($color, border-tertiary);
+		background: var(--border-tertiary);
+
 		& svg {
-			color: map-get($color, background-primary);
+			color: var(--background-primary);
 		}
 	}
 
@@ -42,7 +43,7 @@
 	&_info {
 		> p {
 			font-size: 14px;
-			color: map-get($color, text-primary);
+			color: var(--text-primary);
 		}
 	}
 }
@@ -69,7 +70,7 @@
 		padding: 0 2px;
 		margin-right: 5px;
 		// change to appropriate coloring
-		border: 1px solid map-get($color, support-danger-default) !important;
+		border: 1px solid var(--support-danger-default) !important;
 
 		span {
 			font-size: 11px;

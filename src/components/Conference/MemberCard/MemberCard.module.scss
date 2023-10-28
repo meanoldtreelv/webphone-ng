@@ -1,53 +1,53 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
-.card{
-    width: 76px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 5px;
-    // padding: 0 11px;
+.card {
+	width: 76px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 5px;
+	// padding: 0 11px;
 }
-.cont1{
-    width: 54px;
-    height: 54px;
-    padding: 2px;
-}
-
-.memberInitials{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 48px;
-    background: map-get($color, linear-bg);
-    background-color: map-get($color, green-color-600);
+.cont1 {
+	width: 54px;
+	height: 54px;
+	padding: 2px;
 }
 
-.initials{
-    color: map-get($color, background-primary);
-    font-family: Poppins;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 30px; /* 150% */
-    letter-spacing: -0.5px;
+.memberInitials {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 48px;
+	background: map-get($color, linear-bg);
+	background-color: map-get($color, green-color-600);
 }
 
-.cont2{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.initials {
+	color: var(--background-primary);
+	font-family: Poppins;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 30px; /* 150% */
+	letter-spacing: -0.5px;
+}
 
-    > p {
-        font-size: 11px;
-        color: map-get($color, text-primary);
-    }
+.cont2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-    span {
-        font-size: 11px;
-        color: map-get($color, text-link);
-    }
+	> p {
+		font-size: 11px;
+		color: var(--text-primary);
+	}
+
+	span {
+		font-size: 11px;
+		color: var(--text-link);
+	}
 }

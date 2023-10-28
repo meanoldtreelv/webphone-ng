@@ -1,0 +1,77 @@
+.contact {
+	flex-shrink: 0;
+	padding: 0 10px;
+	height: 100vh;
+	overflow: hidden;
+	width: 400px;
+	border-right: 1px solid var(--border-tertiary);
+
+	&_sectionInfo {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 9px 16px 0 9px;
+
+		& span {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+			font-size: 11px;
+			color: var(--text-secondary);
+		}
+	}
+
+	&_sorting {
+		display: flex;
+		align-items: center;
+
+		button {
+			padding: 4px;
+			margin-left: 5px;
+		}
+	}
+}
+
+.smlHeader {
+	align-items: center;
+	justify-content: space-between;
+	padding: 15px 10px;
+
+	h1 {
+		color: var(--text-primary);
+		font-size: 1.5em;
+	}
+}
+
+.filterSmlHeader {
+	display: flex;
+	align-items: center;
+}
+
+.list {
+	height: calc(100% - 55px);
+	overflow-y: auto;
+
+	// this should be added in mixins
+	&::-webkit-scrollbar {
+		width: 12px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		height: 4rem;
+		border-radius: 0.5rem;
+		border: 4px solid transparent;
+		background-clip: content-box;
+		background-color: var(--scroll-primary);
+	}
+}
+
+@media only screen and (max-width: 990px) {
+	.contact {
+		width: 100%;
+	}
+
+	.smlHeader {
+		display: flex;
+	}
+}

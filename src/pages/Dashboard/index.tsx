@@ -26,15 +26,14 @@ import {
 	// instances_API,
 	// user_API,
 } from "./../../effects/apiEffect";
-
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
-import { useLazyGetContactsQuery } from "./../../services/contact";
 import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
-import { setContactList } from "./../../redux/contact/contactSlice";
-import { contactLists } from "./../../redux/contact/contactSelectors";
+// import { setContactList } from "./../../redux/contact/contactSlice";
+// import { contactLists } from "./../../redux/contact/contactSelectors";
 import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
+import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 
 
 const Dashboard = () => {
@@ -58,67 +57,67 @@ const Dashboard = () => {
 	// 	const userID = "5ed668cd38d0350104cb8789";
 
 	// 	const cnt_id = "5ed668cd38d0350104cb8789";
-		// instances_API(
-		// 	(res: any) => {
-		// 		console.log(res, "instances API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in instances retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in instances retrieve");
-		// 	},
-		// );
+	// instances_API(
+	// 	(res: any) => {
+	// 		console.log(res, "instances API retrieve");
+	// 		if (res?.status?.code === 200) {
+	// 			console.log("success in instances retrieve");
+	// 		}
+	// 	},
+	// 	(err: any) => {
+	// 		console.error(err, "err in instances retrieve");
+	// 	},
+	// );
 
-		// account_API(
-		// 	(res: any) => {
-		// 		console.log(res, "account API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in account retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in account retrieve");
-		// 	},
-		// );
+	// account_API(
+	// 	(res: any) => {
+	// 		console.log(res, "account API retrieve");
+	// 		if (res?.status === 200) {
+	// 			console.log("success in account retrieve");
+	// 		}
+	// 	},
+	// 	(err: any) => {
+	// 		console.error(err, "err in account retrieve");
+	// 	},
+	// );
 
-		// GET_Contact_List_API(
-		// 	(res: any) => {
-		// 		console.log(res, "contact API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in contact retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in contact retrieve");
-		// 	},
-		// );
+	// GET_Contact_List_API(
+	// 	(res: any) => {
+	// 		console.log(res, "contact API retrieve");
+	// 		if (res?.status === 200) {
+	// 			console.log("success in contact retrieve");
+	// 		}
+	// 	},
+	// 	(err: any) => {
+	// 		console.error(err, "err in contact retrieve");
+	// 	},
+	// );
 
-		// callerId_API(
-		// 	user_id,
-		// 	(res: any) => {
-		// 		console.log(res, "user API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in user retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in user retrieve");
-		// 	},
-		// );
+	// callerId_API(
+	// 	user_id,
+	// 	(res: any) => {
+	// 		console.log(res, "user API retrieve");
+	// 		if (res?.status?.code === 200) {
+	// 			console.log("success in user retrieve");
+	// 		}
+	// 	},
+	// 	(err: any) => {
+	// 		console.error(err, "err in user retrieve");
+	// 	},
+	// );
 
-		// user_API(
-		// 	userID,
-		// 	(res: any) => {
-		// 		console.log(res, "user API retrieve");
-		// 		if (res?.status?.code === 200) {
-		// 			console.log("success in user retrieve");
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in user retrieve");
-		// 	},
-		// );
+	// user_API(
+	// 	userID,
+	// 	(res: any) => {
+	// 		console.log(res, "user API retrieve");
+	// 		if (res?.status?.code === 200) {
+	// 			console.log("success in user retrieve");
+	// 		}
+	// 	},
+	// 	(err: any) => {
+	// 		console.error(err, "err in user retrieve");
+	// 	},
+	// );
 	// }, []);
 	return (
 		<div className={styles.dashboardWrapper}>
@@ -126,7 +125,7 @@ const Dashboard = () => {
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
-						{/* <ContactList /> */}
+						<RecentsSidebar />
 					</div>
 
 					{/* This is a dial pad components for calling */}
@@ -165,7 +164,6 @@ const Dashboard = () => {
 			{/* this is a status menu components to update the status like available, on lunch etc */}
 			{ statusMenu && <StatusMenu />} 
 
-			{/* this is a component to show about the ringplan  */}
 			{aboutRingplan && <AboutRingplan />}
 
 			{/* component for edit the extension  */}
@@ -176,9 +174,11 @@ const Dashboard = () => {
 
 			{/* incoming call components */}
 
-			{ringingInboundCalls.length > 0 ? <InboundCall /> : null}
-			{ ( answeredCalls.length + ringingOutboundCalls.length + ringingInboundCalls.length > 1 ) && <MultipleCallButton/> }
-			{ showMultipleCallListModal && <MultipleCallListModal/> }
+			<InboundCall />
+
+			{/* {ringingInboundCalls.length > 0 ? <InboundCall /> : null} */}
+			{answeredCalls.length + ringingOutboundCalls.length + ringingInboundCalls.length > 1 && <MultipleCallButton />}
+			{showMultipleCallListModal && <MultipleCallListModal />}
 		</div>
 	);
 };

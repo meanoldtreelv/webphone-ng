@@ -12,8 +12,8 @@
 	height: 64px;
 	padding: 15px 0;
 	z-index: 3;
-	border-top: 1px solid var(--border-tertiary, #e3eaf2);
-	background: var(--background-secondary, #fff);
+	border-top: 1px solid var(--border-tertiary);
+	background: var(--background-secondary);
 	// opacity: 0.8;
 	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
@@ -22,7 +22,7 @@
 	&_currentprogress,
 	&_totalDuration {
 		font-size: 13px;
-		color: var(--text-primary, #1f2023);
+		color: var(--text-primary);
 	}
 
 	&_month,
@@ -31,7 +31,7 @@
 	&_time,
 	&_morning {
 		font-size: 13px;
-		color: var(--text-secondary, #5c6168);
+		color: var(--text-secondary);
 	}
 
 	&_actionBtn {
@@ -108,4 +108,16 @@
 .footer_timeSlash {
 	font-size: 10px;
 	margin: 0 5px;
+}
+
+.footer_volumeBtn {
+	svg {
+		width: 25px;
+		height: 25px;
+		margin-left: 10px;
+	}
+
+	svg {
+		fill: var(--icon-primary);
+	}
 }

@@ -1,0 +1,155 @@
+.calendar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 500;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&_backdrop {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: black;
+		opacity: 0.5;
+	}
+
+	&_wrapper {
+		position: relative;
+		z-index: 600;
+		background: var(--background-tertiary);
+		padding: 30px;
+		border-radius: 12px;
+		width: 350px;
+	}
+
+	&_datepicker {
+		width: 100%;
+	}
+
+	&_indate {
+		input,
+		div > div {
+			width: 100%;
+			border-radius: 5px;
+			background: var(--background-secondary);
+			border-color: var(--border-secondary);
+
+			> div {
+				path {
+					stroke: var(--icon-primary);
+				}
+			}
+
+			button {
+				background: var(--background-emphasis);
+				color: var(--text-primary);
+				font-size: 0.85em;
+			}
+
+			tbody {
+				padding-top: 20px !important;
+			}
+
+			td {
+				background: var(--background-emphasis);
+				color: var(--text-primary);
+				border-radius: 0;
+			}
+
+			span {
+				color: var(--text-primary);
+				margin-top: 10px;
+				background: var(--background-emphasis);
+				text-align: center;
+				border-radius: 3px;
+				font-size: 0.7em;
+
+				&:hover {
+					color: var(--text-tertiary);
+				}
+			}
+		}
+
+		input {
+			background: var(--background-tertiary);
+			border: 1px solid var(--border-secondary) !important;
+			color: var(--text-secondary);
+
+			&::placeholder {
+				font-size: 0.9em;
+			}
+		}
+	}
+
+	&_header {
+		margin-bottom: 17px;
+
+		> div {
+			display: flex;
+			align-items: center;
+		}
+
+		h1 {
+			color: var(--text-primary);
+			margin-left: 6px;
+		}
+
+		p {
+			font-size: 0.85em;
+			color: var(--text-secondary);
+		}
+	}
+}
+
+.actionBtns {
+	margin-top: 30px;
+	display: flex;
+	gap: 15px;
+
+	button {
+		flex: 1;
+		border-radius: 5px;
+		padding: 10px;
+	}
+}
+
+.filterBtn {
+	background: var(--default-primary);
+	color: white;
+	font-size: 0.85em;
+
+	p {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		span {
+			margin-left: 6px;
+		}
+	}
+}
+
+.cancelBtn {
+	background: var(--background-quaternary);
+	color: var(--text-primary);
+	border: 1px solid var(--border-secondary);
+	font-size: 0.85em;
+}
+
+@media only screen and (max-width: 750px) {
+	.calendar_wrapper {
+		padding: 20px;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.calendar_wrapper {
+		width: unset;
+	}
+}

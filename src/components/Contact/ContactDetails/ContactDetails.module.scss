@@ -1,4 +1,4 @@
-@import "./../../../sass/abstracts/variables";
+@import "./../../../sass/abstracts/colors";
 
 .contactDetails {
 	width: 100%;
@@ -19,8 +19,20 @@
 
 	&_header {
 		display: flex;
+		align-items: center;
+
+		> button {
+			display: none;
+			align-items: center;
+			margin-right: 10px;
+		}
+	}
+
+	&_headerLeft {
+		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex: 1;
 	}
 }
 
@@ -36,11 +48,16 @@
 	align-items: center;
 	gap: 4px;
 	border-radius: 8px;
-	border: 1px solid map-get($color, border-primary);
+	border: 1px solid var(--border-primary);
 
 	span {
 		font-size: 13px;
-		color: map-get($color, text-primary);
+		color: var(--text-primary);
+		margin-left: 7px;
+	}
+
+	svg {
+		stroke: var(--icon-primary);
 	}
 }
 
@@ -49,16 +66,18 @@
 	height: 54px;
 	flex-shrink: 0;
 	border-radius: 48px;
-	background: map-get($color, accent-purple-primary);
+	// background: map-get($color, accent-purple-primary);
+	background: var(--accent-purple-primary);
 	margin-right: 10px;
 
 	span {
+		border-radius: 48px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		font-size: 20px;
-		color: map-get($color, background-primary);
-		background: map-get($color, linear-bg);
+		color: var(--background-primary);
+		background: $linear-bg;
 		height: 100%;
 	}
 }
@@ -66,12 +85,12 @@
 .profileInfo {
 	p {
 		font-size: 20px;
-		color: map-get($color, text-primary);
+		color: var(--text-primary);
 	}
 
 	span {
 		font-size: 14px;
-		color: map-get($color, text-secondary-2);
+		color: var(--text-tertiary);
 	}
 }
 
@@ -82,8 +101,8 @@
 	align-items: flex-start;
 	font-size: 13px;
 	border-radius: 8px;
-	border: 1px solid map-get($color, border-tertiary);
-	background: map-get($color, background-tertiary);
+	border: 1px solid var(--border-tertiary);
+	background: var(--background-tertiary);
 
 	& span {
 		display: flex;
@@ -93,7 +112,7 @@
 		gap: 10px;
 		flex: 1 0 0;
 		border-radius: 6px;
-		color: map-get($color, text-secondary-2);
+		color: var(--text-tertiary);
 		cursor: pointer;
 	}
 }
@@ -113,7 +132,7 @@
 	align-items: flex-start;
 	align-self: stretch;
 	border-radius: 8px;
-	background: map-get($color, background-tertiary);
+	background: var(--background-tertiary);
 	width: 100%;
 }
 
@@ -137,7 +156,7 @@
 		align-items: center;
 		gap: 4px;
 		border-radius: 8px;
-		background: map-get($color, primary-default);
+		background: $primary-600;
 		cursor: pointer;
 
 		svg {
@@ -154,7 +173,13 @@
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	border-radius: 12px;
 }
+
+.callHistoryBg {
+	background: var(--background-secondary);
+}
+
 .noHistory_box {
 	width: 100%;
 	height: 100%;
@@ -172,11 +197,69 @@
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+
+	p {
+		color: var(--text-secondary);
+	}
 }
 
 .rowValue {
 	font-size: 14px;
 	font-weight: 400;
-	color: #1f2023;
+	color: var(--text-primary);
 	height: 20px;
+}
+
+.deleteBtn {
+	color: var(--text-danger);
+	text-align: left;
+}
+
+@media only screen and (max-width: 990px) {
+	.contactDetails {
+		display: flex;
+	}
+
+	.contactDetailsSml {
+		display: flex;
+	}
+
+	.contactDetails_header {
+		> button {
+			display: flex;
+		}
+	}
+
+	@keyframes slider {
+		from {
+			right: -500px;
+		}
+
+		to {
+			right: 0;
+		}
+	}
+
+	.contactDetailsSml {
+		animation: slider 0.3s;
+	}
+}
+
+@media only screen and (max-width: 630px) {
+	.contactDetails_box {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.deleteBtn {
+		padding: 13px;
+		border-radius: 3px;
+		background: var(--accent-red-primary);
+		color: white;
+		text-align: center;
+		width: 100%;
+		font-weight: 400;
+		font-size: 0.8em;
+	}
 }

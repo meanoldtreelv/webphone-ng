@@ -5,7 +5,7 @@
 	top: 0;
 	width: 100vw;
 	height: 100vh;
-	background: map-get($color, overlay-primary);
+	background: var(--overlay-primary);
 	z-index: 1000;
 }
 
@@ -20,9 +20,8 @@
 	max-width: 344px;
 	height: 218;
 	border-radius: 12px;
-	border: 1px solid map-get($color, border-secondary);
-	background: map-get($color, background-primary);
-	/* ◻️ Light/action_shadow */
+	border: 1px solid var(--border-tertiary);
+	background: var(--background-secondary);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
 
 	&_cont {
@@ -36,7 +35,7 @@
 	&_ques {
 		max-width: 280px;
 		text-align: center;
-		color: map-get($color, text-secondary-2);
+		color: var(--text-tertiary);
 		font-size: 13px;
 	}
 
@@ -56,18 +55,23 @@
 
 	&_cancelBtn {
 		border-radius: 8px;
-		border: 1px solid map-get($color, border-primary);
+		border: 1px solid var(--border-secondary);
+		background: var(--background-quaternary);
 		width: 135px;
 		height: 42px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		span {
+			color: var(--text-primary);
+		}
 	}
 
 	&_deleteBtn {
-		background: map-get($color, support-danger-default);
+		background: var(--support-danger-default);
 		border-radius: 8px;
-		border: 1px solid map-get($color, support-danger-default);
+		border: 1px solid var(--support-danger-default);
 		width: 135px;
 		height: 42px;
 		display: flex;
@@ -75,11 +79,12 @@
 		align-items: center;
 
 		& span {
-			color: map-get($color, background-primary);
+			color: white;
 		}
 	}
 
 	&_head {
 		font-size: 14px;
+		color: var(--text-primary);
 	}
 }

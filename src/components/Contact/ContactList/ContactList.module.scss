@@ -1,4 +1,4 @@
-@import "./../../../sass/abstracts/variables";
+@import "./../../../sass/abstracts/colors";
 
 .contact {
 	padding: 15px;
@@ -14,13 +14,14 @@
 		align-items: center;
 
 		& input {
-			background: map-get($color, background-primary);
+			background: var(--background-primary);
 			padding: 7px 12px 7px 32px;
 			flex: 1 0 0;
 			border-radius: 8px;
-			border: 1px solid map-get($color, border-secondary);
-			background: map-get($color, background-tertiary);
+			border: 1px solid var(--border-secondary);
+			background: var(--background-tertiary);
 			width: 100%;
+			color: var(--text-secondary);
 		}
 
 		& .search_icon {
@@ -44,7 +45,7 @@
 			border-radius: 0.5rem;
 			border: 4px solid transparent;
 			background-clip: content-box;
-			background-color: map-get($color, text-secondary-2);
+			background-color: var(--scroll-primary);
 		}
 	}
 
@@ -52,14 +53,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		color: map-get($color, text-secondary-2);
 
 		& span {
 			display: flex;
 			align-items: center;
 			gap: 4px;
-			color: map-get($color, text-secondary-2);
 			font-size: 11px;
+			color: var(--text-secondary);
 		}
 	}
 
@@ -78,5 +78,28 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 8px;
-	background: map-get($color, primary-default);
+	background: $primary-600;
+}
+
+.respContacts_header {
+	margin-bottom: 12px;
+	text-align: center;
+	font-weight: 500;
+	display: none;
+	color: var(--text-primary);
+	font-weight: normal;
+}
+
+@media only screen and (max-width: 990px) {
+	.contact {
+		width: 100%;
+	}
+
+	.respContacts_header {
+		display: block;
+	}
+
+	.contactListSml {
+		display: none;
+	}
 }

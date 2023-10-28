@@ -68,6 +68,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				duration,
 				link,
 				idx,
+				transcript,
 			}),
 		);
 		dispatch(togglePlayPause(true));
@@ -127,10 +128,12 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 	};
 
 	return (
-		<div className={styles.card} style={{ background: playing.idx === idx ? "rgb(245, 245, 253)" : "" }}>
+		<div className={`${styles.card} ${playing.idx === idx ? styles.voicemailActive : ""}`}>
 			<div className={styles.card_mainCont}>
 				<div className={styles.card_cont1}>
-					{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
+					<div className={styles.contCheckBox}>
+						{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
+					</div>
 
 					{playPause && playing.idx === idx ? (
 						<button onClick={handlePauseAudio} className={styles.pauseIconBtn}>
@@ -143,7 +146,14 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 					)}
 
 					{!listened && <div className={styles.card_unread}></div>}
-					<p className={styles.card_name}>{title}</p>
+					<div className={styles.mainInf}>
+						<p className={styles.card_name}>{title}</p>
+						<div className={styles.smlInf}>
+							<span>Ext. {ext}</span>
+							<div className={styles.smlDt}></div>
+							<span>{formatDate(time)}</span>
+						</div>
+					</div>
 				</div>
 
 				<div className={styles.card_cont2}>

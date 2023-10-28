@@ -5,40 +5,73 @@ import Calendar from "components/UI/Icons/Calendar";
 import SearchBar from "components/UI/SearchBar";
 import SearchIcon from "components/UI/Icons/Search";
 import { useLazyGetCallHistoryQuery } from "services/call";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCallHistory, setSelectedCallHistory } from "redux/call-history/callHistorySlice";
 import { callHistory } from "redux/call-history/callHistorySelectors";
+import RecentHistoryCardSkeleton from "../RecentHistoryCardSkeleton";
+import FilterIcon from "components/UI/Icons/Filter";
 
-const RecentsSidebar = () => {
+interface IRecentsSidebar {
+	loading: boolean;
+	callLen: number;
+	dispCalendar: boolean;
+	setDispCalendar: (calendar: boolean) => void;
+}
+
+const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalendar, setDispCalendar }) => {
 	const allCallHistory = useSelector(callHistory);
-	
+	const [search, setSearch] = useState("");
+
+	const filterCallHistory = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearch(e.target.value);
+	};
+
 	return (
 		<div className={styles.contact}>
 			{/* <div className={styles.contact_search}>
 				<input type="text" placeholder="Search number" />
 				<SearchIcon />
 			</div> */}
-			<SearchBar />
+			<div className={styles.smlHeader}>
+				<h1>Recents</h1>
 
-			<div className={styles.list}>
+				{/* revert back to normal */}
+				{/* <div className={styles.filterSmlHeader}>
+					<button>
+						<FilterIcon />
+					</button>
+				</div> */}
+			</div>
+			<SearchBar onChange={filterCallHistory} />
+
+			<div className={styles.list} style={{ overflowY: !callLen ? "hidden" : "" }}>
 				<div className={styles.contact_sectionInfo}>
 					<span>Today (3)</span>
 					<div className={styles.contact_sorting}>
-						<button>
+						<button
+							onClick={() => {
+								setDispCalendar(true);
+							}}>
 							<Calendar />
 						</button>
-						<button>
+						{/* <button>
 							<DeleteIcon />
-						</button>
+						</button> */}
 					</div>
 				</div>
 
 				<div>
-					{allCallHistory?.map((call) => (
-						// <RecentHistoryCard time={call?.cdr?.starttime} number={call?.cdr?.dst} duration={99} />
-						<RecentHistoryCard details={call} />
-					))}
+					{!callLen
+						? Array(18)
+								.fill(null)
+								.map((el) => <RecentHistoryCardSkeleton />)
+						: allCallHistory?.map((call) => {
+								// <RecentHistoryCard time={call?.cdr?.starttime} number={call?.cdr?.dst} duration={99} />
+								return call?.cdr.dst.toLowerCase().includes(search.toLowerCase()) ? (
+									<RecentHistoryCard details={call} />
+								) : null;
+						  })}
 				</div>
 
 				{/* <div className={styles.contact_sectionInfo}>

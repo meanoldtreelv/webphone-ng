@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Contact.module.scss";
 import NoContact from "../../components/Contact/NoContact";
 import NoContactSelected from "../../components/Contact/NoContactSelected";
@@ -15,10 +15,16 @@ import {
 	editContactNumber,
 	selectedContactData,
 } from "./../../redux/contact/contactSelectors";
-import { clearSelectedContact, closeDeleteContact, closeSelectedContact, removeContact, setSelectedContact } from "redux/contact/contactSlice";
+import {
+	clearSelectedContact,
+	closeDeleteContact,
+	closeSelectedContact,
+	removeContact,
+	setSelectedContact,
+} from "redux/contact/contactSlice";
 import BaseLayout from "../../layouts/BaseLayout";
 import PromptDialog from "components/Modal/PromptDialog";
-import { useLazyDeleteContactQuery, useLazyGetContactQuery } from "services/contact";
+import { useLazyDeleteContactQuery } from "services/contact";
 
 const Contact = () => {
 	const dispatch = useDispatch();
@@ -33,15 +39,15 @@ const Contact = () => {
 		if (selectedContact) {
 			await deleteContact(selectedContact.id);
 			dispatch(clearSelectedContact());
-			dispatch(removeContact(selectedContact.id))
+			dispatch(removeContact(selectedContact.id));
 		}
 	};
 
 	useEffect(() => {
 		if (!isLoading) {
 			dispatch(closeDeleteContact());
-			dispatch(setSelectedContact(null))
-			dispatch(closeSelectedContact())
+			dispatch(setSelectedContact(null));
+			dispatch(closeSelectedContact());
 		}
 	}, [isLoading]);
 

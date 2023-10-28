@@ -11,8 +11,10 @@ import { selectedVoicemail, voicemailResults } from "./../../../redux/voicemail/
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { convertDateFormat, formatDate, formatTime } from "./../../../helpers/formatDateTime";
 import { playPauseState } from "./../../../redux/common/commonSelectors";
-import { togglePlayPause } from "./../../../redux/common/commonSlice";
+import { setSimpleNotification, togglePlayPause } from "./../../../redux/common/commonSlice";
 import { setSelectedVoicemail } from "redux/voicemail/voicemailSlice";
+import copy from "copy-to-clipboard";
+import CallVolumeIcon from "components/UI/Icons/Call/CallVolume";
 
 const VoicemailFooter = () => {
 	const [timeProgress, setTimeProgress] = useState(0);
@@ -31,11 +33,11 @@ const VoicemailFooter = () => {
 	}, [voicemail]);
 
 	useEffect(() => {
-		if(audioRef.current.paused && playPause) {
+		if (audioRef.current.paused && playPause) {
 			dispatch(togglePlayPause(true));
-		}else {
+		} else {
 			dispatch(togglePlayPause(false));
-			console.log('it should be paused niggachu')
+			console.log("it should be paused niggachu");
 		}
 	}, [audioRef, voicemail, prevNext]);
 
@@ -94,10 +96,26 @@ const VoicemailFooter = () => {
 		}
 	};
 
+	const handleCopyLink = () => {
+		copy(voicemail.link);
+		setSharePopup(false);
+		dispatch(setSimpleNotification("Link copied to clipboard"));
+	};
+
+	const handleCopyText = () => {
+		copy(voicemail.transcript || "");
+		setSharePopup(false);
+		dispatch(setSimpleNotification("Transcript copied to clipboard"));
+	};
+
+	const handleEmail = () => {
+		setSharePopup(false);
+	};
+
 	return Object.keys(voicemail).length ? (
 		<div className={styles.footer}>
 			<div className={styles.cont}>
-				{sharePopup ? <ShareBtnPopup></ShareBtnPopup> : null}
+				{sharePopup ? <ShareBtnPopup copyLink={handleCopyLink} copyText={handleCopyText} mail={handleEmail} /> : null}
 				<div className={styles.footer_actionBtn}>
 					<button className={styles.footer_action} onClick={() => handlePrevNext("prev")} disabled={prevNext <= 0}>
 						<PlayPrevIcon color={prevNext <= 0 ? "#C8D3E0" : "#0C6DC7"} />
@@ -159,8 +177,8 @@ const VoicemailFooter = () => {
 						}}>
 						<ShareIcon />
 					</button>
-					<button>
-						<SettingsIcon />
+					<button className={styles.footer_volumeBtn}>
+						<CallVolumeIcon />
 					</button>
 				</div>
 			</div>

@@ -39,4 +39,17 @@ export interface CallHistoryCDR {
 export interface ICallHistoryState {
 	callHistory: CallHistoryCDR[];
 	selectedCallHistory: CallHistoryCDR;
+	queries: {
+		from_date?: string;
+		to_date?: string;
+		page?: string;
+		page_size?: string;
+		src?: string;
+		dst?: string;
+		network?: "OFF_NET" | "ON_NET" | "PRIVATE";
+		direction?: "IN" | "OUT";
+		status?: "FAILED" | "CANCELLED" | "COMPLETED" | "ORIG_CANCEL" | "BUSY";
+		extension?: string;
+	};
+	strQueries: string;
 }

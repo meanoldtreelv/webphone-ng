@@ -1,4 +1,4 @@
-@import "./../../../sass/abstracts/variables";
+@import "./../../../sass/abstracts/colors";
 
 .contactDetails {
 	width: 100%;
@@ -33,9 +33,8 @@
 	flex-direction: column;
 	align-items: flex-start;
 	align-self: stretch;
-
 	border-radius: 8px;
-	background: map-get($color, background-tertiary);
+	background: var(--background-tertiary);
 	width: 100%;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .contactInfoText {
-	color: map-get($color, primary-default);
+	color: $primary-600;
 	cursor: pointer;
 	font-size: 13px;
 	font-weight: bold;
@@ -66,7 +65,7 @@
 		align-items: center;
 		gap: 4px;
 		border-radius: 8px;
-		background: map-get($color, primary-default);
+		background: $primary-600;
 		cursor: pointer;
 	}
 }
@@ -82,14 +81,13 @@
 	p {
 		font-size: 11px;
 		padding: 2px 4px;
-		color: map-get($color, text-secondary);
+		color: var(--text-secondary);
 	}
 }
 
 .noHistory_box {
 	width: 100%;
 	height: 100%;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -108,18 +106,19 @@
 
 .cardLabel {
 	font-size: 13px;
-	color: map-get($color, text-secondary);
+	color: var(--text-secondary);
 }
 
 .cardValue {
-	color: map-get($color, text-primary);
+	color: var(--text-primary);
 	font-size: 14px;
 }
 
 .deleteRecord {
-	color: map-get($color, support-danger-default);
+	color: $accent-red-600;
 	text-align: left;
 	width: 100%;
 	font-size: 13px;
 	padding-left: 15px;
+	font-weight: 600;
 }

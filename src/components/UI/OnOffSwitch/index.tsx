@@ -1,5 +1,5 @@
 import { emptyFunction } from "../../../utils";
-import classes from "./OnOffSwitch.module.scss";
+import styles from "./OnOffSwitch.module.scss";
 
 interface SwitchProps {
 	type?: any;
@@ -12,16 +12,16 @@ interface SwitchProps {
 
 function OnOffSwitch({
 	onClick = emptyFunction,
-	onChange = emptyFunction,
+	onChange,
 	type = "checkbox",
 	name = "",
 	checked = false,
 	...restProps
 }: SwitchProps) {
 	return (
-		<label className={classes.switch}>
+		<label className={styles.switch}>
 			<input onClick={onClick} onChange={onChange} checked={checked} type={type} {...restProps} />
-			<span className={`${classes.slider} ${classes.round}`}></span>
+			<span className={`${styles.slider} ${styles.round}`}></span>
 		</label>
 	);
 }

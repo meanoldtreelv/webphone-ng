@@ -16,9 +16,9 @@ import { cookieType } from "../types";
 // 	return formData;
 // };
 
-export 	const nameIcon =(displayname:string)=>{
-	return displayname[0] + ( (displayname.split(" ") && displayname.split(" ")[1])?displayname.split(" ")[1][0] : '')
-}
+export const nameIcon = (displayname: string) => {
+	return displayname[0] + (displayname.split(" ") && displayname.split(" ")[1] ? displayname.split(" ")[1][0] : "");
+};
 
 export const generateFormData = (obj: Record<string, any>): FormData => {
 	let formData = new FormData();
@@ -110,3 +110,13 @@ export const contactAbbreviation = (firstName: any, lastName: any, phone: any, e
 
 // empty function
 export const emptyFunction = () => {};
+
+// export const sortArrayOfObj = (arr: any) => {
+// 	return arr?.sort((a: any, b: any) => {
+// 		if (a?.phone) {
+// 			return a.phone.localeCompare(b.phone, "en-US", { sensitivity: "base" });
+// 		} else {
+// 			return a.first_name.localeCompare(b.first_name, "en-US", { sensitivity: "base" });
+// 		}
+// 	});
+// };

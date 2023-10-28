@@ -7,7 +7,7 @@ const index = () => {
 			<h2>Team Group</h2>
 			<div className={styles.headerAction}>
 				<button className={styles.headerAction_edit}>
-					<div>
+					<div className={styles.editIcon}>
 						<EditIcon />
 					</div>
 					<span>Edit</span>

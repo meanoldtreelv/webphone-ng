@@ -1,4 +1,4 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .contact {
 	flex-shrink: 0;
@@ -6,8 +6,8 @@
 	height: 100vh;
 	overflow-y: auto;
 	width: 410px;
-	border-right: 1px solid map-get($color, border-tertiary);
-	background: map-get($color, background-primary);
+	border-right: 1px solid var(--border-tertiary);
+	background: var(--background-primary);
 
 	&_search {
 		position: relative;
@@ -22,8 +22,8 @@
 			// align-items: center;
 			flex: 1 0 0;
 			border-radius: 8px;
-			border: 1px solid map-get($color, border-secondary);
-			background: map-get($color, background-tertiary);
+			border: 1px solid var(--border-secondary);
+			background: var(--background-tertiary);
 
 			width: 100%;
 		}
@@ -40,7 +40,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		color: map-get($color, text-secondary-2);
+		color: var(--text-tertiary);
 
 		& span {
 			display: flex;
@@ -60,11 +60,11 @@
 	padding: 8px 0 0 16px;
 	margin-bottom: 8px;
 	font-size: 14px;
-	color: map-get($color, text-secondary-2);
-	border-bottom: 1px solid map-get($color, border-secondary) !important;
+	border-bottom: 1px solid var(--border-secondary);
 
 	a {
 		margin-right: 20px;
+		color: var(--text-tertiary);
 	}
 }
 
@@ -96,7 +96,7 @@
 		border-radius: 0.5rem;
 		border: 4px solid transparent;
 		background-clip: content-box;
-		background-color: map-get($color, text-secondary-2);
+		background-color: var(--text-tertiary);
 	}
 
 	> div {
@@ -105,12 +105,18 @@
 }
 
 .active_tab {
-	color: map-get($color, text-link) !important;
-	border-bottom: 2px solid map-get($color, text-link) !important;
+	color: var(--text-link) !important;
+	border-bottom: 2px solid var(--text-link) !important;
 }
 
 .side_tab {
-	color: map-get($color, text-secondary-2);
+	color: var(--text-tertiary);
 	border-bottom: none;
 	padding-bottom: 10px;
+}
+
+@media only screen and (max-width: 990px) {
+	.contact {
+		width: 100%;
+	}
 }

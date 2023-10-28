@@ -7,7 +7,13 @@ import DeleteIcon from "./../../../components/UI/Icons/Delete";
 import CheckIcon from "./../../../components/UI/Icons/Voicemail/Check";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVoicemails, setSelectedVoicemailList } from "./../../../redux/voicemail/voicemailSlice";
-import { selectVoicemails, selectedVoicemails, voicemailResults } from "redux/voicemail/voicemailSelectors";
+import {
+	selectVoicemails,
+	selectedVoicemails,
+	voicemailFilterExt,
+	voicemailQueries,
+	voicemailResults,
+} from "redux/voicemail/voicemailSelectors";
 import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
 import { IHeader } from "./../../../constants/interfaces";
 
@@ -18,6 +24,8 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 	const [bulkVoicemailUpdate] = useLazyUpdateVoicemailsQuery();
 	const voicemail_ids = useSelector(selectedVoicemails);
 	const voicemails = useSelector(voicemailResults);
+	const filtered = useSelector(voicemailFilterExt);
+	const queries = useSelector(voicemailQueries);
 
 	const handleSelectToggle = () => {
 		if (!isSelectVoicemails) {
@@ -46,21 +54,24 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 						<input type="text" placeholder="Search voicemails..." onChange={handleVoicemailSearch} />
 						<SearchIcon />
 					</div>
-					<button
-						onClick={() => {
-							filterClicked(true);
-						}}>
-						<FilterIcon active={filterSlider} />
-					</button>
-					<button
-						onClick={() => {
-							dateClicked(true);
-						}}>
-						<CalendarIcon />
-					</button>
-					<button className={styles.checkBtn} onClick={handleSelectToggle}>
-						<CheckIcon />
-					</button>
+
+					<div className={styles.cont_actBtns}>
+						<button
+							onClick={() => {
+								filterClicked(true);
+							}}>
+							<FilterIcon active={filtered} />
+						</button>
+						<button
+							onClick={() => {
+								dateClicked(true);
+							}}>
+							<CalendarIcon active={queries.from_date || queries.to_date} />
+						</button>
+						<button className={styles.checkBtn} onClick={handleSelectToggle}>
+							<CheckIcon active={isSelectVoicemails} />
+						</button>
+					</div>
 				</div>
 			</section>
 			{isSelectVoicemails && Boolean(selectedVoicemailsCount) && (
