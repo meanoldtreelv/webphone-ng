@@ -1687,6 +1687,11 @@
     protobufjs "^7.2.4"
     yargs "^17.7.2"
 
+"@gsebdev/react-simple-datepicker@^1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@gsebdev/react-simple-datepicker/-/react-simple-datepicker-1.0.21.tgz#1a1dbfa2fb34fee0997f0a75555deb53afb1c542"
+  integrity sha512-Pal4hYKchBGGABJoQmJ4keBvAuKJppRREb8Fwu8x0LdJ8eJEfGiNlD9GsHn2ahHXhB+06g9k74sgaHjSbCtmng==
+
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.3.0.tgz#8368869dcb735be2e7f5cb7647de78e167a251fb"

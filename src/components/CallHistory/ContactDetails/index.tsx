@@ -15,7 +15,7 @@ const ContactDetails = () => {
 	const handleCall = () => {
 		sip.call(String(callHistoryDetails?.cdr?.dst));
 		navigate("/dashboard");
-	}
+	};
 
 	return (
 		<section className={styles.contactDetails}>
@@ -40,15 +40,15 @@ const ContactDetails = () => {
 								<button onClick={handleCall}>
 									<PhoneIcon />
 								</button>
-								<ChatIcon />
+								{/* <ChatIcon /> */}
 							</div>
 						</div>
 						<div className={styles.row}>
 							<div>
 								<p className={styles.cardLabel}>Date</p>
 								<p className={styles.cardValue}>
-									{longDateTimeFormat(callHistoryDetails?.cdr?.starttime)} 
-									{" "}{formatDate(callHistoryDetails?.cdr?.starttime)}
+									{longDateTimeFormat(callHistoryDetails?.cdr?.starttime)}{" "}
+									{formatDate(callHistoryDetails?.cdr?.starttime)}
 								</p>
 							</div>
 						</div>
@@ -65,7 +65,8 @@ const ContactDetails = () => {
 							</div>
 						</div>
 					</div>
-					<button className={styles.deleteRecord}>Delete Record</button>
+
+					{/* <button className={styles.deleteRecord}>Delete Record</button> */}
 				</div>
 			</div>
 		</section>

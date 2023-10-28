@@ -6,3 +6,4 @@ export const editContactNumber = (state: RootState) => state.contact.editContact
 export const deleteContactOpen = (state: RootState) => state.contact.deleteContactPopUpOpen;
 export const contactSelectd = (state: RootState) => state.contact.selectedContactOpen;
 export const selectedContactData = (state: RootState) => state.contact.selectedContact;
+export const callHistory = (state: RootState) => state.contact.callHistory;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Contact.module.scss";
 import NoContact from "../../components/Contact/NoContact";
 import NoContactSelected from "../../components/Contact/NoContactSelected";

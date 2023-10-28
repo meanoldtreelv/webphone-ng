@@ -1,4 +1,4 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .historyCard {
 	display: flex;
@@ -22,17 +22,18 @@
 		margin-right: 8px;
 		border-radius: 32px;
 		// background: linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
-		background: map-get($color, border-tertiary);
+		// background: map-get($color, border-tertiary);
+		background: var(--border-tertiary);
 
 		& span {
-			color: map-get($color, background-primary);
+			color: var(--background-primary);
 		}
 	}
 
 	&_info {
 		> p {
 			font-size: 14px;
-			color: map-get($color, text-primary);
+			color: var(--text-primary);
 		}
 	}
 }
@@ -46,20 +47,20 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 8px;
-		padding:2px 4px;
-		border: 1px solid map-get($color, border-tertiary);
+		padding: 2px 4px;
+		border: 1px solid var(--border-tertiary);
 		margin-right: 4px;
 	}
 }
 
 .descCount {
 	font-size: 11px;
-	color: map-get($color, text-secondary-2);
+	color: var(--text-tertiary);
 }
 
 .descText {
 	font-size: 13px;
-	color: map-get($color, text-secondary-2);
+	color: var(--text-tertiary);
 }
 
 .userIcon {

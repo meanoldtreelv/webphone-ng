@@ -3,7 +3,12 @@ import { ICallHistoryState } from "./callHistoryTypes";
 
 const initialCallHistoryState: ICallHistoryState = {
 	callHistory: [],
-	selectedCallHistory: {}
+	selectedCallHistory: {},
+	queries: {
+		page: 1,
+		page_size: 20,
+	},
+	strQueries: "",
 };
 
 const callHistorySlice = createSlice({
@@ -15,11 +20,15 @@ const callHistorySlice = createSlice({
 			state.callHistory = action.payload;
 		},
 		setSelectedCallHistory(state, action) {
-			state.selectedCallHistory= action.payload;
-		}
+			state.selectedCallHistory = action.payload;
+		},
+		setQueries(state, action) {
+			state.queries = action.payload;
+			state.strQueries = new URLSearchParams(state.queries).toString();
+		},
 	},
 });
 
-export const { setCallHistory, setSelectedCallHistory } = callHistorySlice.actions;
+export const { setCallHistory, setSelectedCallHistory, setQueries } = callHistorySlice.actions;
 
 export default callHistorySlice.reducer;

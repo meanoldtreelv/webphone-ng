@@ -60,11 +60,11 @@
 	padding: 8px 0 0 16px;
 	margin-bottom: 8px;
 	font-size: 14px;
-	color: var(--text-tertiary);
-	border-bottom: var(--border-secondary);
+	border-bottom: 1px solid var(--border-secondary);
 
 	a {
 		margin-right: 20px;
+		color: var(--text-tertiary);
 	}
 }
 

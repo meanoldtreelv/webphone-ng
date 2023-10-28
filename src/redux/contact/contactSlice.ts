@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IContactList, IContactState } from "./contactTypes";
 import { useLazyUpdateContactQuery } from "services/contact";
+import { callHistory } from "redux/call-history/callHistorySelectors";
 
 const initialContactState: IContactState = {
 	addContactPopUpOpen: false,
@@ -10,6 +11,7 @@ const initialContactState: IContactState = {
 	selectedContact: null as IContactList,
 	deleteContactId: "",
 	editContactNumber: "",
+	callHistory: [],
 };
 
 const contactSlice = createSlice({
@@ -63,6 +65,9 @@ const contactSlice = createSlice({
 			const newContact = { ...action.payload, id: Math.floor(Math.random() * 1000001) };
 			if (state.contactList?.length) state.contactList = [...state.contactList, newContact];
 		},
+		setCallHistory(state, action) {
+			state.callHistory = [...state.callHistory, action.payload];
+		},
 	},
 });
 
@@ -81,6 +86,7 @@ export const {
 	removeContact,
 	clearSelectedContact,
 	addContact,
+	setCallHistory,
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

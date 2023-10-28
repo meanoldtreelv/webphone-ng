@@ -3,7 +3,13 @@ import styles from "./HistoryCard.module.scss";
 import CallMissedIcon from "./../../../components/UI/Icons/Call/CallMissed";
 import CallOutgoingIcon from "./../../../components/UI/Icons/Call/CallOutgoing";
 
-const HistoryCard = () => {
+interface IHistoryCard {
+	number: string;
+	time: number;
+	duration: number;
+}
+
+const HistoryCard: React.FC<IHistoryCard> = ({ number, time, duration }) => {
 	const [callType, setCallType] = useState("");
 	return (
 		<div className={styles.historyCard}>
@@ -15,27 +21,24 @@ const HistoryCard = () => {
 					<span>{callType === "missed" ? <CallMissedIcon /> : <CallOutgoingIcon />}</span>
 					<span
 						className={styles.cardContactNumber}
-						style={
-							callType === "missed"
-								? { color: "#EE3939" }
-								: { color: "#5C6168" }
-						}>
-						+1(634) 129 5527
+						style={callType === "missed" ? { color: "#EE3939" } : { color: "#5C6168" }}>
+						{/* +1(634) 129 5527 */}
+						{number}
 					</span>
 				</p>
 			</div>
 			<div>
 				<p className={styles.cardCallTime}>
-					7:54PM
+					{/* 7:54PM */}
+					{time}
 				</p>
 				<p
 					className={styles.cardCallDuration}
 					style={
-						callType === "missed"
-							? { color: "#EE3939", textAlign: "right" }
-							: { color: "#5C6168", textAlign: "right" }
+						callType === "missed" ? { color: "#EE3939", textAlign: "right" } : { color: "#5C6168", textAlign: "right" }
 					}>
-					6m 19sec
+					{/* 6m 19sec */}
+					{duration}
 				</p>
 			</div>
 		</div>

@@ -102,3 +102,9 @@
 .edit {
 	cursor: pointer;
 }
+
+@media only screen and (max-width: 500px) {
+	.profileExtension {
+		z-index: 1050;
+	}
+}

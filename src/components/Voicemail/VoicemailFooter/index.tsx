@@ -14,6 +14,7 @@ import { playPauseState } from "./../../../redux/common/commonSelectors";
 import { setSimpleNotification, togglePlayPause } from "./../../../redux/common/commonSlice";
 import { setSelectedVoicemail } from "redux/voicemail/voicemailSlice";
 import copy from "copy-to-clipboard";
+import CallVolumeIcon from "components/UI/Icons/Call/CallVolume";
 
 const VoicemailFooter = () => {
 	const [timeProgress, setTimeProgress] = useState(0);
@@ -32,11 +33,11 @@ const VoicemailFooter = () => {
 	}, [voicemail]);
 
 	useEffect(() => {
-		if(audioRef.current.paused && playPause) {
+		if (audioRef.current.paused && playPause) {
 			dispatch(togglePlayPause(true));
-		}else {
+		} else {
 			dispatch(togglePlayPause(false));
-			console.log('it should be paused niggachu')
+			console.log("it should be paused niggachu");
 		}
 	}, [audioRef, voicemail, prevNext]);
 
@@ -109,7 +110,7 @@ const VoicemailFooter = () => {
 
 	const handleEmail = () => {
 		setSharePopup(false);
-	}
+	};
 
 	return Object.keys(voicemail).length ? (
 		<div className={styles.footer}>
@@ -176,8 +177,8 @@ const VoicemailFooter = () => {
 						}}>
 						<ShareIcon />
 					</button>
-					<button>
-						<SettingsIcon />
+					<button className={styles.footer_volumeBtn}>
+						<CallVolumeIcon />
 					</button>
 				</div>
 			</div>

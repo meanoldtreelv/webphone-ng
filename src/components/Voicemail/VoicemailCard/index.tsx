@@ -131,7 +131,9 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 		<div className={`${styles.card} ${playing.idx === idx ? styles.voicemailActive : ""}`}>
 			<div className={styles.card_mainCont}>
 				<div className={styles.card_cont1}>
-					{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
+					<div className={styles.contCheckBox}>
+						{isSelectVoicemails && <input type="checkbox" name="" id="" onChange={handleSelectInput} />}
+					</div>
 
 					{playPause && playing.idx === idx ? (
 						<button onClick={handlePauseAudio} className={styles.pauseIconBtn}>

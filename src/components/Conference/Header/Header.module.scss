@@ -1,4 +1,4 @@
-@import './../../../sass/abstracts/variables';
+@import "./../../../sass/abstracts/variables";
 
 .conferenceHeader {
 	display: flex;
@@ -8,10 +8,10 @@
 	justify-content: space-between;
 	align-items: center;
 	opacity: 0.8;
-	background: map-get($color, background-primary);
+	background: var(--background-primary);
 
 	h2 {
-		color: map-get($color, text-primary);
+		color: var(--text-primary);
 		font-size: 16px;
 	}
 }
@@ -26,13 +26,20 @@
 		padding: 8px 10px;
 		margin-right: 15px;
 		border-radius: 8px;
-		border: 1px solid map-get($color, border-primary);
+		border: 1px solid var(--border-primary);
 
 		span {
 			font-size: 13px;
 			margin-left: 4px;
-			color: map-get($color, text-primary);
+			color: var(--text-primary);
+			margin-left: 10px;
 		}
+	}
+}
+
+.editIcon {
+	path {
+		stroke: var(--icon-primary);
 	}
 }
 
@@ -40,7 +47,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 8px 10px;
+	padding: 8px 16px;
 	font-size: 13px;
 	color: map-get($color, background-primary);
 	border-radius: 8px;

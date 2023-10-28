@@ -12,4 +12,26 @@
 		font-size: 1.15em;
 		color: var(--text-primary);
 	}
+
+	button {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 990px) {
+	.header {
+		h3 {
+			display: none;
+		}
+
+		button {
+			display: flex;
+			align-items: center;
+
+			p {
+				color: var(--text-primary);
+				margin-left: 7px;
+			}
+		}
+	}
 }

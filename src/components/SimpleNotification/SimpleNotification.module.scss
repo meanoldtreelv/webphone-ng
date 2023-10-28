@@ -1,31 +1,31 @@
 .simpleNotification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    background: #777;
-    z-index: 1000;
-    border-radius: 5px;
-    animation: fade_smooth 0.2s;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	align-items: center;
+	background: var(--icon-disabled);
+	z-index: 1000;
+	border-radius: 5px;
+	animation: fade_smooth 0.2s;
 
-    button {
-        padding: 15px;
-    }
+	button {
+		padding: 15px;
+	}
 
-    p {
-        color: white;
-        padding: 15px;
-        font-size: 0.8em;
-    }
+	p {
+		color: white;
+		padding: 15px;
+		font-size: 0.8em;
+	}
 }
 
 @keyframes fade_smooth {
-    from {
-        opacity: 0;
-    }
+	from {
+		opacity: 0;
+	}
 
-    to {
-        opacity: 100%;
-    }
+	to {
+		opacity: 100%;
+	}
 }

@@ -16,6 +16,7 @@ import SearchIcon from "components/UI/Icons/Search";
 import { useLazyGetContactQuery, useLazyGetContactsQuery } from "services/contact";
 import React, { useEffect, useState } from "react";
 import ContactCardSkeleton from "../ContactCardSkeleton";
+import { sortArrayOfObj } from "utils";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const ContactList = () => {
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
 	const isContactSelected = useSelector(contactSelectd);
+	const [fakePage, setFakePage] = useState(20);
 
 	useEffect(() => {
 		const contactsJson = localStorage?.getItem("contacts");
@@ -42,7 +44,6 @@ const ContactList = () => {
 		if (contactsParsed && contactsParsed.length) {
 			dispatch(setContactList(contactsParsed));
 		} else {
-			console.log("this is something else");
 			fetchContacts();
 		}
 	}, []);
@@ -163,13 +164,14 @@ const ContactList = () => {
 					<ContactCard />
 				</div> */}
 
-				<div>
+				{/* uncomment this line of code */}
+				{/* <div>
 					<p className={styles.contact_favorites}>
 						<span>
 							<span>A</span>
 						</span>
 					</p>
-				</div>
+				</div> */}
 
 				<div>
 					{contactsLoading ? (

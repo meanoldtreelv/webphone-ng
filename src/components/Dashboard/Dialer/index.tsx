@@ -15,7 +15,7 @@ import CallHoldIcon from "components/UI/Icons/Call/CallHold";
 import CallMicOffIcon from "components/UI/Icons/Call/CallMicOff";
 import { callNumber } from "redux/call/callSelectors";
 import CallVolume from "components/UI/Icons/Call/CallVolume";
-import sip from "../../../lib/sip"
+import sip from "../../../lib/sip";
 import DTMF from "../DTMF";
 import { store } from "redux/store";
 import { useDispatch } from "react-redux";
@@ -23,7 +23,7 @@ import { setCallNumber } from "redux/call/callSlice";
 import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
-import AudioSettingOnCallModal from "../AudioSettingOnCallModal ";
+// import AudioSettingOnCallModal from "../AudioSettingOnCallModal ";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -35,27 +35,23 @@ const Dialer = () => {
 	const dispatch = useDispatch();
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
-	}
-	const { answeredCalls, answeredCallActive , ringingOutboundCalls, ringingOutboundCallActive, activeCallLineNumber } = useSelector((state: any) => state.sip)
+	};
+	const { answeredCalls, answeredCallActive, ringingOutboundCalls, ringingOutboundCallActive, activeCallLineNumber } =
+		useSelector((state: any) => state.sip);
 	// const [volume, setVolumeButtonClicked] = useState(false)
 	// const volumeButtonHandler = ()=>{
 	// 	setVolumeButtonClicked(!volume)
 	// }
-	for( const item of [...answeredCalls, ...ringingOutboundCalls] ){
+	for (const item of [...answeredCalls, ...ringingOutboundCalls]) {
 		// if(answeredCallActive === item.LineNumber || ringingOutboundCallActive === item.LineNumber){
-		if(activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber){
-			return(
-				(
-					item.showDTMF && <DTMF LineNumber={item.LineNumber} /> 
-				)||(
-					item.showAddCall && <AddCall LineNumber={item.LineNumber} />
-				)||(
-					item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />
-				)||(
-					item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />
-				)||(
+		if (activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber) {
+			return (
+				(item.showDTMF && <DTMF LineNumber={item.LineNumber} />) ||
+				(item.showAddCall && <AddCall LineNumber={item.LineNumber} />) ||
+				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
+				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
-						{item.audioSettingOnCallModal && <AudioSettingOnCallModal LineNumber={item.LineNumber} volumeLevel={item.volumeLevel} callSpeakerDevice={item.callSpeakerDevice}/>}
+						{/* {item.audioSettingOnCallModal && <AudioSettingOnCallModal LineNumber={item.LineNumber} volumeLevel={item.volumeLevel} callSpeakerDevice={item.callSpeakerDevice}/>} */}
 						<div
 							className={styles.dialer_detailsBox}
 							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
@@ -75,14 +71,14 @@ const Dialer = () => {
 									{item.DisplayName}
 								</p>
 								<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-									{item.DisplayNumber} 
+									{item.DisplayNumber}
 								</p>
 
 								{/* add the condition here for dialing  */}
 
-								{ !item.callTimer ? (
+								{!item.callTimer ? (
 									<p className={styles.title_3} style={{ color: "var(--text-secondary, #5C6168)" }}>
-										Dialing... 
+										Dialing...
 									</p>
 								) : (
 									<div className={`bold ${styles.dialer_timer}`} style={{ color: "var(--text-primary, #1F2023)" }}>
@@ -93,7 +89,16 @@ const Dialer = () => {
 						</div>
 						<div className={styles.dialer_box}>
 							<div className={styles.dialer_actionBox}>
-								<div className={styles.dialer_action} onClick={()=>{item.answered && store.dispatch({type:"sip/answeredCalls", payload:{action:"showAddCall",data:{lineNum:item.LineNumber, showAddCall:true}}}); dispatch(setCallNumber(""))}}>
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered &&
+											store.dispatch({
+												type: "sip/answeredCalls",
+												payload: { action: "showAddCall", data: { lineNum: item.LineNumber, showAddCall: true } },
+											});
+										dispatch(setCallNumber(""));
+									}}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 										<PhoneAddIcon answered={item.answered} fill={""} />
 									</span>
@@ -101,7 +106,7 @@ const Dialer = () => {
 										Add Call
 									</p>
 								</div>
-										{/* check if this icon works too */}
+								{/* check if this icon works too */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
 										<CallMergeIcon />
@@ -120,14 +125,18 @@ const Dialer = () => {
 									<span
 										className={styles.dialer_icon}
 										style={false ? IconActiveStyle : IconDisableStyle}
-										onClick={ ()=>{item.answered && transferCallHandler()}}>
+										onClick={() => {
+											item.answered && transferCallHandler();
+										}}>
 										{/* check if this icon works */}
-										<CallTransferIcon answered={item.answered}  />
+										<CallTransferIcon answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										Transfer
 									</p>
-									{isTransferButtonClicked && item.answered && <TransferCallCard LineNumber={item.LineNumber} />}
+									{isTransferButtonClicked && item.answered && (
+										<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
+									)}
 								</div>
 								{/* check if this icon works or not */}
 								{/* <div className={styles.dialer_action}>
@@ -138,36 +147,62 @@ const Dialer = () => {
 										Video
 									</p>
 								</div> */}
-								<div className={styles.dialer_action} onClick={()=>{item.answered && sip.mute(item.LineNumber, item.isMute)}}>
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered && sip.mute(item.LineNumber, item.isMute);
+									}}>
 									<span
 										className={styles.dialer_icon}
-										style={item.isMute
-													? { background: "var(--background-danger, #FFEBEB)" }
-													: IconDisableStyle
-										}
-									>
-										
+										style={item.isMute ? { background: "var(--background-danger, #FFEBEB)" } : IconDisableStyle}>
 										<CallMicOffIcon isMute={item.isMute} answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{item.isMute ? "Unmute" : "Mute"}
 									</p>
 								</div>
-								<div className={styles.dialer_action} onClick={()=>{item.answered && sip.hold(item.LineNumber, item.isHold)}}>
-									<span className={styles.dialer_icon} style={item.isHold ?  { background: "#f0f8ff" , border: "1px solid var(--border-disabled, #c8d3e0)"  } : IconDisableStyle}>
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered && sip.hold(item.LineNumber, item.isHold);
+									}}>
+									<span
+										className={styles.dialer_icon}
+										style={
+											item.isHold
+												? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
+												: IconDisableStyle
+										}>
 										<CallHoldIcon isHold={item.isHold} answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{item.isHold ? "Resume" : "Hold"}
 									</p>
 								</div>
-								<div className={styles.dialer_action} onClick={() => {item.answered && store.dispatch({type:"sip/answeredCalls", payload:{action:"audioSettingOnCallModal",data:{lineNum:item.LineNumber, audioSettingOnCallModal:true}}})}}>
-									<span className={styles.dialer_icon} style={item.audioSettingOnCallModal ?  { background: "#f0f8ff" , border: "1px solid var(--border-disabled, #c8d3e0)"  } : IconDisableStyle}>
-										<CallVolume volumeLevel={item.volumeLevel}  answered={item.answered} />
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered &&
+											store.dispatch({
+												type: "sip/answeredCalls",
+												payload: {
+													action: "audioSettingOnCallModal",
+													data: { lineNum: item.LineNumber, audioSettingOnCallModal: true },
+												},
+											});
+									}}>
+									<span
+										className={styles.dialer_icon}
+										style={
+											item.audioSettingOnCallModal
+												? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
+												: IconDisableStyle
+										}>
+										<CallVolume volumeLevel={item.volumeLevel} answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{"Volume"}
-									</p> 
+									</p>
 								</div>
 							</div>
 							<div className={styles.dialer_actionBox}>
@@ -185,17 +220,30 @@ const Dialer = () => {
 										</g>
 									</svg>
 								</div>
-								<div className={`${styles.dialer_control} ${styles.dialer_endButton}`} onClick={()=>{sip.hungup(item.LineNumber)}}>
+								<div
+									className={`${styles.dialer_control} ${styles.dialer_endButton}`}
+									onClick={() => {
+										sip.hungup(item.LineNumber);
+									}}>
 									<CallEndIcon />
 								</div>
-								<div className={styles.dialer_control} onClick={()=>{item.answered && store.dispatch({type:"sip/answeredCalls", payload:{action:"showDTMF",data:{lineNum:item.LineNumber, showDTMF:true}}}); dispatch(setCallNumber(""))}}>
+								<div
+									className={styles.dialer_control}
+									onClick={() => {
+										item.answered &&
+											store.dispatch({
+												type: "sip/answeredCalls",
+												payload: { action: "showDTMF", data: { lineNum: item.LineNumber, showDTMF: true } },
+											});
+										dispatch(setCallNumber(""));
+									}}>
 									<CallDialpad />
 								</div>
 							</div>
 						</div>
 					</section>
 				)
-			)
+			);
 		}
 	}
 };

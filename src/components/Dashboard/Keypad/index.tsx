@@ -5,7 +5,7 @@ import { progressCall, setCallNumber } from "./../../../redux/call/callSlice";
 import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
 import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
-import sip from "../../../lib/sip"
+import sip from "../../../lib/sip";
 
 const Keypad = () => {
 	const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const Keypad = () => {
 
 	const callingHandler = () => {
 		// dispatch(progressCall());
-	}
+	};
 
 	const modifyNumber = () => {
 		if (number.length) {
@@ -43,8 +43,10 @@ const Keypad = () => {
 				</div>
 				<div
 					className={styles.dialpad_key2}
-					style={{ background: number.length? "#75c322" : "var(--primary-disabled, #C8D3E0)"}}
-					onClick={()=>{sip.call(number)}}>
+					style={{ background: number.length ? "#75c322" : "var(--primary-disabled, #C8D3E0)" }}
+					onClick={() => {
+						sip.call(number);
+					}}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="fill / phone">
@@ -56,9 +58,9 @@ const Keypad = () => {
 						</g>
 					</svg>
 				</div>
-				<div >
+				<div>
 					<button className={styles.dialpad_key2} onClick={modifyNumber}>
-						<BackspaceIcon active={number.length>0}/>
+						<BackspaceIcon active={number.length > 0} />
 					</button>
 					{/* replace the above button with this, the above is only for testing */}
 					{/* <Button>

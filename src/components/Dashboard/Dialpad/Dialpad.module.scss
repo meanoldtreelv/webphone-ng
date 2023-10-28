@@ -16,10 +16,10 @@
 			outline: none;
 			border: none;
 			margin: auto;
-			padding: 5px 55px;
 			width: 100%;
 			color: var(--text-tertiary);
 			text-align: center;
+			height: 45px;
 		}
 	}
 	&_keypad {
@@ -76,4 +76,42 @@
 	text-align: center;
 	overflow-x: hidden;
 	font-size: 28px;
+}
+
+@media only screen and (max-width: 500px) {
+	.dialpad {
+		margin-top: -30px;
+	}
+}
+
+@media only screen and (max-width: 360px) {
+	.dialpad_number input {
+		font-size: 1.5em;
+
+		&::placeholder {
+			font-size: 0.82em;
+		}
+	}
+
+	.dialpad {
+		width: 250px;
+	}
+}
+
+@media only screen and (max-width: 350px) {
+	.dialpad_keypad button {
+		p {
+			font-size: 0.7em;
+		}
+
+		span {
+			font-size: 1.6em;
+		}
+	}
+}
+
+@media only screen and (max-width: 290px) {
+	.dialpad {
+		width: 220px;
+	}
 }

@@ -37,9 +37,10 @@ const BottomNav = () => {
 			name: "Keypad",
 		},
 		{
-			path: routePaths.CONFERENCE.GROUPS.ROUTE,
-			icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Conference",
+			path: routePaths.VOICEMAIL.ROUTE,
+			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Voicemail",
+			unread: 4,
 		},
 		{
 			path: routePaths.VOICEMAIL.ROUTE,
@@ -62,10 +63,9 @@ const BottomNav = () => {
 			unread: 2,
 		},
 		{
-			path: routePaths.VOICEMAIL.ROUTE,
-			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Voicemail",
-			unread: 4,
+			path: routePaths.CONFERENCE.GROUPS.ROUTE,
+			icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Conference",
 		},
 		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
@@ -94,7 +94,7 @@ const BottomNav = () => {
 					</NavLink>
 				) : (
 					<div className={styles.moreOpt}>
-						<div className={`${styles.moreOptIn} ${moreOpt ? styles.moreOptIn_on : styles.moreOptIn_remove}`}>
+						<div className={`${styles.moreOptIn}  ${moreOpt ? styles.moreOptIn_on : styles.moreOptIn_remove}`}>
 							<div>
 								<button onClick={() => setMoreOpt(false)}>
 									<XIcon />

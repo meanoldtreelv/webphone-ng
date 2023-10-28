@@ -10,13 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCallHistory, setSelectedCallHistory } from "redux/call-history/callHistorySlice";
 import { callHistory } from "redux/call-history/callHistorySelectors";
 import RecentHistoryCardSkeleton from "../RecentHistoryCardSkeleton";
+import FilterIcon from "components/UI/Icons/Filter";
 
 interface IRecentsSidebar {
 	loading: boolean;
 	callLen: number;
+	dispCalendar: boolean;
+	setDispCalendar: (calendar: boolean) => void;
 }
 
-const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen }) => {
+const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalendar, setDispCalendar }) => {
 	const allCallHistory = useSelector(callHistory);
 	const [search, setSearch] = useState("");
 
@@ -30,18 +33,31 @@ const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen }) => {
 				<input type="text" placeholder="Search number" />
 				<SearchIcon />
 			</div> */}
+			<div className={styles.smlHeader}>
+				<h1>Recents</h1>
+
+				{/* revert back to normal */}
+				{/* <div className={styles.filterSmlHeader}>
+					<button>
+						<FilterIcon />
+					</button>
+				</div> */}
+			</div>
 			<SearchBar onChange={filterCallHistory} />
 
 			<div className={styles.list} style={{ overflowY: !callLen ? "hidden" : "" }}>
 				<div className={styles.contact_sectionInfo}>
 					<span>Today (3)</span>
 					<div className={styles.contact_sorting}>
-						<button>
+						<button
+							onClick={() => {
+								setDispCalendar(true);
+							}}>
 							<Calendar />
 						</button>
-						<button>
+						{/* <button>
 							<DeleteIcon />
-						</button>
+						</button> */}
 					</div>
 				</div>
 

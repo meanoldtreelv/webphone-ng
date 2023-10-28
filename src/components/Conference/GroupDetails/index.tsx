@@ -10,13 +10,13 @@ const GroupDetails = () => {
 					<div className={styles.rowBox}>
 						<div className={styles.row}>
 							<div>
-								<p className={styles.detailsTitle}>Group Name</p>
+								<h1 className={styles.detailsTitle}>Group Name</h1>
 								<p className={styles.detailsVal}>Team Group</p>
 							</div>
 						</div>
 						<div className={styles.row}>
 							<div className={styles.detailsInfo}>
-								<p className={styles.detailsTitle}>Description</p>
+								<h1 className={styles.detailsTitle}>Description</h1>
 								<p className={styles.detailsVal}>Conference group for our team and for other important discuss</p>
 							</div>
 						</div>

@@ -4,7 +4,7 @@ import sip from "lib/sip";
 import { useEffect, useState } from "react";
 import { useGetInstancesBulksQuery, useGetInstancesQuery } from "services/callback";
 import ExtensionList from "./extensionList";
-import styles from "../Login/Login.module.scss";
+import styles from "./Callback.module.scss";
 import loginSideImage from "./../../assets/images/bg/login.png";
 import Logo from "components/UI/Logo";
 import { useNavigate } from "react-router";
@@ -13,31 +13,33 @@ import { useSelector } from "react-redux";
 import { store } from "redux/store";
 import ErrorMessage from "components/UI/ErrorMessage";
 import { setCookie } from "utils";
+import { useTheme } from "hooks/useTheme";
 
 const Callback = () => {
-	const uuid:string = useGetInstancesQuery(null).data?.[0]["uuid"]
+	const uuid: string = useGetInstancesQuery(null).data?.[0]["uuid"];
 	const navigate = useNavigate();
-	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip)
+	const theme = useTheme();
+	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
 	const loginWithExtensionandSecret = () => {
-		 store.dispatch({type:"sip/authMessage", payload:""});
-		 navigate("/auth/login")
-		}
+		store.dispatch({ type: "sip/authMessage", payload: "" });
+		navigate("/auth/login");
+	};
 	const loginWithAPI = () => {
-		console.log(loginSelectExtension)
-		console.log(extAuthList)
+		console.log(loginSelectExtension);
+		console.log(extAuthList);
 		for (const ext of extAuthList) {
 			if (ext["user"] == loginSelectExtension) {
-				sip.LoginWithAPI(ext)
+				sip.LoginWithAPI(ext);
 			}
 		}
-	}
+	};
 
-	const { authMessage, authLoading } = useSelector((state: any) => state.sip)
-	useEffect(()=>{
-		if(authMessage === "continue"){
+	const { authMessage, authLoading } = useSelector((state: any) => state.sip);
+	useEffect(() => {
+		if (authMessage === "continue") {
 			navigate("/dashboard");
 		}
-	}, [authMessage])
+	}, [authMessage]);
 	// return (
 	// 	<div style={{ width: "100%", height: "100vh", backgroundColor: "#bfbfbf", placeContent: "center", display: "grid" }}>
 	// 		<div style={{ maxWidth: "28rem", }}>
@@ -55,7 +57,7 @@ const Callback = () => {
 	// );
 	const callback = () => {
 		return (
-			<section className={styles.login}>
+			<section className={`${styles.login} ${theme}`}>
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
 				</div>
@@ -64,19 +66,32 @@ const Callback = () => {
 						<h1 className={styles.login_join}>Join the RingPlan Team</h1>
 						<p className={styles.login_doMore}>Do more with Ringplan.</p>
 						<div className={styles.continueRingplan}>
-							<Button onClick={loginWithExtensionandSecret } icon={<Logo type="ri" />} border>
+							<Button onClick={loginWithExtensionandSecret} icon={<Logo type="ri" />} border>
 								<span>Login with Extension and Secret</span>
 							</Button>
 						</div>
-						<h2 style={{ minWidth: "18rem", fontWeight: 500, fontSize: "1.125rem", color: "#6a7077", lineHeight: "1.75rem", fontFamily: "Roboto, sans-serif", marginBottom: "1rem" }}>Select Extension</h2>
+						<h2
+							style={{
+								minWidth: "18rem",
+								fontWeight: 500,
+								fontSize: "1.125rem",
+								color: "#6a7077",
+								lineHeight: "1.75rem",
+								fontFamily: "Roboto, sans-serif",
+								marginBottom: "1rem",
+							}}>
+							Select Extension
+						</h2>
 						{uuid ? <ExtensionList uuid={uuid} /> : null}
-						{ authMessage && authMessage !== "continue" ? <ErrorMessage msg={ authMessage } /> : ''}
-						<Button fill onClick={loginWithAPI}>Continue</Button>
+						{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+						<Button fill onClick={loginWithAPI}>
+							Continue
+						</Button>
 					</div>
 				</div>
 			</section>
-		)
-	}
+		);
+	};
 
 	return authLoading ? <Loader /> : callback();
 };

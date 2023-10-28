@@ -28,6 +28,7 @@ import SimpleNotification from "components/SimpleNotification/inex";
 import { simpleNotification } from "redux/common/commonSelectors";
 import { useGetExtensionsQuery } from "services/extension";
 import NoVoicemailSearch from "components/Voicemail/NoVoicemailSearch";
+import Calendar from "components/UI/Calender";
 
 const Voicemail = () => {
 	const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const Voicemail = () => {
 			setFilterSlider(false);
 			dispatch(setNewFilter(false));
 
-			if(queries.from_date || queries.to_date) {
+			if (queries.from_date || queries.to_date) {
 				setFilterDate(false);
 			}
 		};
@@ -181,7 +182,8 @@ const Voicemail = () => {
 
 			{filterSlider ? <Filter extensionList={extListData} onClose={setFilterSlider} filterAnim={filterAnim} /> : null}
 			{deleteVoicemailModal ? <DeleteVoicemail onClose={setDeleteVoicemailModal} /> : null}
-			{filterDate ? <FormModal loading={isFetching} onClose={setFilterDate} /> : null}
+			{/* {filterDate ? <FormModal loading={isFetching} onClose={setFilterDate} /> : null} */}
+			{filterDate ? <Calendar setDispCalendar={setFilterDate} placeholder1="From" placeholder2="To" /> : null}
 			{simpleMsg && <SimpleNotification msg={simpleMsg} />}
 		</div>
 	);

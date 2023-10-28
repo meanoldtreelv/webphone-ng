@@ -23,9 +23,33 @@
 		column-gap: 10px;
 		align-items: center;
 		height: fit-content;
+	}
+
+	.contCheckBox {
+		display: flex;
+		position: relative;
 
 		> input {
 			cursor: pointer;
+			appearance: none;
+			width: 14px;
+			height: 14px;
+			border: 1px solid var(--border-primary);
+			border-radius: 1px;
+			cursor: pointer;
+		}
+
+		input:checked {
+			background: var(--background-quaternary);
+		}
+
+		input:checked::before {
+			content: "\2713";
+			position: absolute;
+			color: var(--text-primary);
+			font-size: 10px;
+			left: 3px;
+			top: 0;
 		}
 	}
 
@@ -121,7 +145,7 @@
 
 	p {
 		font-size: 0.8em;
-		color: #5c5e6e;
+		color: var(--text-secondary);
 	}
 }
 
@@ -142,6 +166,7 @@
 
 	span {
 		font-size: 0.7em;
+		color: var(--text-secondary);
 	}
 
 	> div {
@@ -190,5 +215,17 @@
 	.card_phone,
 	.card_transcriptIcon {
 		display: none;
+	}
+
+	.card_mainCont {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 4px;
+		padding: 8px 0;
+	}
+
+	.transcriptHighlight {
+		padding-left: 20px;
 	}
 }

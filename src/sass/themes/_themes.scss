@@ -430,6 +430,11 @@ $themes: (
 		light: $grey-scroll-light,
 		dark: $grey-scroll-dark,
 	),
+
+	box-shadow-primary: (
+		light: $neutral-30,
+		dark: $neutral-110,
+	),
 );
 
 @mixin styles($mode) {

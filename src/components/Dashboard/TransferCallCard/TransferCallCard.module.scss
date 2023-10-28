@@ -6,8 +6,9 @@
 	flex-direction: column;
 	align-items: flex-start;
 	border-radius: 12px;
-	border: 1px solid map-get($color, border-secondary);
-	background: map-get($color, background-primary);
+	border: 1px solid var(--border-secondary);
+	// background: map-get($color, background-primary);
+	background: var(--background-quaternary);
 	position: relative;
 	z-index: 50;
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
@@ -22,23 +23,43 @@
 		align-items: center;
 		gap: 10px;
 		width: 100%;
+		color: var(--text-secondary);
+		&:hover {
+			background: var(--background-emphasis);
+		}
 	}
 }
 
 .cardTitle {
 	font-size: 11px;
-	color: map-get($color, text-secondary-2);
-	border-bottom: 1px solid map-get($color, border-tertiary);
+	color: var(--text-tertiary);
+	border-bottom: 1px solid var(--border-secondary);
 	display: flex;
 	height: 40px;
 	padding: 9px 16px 9px 16px;
 	align-items: center;
-	gap: 10px;
 	width: 100%;
+	justify-content: space-between;
+
+	button {
+		width: unset;
+		padding: 0;
+	}
 }
 
 .cardOptions {
 	font-size: 11px;
 	color: map-get($color, text-primary);
-	border-bottom: 1px solid map-get($color, border-tertiary);
+	border-bottom: 1px solid var(--border-tertiary);
+}
+
+@media only screen and (max-width: 400px) {
+	.transfer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 3000;
+		border-radius: 0 !important;
+	}
 }

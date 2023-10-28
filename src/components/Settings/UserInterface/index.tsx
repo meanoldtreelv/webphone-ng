@@ -9,27 +9,43 @@ import useDarkMode from "use-dark-mode";
 const UserInterface = () => {
 	const darkMode = useDarkMode(false);
 
+	const handleDarkMode = () => {
+		if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			if (darkMode.value) {
+				darkMode.toggle();
+			} else {
+				darkMode.toggle();
+			}
+		} else {
+			if (!darkMode.value) {
+				darkMode.toggle();
+			} else {
+				darkMode.toggle();
+			}
+		}
+	};
+
 	return (
 		<section className={styles.ui}>
-			<h2 className={`body_bold ${styles.heading}`}>Paths</h2>
-			<div className={styles.downloadFolder}>
+			{/* <h2 className={`body_bold ${styles.heading}`}>Paths</h2> */}
+			{/* <div className={styles.downloadFolder}>
 				<p className={`caption_1 ${styles.headingDescription}`}>Downloads Folder</p>
 				<div>
 					<span className={styles.fileIcon}>
 						<FolderIcon />
 					</span>
 				</div>
-			</div>
+			</div> */}
 			<h2 className={`body_bold ${styles.heading}`}>Other</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>
-				<p>
+				{/* <p>
 					<OnOffSwitch />
 					<span>Close the program when the window is closed</span>
-				</p>
-				<p>
+				</p> */}
+				{/* <p>
 					<OnOffSwitch />
 					<span>Autorun of the program at system startup</span>
-				</p>
+				</p> */}
 				<p>
 					<OnOffSwitch />
 					<span>Make RingPlan Voice default app for calls</span>
@@ -38,7 +54,7 @@ const UserInterface = () => {
 			<h2 className={`body_bold ${styles.heading}`}>Dark Mode</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>
 				<p>
-					<OnOffSwitch />
+					<OnOffSwitch onChange={handleDarkMode} checked={darkMode.value} />
 					<span>Sync with OS setting</span>
 				</p>
 				<p>
@@ -47,7 +63,7 @@ const UserInterface = () => {
 				</p>
 				<p>
 					<span>
-						<OnOffSwitch />
+						<OnOffSwitch onChange={handleDarkMode} checked={darkMode.value} />
 						<span>Auto Dark Mode</span>
 					</span>
 				</p>
@@ -75,13 +91,13 @@ const UserInterface = () => {
 					<span>Save position</span>
 				</p>
 			</div>
-			<h2 className={`body_bold ${styles.heading}`}>OCR</h2>
+			{/* <h2 className={`body_bold ${styles.heading}`}>OCR</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>
 				<p>
 					<OnOffSwitch />
 					<span>Enable OCR</span>
 				</p>
-			</div>
+			</div> */}
 		</section>
 	);
 };

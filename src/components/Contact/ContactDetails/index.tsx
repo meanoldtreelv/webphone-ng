@@ -8,6 +8,7 @@ import {
 	openDeleteContact,
 	setDeleteContactId,
 	setSelectedContact,
+	closeSelectedContact,
 } from "redux/contact/contactSlice";
 import { contactAbbreviation } from "../../../utils";
 import EditIcon from "components/UI/Icons/Edit";
@@ -15,18 +16,22 @@ import PhoneIcon from "components/UI/Icons/Phone";
 import ChatIcon from "components/UI/Icons/Chat";
 import FileIcon from "components/UI/Icons/File";
 import HistoryTimeIcon from "components/UI/Icons/Call/CallHistory";
-import { contactSelectd, selectedContactData } from "redux/contact/contactSelectors";
+import { callHistory, contactSelectd, selectedContactData } from "redux/contact/contactSelectors";
 import sip from "lib/sip";
 import { useNavigate } from "react-router";
 import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
+import { CallHistoryCDR } from "redux/call-history/callHistoryTypes";
+import { useLazyGetCallHistoriesQuery } from "services/call";
 
 const ContactDetails = () => {
 	const [activeButton, setActiveButton] = useState("1");
-	const [isCallHistory, setIsCallHistory] = useState(false);
+	const [contactCallHistory, setContactCallHistory] = useState<CallHistoryCDR[]>([]);
 	const navigate = useNavigate();
 	const isContactSelected = useSelector(contactSelectd);
 	const dispatch = useDispatch();
 	const selectedContact = useSelector(selectedContactData);
+	const callHistories = useSelector(callHistory);
+	const [getCallHistories, { data: historyData, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
 
 	const editContactHandler = () => {
 		dispatch(setEditContactNumber(selectedContact?.id));
@@ -46,6 +51,31 @@ const ContactDetails = () => {
 		navigate("/dashboard");
 	};
 
+	useEffect(() => {
+		const callHis = callHistories.filter((history) => history.id === selectedContact?.id);
+
+		if (callHis.length > 0) {
+			setContactCallHistory(callHis);
+			console.log("something is up");
+		} else {
+			const phone = selectedContact?.phone?.toString() || "";
+
+			// const srcDstParam = new URLSearchParams({
+			// 	src: phone,
+			// 	dst: phone,
+			// }).toString();
+
+			const srcDstParam = `src=${phone}&dst=${phone}`;
+
+			const fetchHistory = async () => {
+				await getCallHistories(srcDstParam);
+				console.log("this is the history data: ", historyData);
+			};
+
+			fetchHistory();
+		}
+	}, []);
+
 	return (
 		<section className={`${styles.contactDetails} ${isContactSelected ? styles.contactDetailsSml : ""}`}>
 			<div className={styles.contactDetails_box}>
@@ -53,6 +83,7 @@ const ContactDetails = () => {
 					<button
 						onClick={() => {
 							dispatch(setSelectedContact(null));
+							dispatch(closeSelectedContact());
 						}}>
 						<ChevronLeftIcon />
 					</button>
@@ -119,16 +150,16 @@ const ContactDetails = () => {
 											/>
 										</svg> */}
 									</span>
-									<span>
-										{/* fix the padding for this icon */}
-										<ChatIcon />
-										{/* <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+									{/* <span> */}
+									{/* fix the padding for this icon */}
+									{/* <ChatIcon /> */}
+									{/* <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
 											<path
 												d="M15.75 11.25C15.75 11.6478 15.592 12.0294 15.3107 12.3107C15.0294 12.592 14.6478 12.75 14.25 12.75H5.25L2.25 15.75V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H14.25C14.6478 2.25 15.0294 2.40804 15.3107 2.68934C15.592 2.97064 15.75 3.35218 15.75 3.75V11.25Z"
 												fill="white"
 											/>
 										</svg> */}
-									</span>
+									{/* </span> */}
 								</div>
 							</div>
 							<div className={styles.row}>
@@ -218,8 +249,7 @@ const ContactDetails = () => {
 							</div> */}
 						</div>
 						<button
-							className={`footnote_bold cursor-pointer`}
-							style={{ color: "var(--support-danger, #EE3939)", textAlign: "left", width: "100%" }}
+							className={`footnote_bold ${styles.deleteBtn}`}
 							onClick={() => {
 								dispatch(openDeleteContact());
 								dispatch(setDeleteContactId(selectedContact?.id));
@@ -228,17 +258,19 @@ const ContactDetails = () => {
 						</button>
 					</div>
 				) : (
-					<div className={styles.callHistory}>
-						{isCallHistory ? (
+					<div className={`${styles.callHistory} ${!contactCallHistory.length ? styles.callHistoryBg : ""}`}>
+						{contactCallHistory.length ? (
 							<div>
 								<p className={`caption_2 py-2 px-4`} style={{ color: "var(--text-secondary, #5C6168)" }}>
 									Today (6)
 								</p>
-								<HistoryCard />
-								<HistoryCard />
-								<HistoryCard />
-								<HistoryCard />
-								<HistoryCard />
+								{contactCallHistory.map((history) => (
+									<HistoryCard
+										duration={history?.cdr?.duration}
+										time={history?.cdr?.ringtime}
+										number={history?.cdr?.dst || history?.cdr?.src}
+									/>
+								))}
 							</div>
 						) : (
 							<div className={styles.noHistory_box}>
