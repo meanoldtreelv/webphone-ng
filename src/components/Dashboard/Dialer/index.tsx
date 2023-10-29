@@ -23,7 +23,7 @@ import { setCallNumber } from "redux/call/callSlice";
 import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
-// import AudioSettingOnCallModal from "../AudioSettingOnCallModal ";
+import AudioSettingOnCallModal from "../AudioSettingOnCallModal ";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -51,7 +51,7 @@ const Dialer = () => {
 				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
 				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
-						{/* {item.audioSettingOnCallModal && <AudioSettingOnCallModal LineNumber={item.LineNumber} volumeLevel={item.volumeLevel} callSpeakerDevice={item.callSpeakerDevice}/>} */}
+						{item.audioSettingOnCallModal && <AudioSettingOnCallModal LineNumber={item.LineNumber} volumeLevel={item.volumeLevel} callSpeakerDevice={item.callSpeakerDevice}/>}
 						<div
 							className={styles.dialer_detailsBox}
 							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
@@ -150,12 +150,12 @@ const Dialer = () => {
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
-										item.answered && sip.mute(item.LineNumber, item.isMute);
+										sip.mute(item.LineNumber, item.isMute);
 									}}>
 									<span
 										className={styles.dialer_icon}
 										style={item.isMute ? { background: "var(--background-danger, #FFEBEB)" } : IconDisableStyle}>
-										<CallMicOffIcon isMute={item.isMute} answered={item.answered} />
+										<CallMicOffIcon isMute={item.isMute} answered={true} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{item.isMute ? "Unmute" : "Mute"}

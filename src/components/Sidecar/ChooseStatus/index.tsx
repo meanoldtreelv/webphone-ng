@@ -34,7 +34,8 @@ const ChooseStatus = () => {
 						<DNDThisDeviceIcon />
 					</span>
 					<span>
-						Do not Disturb <b>(This device only)</b>
+						Do not Disturb
+						 {/* <b>(This device only)</b> */}
 					</span>
 				</p>
 			</div>

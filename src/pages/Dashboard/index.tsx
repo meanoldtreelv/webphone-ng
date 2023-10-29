@@ -35,6 +35,7 @@ import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 
+
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
@@ -43,15 +44,8 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const {
-		ringingInboundCalls,
-		answeredCalls,
-		ringingOutboundCalls,
-		callEnding,
-		logoutPopUp,
-		aboutRingplan,
-		showMultipleCallListModal,
-	} = useSelector((state: any) => state.sip);
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan, showMultipleCallListModal, statusMenu } =
+		useSelector((state: any) => state.sip);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
@@ -150,7 +144,7 @@ const Dashboard = () => {
 					{/* {isCallAdded && <AddCall />} */}
 					{/* <DTMF /> */}
 					{/* to transfer the call to another number we call this component */}
-					{isCallTransfer && <TransferCall />}
+					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
 					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} />}
@@ -168,7 +162,7 @@ const Dashboard = () => {
 				</section>
 			</BaseLayout>
 			{/* this is a status menu components to update the status like available, on lunch etc */}
-			{/* <StatusMenu /> */}
+			{ statusMenu && <StatusMenu />} 
 
 			{aboutRingplan && <AboutRingplan />}
 

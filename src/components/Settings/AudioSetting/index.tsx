@@ -89,7 +89,7 @@ const AudioSetting = () => {
 					<div className={`${styles.optionBox}`}></div>
 				</div> */}
 				<div className={`${styles.setting}`}>
-					<h2 className={`caption_1 ${styles.heading2}`}>
+					<h2 className={`caption_1 ${styles.heading1}`}>
 						<OnOffSwitch checked={audioEchoCancellation} onChange={(e)=>{store.dispatch({type:"sip/audioEchoCancellation", payload:e.target.checked}); setCookie("audioEchoCancellation", e.target.checked)}}/>
 						<span className={`caption_1`}>Enable echo cancellation</span>
 					</h2>
@@ -108,13 +108,13 @@ const AudioSetting = () => {
 				</div>
 
 				<div className={`${styles.setting}`}>
-					<h2 className={`caption_1 ${styles.heading2}`}>
+					<h2 className={`caption_1 ${styles.heading1}`}>
 						<OnOffSwitch checked={audioNoiseSuppression} onChange={(e)=>{store.dispatch({type:"sip/audioNoiseSuppression", payload:e.target.checked}); setCookie("audioNoiseSuppression", e.target.checked)}} />
 						<span className={`caption_1`}>Enable noise suppression</span>
 					</h2>
 				</div>
 				<div className={`${styles.setting}`}>
-					<h2 className={`caption_1 ${styles.heading2}`}>
+					<h2 className={`caption_1 ${styles.heading1}`}>
 						<OnOffSwitch checked={audioAutoGainControl} onChange={(e)=>{store.dispatch({type:"sip/audioAutoGainControl", payload:e.target.checked}); setCookie("audioAutoGainControl", e.target.checked);}} />
 						<span className={`caption_1`}>Enable auto gain control</span>
 					</h2>

@@ -144,7 +144,7 @@ const InboundCall = () => {
 								</svg>
 							</button>
 						</div>
-						<div className={styles.silent_box}>
+						<div className={styles.silent_box} onClick={() => sip.ringtone(item.LineNumber, !item.ringtone)}>
 							<span
 								className={styles.silent}
 								style={item.ringtone ? { backgroundColor: "var(--background-danger, #FFEBEB)" } : {}}>
@@ -158,8 +158,7 @@ const InboundCall = () => {
 								</svg>
 								<span
 									className={`footnote`}
-									style={{ color: "var(--text-primary, #1F2023)" }}
-									onClick={() => sip.ringtone(item.LineNumber, !item.ringtone)}>
+									style={{ color: "var(--text-primary, #1F2023)" }}>
 									Silent
 								</span>
 							</span>

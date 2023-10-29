@@ -1,12 +1,48 @@
+import { store } from "redux/store";
 import styles from "./StatusMenu.module.scss";
+import { useSelector } from "react-redux";
+import { useLazySetStatusQuery } from 'services/status'
+import { emptyFunction } from "utils";
 
 const StatusMenu = () => {
+	const [updateStatus] = useLazySetStatusQuery()
+	const { status } = useSelector((state: any) => state.sip)
+	const update = (status:string, additional_status:string|null = "") =>{
+		if(additional_status == "" || additional_status == null || additional_status == undefined){
+			let userStatusMainStatus = status;
+			store.dispatch({type:"sip/status", payload:{
+				main_status:userStatusMainStatus,
+				additional_status:additional_status
+			}})
+		}
+		const sendData = additional_status != "" ? 
+		{
+			main_status: {
+				status: status
+			},
+		  	additional_status: {
+				status: additional_status,
+				action_type: "manual",
+				action: "set"
+		  }
+		} : {
+			main_status: {
+				status: status
+			}
+		}
+		console.log(sendData)
+		updateStatus(JSON.stringify(sendData))
+	}
+	
 	return (
 		<div className={styles.profileMenu}>
-			<div className={styles.profileBox}>
+			<div style={{position: "fixed",bottom: "0px",left: "0px",height: "100vh",width: "100%"}}
+				onClick={()=>{store.dispatch({type:"sip/statusMenu", payload:false})}}>
+			</div>
+			<div className={styles.profileBox} style={{zIndex: "10001"}}>
 				<div className={styles.headline}>
 					<span className={`sub_headline_bold`}>Set Status</span>
-					<span className={styles.close}>
+					<span className={styles.close} onClick={()=>{store.dispatch({type:"sip/statusMenu", payload:false})}}>
 						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="line / close" clipPath="url(#clip0_2236_1196)">
 								<path
@@ -28,7 +64,7 @@ const StatusMenu = () => {
 				</div>
 				<p className={`footnote ${styles.heading}`}>Status</p>
 				<div className={`body ${styles.status}`}>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update("available") }}  className={`${styles.status_type}`} style={status.main_status == "available"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -38,7 +74,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Available</span>
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update("away") }} className={`${styles.status_type}`} style={status.main_status == "away"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -48,7 +84,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Away</span>
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update("do_not_disturb") }}  className={`${styles.status_type}`} style={status.main_status == "do_not_disturb"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="user_status">
@@ -64,7 +100,7 @@ const StatusMenu = () => {
 				</div>
 				<p className={`footnote ${styles.heading}`}>Additional Status</p>
 				<div className={`body ${styles.status}`}>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update(status.main_status, "on_a_call") }}  className={`${styles.status_type}`} style={status.additional_status == "on_a_call"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / call">
@@ -79,7 +115,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>On a call</span>
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update("do_not_disturb", "in_a_meeting") }}  className={`${styles.status_type}`} style={status.additional_status == "in_a_meeting"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / meet">
@@ -98,7 +134,7 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>In a meeting</span>
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update("do_not_disturb", "lunch") }}  className={`${styles.status_type}`} style={status.additional_status == "lunch"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / lunch">
@@ -115,10 +151,10 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Lunch</span>
 						</span>
 						<span>
-							<span>DND :</span>
+							{/* <span>DND :</span> */}
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update(status.main_status, "holiday") }}  className={`${styles.status_type}`} style={status.additional_status == "holiday"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / holiday">
@@ -138,10 +174,10 @@ const StatusMenu = () => {
 							<span className={`${styles.status_type_active}`}>Holiday</span>
 						</span>
 						<span>
-							<span>DND :</span>
+							{/* <span>DND :</span> */}
 						</span>
 					</div>
-					<div className={`${styles.status_type}`}>
+					<div onClick={()=>{update(status.main_status, "afk") }} className={`${styles.status_type}`} style={status.additional_status == "afk"? { backgroundColor: "rgb(227, 239, 250)" }: {}}>
 						<span>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<g id="status / afk">
@@ -158,7 +194,7 @@ const StatusMenu = () => {
 						</span>
 					</div>
 				</div>
-				<div className={styles.clearStatus}>Clear Status</div>
+				<div className={styles.clearStatus} style={status.additional_status? {color:"#494a4b" }: {}} onClick={()=>{ status.additional_status? update(status.main_status, null) : emptyFunction() }}>Clear Status</div>
 			</div>
 		</div>
 	);

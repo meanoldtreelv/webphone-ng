@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getCookie } from 'utils'
+import { getCookie, setCookie } from 'utils'
 
 interface inboundCallIn {
   LineNumber?: number,
@@ -79,6 +79,11 @@ const sipSlice = createSlice({
     hasSpeakerDevice: false,
     navigatePush:"",
     aboutRingplan: false,
+    statusMenu: false,
+    status: {
+      main_status:"",
+      additional_status:""
+    },
     isProfileOpen: false,
     isExtensionOpen: false,
     isEditBoxOpen: false,
@@ -87,13 +92,27 @@ const sipSlice = createSlice({
     audioAutoGainControl: getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true, 
     audioNoiseSuppression: getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true, 
     audioEchoCancellation: getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true,
+    sipRegistrationStatus: "",
+    accountId: "",
   },
   reducers: {
     audioAutoGainControl: (state, action) =>  {
       state.audioAutoGainControl = action.payload
     },
+    sipRegistrationStatus: (state, action) =>  {
+      state.sipRegistrationStatus = action.payload
+    },
+    status: (state, action) =>  {
+      if(state.status != action.payload){
+        state.status = action.payload
+        state.statusMenu = false
+      }
+    },
     audioNoiseSuppression: (state, action) =>  {
       state.audioNoiseSuppression = action.payload
+    },
+    accountId: (state, action) =>  {
+      state.accountId = action.payload
     },
     audioEchoCancellation: (state, action) =>  {
       state.audioEchoCancellation = action.payload
@@ -106,6 +125,10 @@ const sipSlice = createSlice({
     },
     aboutRingplan: (state, action) =>  {
       state.aboutRingplan = action.payload
+      state.isProfileOpen = false
+    },
+    statusMenu: (state, action) =>  {
+      state.statusMenu = action.payload
       state.isProfileOpen = false
     },
     isExtensionOpen: (state, action) =>  {
