@@ -1,15 +1,17 @@
 import axios from "axios";
 // import { instance } from "../utils/axios";
 import "../constants/endPoints";
+import { getCookie } from "utils";
+import axiosInstance from "config/axios.config";
 // import API_ENDPOINTS from "../constants/endPoints";
 
 const authToken =
-	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiJmNmQ3MTVkYy1kNGVmLTQzNTQtOTE3YS0zMjg2MDkyYTMxZjQiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTcxMDQ5NzAsImlhdCI6MTY5NzA3NjE3MCwiYXV0aF90aW1lIjoxNjk2OTE4MTU4LCJnaXZlbl9uYW1lIjoiSGVsbG8iLCJmYW1pbHlfbmFtZSI6IlN0YXJ0eGxhYnMiLCJleHRlbnNpb25fY29tcGFueSI6IlN0YXJ0eGxhYnMiLCJlbWFpbHMiOlsiaGVsbG9Ac3RhcnR4bGFicy5jb20iXSwidGlkIjoiZGQ4Mzk3ODktMWMxMS00OGFmLWE0MTMtZWU1YThkYzNiOTE5IiwiYXRfaGFzaCI6IldhVjRteGE4WFg4bnZRMS13XzFUMlEiLCJuYmYiOjE2OTcwNzYxNzB9.QDBnJPBIy8LMpqnuYIIEvjhzPTMVdR-I889S43BCo_CQhIuBd6u6RRBV2-Y5nopbF1ZQm1bKBz-zNIbUWMYl78TbYxHAJLrWg9NYozj80mr4ATowkHTmjRovp2EC6tTAFr96q55KMDsislPd0XY3BwgHx51MjyQxXXF4iE_IL41-9gqulShERt5INIGPeU9BH8QQVQqA5P3B8kNn1jUCg8rv0ZcY0KKy5QnOF-FsNpodiNvjg88eNFhLjqiu-MDgIkDpSk6WnR_DaEgiRmMM2I7keYVGZ82R19rjRW00yB6f9eES7y8y2Y9q4DKdy984mG8W2x8Br-l1HJeFhaBBUA";
+	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiIwOGY5MWFlMi05OTI3LTRjYzktYWRlMi0xMWQ4OWU0ZDRlNWUiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTg2ODkyMjMsImlhdCI6MTY5ODY2MDQyMywiYXV0aF90aW1lIjoxNjk4NjYwNDIyLCJnaXZlbl9uYW1lIjoiU2hpdmFtIiwiZmFtaWx5X25hbWUiOiJHdXB0YSIsImV4dGVuc2lvbl9jb21wYW55IjoiU3RhcnQgWCBMYWJzIiwiZW1haWxzIjpbImdzaGl2YW1Ac3RhcnR4bGFicy5pbiJdLCJ0aWQiOiJkZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkiLCJhdF9oYXNoIjoiV1hEbXVEQU5vQkFoR1Z5MElabXFxQSIsIm5iZiI6MTY5ODY2MDQyM30.gEhJrWUE_fJGYp-wRBTT5D0enkADTstTw_yIAVDO_G7JCE6mZkTmxsY0869P39bNSrwCSa3rusyZZnu2-6_Zv5YccBYT0mgYcot_d1kcEmq2i9W3o6CAfMHMziKmIYBQc_jfKT866t5LcJ5IEUln2t7Y7q4GEEDdhk4brEWn6pLzn0XCslYhyK6GRwLRE4edl2L7c47-ldDdsCT1trTHutSazcBEllDCXyP6_atKX8-NYZ5xIZIp83c0Yz3iEqzfB3z1b9cCAw3k00gsTZ4FDQ0Y6VIGGJG85rOm91hsRBMFQOOrfnaANm_JpowdWdsQGzT2tlfrniaJd5www7pa5g";
 
 const Headers = {
 	headers: {
 		Authorization: `${authToken}`,
-		"X-User-Id": "60190ce750fe88ed1a544a7a",
+		// "X-User-Id": "60190ce750fe88ed1a544a7a",
 		"Content-Type": "application/json",
 	},
 };
@@ -71,27 +73,27 @@ const Headers = {
 // 		.catch((err) => error?.(err));
 // };
 
-export const extension_API = (userId: String, success: Function, error: Function) => {
-	axios
-		.get(`https://ssp-backend.ringplan.com/instances/${userId}/bulks/extensions?by_user=on`, {
-			headers: {
-				Authorization: `${authToken}`,
-			},
-		})
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const extension_API = (userId: String, success: Function, error: Function) => {
+// 	axios
+// 		.get(`https://ssp-backend.ringplan.com/instances/${userId}/bulks/extensions?by_user=on`, {
+// 			headers: {
+// 				Authorization: `${authToken}`,
+// 			},
+// 		})
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const GET_user_extension_API = (cnt_id: String, success: Function, error: Function) => {
-	axios
-		.get(`https://ssp-backend.ringplan.com/account/${cnt_id}/extensions`, {
-			headers: {
-				Authorization: `${authToken}`,
-			},
-		})
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const GET_user_extension_API = (cnt_id: String, success: Function, error: Function) => {
+// 	axios
+// 		.get(`https://ssp-backend.ringplan.com/account/${cnt_id}/extensions`, {
+// 			headers: {
+// 				Authorization: `${authToken}`,
+// 			},
+// 		})
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
 // export const user_API = (userId: String, success: Function, error: Function) => {
 // 	instance
@@ -148,6 +150,34 @@ export const DELETE_Contact_API = (dircnt_id: String, success: Function, error: 
 export const UPDATE_Contact_API = (dircnt_id: String, success: Function, error: Function) => {
 	axios
 		.put(`https://ssp-backend.ringplan.com/company/directory/contacts/${dircnt_id}`, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const createMeet = (payload: Object, success: Function, error: Function) => {
+	axios
+		.post(`https://ssp-backend.ringplan.com/meet/v2/events`, payload, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const editMeet = (event_id: string, payload: Object, success: Function, error: Function) => {
+	axios
+		.patch(`https://ssp-backend.ringplan.com/meet/v2/events/${event_id}`, payload, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const getMeetList = (dateFrom: string, dateTo: string, success: Function, error: Function) => {
+	axios
+		.get(`https://ssp-backend.ringplan.com/meet/v2/events?date_from=${dateFrom}&date_to=${dateTo}`, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const deleteMeet = (event_id: string, success: Function, error: Function) => {
+	axiosInstance
+		.delete(`/meet/v2/events/${event_id}`)
 		.then((res) => success?.(res))
 		.catch((err) => error?.(err));
 };

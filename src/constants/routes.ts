@@ -42,6 +42,10 @@ export default {
 		__PATH: "sidecar",
 		ROUTE: "/sidecar",
 	},
+	MEET: {
+		__PATH: "meet",
+		ROUTE: "/meet",
+	},
 	CALLBACK: {
 		__PATH: "callback",
 		ROUTE: "/callback",

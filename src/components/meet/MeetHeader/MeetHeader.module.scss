@@ -1,0 +1,141 @@
+.meet {
+	padding: 10px 20px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.dateBox {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+
+	.today {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		// width: 37px;
+		height: 37px;
+		padding: 0px 10px;
+
+		border-radius: 8px;
+		border: 1px solid var(--border-tertiary, #e3eaf2);
+		background: var(--background-tertiary, #f7f9fc);
+
+		color: var(--text-secondary, #5c6168);
+		cursor: pointer;
+
+		/* Body/Regular */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+	}
+}
+
+.rangeBox {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	// background-color: red;
+	.arrow {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		// padding: 10px;
+
+		width: 37px;
+		height: 37px;
+
+		border-radius: 8px;
+		border: 1px solid var(--border-tertiary, #e3eaf2);
+		background: var(--background-tertiary, #f7f9fc);
+		cursor: pointer;
+	}
+
+	// .date {
+	// 	height: 37px;
+
+	// 	padding: 0 10px;
+	// 	border-radius: 8px;
+	// 	border: 1px solid var(--border-tertiary, #e3eaf2);
+	// 	background: var(--background-tertiary, #f7f9fc);
+	// }
+}
+
+.rightBox {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+
+	span {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.tabBox {
+	display: flex;
+	gap: 10px;
+	width: 600px;
+	// padding: 2px;
+	align-items: flex-start;
+
+	// border-radius: 8px;
+	// border: 1px solid var(--border-tertiary, #e3eaf2);
+	// background: var(--background-tertiary, #f7f9fc);
+
+	div {
+		width: 33%;
+
+		display: flex;
+		padding: 10px 20px;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		flex: 1 0 0;
+
+		border-radius: 6px;
+
+		color: var(--text-secondary, #5c6168);
+
+		/* Caption 1/Regular */
+		font-family: Poppins;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+
+		cursor: pointer;
+		background: var(--primary-default, #0c6dc7);
+
+		color: var(--text-on-color, #fff);
+	}
+
+	.schedule {
+		background: var(--text-on-color, #0c6dc7);
+
+		color: var(--text-secondary);
+		border: 1px solid var(--text-secondary);
+	}
+
+	.activeTab {
+		background: var(--primary-default, #0c6dc7);
+
+		/* Blue Button Shadow */
+		box-shadow: 0px 4px 4px 0px rgba(12, 109, 199, 0.15);
+
+		color: var(--text-on-color, #fff);
+
+		/* Caption 1/Bold */
+		font-family: Poppins;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+	}
+}
