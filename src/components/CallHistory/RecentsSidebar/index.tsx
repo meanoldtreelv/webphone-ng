@@ -7,24 +7,49 @@ import SearchIcon from "components/UI/Icons/Search";
 import { useLazyGetCallHistoryQuery } from "services/call";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCallHistory, setSelectedCallHistory } from "redux/call-history/callHistorySlice";
-import { callHistory } from "redux/call-history/callHistorySelectors";
+import { setCallHistory, setQueries, setSelectedCallHistory } from "redux/call-history/callHistorySlice";
+import { callHistory, queries } from "redux/call-history/callHistorySelectors";
 import RecentHistoryCardSkeleton from "../RecentHistoryCardSkeleton";
 import FilterIcon from "components/UI/Icons/Filter";
+import { ClipLoader } from "react-spinners";
 
 interface IRecentsSidebar {
 	loading: boolean;
 	callLen: number;
 	dispCalendar: boolean;
 	setDispCalendar: (calendar: boolean) => void;
+	fetching: boolean;
 }
 
-const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalendar, setDispCalendar }) => {
+const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalendar, setDispCalendar, fetching }) => {
+	const dispatch = useDispatch();
 	const allCallHistory = useSelector(callHistory);
 	const [search, setSearch] = useState("");
+	const callHistoryQueries = useSelector(queries);
 
 	const filterCallHistory = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearch(e.target.value);
+	};
+
+	const handleScroll = (e: any) => {
+		const scrollTop = e.target.scrollTop;
+		const scrollHeight = e.target.scrollHeight;
+		const clientHeight = e.target.clientHeight;
+
+		if (scrollTop + clientHeight >= scrollHeight) {
+			if (Number(callHistoryQueries?.page_size) >= 1000 && !loading) {
+				dispatch(
+					setQueries({
+						page: Number(callHistoryQueries?.page) + 1,
+						page_size: Number(callHistoryQueries?.page_size) + 80,
+					}),
+				);
+			} else {
+				dispatch(
+					setQueries({ page: Number(callHistoryQueries?.page) + 1, page_size: Number(callHistoryQueries?.page_size) }),
+				);
+			}
+		}
 	};
 
 	return (
@@ -45,9 +70,10 @@ const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalen
 			</div>
 			<SearchBar onChange={filterCallHistory} />
 
-			<div className={styles.list} style={{ overflowY: !callLen ? "hidden" : "" }}>
+			<div className={styles.list} style={{ overflowY: !callLen ? "hidden" : "" }} onScroll={handleScroll}>
 				<div className={styles.contact_sectionInfo}>
-					<span>Today (3)</span>
+					{/* <span>Today (3)</span> */}
+					<span>Call Histories</span>
 					<div className={styles.contact_sorting}>
 						<button
 							onClick={() => {
@@ -72,6 +98,15 @@ const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalen
 									<RecentHistoryCard details={call} />
 								) : null;
 						  })}
+				</div>
+
+				<div className={styles.loadingMore}>
+					{loading || fetching ? (
+						<button>
+							<ClipLoader color="var(--text-link)" size={14} />
+							<span>Loading More...</span>
+						</button>
+					) : null}
 				</div>
 
 				{/* <div className={styles.contact_sectionInfo}>

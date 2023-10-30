@@ -120,3 +120,8 @@ export const emptyFunction = () => {};
 // 		}
 // 	});
 // };
+
+export const formatFilterDate = (dateString: string) => {
+	const dateParts = dateString.split("/");
+	return `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`;
+};

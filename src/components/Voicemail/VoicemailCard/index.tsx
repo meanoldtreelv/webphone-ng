@@ -189,7 +189,7 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 					<p>{transcript}</p>
 				</div>
 			)}
-			{popupMenu ? <PopupMenu id={id}>{popupMenuOpts}</PopupMenu> : null}
+			{popupMenu ? <PopupMenu popupMenu={setPopupMenu} id={id}>{popupMenuOpts}</PopupMenu> : null}
 		</div>
 	);
 };

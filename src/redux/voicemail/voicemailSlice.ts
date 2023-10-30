@@ -8,8 +8,14 @@ const initialVoicemailState: IVoicemailState = {
 	selectedVoicemailList: [],
 	page: 1,
 	voicemailResults: [],
-	queries: {},
-	strQueries: "",
+	queries: {
+		page: 1,
+		per_page: 80,
+	},
+	strQueries: new URLSearchParams({
+		page: 1,
+		per_page: 80,
+	}).toString(),
 	newFilter: false,
 	filterExt: "",
 };
@@ -55,7 +61,7 @@ const voicemailSlice = createSlice({
 		},
 		setFilterExt(state, action) {
 			state.filterExt = action.payload;
-		}
+		},
 	},
 });
 

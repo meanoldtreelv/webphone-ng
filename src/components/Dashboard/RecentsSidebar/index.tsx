@@ -7,45 +7,46 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCallHistory } from "redux/call-history/callHistorySlice";
 import { callHistory } from "redux/call-history/callHistorySelectors";
 import RecentHistoryCardSkeleton from "components/CallHistory/RecentHistoryCardSkeleton";
-import FilterIcon from "components/UI/Icons/Filter";
 
 const RecentsSidebar = () => {
 	const dispatch = useDispatch();
 	const allCallHistory = useSelector(callHistory);
 	const [search, setSearch] = useState("");
 	const [getCallHistories, { data, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
-
-	const filterCallHistory = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearch(e.target.value);
-	};
+	const [pageSize, setPageSize] = useState(20);
 
 	useEffect(() => {
 		const callHistoryJson = localStorage?.getItem("call-history");
 		let historyParsed: [];
 
 		try {
-			historyParsed = JSON.parse(callHistoryJson);
+			historyParsed = JSON.parse(String(callHistoryJson));
 		} catch (e) {
 			historyParsed = [];
 		}
 
 		const fetchCallHistory = async () => {
-			await getCallHistories("page=1");
+			await getCallHistories("page=1&page_size=80");
 		};
 
 		if (historyParsed && historyParsed.length) {
-			dispatch(setCallHistory(historyParsed));
+			dispatch(setCallHistory(historyParsed.slice(0, 20)));
 		} else {
 			fetchCallHistory();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (!isLoading && data) {
-			localStorage.setItem("call-history", JSON.stringify(data));
-			dispatch(setCallHistory(data));
+		if (!isLoading && !isFetching && data) {
+			const parsedData = JSON.parse(String(localStorage?.getItem("call-history")));
+
+			if (!parsedData) {
+				localStorage.setItem("call-history", JSON.stringify(data));
+			}
+
+			dispatch(setCallHistory(data?.slice(0, 20)));
 		}
-	}, [isLoading]);
+	}, [isLoading, isFetching]);
 
 	return (
 		<div className={styles.contact}>
@@ -55,9 +56,9 @@ const RecentsSidebar = () => {
 			{/* <SearchBar onChange={filterCallHistory} /> */}
 
 			<div className={styles.list}>
-				<div className={styles.contact_sectionInfo}>
-					<span>Today (3)</span>
-				</div>
+				{/* <div className={styles.contact_sectionInfo}>
+					<span>Call Histories</span>
+				</div> */}
 
 				<div>
 					{!allCallHistory

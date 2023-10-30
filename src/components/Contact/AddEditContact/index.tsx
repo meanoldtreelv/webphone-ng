@@ -21,6 +21,7 @@ const AddContact = () => {
 	const [contactSrvrError, setContactSrvrError] = useState<string[]>([]);
 	const dispatch = useDispatch();
 	const salutations = ["Mr.", "Ms.", "Mrs."];
+	const contactList: any = JSON.parse(localStorage.getItem("contacts"));
 
 	const selectedContact = useSelector(selectedContactData);
 
@@ -49,7 +50,7 @@ const AddContact = () => {
 	const onSaveContact = async () => {
 		if (selectedContact && selectedContact != contactData) {
 			await updateContact(contactData);
-			console.log('why isnt this updating, that is jut weird...')
+			console.log("why isnt this updating, that is jut weird...");
 		} else {
 			const { error } = await createContact(contactData);
 
@@ -59,7 +60,7 @@ const AddContact = () => {
 				// 	...contactError,
 				// 	[extractFieldName(error.response.data.detail)]: convertErrorString(error.response.data.detail),
 				// });
-	
+
 				setContactSrvrError([convertErrorString(error.response.data.detail)]);
 			} else {
 				setContactSrvrError([]);
@@ -72,6 +73,19 @@ const AddContact = () => {
 	const closeContactHandler = () => {
 		dispatch(closeAddEditContact());
 		dispatch(setEditContactFalse());
+	};
+
+	const zipOnChange = (event: any) => {
+		if (!isNaN(event.target.value)) {
+			contactData &&
+				setContactData({
+					...contactData,
+					address: {
+						...contactData.address,
+						zipcode: event.target.value,
+					},
+				});
+		}
 	};
 
 	return (
@@ -329,6 +343,15 @@ const AddContact = () => {
 								</label>
 								<select name="" id="reports" ref={jobReportsRef}>
 									<option value="none">none</option>
+									{contactList?.map((contact) => (
+										<option value={contact?.id}>
+											{contact?.first_name
+												? contact?.first_name + " " + contact?.last_name
+												: contact?.phone
+												? contact?.phone
+												: contact?.email}
+										</option>
+									))}
 								</select>
 							</div>
 						)}
@@ -420,21 +443,7 @@ const AddContact = () => {
 									<label htmlFor="zip" className={`caption_1`}>
 										Zip
 									</label>
-									<input
-										type="text"
-										id="zip"
-										value={contactData?.address?.zipcode}
-										onChange={(event) =>
-											contactData &&
-											setContactData({
-												...contactData,
-												address: {
-													...contactData.address,
-													zipcode: event.target.value,
-												},
-											})
-										}
-									/>
+									<input type="text" id="zip" value={contactData?.address?.zipcode} onChange={zipOnChange} />
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="country" className={`caption_1`}>

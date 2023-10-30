@@ -35,7 +35,6 @@ import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 
-
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
@@ -44,8 +43,16 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, callEnding, logoutPopUp, aboutRingplan, showMultipleCallListModal, statusMenu } =
-		useSelector((state: any) => state.sip);
+	const {
+		ringingInboundCalls,
+		answeredCalls,
+		ringingOutboundCalls,
+		callEnding,
+		logoutPopUp,
+		aboutRingplan,
+		showMultipleCallListModal,
+		statusMenu,
+	} = useSelector((state: any) => state.sip);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
@@ -162,7 +169,7 @@ const Dashboard = () => {
 				</section>
 			</BaseLayout>
 			{/* this is a status menu components to update the status like available, on lunch etc */}
-			{ statusMenu && <StatusMenu />} 
+			{statusMenu && <StatusMenu />}
 
 			{aboutRingplan && <AboutRingplan />}
 

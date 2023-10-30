@@ -23,7 +23,7 @@
 
 	&_search {
 		position: relative;
-		margin-right: 5px;
+		margin-right: 10px;
 		flex: 1;
 		color: var(--text-secondary);
 
@@ -52,6 +52,7 @@
 	.cont_actBtns {
 		display: flex;
 		align-items: center;
+		gap: 10px;
 	}
 
 	&_pageName {

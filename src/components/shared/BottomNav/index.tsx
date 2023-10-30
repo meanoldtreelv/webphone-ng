@@ -50,23 +50,23 @@ const BottomNav = () => {
 	];
 
 	const sidebarBtmMoreLinks = [
-		{
-			path: routePaths.CONFERENCE.ROUTE,
-			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Texting",
-			unread: 1,
-		},
-		{
-			path: routePaths.CONFERENCE.ROUTE,
-			icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Fax",
-			unread: 2,
-		},
-		{
-			path: routePaths.CONFERENCE.GROUPS.ROUTE,
-			icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Conference",
-		},
+		// {
+		// 	path: routePaths.CONFERENCE.ROUTE,
+		// 	icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+		// 	name: "Texting",
+		// 	unread: 1,
+		// },
+		// {
+		// 	path: routePaths.CONFERENCE.ROUTE,
+		// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
+		// 	name: "Fax",
+		// 	unread: 2,
+		// },
+		// {
+		// 	path: routePaths.CONFERENCE.GROUPS.ROUTE,
+		// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
+		// 	name: "Conference",
+		// },
 		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
 		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
 		{
@@ -83,8 +83,8 @@ const BottomNav = () => {
 				link.name !== "More" ? (
 					<NavLink
 						to={link.path}
-						className={({ isActive }: { isActive: boolean }) =>
-							[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
+						className={() =>
+							[styles.sidebar_tab, link.path === window.location.pathname ? styles.active_tab : null].join(" ")
 						}>
 						<span className={styles.sidebar_icon}>{link.icon}</span>
 						<span className={`${styles.sidebar_tabExpanded}`}>

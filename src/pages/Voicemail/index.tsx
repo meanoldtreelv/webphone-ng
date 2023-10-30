@@ -29,6 +29,7 @@ import { simpleNotification } from "redux/common/commonSelectors";
 import { useGetExtensionsQuery } from "services/extension";
 import NoVoicemailSearch from "components/Voicemail/NoVoicemailSearch";
 import Calendar from "components/UI/Calender";
+// import { formatFilterDate } from "utils";
 
 const Voicemail = () => {
 	const dispatch = useDispatch();
@@ -39,68 +40,103 @@ const Voicemail = () => {
 	const page = useSelector(voicemailPage);
 	const strQueries = useSelector(voicemailStrQueries);
 	const queries = useSelector(voicemailQueries);
-	const [getVoicemails, { data: data, isLoading, isFetching }] = useLazyGetVoicemailsQuery();
+	const [getVoicemails, { data, isLoading, isFetching }] = useLazyGetVoicemailsQuery();
 	const voicemailResultsList = useSelector(voicemailResults);
 	const newResult = useSelector(voicemailNewFilter);
 	const simpleMsg = useSelector(simpleNotification);
 	const [filterAnim, setFilterAnim] = useState(false);
 	const [search, setSearch] = useState("");
-	const [filteredVoicemailResults, setFilteredVoicemailResults] = useState<any>();
-
+	const [pageSize, setPageSize] = useState(20);
+	const [date, setDate] = useState({
+		from_date: "",
+		to_date: "",
+	});
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
 
 	useEffect(() => {
-		dispatch(
-			setVoicemailQueries({
-				page,
-				...queries,
-			}),
-		);
-	}, [page]);
+		const voicemailsJson = localStorage?.getItem("voicemails");
+		let voicemailsParsed: [];
+
+		try {
+			voicemailsParsed = JSON.parse(String(voicemailsJson));
+		} catch (e) {
+			voicemailsParsed = [];
+		}
+
+		const fetchVoicemails = async () => {
+			await getVoicemails(strQueries);
+		};
+
+		if (voicemailsParsed && voicemailsParsed?.length) {
+			dispatch(setVoicemailResults(voicemailsParsed?.slice(0, 20)));
+		} else {
+			fetchVoicemails();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!isLoading && !isFetching && data) {
+			if (Object.keys(queries).length <= 2) {
+				const parsedData = JSON.parse(String(localStorage?.getItem("voicemails")));
+				if (parsedData) {
+					localStorage.setItem("voicemails", JSON.stringify([...parsedData, ...data]));
+				} else {
+					localStorage.setItem("voicemails", JSON.stringify(data));
+				}
+			}
+
+			if (Object.keys(queries).length > 2) {
+				dispatch(setVoicemailResults(data));
+				setFilterDate(false);
+			} else {
+				dispatch(setVoicemailResults(data?.slice(0, 20)));
+			}
+		}
+	}, [isLoading, isFetching]);
+
+	useEffect(() => {
+		const voicemailsJson = localStorage?.getItem("voicemails");
+		let voicemailsParsed: [];
+
+		try {
+			voicemailsParsed = JSON.parse(String(voicemailsJson));
+		} catch (e) {
+			voicemailsParsed = [];
+		}
+
+		const fetchVoicemails = async () => {
+			await getVoicemails(strQueries);
+		};
+
+		if (voicemailsParsed && voicemailsParsed?.length !== pageSize && Object.keys(queries).length <= 2) {
+			dispatch(setVoicemailResults(voicemailsParsed?.slice(0, pageSize + 20)));
+			setPageSize((prevState) => prevState + 20);
+		} else {
+			fetchVoicemails();
+			console.log(strQueries);
+		}
+	}, [strQueries]);
 
 	useEffect(() => {
 		if (voicemailId === "") setDeleteVoicemailModal(false);
 	}, [voicemailId]);
 
 	useEffect(() => {
-		if (data && !isLoading) {
-			if (newResult) {
-				dispatch(setVoicemailResults([...data]));
-				setFilteredVoicemailResults([...data]);
-			} else {
-				dispatch(setVoicemailResults([...voicemailResultsList, ...data]));
-				setFilteredVoicemailResults([...voicemailResultsList, ...data]);
-			}
+		const voicemailsJson = localStorage?.getItem("voicemails");
+		let voicemailsParsed: [];
+
+		try {
+			voicemailsParsed = JSON.parse(String(voicemailsJson));
+		} catch (e) {
+			voicemailsParsed = [];
 		}
 
-		return () => {
-			dispatch(setNewFilter(false));
-		};
-	}, [data, page]);
-
-	useEffect(() => {
-		const fetchVoicemails = async () => {
-			setFilterAnim(true);
-			await getVoicemails(strQueries);
-			setFilterAnim(false);
-			setFilterSlider(false);
-			dispatch(setNewFilter(false));
-
-			if (queries.from_date || queries.to_date) {
-				setFilterDate(false);
-			}
-		};
-		fetchVoicemails();
-	}, [queries]);
-
-	useEffect(() => {
-		const filteredRes = voicemailResultsList.filter((voicemail) => {
+		const filteredRes = voicemailsParsed?.filter((voicemail) => {
 			return voicemail.source_representation_name.toLowerCase().includes(search.toLowerCase());
 		});
 
-		setFilteredVoicemailResults(filteredRes);
-		console.log(filteredVoicemailResults?.length);
+		dispatch(setVoicemailResults(filteredRes?.slice(0, 20)));
 	}, [search]);
 
 	const handleScroll = (e: any) => {
@@ -108,9 +144,40 @@ const Voicemail = () => {
 		const scrollHeight = e.target.scrollHeight;
 		const clientHeight = e.target.clientHeight;
 
-		if (scrollTop + clientHeight >= scrollHeight && !isFetching) {
-			if (page == 1) dispatch(setPage(page + 1));
+		if (scrollTop + clientHeight >= scrollHeight) {
+			if (Number(queries?.per_page) >= 10000 && !isLoading) {
+				dispatch(
+					setVoicemailQueries({
+						page: Number(queries?.page) + 1,
+						page_size: Number(queries?.per_page) + 80,
+					}),
+				);
+			} else {
+				dispatch(setVoicemailQueries({ page: Number(queries?.page) + 1, page_size: Number(queries?.per_page) }));
+			}
 		}
+	};
+
+	const filterVoicemailDate = () => {
+		let dateFilter = {};
+		if (date.from_date) {
+			dateFilter = {
+				...dateFilter,
+				from_date: date.from_date,
+			};
+		} else if (date.to_date) {
+			dateFilter = {
+				...dateFilter,
+				to_date: date.to_date,
+			};
+		}
+
+		dispatch(
+			setVoicemailQueries({
+				...queries,
+				...dateFilter,
+			}),
+		);
 	};
 
 	return (
@@ -145,7 +212,7 @@ const Voicemail = () => {
 										))}
 								</>
 							) : (
-								filteredVoicemailResults?.map((voicemail: IVoicemail, idx: number) => (
+								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => (
 									<VoicemailCard
 										id={voicemail._id}
 										title={voicemail.source_representation_name}
@@ -161,9 +228,9 @@ const Voicemail = () => {
 								))
 							)}
 
-							{search && !filteredVoicemailResults?.length ? <NoVoicemailSearch str={search} /> : null}
+							{search && !voicemailResultsList?.length ? <NoVoicemailSearch str={search} /> : null}
 
-							{page > 1 && isFetching ? (
+							{isFetching ? (
 								<div className={styles.loadMore}>
 									<button className={styles.loadMore_btn}>
 										<ClipLoader color="white" size={14} />
@@ -183,7 +250,17 @@ const Voicemail = () => {
 			{filterSlider ? <Filter extensionList={extListData} onClose={setFilterSlider} filterAnim={filterAnim} /> : null}
 			{deleteVoicemailModal ? <DeleteVoicemail onClose={setDeleteVoicemailModal} /> : null}
 			{/* {filterDate ? <FormModal loading={isFetching} onClose={setFilterDate} /> : null} */}
-			{filterDate ? <Calendar setDispCalendar={setFilterDate} placeholder1="From" placeholder2="To" /> : null}
+			{filterDate ? (
+				<Calendar
+					setDate={setDate}
+					filter={filterVoicemailDate}
+					setDispCalendar={setFilterDate}
+					placeholder1="From"
+					placeholder2="To"
+					date={date}
+					loading={isFetching}
+				/>
+			) : null}
 			{simpleMsg && <SimpleNotification msg={simpleMsg} />}
 		</div>
 	);

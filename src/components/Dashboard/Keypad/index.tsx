@@ -6,10 +6,14 @@ import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
 import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
 import sip from "../../../lib/sip";
+import { useEffect, useState } from "react";
+import ContactCard from "components/Contact/ContactCard";
 
 const Keypad = () => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber);
+	const [contacts, setContacts] = useState<any>([]);
+	const [filteredContacts, setFilteredContacts] = useState<any>([]);
 
 	const callingHandler = () => {
 		// dispatch(progressCall());
@@ -22,8 +26,38 @@ const Keypad = () => {
 		}
 	};
 
+	const numberFromContact = (contact: any) => {
+		if (contact?.phone) {
+			dispatch(setCallNumber(contact?.phone));
+		}
+	};
+
+	useEffect(() => {
+		if (!contacts?.length) {
+			setContacts(JSON.parse(localStorage?.getItem("contacts")));
+		}
+
+		const filteredDt = !number
+			? []
+			: contacts?.filter((contact: any) => String(contact?.phone).includes(number)).slice(0, 5);
+		setFilteredContacts(filteredDt);
+	}, [number]);
+
 	return (
 		<div className={styles.dialpad}>
+			<div className={`${styles.dialpad_contactSearch} ${filteredContacts.length ? styles.bgFilter : null}`}>
+				{filteredContacts.map((contact: any) => (
+					<ContactCard
+						id={contact.id}
+						first_name={contact.first_name}
+						last_name={contact.last_name}
+						phone={contact.phone}
+						email={contact.email}
+						fax={contact.fax}
+						clicked={() => numberFromContact(contact)}
+					/>
+				))}
+			</div>
 			<Dialpad LineNumber={undefined} />
 			<div className={styles.dialpad_keypad}>
 				<div className={styles.dialpad_key2}>
