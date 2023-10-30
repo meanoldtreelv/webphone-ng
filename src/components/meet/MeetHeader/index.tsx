@@ -86,7 +86,7 @@ const MeetHeader = () => {
 		<div className={styles.meet}>
 			<div className={styles.dateBox}>
 				<div className={styles.rangeBox}>
-					<span onClick={previousRangeHandler}>
+					<span onClick={previousRangeHandler} className={styles.arrow}>
 						<ChevronLeftIcon />
 					</span>
 
@@ -100,7 +100,7 @@ const MeetHeader = () => {
 						className={styles.date}
 					/> */}
 					<DateRange />
-					<span onClick={nextRangeHandler}>
+					<span onClick={nextRangeHandler} className={styles.arrow}>
 						<ChevronRightIcon />
 					</span>
 				</div>
@@ -121,7 +121,8 @@ const MeetHeader = () => {
 			<div className={styles.rightBox}>
 				<div className={styles.tabBox}>
 					<div
-						className={`${selectedTab === "schedule" ? styles.activeTab : ""}`}
+						// className={`${selectedTab === "schedule" ? styles.activeTab : ""}`}
+						className={styles.schedule}
 						onClick={() => {
 							// setSelectedTab("schedule");
 							dispatch(setScheduleDialogue(true));
@@ -130,7 +131,7 @@ const MeetHeader = () => {
 						<span>Schedule</span>
 					</div>
 					<div
-						className={`${selectedTab === "join" && styles.activeTab}`}
+						// className={`${selectedTab === "join" && styles.activeTab}`}
 						onClick={() => {
 							setSelectedTab("join");
 							dispatch(setJoinDialogue(true));
@@ -138,7 +139,9 @@ const MeetHeader = () => {
 						<OutputIcon />
 						<span>Join</span>
 					</div>
-					<div className={`${selectedTab === "start_meeting" && styles.activeTab}`} onClick={startMeetingHandler}>
+					<div
+						// className={`${selectedTab === "start_meeting" && styles.activeTab}`}
+						onClick={startMeetingHandler}>
 						<ConferenceIcon />
 						<span>Start Meeting</span>
 					</div>
