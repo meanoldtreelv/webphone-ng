@@ -1,27 +1,19 @@
 import Backdrop from "components/UI/Backdrop";
-import React, { useState } from "react";
 import styles from "./DescriptionDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import LockIcon from "components/UI/Icons/Lock";
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeleteDialogue, setDescriptionDialogue, setEditDialogue, seteventId } from "redux/meet/meetSlice";
-import { editDialogue, meetingDetails } from "redux/meet/meetSelectors";
+import { meetingDetails } from "redux/meet/meetSelectors";
 import { convertDateFormat, convertToHourMinuteFormat } from "helpers/formatDateTime";
 
 const DescriptionDialogue = () => {
 	const dispatch = useDispatch();
 	const details = useSelector(meetingDetails);
-	// const [meetingCode, setMeetingCode] = useState("");
 
 	const joinHandler = () => {
 		window.open(`https://meet.ringplan.com/auth/?id=${details?.jitsi_meeting_room_id}`, "_blank");
-		// if (+meetingCode <= 99999999) {
-		// 	return;
-		// } else {
-		// 	// setMeetingCode("");
-		// 	// dispatch(setJoinDialogue(false));
-		// }
 	};
 
 	const deleteHandler = () => {
@@ -29,7 +21,7 @@ const DescriptionDialogue = () => {
 		dispatch(setDeleteDialogue(true));
 	};
 
-	console.log(details, "details");
+	// console.log(details, "details");
 
 	const filteredAttendees = details?.attendees?.filter((item) => item.is_organizer === false);
 	const filteredOrganizer = details?.attendees?.filter((item) => item.is_organizer === true);
@@ -66,7 +58,7 @@ const DescriptionDialogue = () => {
 							{convertDateFormat(details?.start)} - {convertToHourMinuteFormat(details?.start)}-
 							{convertToHourMinuteFormat(details?.end)}
 						</div>
-						<div className={styles.date}>Daily, until Oct 24, 2023</div>
+						{/* <div className={styles.date}>Daily, until Oct 24, 2023</div> */}
 					</div>
 					<button className={styles.edit} onClick={editHandler}>
 						Edit

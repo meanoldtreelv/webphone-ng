@@ -15,7 +15,7 @@ const localizer = momentLocalizer(moment);
 
 const MyCalendar = () => {
 	const { data } = useLazyGetMeetQuery("2023-10-21T18:30:00.000Z", "2023-10-28T18:29:59.999Z");
-	console.log(data, "meeting list");
+	// console.log(data, "meeting list");
 
 	return (
 		<div style={{ height: "100%" }}>

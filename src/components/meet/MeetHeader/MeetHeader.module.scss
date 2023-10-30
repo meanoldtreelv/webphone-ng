@@ -39,29 +39,30 @@
 	display: flex;
 	gap: 10px;
 	align-items: center;
-	span {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		// padding: 10px;
+	// background-color: red;
+	// span {
+	// 	display: flex;
+	// 	justify-content: center;
+	// 	align-items: center;
+	// 	// padding: 10px;
 
-		width: 37px;
-		height: 37px;
+	// 	width: 37px;
+	// 	height: 37px;
 
-		border-radius: 8px;
-		border: 1px solid var(--border-tertiary, #e3eaf2);
-		background: var(--background-tertiary, #f7f9fc);
-		cursor: pointer;
-	}
+	// 	border-radius: 8px;
+	// 	border: 1px solid var(--border-tertiary, #e3eaf2);
+	// 	background: var(--background-tertiary, #f7f9fc);
+	// 	cursor: pointer;
+	// }
 
-	.date {
-		height: 37px;
+	// .date {
+	// 	height: 37px;
 
-		padding: 0 10px;
-		border-radius: 8px;
-		border: 1px solid var(--border-tertiary, #e3eaf2);
-		background: var(--background-tertiary, #f7f9fc);
-	}
+	// 	padding: 0 10px;
+	// 	border-radius: 8px;
+	// 	border: 1px solid var(--border-tertiary, #e3eaf2);
+	// 	background: var(--background-tertiary, #f7f9fc);
+	// }
 }
 
 .rightBox {

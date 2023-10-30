@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./DeleteMeet.module.scss";
-import Backdrop from "components/UI/Backdrop";
 import InfoIcon from "components/UI/Icons/Info";
 import { ClipLoader } from "react-spinners";
-import { setDeleteDialogue, seteventId } from "redux/meet/meetSlice";
+import { setDeleteDialogue, setDescriptionDialogue } from "redux/meet/meetSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useLazyDeleteMeetQuery } from "services/meet";
 import { eventId } from "redux/meet/meetSelectors";
 import { deleteMeet } from "effects/apiEffect";
+// import { useLazyDeleteMeetQuery } from "services/meet";
 
 const DeleteMeet = () => {
 	const [loading, setLoading] = useState(false);
@@ -24,8 +23,10 @@ const DeleteMeet = () => {
 			event_id,
 			(res: any) => {
 				console.log(res, "delete event API retrieve");
-				if (res?.status === 202) {
+				if (res?.status === 204) {
 					console.log("success in delete event retrieve");
+					dispatch(setDeleteDialogue(false));
+					dispatch(setDescriptionDialogue(false));
 				}
 			},
 			(err: any) => {
@@ -33,7 +34,7 @@ const DeleteMeet = () => {
 			},
 		);
 		// useLazyDeleteMeetQuery(event_id);
-		// dispatch(setDeleteDialogue(false));
+
 		// dispatch(seteventId(""));
 	};
 

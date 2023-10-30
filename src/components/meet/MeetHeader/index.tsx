@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDateRange, setJoinDialogue, setScheduleDialogue } from "redux/meet/meetSlice";
 import { createMeet } from "effects/apiEffect";
 import { calendarView, dateRange } from "redux/meet/meetSelectors";
+import DateRange from "components/UI/DateRange";
 
 const MeetHeader = () => {
 	const [selectedTab, setSelectedTab] = useState("");
@@ -28,8 +29,10 @@ const MeetHeader = () => {
 		{ value: "Year", name: "Year", selected: false },
 	]);
 
-	console.log(range, "range");
-	console.log(view, "view");
+	// console.log(range, "range");
+	// console.log(view, "view");
+	const dateRanges = useSelector(dateRange);
+	// console.log(dateRanges, "date ranges knlkjlkjlk");
 
 	const startMeetingHandler = () => {
 		createMeet(
@@ -49,16 +52,34 @@ const MeetHeader = () => {
 		);
 	};
 
+	const { start, end } = useSelector(dateRange);
+
+	function addDaysToDate(inputDate, daysToAdd) {
+		const date = new Date(inputDate);
+		date.setDate(date.getDate() + daysToAdd);
+		return date.toISOString().split("T")[0];
+	}
+
 	const previousRangeHandler = () => {
-		dispatch(setDateRange({ start: "2023-09-26", end: "2023-11-28" }));
+		const newStart = addDaysToDate(start, -7);
+		const newEnd = addDaysToDate(start, -1);
+		dispatch(setDateRange({ start: newStart, end: newEnd }));
+		// dispatch(setDateRange({ start: "2023-09-26", end: "2023-11-28" }));
 	};
 
 	const nextRangeHandler = () => {
-		dispatch(setDateRange({ start: "2023-09-26", end: "2023-11-28" }));
+		const newStart = addDaysToDate(end, 1);
+		const newEnd = addDaysToDate(end, 7);
+
+		dispatch(setDateRange({ start: newStart, end: newEnd }));
 	};
 
 	const todayHandler = () => {
-		dispatch(setDateRange({ start: "2023-10-26", end: "2023-10-28" }));
+		const date = new Date();
+		date.setDate(date.getDate());
+		const today = date.toISOString().split("T")[0];
+
+		dispatch(setDateRange({ start: today, end: today }));
 	};
 
 	return (
@@ -69,7 +90,7 @@ const MeetHeader = () => {
 						<ChevronLeftIcon />
 					</span>
 
-					<input
+					{/* <input
 						type="date"
 						name="begin"
 						placeholder="dd-mm-yyyy"
@@ -77,7 +98,8 @@ const MeetHeader = () => {
 						min="1997-01-01"
 						max="2030-12-31"
 						className={styles.date}
-					/>
+					/> */}
+					<DateRange />
 					<span onClick={nextRangeHandler}>
 						<ChevronRightIcon />
 					</span>
@@ -91,7 +113,7 @@ const MeetHeader = () => {
 					<Select
 						options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 						onChange={(e) => {
-							console.log(e.target.value);
+							// console.log(e.target.value);
 						}}
 					/>
 				</div>

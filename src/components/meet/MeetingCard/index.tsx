@@ -12,7 +12,7 @@ const MeetingCard = ({ meetData }) => {
 
 	const dispatch = useDispatch();
 
-	console.log(meetData);
+	// console.log(meetData);
 	// // Example usage
 	// const dateTimeString = "2023-10-26T04:15:00+00:00";
 	// const hourMinuteFormat = convertToHourMinuteFormat(dateTimeString);

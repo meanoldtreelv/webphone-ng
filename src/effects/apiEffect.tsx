@@ -6,7 +6,7 @@ import axiosInstance from "config/axios.config";
 // import API_ENDPOINTS from "../constants/endPoints";
 
 const authToken =
-	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiIwOGY5MWFlMi05OTI3LTRjYzktYWRlMi0xMWQ4OWU0ZDRlNWUiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTg0MDE3MjEsImlhdCI6MTY5ODM3MjkyMSwiYXV0aF90aW1lIjoxNjk4MzcyOTIwLCJnaXZlbl9uYW1lIjoiU2hpdmFtIiwiZmFtaWx5X25hbWUiOiJHdXB0YSIsImV4dGVuc2lvbl9jb21wYW55IjoiU3RhcnQgWCBMYWJzIiwiZW1haWxzIjpbImdzaGl2YW1Ac3RhcnR4bGFicy5pbiJdLCJ0aWQiOiJkZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkiLCJhdF9oYXNoIjoiNUlLSmRNanhQSVN4OTRmVmZHakZ6dyIsIm5iZiI6MTY5ODM3MjkyMX0.HGlnH1bcr0l-14KKo5D_ODheJyU0aSa2McSEwDpblPAO0cJuT0XpM-ze3nIj-C7soCq9iPPWGTbUJeV55ZiwNx3STrDlQhE8kkq6dD56mjM7-gswI4RdE2keIf0_WjYa7yYB0VeEwaZXvu0UXCEtcnNICVXmmlRwke4KymTwXAvuc3P5rl4w2c8DXHkAJbVFVXzpDlh-FfFxpsEdq4DUOxa7w_5_Z_0kXotsdoQt6VDtby5wLHEG4xEF_SZBfqDuM0sGwRz6oKDOuVPn04mDOk89oFWEsCbZBE-QQexCFfLoxr5hA713RaIrV2AVWVRC8iXWHxTCl2xdWDeCCFcBJg";
+	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiIwOGY5MWFlMi05OTI3LTRjYzktYWRlMi0xMWQ4OWU0ZDRlNWUiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTg2ODkyMjMsImlhdCI6MTY5ODY2MDQyMywiYXV0aF90aW1lIjoxNjk4NjYwNDIyLCJnaXZlbl9uYW1lIjoiU2hpdmFtIiwiZmFtaWx5X25hbWUiOiJHdXB0YSIsImV4dGVuc2lvbl9jb21wYW55IjoiU3RhcnQgWCBMYWJzIiwiZW1haWxzIjpbImdzaGl2YW1Ac3RhcnR4bGFicy5pbiJdLCJ0aWQiOiJkZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkiLCJhdF9oYXNoIjoiV1hEbXVEQU5vQkFoR1Z5MElabXFxQSIsIm5iZiI6MTY5ODY2MDQyM30.gEhJrWUE_fJGYp-wRBTT5D0enkADTstTw_yIAVDO_G7JCE6mZkTmxsY0869P39bNSrwCSa3rusyZZnu2-6_Zv5YccBYT0mgYcot_d1kcEmq2i9W3o6CAfMHMziKmIYBQc_jfKT866t5LcJ5IEUln2t7Y7q4GEEDdhk4brEWn6pLzn0XCslYhyK6GRwLRE4edl2L7c47-ldDdsCT1trTHutSazcBEllDCXyP6_atKX8-NYZ5xIZIp83c0Yz3iEqzfB3z1b9cCAw3k00gsTZ4FDQ0Y6VIGGJG85rOm91hsRBMFQOOrfnaANm_JpowdWdsQGzT2tlfrniaJd5www7pa5g";
 
 const Headers = {
 	headers: {
@@ -157,6 +157,13 @@ export const UPDATE_Contact_API = (dircnt_id: String, success: Function, error: 
 export const createMeet = (payload: Object, success: Function, error: Function) => {
 	axios
 		.post(`https://ssp-backend.ringplan.com/meet/v2/events`, payload, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};
+
+export const editMeet = (event_id: string, payload: Object, success: Function, error: Function) => {
+	axios
+		.patch(`https://ssp-backend.ringplan.com/meet/v2/events/${event_id}`, payload, Headers)
 		.then((res) => success?.(res))
 		.catch((err) => error?.(err));
 };

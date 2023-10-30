@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ScheduleMeetingDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 const timezones = moment.tz.names();
 // const timezones = ct.getAllTimezones();
-console.log(timezones);
+// console.log(timezones);
 
 // import { listTimeZones } from "timezone-support";
 
@@ -53,7 +53,7 @@ const ScheduleMeetingDialogue = () => {
 	const [timezone, setTimezone] = useState("");
 
 	const dateTime = DateTime.fromISO(start, { zone: timezone });
-	console.log(dateTime.toString());
+	// console.log(dateTime.toString());
 
 	const handleOptionChange = (event) => {
 		setSelectedOption(event.target.value);
@@ -71,10 +71,10 @@ const ScheduleMeetingDialogue = () => {
 	const data = {
 		title: title,
 		description: description,
-		start: dateTime.toString(),
-		end: end,
-		password: password,
+		start: start + ":00Z",
+		end: end + ":00Z",
 		attendees: attendeesList,
+		// password: password,
 		// recurrence: {
 		// 	frequency: frequency,
 		// 	// by_week_day: [1, 5],
@@ -83,6 +83,14 @@ const ScheduleMeetingDialogue = () => {
 		// 	interval: +interval,
 		// },
 	};
+	function appendPasswordToObject(dataObject, passwordValue) {
+		dataObject.password = passwordValue;
+	}
+	useEffect(() => {
+		if (isPrivate === true) {
+			appendPasswordToObject(data, password);
+		}
+	}, [isPrivate]);
 
 	// useLazyCreateMeetQuery(data);
 
@@ -91,8 +99,9 @@ const ScheduleMeetingDialogue = () => {
 			data,
 			(res: any) => {
 				console.log(res, "meet created ");
-				if (res?.status === 200) {
+				if (res?.status === 201) {
 					console.log("success in account retrieve");
+					dispatch(setScheduleDialogue(false));
 				}
 			},
 			(err: any) => {
@@ -101,7 +110,7 @@ const ScheduleMeetingDialogue = () => {
 		);
 		// dispatch(setScheduleDialogue(false));
 	};
-	console.log(start);
+	// console.log(start);
 
 	return (
 		<>
@@ -153,6 +162,13 @@ const ScheduleMeetingDialogue = () => {
 							setStart(e.target.value);
 						}}
 					/>
+					<input
+						type="datetime-local"
+						value={end}
+						onChange={(e) => {
+							setEnd(e.target.value);
+						}}
+					/>
 					{/* <span>
 						<ContactBookIcon />
 					</span> */}
@@ -163,7 +179,7 @@ const ScheduleMeetingDialogue = () => {
 						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
 						value={timezone}
 						onChange={(e) => {
-							console.log(e.target.value);
+							// console.log(e.target.value);
 							setTimezone(e.target.value);
 						}}
 					/>
@@ -202,7 +218,7 @@ const ScheduleMeetingDialogue = () => {
 									options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 									value={frequency}
 									onChange={(e) => {
-										console.log(e.target.value);
+										// console.log(e.target.value);
 										setFrequency(e.target.value);
 									}}
 								/>
@@ -272,7 +288,7 @@ const ScheduleMeetingDialogue = () => {
 										id=""
 										value={end}
 										onChange={(e) => {
-											setEnd(e.target.value);
+											// setEnd(e.target.value);
 										}}
 									/>
 								</div>
