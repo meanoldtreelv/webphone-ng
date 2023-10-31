@@ -22,7 +22,7 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 	const dispatch = useDispatch();
 	const queries = useSelector(voicemailQueries);
 	const ext = useSelector(voicemailFilterExt);
-	const [prev, setPrev] = useState('');
+	const [prev, setPrev] = useState("");
 
 	const handleExtensionFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (ext) {
@@ -45,7 +45,7 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 			delete filterObj.extension_source;
 			dispatch(setVoicemailQueries(filterObj));
 			dispatch(setFilterExt(""));
-			setPrev('')
+			setPrev("");
 		}
 
 		if (ext) dispatch(setVoicemailQueries(filterObj));
@@ -68,14 +68,7 @@ const Filter: React.FC<IFilter> = ({ onClose, extensionList, filterAnim }) => {
 
 				<div className={styles.filters}>
 					<div className={styles.filter1}>
-						<input
-							type="radio"
-							id="all"
-							name="filter"
-							value=""
-							onChange={handleExtensionFilter}
-							checked={!ext}
-						/>
+						<input type="radio" id="all" name="filter" value="" onChange={handleExtensionFilter} checked={!ext} />
 						<label htmlFor="all">All</label>
 					</div>
 					{extensionList?.map((extension) => (

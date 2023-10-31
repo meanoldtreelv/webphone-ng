@@ -25,14 +25,14 @@ const ContactList = () => {
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
 	const isContactSelected = useSelector(contactSelectd);
-	const [fakePage, setFakePage] = useState(20);
+	const [fakePage, setFakePage] = useState(1);
 
 	useEffect(() => {
 		const contactsJson = localStorage?.getItem("contacts");
 		let contactsParsed: [];
 
 		try {
-			contactsParsed = JSON.parse(contactsJson);
+			contactsParsed = JSON.parse(contactsJson)?.slice(0, 20);
 		} catch (e) {
 			contactsParsed = [];
 		}
@@ -51,7 +51,7 @@ const ContactList = () => {
 	useEffect(() => {
 		if (!contactsLoading && contactsData) {
 			localStorage.setItem("contacts", JSON.stringify(contactsData));
-			dispatch(setContactList(contactsData));
+			dispatch(setContactList(contactsData?.slice(0, 20)));
 		}
 	}, [contactsLoading]);
 
@@ -96,6 +96,21 @@ const ContactList = () => {
 		return (contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase());
 	};
 
+	const handleScroll = (e: any) => {
+		const scrollTop = e.target.scrollTop;
+		const scrollHeight = e.target.scrollHeight;
+		const clientHeight = e.target.clientHeight;
+
+		if (scrollTop + clientHeight >= scrollHeight) {
+			setFakePage((prevState) => prevState + 1);
+		}
+	};
+
+	useEffect(() => {
+		const contactsPerPage = JSON.parse(localStorage?.getItem("contacts"))?.slice(0, fakePage * 20);
+		dispatch(setContactList(contactsPerPage));
+	}, [fakePage]);
+
 	// Sort the array based on first name
 	// const sortedContactLists = [...contactList]?.sort((a, b) => {
 	// 	const firstNameA = a.first_name || ""; // Handle null first name
@@ -137,7 +152,10 @@ const ContactList = () => {
 					</div>
 				</div>
 			</div>
-			<div className={styles.contact_lists} style={{ overflowY: contactsLoading ? "hidden" : undefined }}>
+			<div
+				className={styles.contact_lists}
+				style={{ overflowY: contactsLoading ? "hidden" : undefined }}
+				onScroll={handleScroll}>
 				{/* favourite contact heading */}
 				<div>
 					<p className={styles.contact_favorites}>

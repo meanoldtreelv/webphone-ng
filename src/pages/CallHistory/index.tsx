@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { useLazyGetCallHistoriesQuery } from "services/call";
 import { setCallHistory, setQueries } from "redux/call-history/callHistorySlice";
 import Calendar from "components/UI/Calender";
+import { setPage } from "redux/voicemail/voicemailSlice";
+import { formatFilterDate } from "utils";
 
 const CallHistory = () => {
 	const dispatch = useDispatch();
@@ -22,6 +24,11 @@ const CallHistory = () => {
 	const [dispCalendar, setDispCalendar] = useState(false);
 	const callHistoryQueries = useSelector(queries);
 	const callHistoryStrQueries = useSelector(strQueries);
+	const [pageSize, setPageSize] = useState(20);
+	const [date, setDate] = useState({
+		from_date: "",
+		to_date: "",
+	});
 
 	useEffect(() => {
 		const callHistoryJson = localStorage?.getItem("call-history");
@@ -34,29 +41,43 @@ const CallHistory = () => {
 		}
 
 		const fetchCallHistory = async () => {
-			await getCallHistories("page=1");
+			await getCallHistories(callHistoryStrQueries);
 		};
 
-		if (historyParsed && historyParsed.length) {
-			dispatch(setCallHistory(historyParsed));
+		if (historyParsed && historyParsed?.length) {
+			dispatch(setCallHistory(historyParsed.slice(0, 20)));
 		} else {
 			fetchCallHistory();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (!isLoading && data) {
-			localStorage.setItem("call-history", JSON.stringify(data));
-			dispatch(setCallHistory(data));
+		if (!isLoading && !isFetching && data) {
+			if (Object.keys(callHistoryQueries).length <= 2) {
+				const parsedData = JSON.parse(String(localStorage?.getItem("call-history")));
+				if (parsedData) {
+					localStorage.setItem("call-history", JSON.stringify([...parsedData, ...data]));
+				} else {
+					localStorage.setItem("call-history", JSON.stringify(data));
+				}
+			}
+
+			dispatch(setCallHistory(data?.slice(0, 20)));
 		}
-	}, [isLoading]);
+	}, [isLoading, isFetching]);
 
 	useEffect(() => {
 		setDetailsOn(Object.keys(callHistoryDetails).length > 1);
 	}, [callHistoryDetails]);
 
-	const onFilter = (queries: any) => {
-		dispatch(setQueries({ ...callHistoryQueries, ...queries }));
+	const onFilter = () => {
+		dispatch(
+			setQueries({
+				...callHistoryQueries,
+				from_date: formatFilterDate(date.from_date),
+				to_date: formatFilterDate(date.to_date),
+			}),
+		);
 
 		const fetchCallHistory = async () => {
 			await getCallHistories(callHistoryStrQueries);
@@ -65,6 +86,28 @@ const CallHistory = () => {
 
 		fetchCallHistory();
 	};
+
+	useEffect(() => {
+		const callHistoryJson = localStorage?.getItem("call-history");
+		let historyParsed: [];
+
+		try {
+			historyParsed = JSON.parse(callHistoryJson);
+		} catch (e) {
+			historyParsed = [];
+		}
+
+		const fetchCallHistory = async () => {
+			await getCallHistories(callHistoryStrQueries);
+		};
+
+		if (historyParsed && historyParsed?.length !== pageSize) {
+			dispatch(setCallHistory(historyParsed?.slice(0, pageSize + 20)));
+			setPageSize((prevState) => prevState + 20);
+		} else {
+			fetchCallHistory();
+		}
+	}, [callHistoryStrQueries]);
 
 	return (
 		<div className={styles.callHistory}>
@@ -83,6 +126,7 @@ const CallHistory = () => {
 								dispCalendar={dispCalendar}
 								setDispCalendar={setDispCalendar}
 								loading={isLoading}
+								fetching={isFetching}
 								callLen={CallHistory.length}
 							/>
 						) : null}
@@ -94,6 +138,8 @@ const CallHistory = () => {
 								setDispCalendar={setDispCalendar}
 								filter={onFilter}
 								loading={isFetching}
+								date={date}
+								setDate={setDate}
 							/>
 						) : null}
 

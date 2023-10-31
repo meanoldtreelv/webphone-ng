@@ -6,9 +6,9 @@ const initialCallHistoryState: ICallHistoryState = {
 	selectedCallHistory: {},
 	queries: {
 		page: 1,
-		page_size: 20,
+		page_size: 80,
 	},
-	strQueries: "",
+	strQueries: new URLSearchParams({ page: 1, page_size: 80 }).toString(),
 };
 
 const callHistorySlice = createSlice({

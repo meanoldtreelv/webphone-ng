@@ -1,7 +1,7 @@
 import SplashScreen from "./../../components/SplashScreen";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import routePaths from './../../constants/routes';
+import routePaths from "./../../constants/routes";
 
 const Home = () => {
 	const navigate = useNavigate();

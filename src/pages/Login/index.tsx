@@ -1,8 +1,6 @@
 import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
-
 import loginSideImage from "./../../assets/images/bg/login.png";
-
 import ExtensionIcon from "./../../components/UI/Icons/Extension";
 import EnvelopeIcon from "./../../components/UI/Icons/Envelope";
 import LockIcon from "./../../components/UI/Icons/Lock";

@@ -2,7 +2,7 @@
 
 .sidebarBox {
 	height: 100%;
-	background: map-get($color, overlay-primary);
+	background: var(--overlay-primary);
 	overflow-x: hidden;
 	// position: absolute;
 	z-index: 10;
@@ -51,15 +51,15 @@
 
 		&:hover {
 			background: map-get($color, opacity-neutral-10);
-			color: map-get($color, text-link);
+			color: var(--text-link);
 		}
 		&:visited {
-			background: map-get($color, background-active);
-			color: map-get($color, text-link);
+			background: var(--background-active);
+			color: var(--text-link);
 		}
 		&:active {
-			background: map-get($color, background-active);
-			color: map-get($color, text-link);
+			background: var(--background-active);
+			color: var(--text-link);
 		}
 	}
 
@@ -80,27 +80,27 @@
 			z-index: 100;
 			width: 5px;
 			height: 5px;
-			background: map-get($color, support-danger-default);
+			background: var(--support-danger-default);
 			border-radius: 100%;
 		}
 	}
 
 	&_unreadMsg {
-		color: var(--background-primary);
+		color: var(--text-primary);
 		text-align: center;
 		display: inline-flex;
 		padding: 1px 6px;
 		justify-content: center;
 		align-items: center;
 		border-radius: 15px;
-		background: map-get($color, support-danger-default);
+		background: var(--support-danger-default);
 		font-size: 11px;
 	}
 }
 
 .active_tab {
-	background: map-get($color, background-active);
-	color: map-get($color, text-link) !important;
+	background: var(--background-active);
+	color: var(--text-link) !important;
 }
 
 @media only screen and (max-width: 500px) {

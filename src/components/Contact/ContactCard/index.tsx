@@ -10,10 +10,10 @@ const ContactCard: React.FC<IContactCard> = ({ id, first_name, last_name, phone,
 	return (
 		<button className={styles.contact} onClick={clicked}>
 			<span className={styles.contact_circle}>{contactAbbreviation(first_name, last_name, phone, email)}</span>
-			<span className={styles.contact_name}>
+			<div className={styles.contact_name}>
 				<span>{first_name + last_name ? first_name + " " + last_name : phone || email || fax}</span>
 				<SuitcaseIcon />
-			</span>
+			</div>
 		</button>
 	);
 };

@@ -35,10 +35,12 @@ export interface IVoicemailState {
 	page: number;
 	voicemailResults: IVoicemail[];
 	queries: {
-		from_date: "";
-		to_date: "";
-		sort: "";
-		extension_destination: "";
+		from_date?: string;
+		to_date?: string;
+		sort?: string;
+		extension_destination?: string;
+		page?: number;
+		per_page?: number;
 	};
 	strQueries: string;
 	newFilter: boolean;

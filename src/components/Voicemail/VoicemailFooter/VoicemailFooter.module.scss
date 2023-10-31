@@ -14,8 +14,6 @@
 	z-index: 3;
 	border-top: 1px solid var(--border-tertiary);
 	background: var(--background-secondary);
-	// opacity: 0.8;
-	/* Blur/Background Blur */
 	backdrop-filter: blur(16px);
 
 	&_name,
@@ -108,16 +106,117 @@
 .footer_timeSlash {
 	font-size: 10px;
 	margin: 0 5px;
+	color: var(--text-primary);
 }
 
 .footer_volumeBtn {
 	svg {
-		width: 25px;
-		height: 25px;
+		width: 22px;
+		height: 22px;
 		margin-left: 10px;
 	}
 
 	svg {
 		fill: var(--icon-primary);
+	}
+}
+
+@media only screen and (max-width: 990px) {
+	.cont {
+		margin: auto;
+	}
+
+	.footer_progress {
+		width: 550px;
+	}
+}
+
+@media only screen and (max-width: 850px) {
+	.footer_progress {
+		width: 400px;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.footer_progress {
+		width: 300px;
+	}
+
+	.footer_dat {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 610px) {
+	.footer_progress {
+		width: 250px;
+	}
+}
+
+@media only screen and (max-width: 540px) {
+	.footer_progress {
+		width: 200px;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.footer {
+		position: fixed;
+		width: 100%;
+		left: 0;
+		bottom: 56px;
+	}
+
+	.footer_progress {
+		width: 100%;
+	}
+
+	.footer_progressBar {
+		flex: 1;
+	}
+
+	.cont {
+		width: 100%;
+		padding: 0 16px;
+	}
+}
+
+@media only screen and (max-width: 450px) {
+	.footer_next,
+	.footer_prev {
+		display: none !important;
+		background: red;
+		border: 1px solid red;
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.footer_shareBtn,
+	.footer_volumeBtn {
+		display: none;
+	}
+
+	.footer_moreBtn {
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+}
+
+@media only screen and (max-width: 350px) {
+	.footer_timeSlash,
+	.footer_totalDuration {
+		display: none;
+	}
+
+	.footer_timeProgress {
+		display: block;
+	}
+}
+
+@media only screen and (max-width: 270px) {
+	.footer_timeProgress {
+		display: none;
 	}
 }

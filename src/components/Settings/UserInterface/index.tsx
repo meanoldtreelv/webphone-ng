@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./UserInterface.module.scss";
 import FileIcon from "components/UI/Icons/File";
 import OnOffSwitch from "components/UI/OnOffSwitch";
@@ -8,19 +8,24 @@ import useDarkMode from "use-dark-mode";
 
 const UserInterface = () => {
 	const darkMode = useDarkMode(false);
+	const [systemDarkMode, setSystemDarkMode] = useState(false);
 
 	const handleDarkMode = () => {
 		if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
 			if (darkMode.value) {
 				darkMode.toggle();
+				setSystemDarkMode(false);
 			} else {
 				darkMode.toggle();
+				setSystemDarkMode(true);
 			}
 		} else {
 			if (!darkMode.value) {
 				darkMode.toggle();
+				setSystemDarkMode(true);
 			} else {
 				darkMode.toggle();
+				setSystemDarkMode(false);
 			}
 		}
 	};
@@ -36,25 +41,25 @@ const UserInterface = () => {
 					</span>
 				</div>
 			</div> */}
-			<h2 className={`body_bold ${styles.heading}`}>Other</h2>
+			{/* <h2 className={`body_bold ${styles.heading}`}>Other</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>
-				{/* <p>
+				<p>
 					<OnOffSwitch />
 					<span>Close the program when the window is closed</span>
-				</p> */}
-				{/* <p>
+				</p>
+				<p>
 					<OnOffSwitch />
 					<span>Autorun of the program at system startup</span>
-				</p> */}
+				</p>
 				<p>
 					<OnOffSwitch />
 					<span>Make RingPlan Voice default app for calls</span>
 				</p>
-			</div>
+			</div> */}
 			<h2 className={`body_bold ${styles.heading}`}>Dark Mode</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>
 				<p>
-					<OnOffSwitch onChange={handleDarkMode} checked={darkMode.value} />
+					<OnOffSwitch onChange={handleDarkMode} checked={systemDarkMode} />
 					<span>Sync with OS setting</span>
 				</p>
 				<p>
@@ -63,7 +68,7 @@ const UserInterface = () => {
 				</p>
 				<p>
 					<span>
-						<OnOffSwitch onChange={handleDarkMode} checked={darkMode.value} />
+						<OnOffSwitch onChange={handleDarkMode} checked={systemDarkMode} />
 						<span>Auto Dark Mode</span>
 					</span>
 				</p>
@@ -79,7 +84,7 @@ const UserInterface = () => {
 				<p>
 					<span>Sidecar view</span>
 				</p>
-				<p>
+				{/* <p>
 					<span>Open as</span>
 				</p>
 				<p>
@@ -89,7 +94,7 @@ const UserInterface = () => {
 				<p>
 					<OnOffSwitch />
 					<span>Save position</span>
-				</p>
+				</p> */}
 			</div>
 			{/* <h2 className={`body_bold ${styles.heading}`}>OCR</h2>
 			<div className={`caption_1 ${styles.toggleBox}`}>

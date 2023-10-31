@@ -15,6 +15,7 @@ import { setSimpleNotification, togglePlayPause } from "./../../../redux/common/
 import { setSelectedVoicemail } from "redux/voicemail/voicemailSlice";
 import copy from "copy-to-clipboard";
 import CallVolumeIcon from "components/UI/Icons/Call/CallVolume";
+import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
 
 const VoicemailFooter = () => {
 	const [timeProgress, setTimeProgress] = useState(0);
@@ -117,7 +118,10 @@ const VoicemailFooter = () => {
 			<div className={styles.cont}>
 				{sharePopup ? <ShareBtnPopup copyLink={handleCopyLink} copyText={handleCopyText} mail={handleEmail} /> : null}
 				<div className={styles.footer_actionBtn}>
-					<button className={styles.footer_action} onClick={() => handlePrevNext("prev")} disabled={prevNext <= 0}>
+					<button
+						className={`${styles.footer_action} ${styles.footer_prev}`}
+						onClick={() => handlePrevNext("prev")}
+						disabled={prevNext <= 0}>
 						<PlayPrevIcon color={prevNext <= 0 ? "#C8D3E0" : "#0C6DC7"} />
 					</button>
 					{playPause ? (
@@ -130,7 +134,7 @@ const VoicemailFooter = () => {
 						</button>
 					)}
 					<button
-						className={styles.footer_action}
+						className={`${styles.footer_action} ${styles.footer_next}`}
 						disabled={prevNext >= voicemailList.length}
 						onClick={() => handlePrevNext("next")}>
 						<PlayNextIcon color={prevNext >= voicemailList.length ? "#C8D3E0" : "#0C6DC7"} />
@@ -162,7 +166,9 @@ const VoicemailFooter = () => {
 						</div>
 
 						<div className={styles.footer_duration}>
-							<p className={styles.footer_totalDuration}>{formatTime(timeProgress)} </p>
+							<p className={`${styles.footer_totalDuration} ${styles.footer_timeProgress}`}>
+								{formatTime(timeProgress)}{" "}
+							</p>
 							<p className={styles.footer_timeSlash}>/</p>
 							<p className={styles.footer_totalDuration}>{formatTime(duration)}</p>
 						</div>
@@ -179,6 +185,9 @@ const VoicemailFooter = () => {
 					</button>
 					<button className={styles.footer_volumeBtn}>
 						<CallVolumeIcon />
+					</button>
+					<button className={styles.footer_moreBtn}>
+						<ChevronUpIcon />
 					</button>
 				</div>
 			</div>
