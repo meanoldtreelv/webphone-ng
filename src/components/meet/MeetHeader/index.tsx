@@ -143,7 +143,7 @@ const MeetHeader = () => {
 						// className={`${selectedTab === "start_meeting" && styles.activeTab}`}
 						onClick={startMeetingHandler}>
 						<ConferenceIcon />
-						<span>Start Meeting</span>
+						<span>Start&nbsp;Meeting</span>
 					</div>
 				</div>
 			</div>
