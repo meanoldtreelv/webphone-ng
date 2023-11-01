@@ -32,6 +32,8 @@ const MeetBox = () => {
 		);
 	}, [start, end]);
 
+	console.log(meetingList);
+
 	return (
 		<div className={styles.queues}>
 			<div className={styles.headerBox}>

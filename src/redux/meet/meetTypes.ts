@@ -9,4 +9,8 @@ export interface IMeetState {
 	calendarView: string;
 	meetingDetails: Object;
 	eventId: string;
+	recordDialogue: boolean;
+	videoRecordingData: [];
+	calendarType: string;
+	meetingId: string;
 }

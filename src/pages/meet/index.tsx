@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Meet.module.scss";
 import Header from "components/meet/Header";
 import MeetHeader from "components/meet/MeetHeader";
@@ -8,18 +8,24 @@ import JoinMeetingDialogue from "components/meet/JoinMeetingDialogue";
 import ScheduleMeetingDialogue from "components/meet/ScheduleMeetingDialogue";
 import SettingDialogue from "components/meet/SettingDialogue";
 import PromptDialog from "components/Modal/PromptDialog";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+	calendarType,
 	deleteDialogue,
 	descriptionDialogue,
 	editDialogue,
 	joinDialogue,
+	recordDialogue,
 	scheduleDialogue,
 	settingsDialogue,
 } from "redux/meet/meetSelectors";
 import DescriptionDialogue from "components/meet/DescriptionDialogue";
 import DeleteMeet from "components/meet/DeleteMeet";
 import EditMeet from "components/meet/EditMeet";
+import MeetRecordingDialogue from "components/meet/MeetRecordingDialogue";
+import { useLazyGetCalendarQuery } from "services/meet";
+import { GetCalendar } from "effects/apiEffect";
+import { setCalendarType } from "redux/meet/meetSlice";
 
 const Meet = () => {
 	const settings = useSelector(settingsDialogue);
@@ -28,6 +34,30 @@ const Meet = () => {
 	const edit = useSelector(editDialogue);
 	const deleteMeet = useSelector(deleteDialogue);
 	const description = useSelector(descriptionDialogue);
+	const recordDialogues = useSelector(recordDialogue);
+
+	const data = useLazyGetCalendarQuery();
+	console.log(data);
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		GetCalendar(
+			(res: any) => {
+				console.log(res, "get calender API retrieve");
+				if (res?.status === 200) {
+					console.log("success in get calendar retrieve");
+					// setMeetingList(res?.data);
+					console.log(res?.data?.type);
+
+					dispatch(setCalendarType(res?.data?.type));
+				}
+			},
+			(err: any) => {
+				console.error(err, "err in calendar retrieve");
+			},
+		);
+	}, []);
 
 	return (
 		<div style={{ position: "relative", width: "100%", height: "100vh" }}>
@@ -42,6 +72,7 @@ const Meet = () => {
 			{edit && <EditMeet />}
 			{deleteMeet && <DeleteMeet />}
 			{description && <DescriptionDialogue />}
+			{recordDialogues && <MeetRecordingDialogue />}
 
 			{/* <PromptDialog type="info" title="" actionBtnTxt="Proceed">
 				Are you sure you want to connect GSuite Calendar ?

@@ -52,6 +52,8 @@ const ScheduleMeetingDialogue = () => {
 	const [interval, setInterval] = useState("1");
 	const [timezone, setTimezone] = useState("");
 
+	const [deleteEmail, setDeleteEmail] = useState("");
+
 	const dateTime = DateTime.fromISO(start, { zone: timezone });
 	// console.log(dateTime.toString());
 
@@ -66,6 +68,7 @@ const ScheduleMeetingDialogue = () => {
 				email: attendees,
 			},
 		]);
+		setAttendees("");
 	};
 
 	const data = {
@@ -77,8 +80,8 @@ const ScheduleMeetingDialogue = () => {
 		// password: password,
 		// recurrence: {
 		// 	frequency: frequency,
-		// 	// by_week_day: [1, 5],
-		// 	// by_week: 2,
+		// by_week_day: [1, 5],
+		// by_week: 2,
 		// 	count: +count,
 		// 	interval: +interval,
 		// },
@@ -86,12 +89,23 @@ const ScheduleMeetingDialogue = () => {
 	function appendPasswordToObject(dataObject, passwordValue) {
 		dataObject.password = passwordValue;
 	}
-	useEffect(() => {
-		if (isPrivate === true) {
-			appendPasswordToObject(data, password);
-		}
-	}, [isPrivate]);
+	useEffect(() => {}, [isPrivate]);
 
+	if (isPrivate === true) {
+		appendPasswordToObject(data, password);
+	}
+
+	if (isRepeat === true) {
+		data.recurrence = {
+			frequency: frequency,
+			// by_week_day: [1, 5],
+			// by_week: 2,
+			count: +count,
+			interval: +interval,
+		};
+	}
+
+	useEffect(() => {}, [isRepeat]);
 	// useLazyCreateMeetQuery(data);
 
 	const handleSubmit = () => {
@@ -111,6 +125,23 @@ const ScheduleMeetingDialogue = () => {
 		// dispatch(setScheduleDialogue(false));
 	};
 	// console.log(start);
+
+	const removeHandler = (emailId) => {
+		const list = attendeesList;
+		for (let i = 0; i < list.length; i++) {
+			if (list[i].email === emailId) {
+				list.splice(i, 1);
+				setAttendeesList([...list]);
+				break; // Exit the loop after deleting the item
+			}
+		}
+	};
+
+	useEffect(() => {
+		console.log(deleteEmail);
+
+		removeHandler(deleteEmail);
+	}, [deleteEmail]);
 
 	return (
 		<>
@@ -197,6 +228,21 @@ const ScheduleMeetingDialogue = () => {
 						}}
 					/>
 					<button onClick={addAttendeesHandler}>ADD</button>
+				</div>
+				<div>
+					{attendeesList?.map((item) => (
+						<p key={item.email}>
+							{item.email}{" "}
+							<span
+								style={{ cursor: "pointer" }}
+								onClick={() => {
+									setDeleteEmail(item.email);
+								}}
+								id={item.email}>
+								&#10006;
+							</span>
+						</p>
+					))}
 				</div>
 
 				<div className={styles.checkboxGroup}>

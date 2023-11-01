@@ -63,10 +63,14 @@
 	padding: 20px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
 	.meetBox {
 		padding: 10px;
 		// background-color: red;
 		overflow-x: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		// height: 60px;
 	}
 }

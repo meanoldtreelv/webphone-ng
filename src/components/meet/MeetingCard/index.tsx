@@ -4,11 +4,23 @@ import styles from "./MeetingCard.module.scss";
 import LinkIcon from "components/UI/Icons/Voicemail/Link";
 import { convertToHourMinuteFormat } from "helpers/formatDateTime";
 import { useDispatch } from "react-redux";
-import { setDescriptionDialogue, setJoinDialogue, setMeetingDetails } from "redux/meet/meetSlice";
+import {
+	setDescriptionDialogue,
+	setJoinDialogue,
+	setMeetingDetails,
+	setMeetingId,
+	setRecordDialogue,
+	setVideoRecordingData,
+} from "redux/meet/meetSlice";
+
+import VideoRecordIcon from "components/UI/Icons/meet/VideoRecord";
+import ThreeDots from "components/UI/Icons/meet/ThreeDots";
+
 // import { longDateTimeFormat } from "helpers/formatDateTime";
 
 const MeetingCard = ({ meetData }) => {
 	const [iconVisible, setIconVisible] = useState(false);
+	const [moreIcon, setMoreIcon] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -32,6 +44,14 @@ const MeetingCard = ({ meetData }) => {
 
 		dispatch(setJoinDialogue(false));
 	};
+
+	const recordHandler = () => {
+		dispatch(setRecordDialogue(true));
+		dispatch(setMeetingId(meetData?.jitsi_meeting_room_id));
+		// dispatch(setVideoRecordingData(meetData?.jitsi_meeting_room?.meeting_video_data));
+	};
+
+	console.log(meetData, "meet data");
 
 	return (
 		<div
@@ -66,9 +86,34 @@ const MeetingCard = ({ meetData }) => {
 						<span onClick={joinHandler}>
 							<LinkIcon />
 						</span>
+						{meetData?.jitsi_meeting_room?.meeting_video_data.length > 0 && (
+							<span onClick={recordHandler}>
+								<VideoRecordIcon />
+							</span>
+						)}
 					</>
 				)}
 			</div>
+			<span
+				className={styles.threeDots}
+				onClick={() => {
+					setMoreIcon(!moreIcon);
+				}}>
+				<ThreeDots />
+			</span>
+			{moreIcon && (
+				<div className={styles.moreIcon}>
+					<CopyIcon />
+					<span onClick={joinHandler}>
+						<LinkIcon />
+					</span>
+					{meetData?.jitsi_meeting_room?.meeting_video_data.length > 0 && (
+						<span onClick={recordHandler}>
+							<VideoRecordIcon />
+						</span>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };
