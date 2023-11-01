@@ -18,7 +18,7 @@
 		height: 142px;
 		flex-shrink: 0;
 		// fill: url(<path-to-image>), lightgray 50% / cover no-repeat;
-		stroke-width: 1px;
+		strokewidth: 1px;
 		stroke: map-get($color, background-primary);
 		filter: drop-shadow(0px 0px 16px map-get($color, dark-box-shadow));
 		border: 1px solid map-get($color, background-primary);
