@@ -1,5 +1,5 @@
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./MeetingCard.module.scss";
 import LinkIcon from "components/UI/Icons/Voicemail/Link";
 import { convertToHourMinuteFormat } from "helpers/formatDateTime";
@@ -10,13 +10,10 @@ import {
 	setMeetingDetails,
 	setMeetingId,
 	setRecordDialogue,
-	setVideoRecordingData,
 } from "redux/meet/meetSlice";
 
 import VideoRecordIcon from "components/UI/Icons/meet/VideoRecord";
 import ThreeDots from "components/UI/Icons/meet/ThreeDots";
-
-// import { longDateTimeFormat } from "helpers/formatDateTime";
 
 const MeetingCard = ({ meetData }) => {
 	const [iconVisible, setIconVisible] = useState(false);
@@ -24,20 +21,15 @@ const MeetingCard = ({ meetData }) => {
 
 	const dispatch = useDispatch();
 
-	// console.log(meetData);
-	// // Example usage
-	// const dateTimeString = "2023-10-26T04:15:00+00:00";
-	// const hourMinuteFormat = convertToHourMinuteFormat(dateTimeString);
-	// console.log(hourMinuteFormat); // Output: "04:15"
-	const meetHandler = () => {
-		dispatch(setMeetingDetails(meetData));
-		dispatch(setDescriptionDialogue(true));
-	};
-
 	const currentDate = new Date();
 
 	const targetDate = new Date(meetData.start);
 	const acceptedData = meetData?.attendees?.filter((item) => item.status === "accepted");
+
+	const meetHandler = () => {
+		dispatch(setMeetingDetails(meetData));
+		dispatch(setDescriptionDialogue(true));
+	};
 
 	const joinHandler = () => {
 		window.open(`https://meet.ringplan.com/auth/?id=${meetData?.jitsi_meeting_room_id}`, "_blank");
@@ -48,10 +40,7 @@ const MeetingCard = ({ meetData }) => {
 	const recordHandler = () => {
 		dispatch(setRecordDialogue(true));
 		dispatch(setMeetingId(meetData?.jitsi_meeting_room_id));
-		// dispatch(setVideoRecordingData(meetData?.jitsi_meeting_room?.meeting_video_data));
 	};
-
-	console.log(meetData, "meet data");
 
 	return (
 		<div

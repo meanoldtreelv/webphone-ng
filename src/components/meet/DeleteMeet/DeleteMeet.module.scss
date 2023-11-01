@@ -18,7 +18,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	max-width: 344px;
+	width: 400px;
 	height: 218;
 	border-radius: 12px;
 	// border: 1px solid map-get($color, border-secondary);
@@ -95,5 +95,11 @@ form {
 		display: flex;
 		align-items: center;
 		gap: 10px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.delete {
+		width: 300px;
 	}
 }

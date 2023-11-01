@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SettingDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
@@ -8,7 +8,7 @@ import outlook from "assets/images/img/outlook.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setCalendarType, setSettingsDialogue } from "redux/meet/meetSlice";
 import { GetGoogleCalendar, GetOutlookCalendar, RevokeGoogleCalendar, RevokeOutlookCalendar } from "effects/apiEffect";
-import { calendarType, settingsDialogue } from "redux/meet/meetSelectors";
+import { calendarType } from "redux/meet/meetSelectors";
 
 const SettingDialogue = () => {
 	const [gsuiteCalendar, setGsuiteCalendar] = useState(false);
@@ -16,8 +16,9 @@ const SettingDialogue = () => {
 	const dispatch = useDispatch();
 
 	const calendar = useSelector(calendarType);
+
+	// todo - remove harcoded email
 	const email = "gshivam@startxlabs.in";
-	console.log(calendar, "calendar");
 
 	useEffect(() => {
 		if (calendar === "google") {
@@ -38,9 +39,7 @@ const SettingDialogue = () => {
 				(res: any) => {
 					console.log(res, "gsuiteCalendar revoke");
 					if (res?.status === 200) {
-						// console.log("success in account retrieve");
 						dispatch(setCalendarType(""));
-						// window.open(res?.data?.auth_url);
 					}
 				},
 				(err: any) => {
@@ -56,9 +55,6 @@ const SettingDialogue = () => {
 					console.log(res, "outlook revoke");
 					if (res?.status === 200) {
 						dispatch(setCalendarType(""));
-						// console.log("success in account retrieve");
-						// dispatch(setScheduleDialogue(false));
-						// window.open(res?.data?.auth_url);
 					}
 				},
 				(err: any) => {
@@ -69,8 +65,6 @@ const SettingDialogue = () => {
 				(res: any) => {
 					console.log(res, "gsuiteCalendar ");
 					if (res?.status === 200) {
-						// console.log("success in account retrieve");
-						// dispatch(setScheduleDialogue(false));
 						window.open(res?.data?.auth_url);
 					}
 				},
@@ -83,8 +77,6 @@ const SettingDialogue = () => {
 				(res: any) => {
 					console.log(res, "gsuiteCalendar ");
 					if (res?.status === 200) {
-						// console.log("success in account retrieve");
-						// dispatch(setScheduleDialogue(false));
 						window.open(res?.data?.auth_url);
 					}
 				},
@@ -109,9 +101,6 @@ const SettingDialogue = () => {
 					console.log(res, "outlook revoke");
 					if (res?.status === 200) {
 						dispatch(setCalendarType(""));
-						// console.log("success in account retrieve");
-						// dispatch(setScheduleDialogue(false));
-						// window.open(res?.data?.auth_url);
 					}
 				},
 				(err: any) => {
@@ -126,9 +115,7 @@ const SettingDialogue = () => {
 				(res: any) => {
 					console.log(res, "gsuiteCalendar revoke");
 					if (res?.status === 200) {
-						// console.log("success in account retrieve");
 						dispatch(setCalendarType(""));
-						// window.open(res?.data?.auth_url);
 					}
 				},
 				(err: any) => {
@@ -139,8 +126,6 @@ const SettingDialogue = () => {
 				(res: any) => {
 					console.log(res, "outlookCalendar ");
 					if (res?.status === 200) {
-						// console.log("success in account retrieve");
-						// dispatch(setScheduleDialogue(false));
 						window.open(res?.data?.auth_url);
 					}
 				},

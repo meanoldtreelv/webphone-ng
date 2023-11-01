@@ -85,7 +85,8 @@ const BottomNav = () => {
 						to={link.path}
 						className={() =>
 							[styles.sidebar_tab, link.path === window.location.pathname ? styles.active_tab : null].join(" ")
-						}>
+						}
+						key={link.name}>
 						<span className={styles.sidebar_icon}>{link.icon}</span>
 						<span className={`${styles.sidebar_tabExpanded}`}>
 							<span>{link.name}</span>
@@ -93,7 +94,7 @@ const BottomNav = () => {
 						</span>
 					</NavLink>
 				) : (
-					<div className={styles.moreOpt}>
+					<div className={styles.moreOpt} key={link.name}>
 						<div className={`${styles.moreOptIn}  ${moreOpt ? styles.moreOptIn_on : styles.moreOptIn_remove}`}>
 							<div>
 								<button onClick={() => setMoreOpt(false)}>
@@ -103,6 +104,7 @@ const BottomNav = () => {
 									{sidebarBtmMoreLinks.map((link) => (
 										<NavLink
 											to={link.path}
+											key={link.name}
 											className={({ isActive }: { isActive: boolean }) =>
 												[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
 											}>

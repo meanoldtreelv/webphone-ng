@@ -18,14 +18,11 @@
 .leftDiv {
 	display: flex;
 	justify-content: space-between;
-	// background-color: red;
 	width: 80%;
 }
+
 .statusIcon {
 	display: block;
-	// width: 5px;
-	// height: 100%;
-	// color: green;
 	border-left: 5px solid var(--accent-green-primary);
 }
 
@@ -42,6 +39,7 @@
 	display: flex;
 	gap: 10px;
 }
+
 .attendee {
 	color: var(--text-secondary, #5c6168);
 }
@@ -53,7 +51,14 @@
 .iconBox {
 	width: 90px;
 	display: flex;
+	align-items: center;
 	gap: 10px;
+
+	span {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 }
 
 .threeDots {
@@ -69,6 +74,7 @@
 		overflow: visible;
 		height: 50px;
 	}
+
 	.iconBox {
 		display: none;
 	}
@@ -80,17 +86,17 @@
 	.leftDiv {
 		flex-direction: column;
 	}
+
 	.moreIcon {
 		display: block;
 		position: absolute;
 		right: 10px;
-		// bottom: 20px;
+
 		top: 40px;
 		z-index: 5000;
 
 		width: 100px;
 		height: 40px;
-		// background-color: red;
 		border-radius: 8px;
 
 		display: flex;
@@ -100,15 +106,7 @@
 		box-shadow: 0px 4px 4px 4px rgba(12, 109, 199, 0.15);
 	}
 
-	.attendee {
-		// padding-left: 20px;
-	}
-
 	.statusIcon {
 		display: none;
-		// width: 5px;
-		// height: 100%;
-		// color: green;
-		// border-left: 5px solid var(--accent-green-primary);
 	}
 }

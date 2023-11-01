@@ -3,6 +3,7 @@ import styles from "./DescriptionDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import LockIcon from "components/UI/Icons/Lock";
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setDeleteDialogue, setDescriptionDialogue, setEditDialogue, seteventId } from "redux/meet/meetSlice";
 import { meetingDetails } from "redux/meet/meetSelectors";
@@ -11,6 +12,11 @@ import { convertDateFormat, convertToHourMinuteFormat } from "helpers/formatDate
 const DescriptionDialogue = () => {
 	const dispatch = useDispatch();
 	const details = useSelector(meetingDetails);
+
+	const filteredAttendees = details?.attendees?.filter((item) => item.is_organizer === false);
+	const filteredOrganizer = details?.attendees?.filter((item) => item.is_organizer === true);
+
+	const acceptedData = details?.attendees?.filter((item) => item.status === "accepted");
 
 	const joinHandler = () => {
 		window.open(`https://meet.ringplan.com/auth/?id=${details?.jitsi_meeting_room_id}`, "_blank");
@@ -21,17 +27,10 @@ const DescriptionDialogue = () => {
 		dispatch(setDeleteDialogue(true));
 	};
 
-	// console.log(details, "details");
-
-	const filteredAttendees = details?.attendees?.filter((item) => item.is_organizer === false);
-	const filteredOrganizer = details?.attendees?.filter((item) => item.is_organizer === true);
-
 	const editHandler = () => {
 		dispatch(setDescriptionDialogue(false));
 		dispatch(setEditDialogue(true));
 	};
-
-	const acceptedData = details?.attendees?.filter((item) => item.status === "accepted");
 
 	return (
 		<>

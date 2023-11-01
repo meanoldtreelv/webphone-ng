@@ -1,35 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ScheduleMeetingDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import Select from "components/UI/Forms/Select";
 import moment from "moment-timezone";
-import { DateTime } from "luxon";
-
-//timezone list import
-import * as ct from "countries-and-timezones";
-
-import { listTimeZones } from "timezone-support";
-import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 import { createMeet } from "effects/apiEffect";
 import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
+// import { DateTime } from "luxon";
+// import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 const timezones = moment.tz.names();
-// const timezones = ct.getAllTimezones();
-// console.log(timezones);
-
-// import { listTimeZones } from "timezone-support";
-
-// List canonical time zone names: [ 'Africa/Abidjan', ... ]
-// const timeZones2 = listTimeZones();
-// console.log(timeZones2);
 
 const ScheduleMeetingDialogue = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 
-	const [list, setList] = useState([
+	const [list] = useState([
 		{ value: "Daily", name: "Daily", selected: true },
 		{ value: "Weekly on Thursday", name: "Weekly on Thursday", selected: false },
 		{ value: "Monday to Friday", name: "Monday to Friday", selected: false },
@@ -54,23 +41,6 @@ const ScheduleMeetingDialogue = () => {
 
 	const [deleteEmail, setDeleteEmail] = useState("");
 
-	const dateTime = DateTime.fromISO(start, { zone: timezone });
-	// console.log(dateTime.toString());
-
-	const handleOptionChange = (event) => {
-		setSelectedOption(event.target.value);
-	};
-
-	const addAttendeesHandler = () => {
-		setAttendeesList([
-			...attendeesList,
-			{
-				email: attendees,
-			},
-		]);
-		setAttendees("");
-	};
-
 	const data = {
 		title: title,
 		description: description,
@@ -86,10 +56,10 @@ const ScheduleMeetingDialogue = () => {
 		// 	interval: +interval,
 		// },
 	};
+
 	function appendPasswordToObject(dataObject, passwordValue) {
 		dataObject.password = passwordValue;
 	}
-	useEffect(() => {}, [isPrivate]);
 
 	if (isPrivate === true) {
 		appendPasswordToObject(data, password);
@@ -105,8 +75,19 @@ const ScheduleMeetingDialogue = () => {
 		};
 	}
 
-	useEffect(() => {}, [isRepeat]);
-	// useLazyCreateMeetQuery(data);
+	const handleOptionChange = (event) => {
+		setSelectedOption(event.target.value);
+	};
+
+	const addAttendeesHandler = () => {
+		setAttendeesList([
+			...attendeesList,
+			{
+				email: attendees,
+			},
+		]);
+		setAttendees("");
+	};
 
 	const handleSubmit = () => {
 		createMeet(
@@ -124,7 +105,6 @@ const ScheduleMeetingDialogue = () => {
 		);
 		// dispatch(setScheduleDialogue(false));
 	};
-	// console.log(start);
 
 	const removeHandler = (emailId) => {
 		const list = attendeesList;
@@ -138,8 +118,6 @@ const ScheduleMeetingDialogue = () => {
 	};
 
 	useEffect(() => {
-		console.log(deleteEmail);
-
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
 

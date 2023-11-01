@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./MeetBox.module.scss";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import MeetingCard from "../MeetingCard";
-import Calendar from "components/UI/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { setSettingsDialogue } from "redux/meet/meetSlice";
 import { getMeetList } from "effects/apiEffect";
 import { dateRange } from "redux/meet/meetSelectors";
+import MeetCalendar from "components/UI/Calendar2";
+// import Calendar from "components/UI/Calendar";
 
 const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
 
 	const dispatch = useDispatch();
 	const { start, end } = useSelector(dateRange);
-	// console.log(start, end, "range ");
+
 	const [meetingList, setMeetingList] = useState([]);
+
 	useEffect(() => {
 		getMeetList(
 			start,
@@ -31,8 +33,6 @@ const MeetBox = () => {
 			},
 		);
 	}, [start, end]);
-
-	console.log(meetingList);
 
 	return (
 		<div className={styles.queues}>
@@ -65,14 +65,14 @@ const MeetBox = () => {
 					<div className={styles.meetBox}>
 						<div>17 OCTOBER, TUE</div>
 						{meetingList?.map((item) => <MeetingCard key={item.id} meetData={item} />)}
-						{/* <MeetingCard /> */}
 					</div>
 				</div>
 			)}
 
 			{tabSelected === "calendar" && (
 				<div className={styles.calendar}>
-					<Calendar />
+					{/* <Calendar /> */}
+					<MeetCalendar />
 				</div>
 			)}
 		</div>
