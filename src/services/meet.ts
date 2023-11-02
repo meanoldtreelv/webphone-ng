@@ -21,7 +21,14 @@ export const meetService = apiService.injectEndpoints({
 				url: `/meet/v2/events/${event_id}`,
 			}),
 		}),
+		getCalendar: build.query({
+			query: () => ({
+				method: "GET",
+				url: `/meet/app/calendar`,
+			}),
+		}),
 	}),
 });
 
-export const { useLazyGetMeetQuery, useLazyCreateMeetQuery, lazyDeleteMeetQuery } = meetService;
+export const { useLazyGetMeetQuery, useLazyCreateMeetQuery, useLazyDeleteMeetQuery, useLazyGetCalendarQuery } =
+	meetService;

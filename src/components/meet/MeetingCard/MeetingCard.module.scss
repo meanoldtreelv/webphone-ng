@@ -8,6 +8,7 @@
 	height: 40px;
 	overflow: hidden;
 	cursor: pointer;
+	position: relative;
 
 	&:hover {
 		background-color: var(--background-emphasis);
@@ -17,19 +18,17 @@
 .leftDiv {
 	display: flex;
 	justify-content: space-between;
-	// background-color: red;
 	width: 80%;
 }
+
 .statusIcon {
 	display: block;
-	// width: 5px;
-	// height: 100%;
-	// color: green;
 	border-left: 5px solid var(--accent-green-primary);
 }
 
 .time {
 	color: var(--text-secondary, #5c6168);
+	white-space: nowrap;
 }
 
 .meeting {
@@ -40,6 +39,7 @@
 	display: flex;
 	gap: 10px;
 }
+
 .attendee {
 	color: var(--text-secondary, #5c6168);
 }
@@ -49,7 +49,64 @@
 }
 
 .iconBox {
-	width: 60px;
+	width: 90px;
 	display: flex;
+	align-items: center;
 	gap: 10px;
+
+	span {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+.threeDots {
+	display: none;
+}
+
+.moreIcon {
+	display: none;
+}
+
+@media screen and (max-width: 768px) {
+	.card {
+		overflow: visible;
+		height: 50px;
+	}
+
+	.iconBox {
+		display: none;
+	}
+
+	.threeDots {
+		display: block;
+	}
+
+	.leftDiv {
+		flex-direction: column;
+	}
+
+	.moreIcon {
+		display: block;
+		position: absolute;
+		right: 10px;
+
+		top: 40px;
+		z-index: 5000;
+
+		width: 100px;
+		height: 40px;
+		border-radius: 8px;
+
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		background-color: white;
+		box-shadow: 0px 4px 4px 4px rgba(12, 109, 199, 0.15);
+	}
+
+	.statusIcon {
+		display: none;
+	}
 }

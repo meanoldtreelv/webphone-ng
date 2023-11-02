@@ -57,21 +57,6 @@
 		cursor: pointer;
 	}
 
-	// label {
-	// 	color: var(--text-secondary, #5c6168);
-
-	// 	/* Caption 1/Regular */
-	// 	font-family: Poppins;
-	// 	font-size: 13px;
-	// 	font-style: normal;
-	// 	font-weight: 400;
-	// 	line-height: 18px; /* 138.462% */
-	// 	letter-spacing: -0.2px;
-
-	// 	width: fit-content;
-	// 	flex-shrink: 0;
-	// }
-
 	input,
 	select {
 		color: var(--text-primary, #1f2023);
@@ -95,11 +80,8 @@
 	background: var(--background-tertiary, #f7f9fc);
 
 	resize: none;
-
 	padding: 10px;
-
 	margin-bottom: 20px;
-
 	width: 100%;
 }
 
@@ -128,7 +110,6 @@
 
 	.cancel {
 		color: var(--border-primary, #91a0b5);
-
 		border: 1px solid var(--border-primary, #91a0b5);
 	}
 
@@ -196,11 +177,11 @@
 
 .on_date {
 	margin-top: 10px;
+
 	input {
 		width: 200px;
 		padding: 2px 10px;
 		border-bottom: 1px solid var(--border-secondary, #c8d3e0);
-
 		font-size: 14px;
 	}
 }
@@ -208,10 +189,20 @@
 label {
 	color: var(--text-secondary);
 }
+
 .attendees {
 	color: var(--text-primary);
 	font-size: 13px;
+
 	span {
 		color: var(--text-secondary);
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.dialogueBox {
+		width: 300px;
+		top: 0;
+		transform: translate(-50%, 0%);
 	}
 }

@@ -1,36 +1,45 @@
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./MeetingCard.module.scss";
 import LinkIcon from "components/UI/Icons/Voicemail/Link";
 import { convertToHourMinuteFormat } from "helpers/formatDateTime";
 import { useDispatch } from "react-redux";
-import { setDescriptionDialogue, setJoinDialogue, setMeetingDetails } from "redux/meet/meetSlice";
-// import { longDateTimeFormat } from "helpers/formatDateTime";
+import {
+	setDescriptionDialogue,
+	setJoinDialogue,
+	setMeetingDetails,
+	setMeetingId,
+	setRecordDialogue,
+} from "redux/meet/meetSlice";
+
+import VideoRecordIcon from "components/UI/Icons/meet/VideoRecord";
+import ThreeDots from "components/UI/Icons/meet/ThreeDots";
 
 const MeetingCard = ({ meetData }) => {
 	const [iconVisible, setIconVisible] = useState(false);
+	const [moreIcon, setMoreIcon] = useState(false);
 
 	const dispatch = useDispatch();
-
-	// console.log(meetData);
-	// // Example usage
-	// const dateTimeString = "2023-10-26T04:15:00+00:00";
-	// const hourMinuteFormat = convertToHourMinuteFormat(dateTimeString);
-	// console.log(hourMinuteFormat); // Output: "04:15"
-	const meetHandler = () => {
-		dispatch(setMeetingDetails(meetData));
-		dispatch(setDescriptionDialogue(true));
-	};
 
 	const currentDate = new Date();
 
 	const targetDate = new Date(meetData.start);
 	const acceptedData = meetData?.attendees?.filter((item) => item.status === "accepted");
 
+	const meetHandler = () => {
+		dispatch(setMeetingDetails(meetData));
+		dispatch(setDescriptionDialogue(true));
+	};
+
 	const joinHandler = () => {
 		window.open(`https://meet.ringplan.com/auth/?id=${meetData?.jitsi_meeting_room_id}`, "_blank");
 
 		dispatch(setJoinDialogue(false));
+	};
+
+	const recordHandler = () => {
+		dispatch(setRecordDialogue(true));
+		dispatch(setMeetingId(meetData?.jitsi_meeting_room_id));
 	};
 
 	return (
@@ -66,9 +75,34 @@ const MeetingCard = ({ meetData }) => {
 						<span onClick={joinHandler}>
 							<LinkIcon />
 						</span>
+						{meetData?.jitsi_meeting_room?.meeting_video_data.length > 0 && (
+							<span onClick={recordHandler}>
+								<VideoRecordIcon />
+							</span>
+						)}
 					</>
 				)}
 			</div>
+			<span
+				className={styles.threeDots}
+				onClick={() => {
+					setMoreIcon(!moreIcon);
+				}}>
+				<ThreeDots />
+			</span>
+			{moreIcon && (
+				<div className={styles.moreIcon}>
+					<CopyIcon />
+					<span onClick={joinHandler}>
+						<LinkIcon />
+					</span>
+					{meetData?.jitsi_meeting_room?.meeting_video_data.length > 0 && (
+						<span onClick={recordHandler}>
+							<VideoRecordIcon />
+						</span>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

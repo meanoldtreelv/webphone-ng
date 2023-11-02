@@ -52,7 +52,6 @@
 	gap: 4px;
 
 	border-radius: 8px;
-	// background: var(--primary-default, #0c6dc7);
 	border: 1px solid gray;
 
 	color: var(--text-secondary, #fff);
@@ -66,6 +65,7 @@
 
 .date {
 	font-size: 14px;
+
 	span {
 		color: var(--text-secondary);
 	}
@@ -138,4 +138,10 @@ label {
 	padding: 20px;
 	text-align: center;
 	color: var(--text-secondary);
+}
+
+@media screen and (max-width: 768px) {
+	.dialogueBox {
+		width: 300px;
+	}
 }

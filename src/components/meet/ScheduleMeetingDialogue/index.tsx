@@ -1,35 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ScheduleMeetingDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import Select from "components/UI/Forms/Select";
 import moment from "moment-timezone";
-import { DateTime } from "luxon";
-
-//timezone list import
-import * as ct from "countries-and-timezones";
-
-import { listTimeZones } from "timezone-support";
-import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 import { createMeet } from "effects/apiEffect";
 import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
+// import { DateTime } from "luxon";
+// import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 const timezones = moment.tz.names();
-// const timezones = ct.getAllTimezones();
-// console.log(timezones);
-
-// import { listTimeZones } from "timezone-support";
-
-// List canonical time zone names: [ 'Africa/Abidjan', ... ]
-// const timeZones2 = listTimeZones();
-// console.log(timeZones2);
 
 const ScheduleMeetingDialogue = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 
-	const [list, setList] = useState([
+	const [list] = useState([
 		{ value: "Daily", name: "Daily", selected: true },
 		{ value: "Weekly on Thursday", name: "Weekly on Thursday", selected: false },
 		{ value: "Monday to Friday", name: "Monday to Friday", selected: false },
@@ -52,8 +39,41 @@ const ScheduleMeetingDialogue = () => {
 	const [interval, setInterval] = useState("1");
 	const [timezone, setTimezone] = useState("");
 
-	const dateTime = DateTime.fromISO(start, { zone: timezone });
-	// console.log(dateTime.toString());
+	const [deleteEmail, setDeleteEmail] = useState("");
+
+	const data = {
+		title: title,
+		description: description,
+		start: start + ":00Z",
+		end: end + ":00Z",
+		attendees: attendeesList,
+		// password: password,
+		// recurrence: {
+		// 	frequency: frequency,
+		// by_week_day: [1, 5],
+		// by_week: 2,
+		// 	count: +count,
+		// 	interval: +interval,
+		// },
+	};
+
+	function appendPasswordToObject(dataObject, passwordValue) {
+		dataObject.password = passwordValue;
+	}
+
+	if (isPrivate === true) {
+		appendPasswordToObject(data, password);
+	}
+
+	if (isRepeat === true) {
+		data.recurrence = {
+			frequency: frequency,
+			// by_week_day: [1, 5],
+			// by_week: 2,
+			count: +count,
+			interval: +interval,
+		};
+	}
 
 	const handleOptionChange = (event) => {
 		setSelectedOption(event.target.value);
@@ -66,33 +86,8 @@ const ScheduleMeetingDialogue = () => {
 				email: attendees,
 			},
 		]);
+		setAttendees("");
 	};
-
-	const data = {
-		title: title,
-		description: description,
-		start: start + ":00Z",
-		end: end + ":00Z",
-		attendees: attendeesList,
-		// password: password,
-		// recurrence: {
-		// 	frequency: frequency,
-		// 	// by_week_day: [1, 5],
-		// 	// by_week: 2,
-		// 	count: +count,
-		// 	interval: +interval,
-		// },
-	};
-	function appendPasswordToObject(dataObject, passwordValue) {
-		dataObject.password = passwordValue;
-	}
-	useEffect(() => {
-		if (isPrivate === true) {
-			appendPasswordToObject(data, password);
-		}
-	}, [isPrivate]);
-
-	// useLazyCreateMeetQuery(data);
 
 	const handleSubmit = () => {
 		createMeet(
@@ -110,7 +105,21 @@ const ScheduleMeetingDialogue = () => {
 		);
 		// dispatch(setScheduleDialogue(false));
 	};
-	// console.log(start);
+
+	const removeHandler = (emailId) => {
+		const list = attendeesList;
+		for (let i = 0; i < list.length; i++) {
+			if (list[i].email === emailId) {
+				list.splice(i, 1);
+				setAttendeesList([...list]);
+				break; // Exit the loop after deleting the item
+			}
+		}
+	};
+
+	useEffect(() => {
+		removeHandler(deleteEmail);
+	}, [deleteEmail]);
 
 	return (
 		<>
@@ -197,6 +206,21 @@ const ScheduleMeetingDialogue = () => {
 						}}
 					/>
 					<button onClick={addAttendeesHandler}>ADD</button>
+				</div>
+				<div>
+					{attendeesList?.map((item) => (
+						<p key={item.email}>
+							{item.email}{" "}
+							<span
+								style={{ cursor: "pointer" }}
+								onClick={() => {
+									setDeleteEmail(item.email);
+								}}
+								id={item.email}>
+								&#10006;
+							</span>
+						</p>
+					))}
 				</div>
 
 				<div className={styles.checkboxGroup}>

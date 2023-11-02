@@ -25,7 +25,11 @@ const Select = ({
 					onChange && onChange(e);
 				}}
 				defaultValue={defaultValue}>
-				{options?.map((item: item) => <option value={item.value}>{item.name}</option>)}
+				{options?.map((item: item) => (
+					<option value={item.value} key={item.name}>
+						{item.name}
+					</option>
+				))}
 			</select>
 			<span>{icon}</span>
 		</div>

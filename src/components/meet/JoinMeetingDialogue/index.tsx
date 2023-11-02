@@ -1,11 +1,10 @@
 import Backdrop from "components/UI/Backdrop";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./JoinMeetingDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
-import ContactBookIcon from "components/UI/Icons/ContactBook";
+
 import { useDispatch } from "react-redux";
 import { setJoinDialogue } from "redux/meet/meetSlice";
-import { joinDialogue } from "redux/meet/meetSelectors";
 
 const JoinMeetingDialogue = () => {
 	const dispatch = useDispatch();
@@ -20,6 +19,7 @@ const JoinMeetingDialogue = () => {
 			dispatch(setJoinDialogue(false));
 		}
 	};
+
 	return (
 		<>
 			<Backdrop />
@@ -48,9 +48,6 @@ const JoinMeetingDialogue = () => {
 							setMeetingCode(e.target.value);
 						}}
 					/>
-					{/* <span>
-						<ContactBookIcon />
-					</span> */}
 				</div>
 
 				<div className={styles.btnBox}>

@@ -141,6 +141,7 @@ const Sidebar = () => {
 								className={({ isActive }: { isActive: boolean }) =>
 									[styles.sidebar_tab, isActive ? styles.active_tab : ""].join(" ")
 								}
+								key={link.name}
 								// onClick={toggleCollapsed}
 							>
 								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
@@ -160,6 +161,7 @@ const Sidebar = () => {
 								className={({ isActive }: { isActive: boolean }) =>
 									[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
 								}
+								key={link.name}
 								// onClick={toggleCollapsed}
 							>
 								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
