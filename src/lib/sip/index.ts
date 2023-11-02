@@ -196,7 +196,7 @@ function getRingerOutputID() {
   return "default";
 }
 function getAudioSrcID() {
-  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!=''){
+  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!='' && getCookie("microphoneDevice")!="default"){
     return getCookie("microphoneDevice")
   }
   let device = "default"

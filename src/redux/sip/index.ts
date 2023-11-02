@@ -94,6 +94,7 @@ const sipSlice = createSlice({
     audioEchoCancellation: getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true,
     sipRegistrationStatus: "",
     accountId: "",
+    suggestPortraitOnMobileModalShow:false
   },
   reducers: {
     audioAutoGainControl: (state, action) =>  {
@@ -193,6 +194,9 @@ const sipSlice = createSlice({
     hasSpeakerDevice: (state, action) =>  {
       state.hasSpeakerDevice = action.payload
       // console.log(state.hasSpeakerDevice)
+    },
+    suggestPortraitOnMobileModalShow: (state, action) =>  {
+      state.suggestPortraitOnMobileModalShow = action.payload
     },
     microphoneDevice: (state, action) =>  {
       switch(action.payload.action){
