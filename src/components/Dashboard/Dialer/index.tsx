@@ -26,6 +26,7 @@ import Setting from "components/UI/Icons/Call/Setting";
 import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
 
 const Dialer = () => {
+
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
 	// style for state update
 	const IconActiveStyle = { background: "var(--background-tertiary, #f7f9fc)" };
@@ -33,6 +34,7 @@ const Dialer = () => {
 		border: "1px solid var(--border-disabled, #c8d3e0)",
 	};
 	const dispatch = useDispatch();
+	dispatch(setCallNumber(""));
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	};

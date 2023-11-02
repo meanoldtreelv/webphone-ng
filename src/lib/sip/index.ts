@@ -4195,7 +4195,7 @@ const sip = {
     setCookie("ext_user_id", SipUsername);
     setCookie("ext_password", SipPassword);
     setCookie("ext_domain", SipDomain);
-    setCookie("ext_connected", "false");
+    // setCookie("ext_connected", "false");
     CreateUserAgent()
   },
   LoginWithAPI:(ext?:any)=>{

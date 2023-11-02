@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import styles from "./EndCall.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { dialPad } from "redux/call/callSlice";
 
 import dummyProfileImg from "./../../../assets/images/img/dummy/profile.png";
-import { callEnding } from "redux/call/callSelectors";
 import { store } from "redux/store";
 
 const EndCall = ({ name, callTimer }: {name: string, callTimer: string}) => {
