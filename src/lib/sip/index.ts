@@ -2419,7 +2419,7 @@ function AnswerVideoCall(lineNumber) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      localDB.setItem("AudioSrcId", "default");
+      // localDB.setItem("AudioSrcId", "default");
     }
   }
   // Add additional Constraints
@@ -2454,7 +2454,7 @@ function AnswerVideoCall(lineNumber) {
       console.warn(
         "The video device you used before is no longer available, default settings applied."
       );
-      localDB.setItem("VideoSrcId", "default"); // resets for later and subsequent calls
+      // localDB.setItem("VideoSrcId", "default"); // resets for later and subsequent calls
     }
   }
   // Add additional Constraints

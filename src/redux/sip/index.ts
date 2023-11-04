@@ -33,7 +33,8 @@ interface answeredCallIn {
 }
 interface callEndingIn{
   name?: string,
-  callTimer?: string
+  callTimer?: string,
+  number?:string
 }
 interface microphoneDeviceIn{
   deviceId?: string,
@@ -321,7 +322,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum ) {
-                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer }
+                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer, number:state.answeredCalls[index].DisplayNumber   }
                 state.callEnding = [ ...state.callEnding, endingCall ]
                 state.answeredCalls=[
                 ...state.answeredCalls.slice(0, index),

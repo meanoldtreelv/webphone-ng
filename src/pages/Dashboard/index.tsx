@@ -154,7 +154,7 @@ const Dashboard = () => {
 					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} />}
+					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />}
 
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}
