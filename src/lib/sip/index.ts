@@ -196,7 +196,7 @@ function getRingerOutputID() {
   return "default";
 }
 function getAudioSrcID() {
-  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!=''){
+  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!='' && getCookie("microphoneDevice")!="default"){
     return getCookie("microphoneDevice")
   }
   let device = "default"
@@ -2419,7 +2419,7 @@ function AnswerVideoCall(lineNumber) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      localDB.setItem("AudioSrcId", "default");
+      // localDB.setItem("AudioSrcId", "default");
     }
   }
   // Add additional Constraints
@@ -2454,7 +2454,7 @@ function AnswerVideoCall(lineNumber) {
       console.warn(
         "The video device you used before is no longer available, default settings applied."
       );
-      localDB.setItem("VideoSrcId", "default"); // resets for later and subsequent calls
+      // localDB.setItem("VideoSrcId", "default"); // resets for later and subsequent calls
     }
   }
   // Add additional Constraints
@@ -4195,7 +4195,7 @@ const sip = {
     setCookie("ext_user_id", SipUsername);
     setCookie("ext_password", SipPassword);
     setCookie("ext_domain", SipDomain);
-    setCookie("ext_connected", "false");
+    // setCookie("ext_connected", "false");
     CreateUserAgent()
   },
   LoginWithAPI:(ext?:any)=>{

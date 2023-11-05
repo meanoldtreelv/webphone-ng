@@ -33,7 +33,8 @@ interface answeredCallIn {
 }
 interface callEndingIn{
   name?: string,
-  callTimer?: string
+  callTimer?: string,
+  number?:string
 }
 interface microphoneDeviceIn{
   deviceId?: string,
@@ -94,6 +95,7 @@ const sipSlice = createSlice({
     audioEchoCancellation: getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true,
     sipRegistrationStatus: "",
     accountId: "",
+    suggestPortraitOnMobileModalShow:false
   },
   reducers: {
     audioAutoGainControl: (state, action) =>  {
@@ -193,6 +195,9 @@ const sipSlice = createSlice({
     hasSpeakerDevice: (state, action) =>  {
       state.hasSpeakerDevice = action.payload
       // console.log(state.hasSpeakerDevice)
+    },
+    suggestPortraitOnMobileModalShow: (state, action) =>  {
+      state.suggestPortraitOnMobileModalShow = action.payload
     },
     microphoneDevice: (state, action) =>  {
       switch(action.payload.action){
@@ -317,7 +322,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum ) {
-                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer }
+                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer, number:state.answeredCalls[index].DisplayNumber   }
                 state.callEnding = [ ...state.callEnding, endingCall ]
                 state.answeredCalls=[
                 ...state.answeredCalls.slice(0, index),

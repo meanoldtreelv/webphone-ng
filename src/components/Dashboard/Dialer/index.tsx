@@ -24,8 +24,10 @@ import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
 import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
+import { nameIcon } from "utils";
 
 const Dialer = () => {
+
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
 	// style for state update
 	const IconActiveStyle = { background: "var(--background-tertiary, #f7f9fc)" };
@@ -33,6 +35,7 @@ const Dialer = () => {
 		border: "1px solid var(--border-disabled, #c8d3e0)",
 	};
 	const dispatch = useDispatch();
+	dispatch(setCallNumber(""));
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	};
@@ -71,7 +74,7 @@ const Dialer = () => {
 
 							<div className={styles.dialer_details}>
 								<div className={`large_title ${styles.dialer_profile}`}>
-									{false ? <img src="/img/dummy/profile96.png" alt=""></img> : <span>MW</span>}
+									{false ? <img src="/img/dummy/profile96.png" alt=""></img> : <span>{item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber)}</span>}
 								</div>
 								<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
 									{item.DisplayName}

@@ -9,10 +9,11 @@ import { useEffect } from "react";
 import { store } from "redux/store";
 import BottomNav from "components/shared/BottomNav";
 import { useTheme } from "hooks/useTheme";
+import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 
 const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
-	const { navigatePush } = useSelector((state: any) => state.sip);
+	const { navigatePush, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 	const theme = useTheme();
 
 	useEffect(() => {
@@ -26,6 +27,7 @@ const BaseLayout = ({ children }: any) => {
 
 	return (
 		<div className={`${styles.wrapper} ${theme}`}>
+			{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
 				{/* <ProgressCallPopUpBar /> */}
