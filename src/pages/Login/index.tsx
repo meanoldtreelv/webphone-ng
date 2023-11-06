@@ -43,7 +43,7 @@ const Login = () => {
 	}
 	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
 	const loginWithExtension = () => {
-		sip.logout()
+		// sip.logout()
 		store.dispatch({ type: "sip/extAuth", payload: true });
 		setCookie("extAuth", "true");
 		form?.extension === ""
