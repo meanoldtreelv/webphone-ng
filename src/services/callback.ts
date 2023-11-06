@@ -17,4 +17,4 @@ export const callbackService = apiService.injectEndpoints({
     })
 });
 
-export const { useGetInstancesQuery, useGetInstancesBulksQuery } = callbackService;
+export const { useGetInstancesQuery, useLazyGetInstancesBulksQuery } = callbackService;

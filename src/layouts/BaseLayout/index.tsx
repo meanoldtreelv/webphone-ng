@@ -4,18 +4,23 @@ import ProgressCallPopUpBar from "../../components/Dashboard/ProgressCallPopup";
 import NotificationMsg from "components/Notification";
 import { useSelector } from "react-redux";
 import { notification } from "redux/common/commonSelectors";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { store } from "redux/store";
 import BottomNav from "components/shared/BottomNav";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
+import InboundCall from "components/shared/InboundCall";
 
 const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
 	const { navigatePush, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 	const theme = useTheme();
-
+	const {
+		ringingInboundCalls,
+		answeredCalls,
+		ringingOutboundCalls,
+	} = useSelector((state: any) => state.sip);
 	useEffect(() => {
 		if (navigatePush !== "") {
 			navigate(navigatePush);
@@ -24,14 +29,15 @@ const BaseLayout = ({ children }: any) => {
 	}, [navigatePush]);
 
 	const navigate = useNavigate();
-
+	const location = useLocation();
 	return (
 		<div className={`${styles.wrapper} ${theme}`}>
 			{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
-				{/* <ProgressCallPopUpBar /> */}
+				{ (location.pathname != "/dashboard") && answeredCalls.length + ringingOutboundCalls.length > 0 && <ProgressCallPopUpBar />}
 			</div>
+			<InboundCall />
 			<div>
 				<div className={styles.sidebar}>
 					<Sidebar />
