@@ -61,6 +61,25 @@
 	padding: 20px;
 }
 
+.loadMore {
+	display: flex;
+	justify-content: center;
+
+	button {
+		color: var(--text-link, #1480e1);
+
+		/* Body/Bold */
+		font-family: Poppins;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 20px; /* 142.857% */
+		letter-spacing: -0.5px;
+
+		// border-bottom: 2px solid var(--text-link, #1480e1);
+	}
+}
+
 @media screen and (max-width: 768px) {
 	.meetBox {
 		padding: 10px;

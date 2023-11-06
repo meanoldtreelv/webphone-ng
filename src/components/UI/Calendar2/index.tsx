@@ -1,7 +1,7 @@
 import { Calendar, Whisper, Popover, Badge } from "rsuite";
 
 function getTodoList(date) {
-	console.log(date, "date");
+	// console.log(date, "date");
 
 	const day = date.getDate();
 
@@ -30,8 +30,8 @@ const MeetCalendar = () => {
 		const list = getTodoList(date);
 		const displayList = list.filter((item, index) => index < 2);
 
-		console.log(list, "list");
-		console.log(displayList, "displayList");
+		// console.log(list, "list");
+		// console.log(displayList, "displayList");
 
 		if (list.length) {
 			const moreCount = list.length - displayList.length;
@@ -69,7 +69,19 @@ const MeetCalendar = () => {
 		return null;
 	}
 
-	return <Calendar bordered renderCell={renderCell} />;
+	const handleChange = (e) => {
+		console.log(e.target?.value);
+	};
+	return (
+		<Calendar
+			bordered
+			renderCell={renderCell}
+			onMonthChange={handleChange}
+			onSelect={(e) => {
+				console.log(e.target?.value);
+			}}
+		/>
+	);
 };
 
 export default MeetCalendar;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DeleteMeet.module.scss";
 import InfoIcon from "components/UI/Icons/Info";
 import { ClipLoader } from "react-spinners";
@@ -6,37 +6,54 @@ import { setDeleteDialogue, setDescriptionDialogue } from "redux/meet/meetSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { eventId } from "redux/meet/meetSelectors";
 import { deleteMeet } from "effects/apiEffect";
+import { useLazyDeleteMeetQuery } from "services/meet";
 // import { useLazyDeleteMeetQuery } from "services/meet";
 
 const DeleteMeet = () => {
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("option1");
 	const dispatch = useDispatch();
 	const event_id = useSelector(eventId);
+
+	const [deleteMeet, { isLoading }] = useLazyDeleteMeetQuery();
 
 	const handleOptionChange = (e) => {
 		setSelectedOption(e.target.value);
 	};
 
-	const deleteHandler = () => {
-		deleteMeet(
-			event_id,
-			(res: any) => {
-				console.log(res, "delete event API retrieve");
-				if (res?.status === 204) {
-					console.log("success in delete event retrieve");
-					dispatch(setDeleteDialogue(false));
-					dispatch(setDescriptionDialogue(false));
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in delete event retrieve");
-			},
-		);
+	const deleteHandler = async () => {
+		await deleteMeet(event_id);
+		dispatch(setDeleteDialogue(false));
+		dispatch(setDescriptionDialogue(false));
+
+		// deleteMeet(
+		// 	event_id,
+		// 	(res: any) => {
+		// 		console.log(res, "delete event API retrieve");
+		// 		if (res?.status === 204) {
+		// 			console.log("success in delete event retrieve");
+		// 			dispatch(setDeleteDialogue(false));
+		// 			dispatch(setDescriptionDialogue(false));
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in delete event retrieve");
+		// 	},
+		// );
 		// useLazyDeleteMeetQuery(event_id);
 
 		// dispatch(seteventId(""));
 	};
+
+	useEffect(() => {
+		// console.log(deleteMeetStatus, "delete meta data");
+		if (!isLoading) {
+			// dispatch(setDeleteDialogue(false));
+			// dispatch(setDescriptionDialogue(false));
+		}
+	}, [isLoading]);
+
+	// console.log(isLoading, "isLoading");
 
 	return (
 		<div className={styles.overlay}>
@@ -87,7 +104,7 @@ const DeleteMeet = () => {
 						<span>No</span>
 					</button>
 					<button className={styles.delete_deleteBtn}>
-						{loading ? (
+						{isLoading ? (
 							<>
 								<ClipLoader color="white" size={13} />
 								<span style={{ marginLeft: "7px" }}>Deleting...</span>

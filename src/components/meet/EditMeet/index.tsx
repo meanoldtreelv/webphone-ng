@@ -4,11 +4,12 @@ import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import Select from "components/UI/Forms/Select";
 
-import { editMeet } from "effects/apiEffect";
+// import { editMeet } from "effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditDialogue } from "redux/meet/meetSlice";
 import { meetingDetails } from "redux/meet/meetSelectors";
 import moment from "moment-timezone";
+import { useLazyEditMeetQuery } from "services/meet";
 
 // import { DateTime } from "luxon";
 // import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
@@ -18,6 +19,8 @@ const EditMeet = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
+
+	const [editMeet, { data: editMeetData, isLoading }] = useLazyEditMeetQuery();
 
 	const dispatch = useDispatch();
 	const editData = useSelector(meetingDetails);
@@ -76,21 +79,23 @@ const EditMeet = () => {
 
 	// useLazyCreateMeetQuery(data);
 
-	const handleSubmit = () => {
-		editMeet(
-			editData?.id,
-			data,
-			(res: any) => {
-				console.log(res, "meet created ");
-				if (res?.status === 200) {
-					console.log("success in account retrieve");
-					dispatch(setEditDialogue(false));
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in meet creation");
-			},
-		);
+	const handleSubmit = async () => {
+		await editMeet({ event_id: editData?.id, data });
+		dispatch(setEditDialogue(false));
+		// editMeet(
+		// 	editData?.id,
+		// 	data,
+		// 	(res: any) => {
+		// 		console.log(res, "meet created ");
+		// 		if (res?.status === 200) {
+		// 			console.log("success in account retrieve");
+		// 			dispatch(setEditDialogue(false));
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in meet creation");
+		// 	},
+		// );
 		// dispatch(setEditDialogue(false));
 	};
 
