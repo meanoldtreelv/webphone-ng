@@ -16,12 +16,15 @@ import SearchIcon from "components/UI/Icons/Search";
 import { useLazyGetContactQuery, useLazyGetContactsQuery } from "services/contact";
 import React, { useEffect, useState } from "react";
 import ContactCardSkeleton from "../ContactCardSkeleton";
-import { sortArrayOfObj } from "utils";
+import SearchResultIcon from "components/UI/Icons/SearchResult";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const contactList = useSelector(contactLists);
-	const [getContacts, { data: contactsData, isLoading: contactsLoading }] = useLazyGetContactsQuery();
+	const [filteredContactList, setFilteredContactList] = useState<any>([]);
+	const [noSearchResult, setNoSearchResult] = useState(false);
+	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
+		useLazyGetContactsQuery();
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
 	const isContactSelected = useSelector(contactSelectd);
@@ -88,13 +91,39 @@ const ContactList = () => {
 		setSearch(filterStr);
 	};
 
-	const handleFilter = (contact: any) => {
-		// return (contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase()) ||
-		// contact?.phone.toLowerCase().includes(search.toLowerCase()) ||
-		// contact?.email.toLowerCase().includes(search.toLowerCase())
+	// const handleFilter = (contact: any) => {
+	// 	return (
+	// 		(contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase()) ||
+	// 		contact?.phone?.toLowerCase().includes(search.toLowerCase()) ||
+	// 		contact?.email?.toLowerCase().includes(search.toLowerCase())
+	// 	);
+	// };
 
-		return (contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase());
-	};
+	useEffect(() => {
+		if (search) {
+			const contactsJson = localStorage?.getItem("contacts");
+			let contactsParsed: [];
+
+			try {
+				contactsParsed = JSON.parse(contactsJson);
+			} catch (e) {
+				contactsParsed = [];
+			}
+
+			const filteredRes = contactsParsed?.filter((contact) => {
+				return (
+					(contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase()) ||
+					contact?.phone?.toLowerCase().includes(search.toLowerCase()) ||
+					contact?.email?.toLowerCase().includes(search.toLowerCase())
+				);
+			});
+
+			setFilteredContactList(filteredRes);
+			dispatch(setContactList(filteredRes?.slice(0, 20)));
+
+			setNoSearchResult(!filteredRes?.length ? true : false);
+		}
+	}, [search]);
 
 	const handleScroll = (e: any) => {
 		const scrollTop = e.target.scrollTop;
@@ -106,8 +135,14 @@ const ContactList = () => {
 		}
 	};
 
+	// maybe this needs a little bit of change for performance
 	useEffect(() => {
-		const contactsPerPage = JSON.parse(localStorage?.getItem("contacts"))?.slice(0, fakePage * 20);
+		let contactsPerPage: any;
+		if (search) {
+			contactsPerPage = filteredContactList?.slice(0, fakePage * 20);
+		} else {
+			contactsPerPage = JSON.parse(String(localStorage?.getItem("contacts")))?.slice(0, fakePage * 20);
+		}
 		dispatch(setContactList(contactsPerPage));
 	}, [fakePage]);
 
@@ -152,38 +187,39 @@ const ContactList = () => {
 					</div>
 				</div>
 			</div>
-			<div
-				className={styles.contact_lists}
-				style={{ overflowY: contactsLoading ? "hidden" : undefined }}
-				onScroll={handleScroll}>
-				{/* favourite contact heading */}
-				<div>
-					<p className={styles.contact_favorites}>
-						<span>
-							{/* <StarIcon /> */}
-							<span>Contacts</span>
-						</span>
-						<span className={styles.contact_sorting}>
-							<SortIcon />
-						</span>
-					</p>
-				</div>
-				{/* favourite contact  */}
-				{/* <div>{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}</div> */}
+			{!noSearchResult ? (
+				<div
+					className={styles.contact_lists}
+					style={{ overflowY: contactsLoading ? "hidden" : undefined }}
+					onScroll={handleScroll}>
+					{/* favourite contact heading */}
+					<div>
+						<p className={styles.contact_favorites}>
+							<span>
+								{/* <StarIcon /> */}
+								<span>Contacts</span>
+							</span>
+							<span className={styles.contact_sorting}>
+								<SortIcon />
+							</span>
+						</p>
+					</div>
+					{/* favourite contact  */}
+					{/* <div>{sortedContactLists?.map((item) => <ContactCard contactData={item} key={item.id} />)}</div> */}
 
-				{/* frquently contact heading  */}
-				{/* <div>
+					{/* frquently contact heading  */}
+					{/* <div>
 					<p className={styles.contact_favorites}>
 						<span>Frequently Contacted</span>
 					</p>
 				</div> */}
 
-				{/* <div>
+					{/* <div>
 					<ContactCard />
 				</div> */}
 
-				{/* uncomment this line of code */}
-				{/* <div>
+					{/* uncomment this line of code */}
+					{/* <div>
 					<p className={styles.contact_favorites}>
 						<span>
 							<span>A</span>
@@ -191,32 +227,41 @@ const ContactList = () => {
 					</p>
 				</div> */}
 
-				<div>
-					{contactsLoading ? (
-						<>
-							{Array(15)
-								.fill(null)
-								.map((el) => (
-									<ContactCardSkeleton />
-								))}
-						</>
-					) : (
-						contactList?.map((contact: any) => {
-							return handleFilter(contact) ? (
-								<ContactCard
-									id={contact.id}
-									first_name={contact.first_name}
-									last_name={contact.last_name}
-									phone={contact.phone}
-									email={contact.email}
-									fax={contact.fax}
-									clicked={() => contactDetails(contact.id)}
-								/>
-							) : null;
-						})
-					)}
+					<div>
+						{contactsLoading ? (
+							<>
+								{Array(15)
+									.fill(null)
+									.map((el) => (
+										<ContactCardSkeleton />
+									))}
+							</>
+						) : (
+							contactList?.map((contact: any, idx) => {
+								return (
+									<ContactCard
+										id={contact.id}
+										first_name={contact.first_name}
+										last_name={contact.last_name}
+										phone={contact.phone}
+										email={contact.email}
+										fax={contact.fax}
+										clicked={() => contactDetails(contact.id)}
+										key={idx}
+									/>
+								);
+							})
+						)}
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className={styles.noSearchResult}>
+					<div className={styles.noSearchResult_center}>
+						<SearchResultIcon />
+						<p>No Search Result</p>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

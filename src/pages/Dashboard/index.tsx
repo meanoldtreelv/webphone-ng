@@ -1,5 +1,5 @@
 import Dialpad from "../../components/Dashboard/Dialpad";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Dashboard.module.scss";
 import ContactList from "../../components/Contact/ContactList";
 import ProfileAndExtension from "../../components/shared/ProfileAndExtension";
@@ -34,6 +34,7 @@ import { addCall, callDailer, callInProgress, transferCall } from "./../../redux
 import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
+import AddContact from "components/Dashboard/AddContact";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const Dashboard = () => {
 		showMultipleCallListModal,
 		statusMenu,
 	} = useSelector((state: any) => state.sip);
+	const [addContact, setAddContact] = useState(false);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
@@ -138,7 +140,7 @@ const Dashboard = () => {
 					{/* This is a dial pad components for calling */}
 					{answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) && (
 						<div className={styles.dialpad}>
-							<KeyPad />
+							<KeyPad addContact={setAddContact} />
 						</div>
 					)}
 
@@ -154,7 +156,9 @@ const Dashboard = () => {
 					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && <EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />}
+					{callEnding.length > 0 && (
+						<EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />
+					)}
 
 					{/* this is a video call screen  */}
 					{/* <VideoCall /> */}
@@ -186,6 +190,7 @@ const Dashboard = () => {
 			{/* {ringingInboundCalls.length > 0 ? <InboundCall /> : null} */}
 			{answeredCalls.length + ringingOutboundCalls.length + ringingInboundCalls.length > 1 && <MultipleCallButton />}
 			{showMultipleCallListModal && <MultipleCallListModal />}
+			{addContact ? <AddContact close={setAddContact} /> : null}
 		</div>
 	);
 };

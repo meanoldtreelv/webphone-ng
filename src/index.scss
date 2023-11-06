@@ -3,9 +3,8 @@
 @tailwind utilities;
 @import "./styles/colors.css";
 @import "./styles/typography.css";
-@import "./sass/base/basic";
 @import "./sass/base/typography";
 @import "./sass/abstracts/colors";
 @import "./sass/themes/themes";
-
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import "./sass/base/basic";

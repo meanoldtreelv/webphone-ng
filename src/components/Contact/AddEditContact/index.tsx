@@ -11,6 +11,7 @@ import { useLazyCreateContactQuery, useLazyUpdateContactQuery } from "services/c
 import { IContactList } from "redux/contact/contactTypes";
 import { ClipLoader } from "react-spinners";
 import { convertErrorString, extractFieldName } from "helpers/extractString";
+import { countryList } from "constants/countries";
 // import { setNotification } from "redux/common/commonSlice";
 
 const AddContact = () => {
@@ -86,6 +87,10 @@ const AddContact = () => {
 					},
 				});
 		}
+	};
+
+	const contactQueryDisplay = () => {
+		console.log(contactData);
 	};
 
 	return (
@@ -238,13 +243,41 @@ const AddContact = () => {
 									<label htmlFor="position" className={`caption_1`}>
 										Position
 									</label>
-									<input type="text" id="position" value={contactData?.job_details?.position} />
+									<input
+										type="text"
+										id="position"
+										value={contactData?.job_details?.position}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												job_details: {
+													...contactData?.job_details,
+													position: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="department" className={`caption_1`}>
 										Department
 									</label>
-									<input type="text" id="department" value={contactData?.job_details?.department} />
+									<input
+										type="text"
+										id="department"
+										value={contactData?.job_details?.department}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												job_details: {
+													...contactData?.job_details,
+													department: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="description" className={`caption_1`}>
@@ -263,19 +296,18 @@ const AddContact = () => {
 									<label htmlFor="salutation" className={`caption_1`}>
 										Salutation
 									</label>
-									<select name="" id="salutation" ref={salutationRef}>
+									<select
+										name=""
+										id="salutation"
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												salutation: event.target.value,
+											})
+										}>
 										{salutations?.map((item) => (
-											<option
-												value={item}
-												key={item}
-												selected={item === contactData?.salutation}
-												onChange={(event) =>
-													contactData &&
-													setContactData({
-														...contactData,
-														salutation: item,
-													})
-												}>
+											<option value={item} key={item} selected={item === contactData?.salutation}>
 												{item}
 											</option>
 										))}
@@ -308,13 +340,41 @@ const AddContact = () => {
 									<label htmlFor="organization" className={`caption_1`}>
 										Organization
 									</label>
-									<input type="text" id="organization" ref={organizationRef} />
+									<input
+										type="text"
+										id="organization"
+										value={contactData?.organization_details?.organization}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												organization_details: {
+													...contactData?.organization,
+													organization: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 								<div className={`${styles.inputBox}`}>
 									<label htmlFor="parent_organization" className={`caption_1`}>
 										Parent Organization
 									</label>
-									<input type="text" id="parent_organization" ref={parentOrganizationRef} />
+									<input
+										type="text"
+										id="parent_organization"
+										value={contactData?.organization_details?.parent_organization}
+										onChange={(event) =>
+											contactData &&
+											setContactData({
+												...contactData,
+												organization_details: {
+													...contactData?.organization_details,
+													parent_organization: event.target.value,
+												},
+											})
+										}
+									/>
 								</div>
 							</>
 						)}
@@ -341,8 +401,20 @@ const AddContact = () => {
 								<label htmlFor="reports" className={`caption_1`}>
 									Reports to
 								</label>
-								<select name="" id="reports" ref={jobReportsRef}>
-									<option value="none">none</option>
+								<select
+									name=""
+									id="reports"
+									onChange={(event) => {
+										contactData &&
+											setContactData({
+												...contactData,
+												job_details: {
+													...contactData?.job_details,
+													reports_to: event?.target?.value,
+												},
+											});
+									}}>
+									<option value=""></option>
 									{contactList?.map((contact) => (
 										<option value={contact?.id}>
 											{contact?.first_name
@@ -449,21 +521,26 @@ const AddContact = () => {
 									<label htmlFor="country" className={`caption_1`}>
 										Country
 									</label>
-									<input
-										type="text"
-										id="country"
-										value={contactData?.address?.country}
-										onChange={(event) =>
+
+									<select
+										id="countries"
+										onChange={(event) => {
 											contactData &&
-											setContactData({
-												...contactData,
-												address: {
-													...contactData.address,
-													country: event.target.value,
-												},
-											})
-										}
-									/>
+												setContactData({
+													...contactData,
+													address: {
+														...contactData.address,
+														country: event?.target?.value,
+													},
+												});
+										}}>
+										<option value="" selected></option>
+										{countryList?.map((country, idx) => (
+											<option value={country} key={idx} selected={country === contactData?.address?.country}>
+												{country}
+											</option>
+										))}
+									</select>
 								</div>
 								{/* <div className={`${styles.inputBox}`}>
 									<label htmlFor="mailing_address" className={`caption_1`}>

@@ -1,18 +1,28 @@
 import { IContactList } from "redux/contact/contactTypes";
 
-export const _sortContacts = (contacts: IContactList[]) => {
-	[...contacts]?.sort((a, b) => {
-		const firstNameA = a.first_name || ""; // Handle null first name
-		const firstNameB = b.first_name || ""; // Handle null first name
+// export const sortByPhoneAndName = (contacts: IContactList[]) => {
+// 	const sortedByPhone = contacts?.sort((a: any, b: any) => {
+// 		if (a?.phone === null && b?.phone !== null) return 1;
+// 		if (a?.phone !== null && b?.phone === null) return -1;
+// 		return a?.phone?.localeCompare(b.phone);
+// 	});
 
-		if (firstNameA === "" && firstNameB === "") {
-			return 0; // If both first names are null, consider them equal
-		} else if (firstNameA === "") {
-			return 1; // Put null values at the end
-		} else if (firstNameB === "") {
-			return -1; // Put null values at the end
-		}
+// 	const filteredObjects = sortedByPhone?.filter((ct: any) => ct?.phone !== null);
 
-		return firstNameA.localeCompare(firstNameB);
-	});
-};
+// 	const sortedByName = filteredObjects?.sort((a: any, b: any) => {
+// 		if (a?.first_name === null && b?.first_name !== null) return 1;
+// 		if (a?.first_name !== null && b?.first_name === null) return -1;
+// 		return a?.first_name?.localeCompare(b?.first_name);
+// 	});
+
+// 	const filteredObjects2 = filteredObjects?.filter((ct) => ct?.first_name !== null);
+// 	const sortedByEmail = filteredObjects2?.sort((a: any, b: any) => {
+// 		if (a?.email === null && b?.email !== null) return 1;
+// 		if (a?.email !== null && b?.email === null) return -1;
+// 		return a?.email?.localeCompare(b?.email);
+// 	});
+
+// 	console.log([...sortedByPhone, ...sortedByName, ...sortedByEmail]);
+
+// 	return [...sortedByPhone, ...sortedByName, ...sortedByEmail];
+// };
