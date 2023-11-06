@@ -23,7 +23,7 @@ import { setCallNumber } from "redux/call/callSlice";
 import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
-// import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
+import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
 import { nameIcon } from "utils";
 
 const Dialer = () => {
@@ -53,13 +53,13 @@ const Dialer = () => {
 				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
 				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
-						{/*item.audioSettingOnCallModal && (
+						{item.audioSettingOnCallModal && (
 							<AudioSettingOnCallModal
 								LineNumber={item.LineNumber}
 								volumeLevel={item.volumeLevel}
 								callSpeakerDevice={item.callSpeakerDevice}
 							/>
-						)*/}
+						)}
 						<div
 							className={styles.dialer_detailsBox}
 							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
