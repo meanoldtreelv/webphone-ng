@@ -185,7 +185,7 @@ const Dashboard = () => {
 
 			{/* incoming call components */}
 
-			<InboundCall />
+			{/* <InboundCall /> */}
 
 			{/* {ringingInboundCalls.length > 0 ? <InboundCall /> : null} */}
 			{answeredCalls.length + ringingOutboundCalls.length + ringingInboundCalls.length > 1 && <MultipleCallButton />}

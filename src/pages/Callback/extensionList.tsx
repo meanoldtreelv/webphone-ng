@@ -4,19 +4,26 @@ import sip from "lib/sip";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { store } from "redux/store";
-import { useGetInstancesBulksQuery, useGetInstancesQuery } from "services/callback";
+import { useLazyGetInstancesBulksQuery } from "services/callback";
 import { setCookie } from "utils";
 
-const ExtensionList = ({ uuid }: { uuid: string }) => {
-	const instances = useGetInstancesBulksQuery(uuid).data;
+const ExtensionList = ({ instance_id }: { instance_id: string }) => {
+	setCookie("instance_id", instance_id);
+	store.dispatch({ type: "sip/instance_id", payload: instance_id });
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
+	const [getInstancesBulksQuery] = useLazyGetInstancesBulksQuery()
 	useEffect(() => {
-		if (instances) {
-			const instancesVal = instances.map((instance: any) => instance["qr-config"]);
-			setCookie("instancesVal", JSON.stringify(instancesVal));
-			store.dispatch({ type: "sip/extAuthList", payload: instancesVal });
-		}
-	}, [instances]);
+		getInstancesBulksQuery(instance_id)
+		.then(
+			(payload)=>{
+				const instancesVal = payload.data.map((instance: any) => ({...instance["qr-config"] , ...instance["data"], extension_id:instance["_id"], location:instance["location"]?.id, ...(instance["outbound_callerid"]? {outbound_callerid : instance["outbound_callerid"]}: {} ) })  );
+				console.log(instancesVal)
+				setCookie("instancesVal", JSON.stringify(instancesVal));
+				store.dispatch({ type: "sip/extAuthList", payload: instancesVal });
+			}
+		)
+	}, []);
+
 	return (
 		<div style={{ gap: "0.5rem", display: "flex", flexDirection: "column", overflow: "auto", maxHeight: "18rem" }}>
 			{extAuthList.map((extAuth: any) => (

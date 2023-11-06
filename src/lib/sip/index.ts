@@ -4182,6 +4182,10 @@ function micChangedRefreshDevice(){
 
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
+    if(userAgent){
+      Unregister();
+      userAgent = null;
+    };
     domain = domain.split(".").slice(-3).join(".");
     store.dispatch({type:"sip/authLoading", payload:true})
     profileName = username;
