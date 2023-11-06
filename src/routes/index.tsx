@@ -28,7 +28,9 @@ const ext_password = getCookie("ext_password")
 const ext_domain = getCookie("ext_domain") 
 const ext_connected = getCookie("ext_connected");
 const instancesVal = getCookie("instancesVal");
+const instance_id = getCookie("instance_id");
 
+instance_id && store.dispatch({ type: "sip/instance_id", payload: instance_id });
 instancesVal && store.dispatch({ type: "sip/extAuthList", payload: JSON.parse(instancesVal) });
 status && store.dispatch({type:"sip/status", payload: status})
 apiAuth && store.dispatch({ type: "sip/apiAuth", payload: JSON.parse(apiAuth)});

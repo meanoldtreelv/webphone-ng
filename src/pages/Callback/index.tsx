@@ -2,7 +2,7 @@ import Button from "components/UI/Forms/Button";
 import { getBackendUrl } from "config/env.config";
 import sip from "lib/sip";
 import { useEffect, useState } from "react";
-import { useGetInstancesBulksQuery, useGetInstancesQuery } from "services/callback";
+import { useGetInstancesQuery } from "services/callback";
 import ExtensionList from "./extensionList";
 import styles from "./Callback.module.scss";
 import loginSideImage from "./../../assets/images/bg/login.png";
@@ -16,7 +16,7 @@ import { setCookie } from "utils";
 import { useTheme } from "hooks/useTheme";
 
 const Callback = () => {
-	const uuid: string = useGetInstancesQuery(null).data?.[0]["uuid"];
+	const instance_id: string = useGetInstancesQuery(null).data?.[0]["uuid"];
 	const navigate = useNavigate();
 	const theme = useTheme();
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
@@ -82,7 +82,7 @@ const Callback = () => {
 							}}>
 							Select Extension
 						</h2>
-						{uuid ? <ExtensionList uuid={uuid} /> : null}
+						{instance_id ? <ExtensionList instance_id={instance_id} /> : null}
 						{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
 						<Button fill onClick={loginWithAPI}>
 							Continue

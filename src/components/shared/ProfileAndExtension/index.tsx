@@ -83,6 +83,7 @@ const ProfileAndExtension = () => {
             <div className={styles.extensionOption}  style={{ maxHeight: "50vh",  overflowY: "auto" }}>
               {extAuthList.map((item:any) => (
                 <label
+                  key={item.user}
                   className={styles.label}
                   onMouseOver={() => {
                     setEditExtension(item);
@@ -105,6 +106,7 @@ const ProfileAndExtension = () => {
                   <div>
                     <p>{item.displayname}</p>
                     <span>{item.user}</span>
+                    {/* {item.outbound_callerid?.number} */}
                   </div>
                   {editExtension === item && (
                     <span
