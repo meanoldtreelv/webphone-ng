@@ -29,30 +29,45 @@ interface answeredCallIn {
   showTransferCall?: Boolean,
   showTransferCallAtt?: Boolean,
   audioSettingOnCallModal?: Boolean,
-  callSpeakerDevice?:string,
+  callSpeakerDevice?: string,
 }
-interface callEndingIn{
+interface callEndingIn {
   name?: string,
-  callTimer?: string
+  callTimer?: string,
+  number?: string
 }
-interface microphoneDeviceIn{
+interface microphoneDeviceIn {
   deviceId?: string,
   groupId?: string,
   kind?: string,
   label?: string,
 }
-interface speakerDeviceIn{
+interface speakerDeviceIn {
   deviceId?: string,
   groupId?: string,
   kind?: string,
   label?: string,
 }
-interface extAuthIn{
+interface extAuthIn {
   displayname?: string,
   outbound_server?: string,
   password?: string,
   server?: string,
   user?: string,
+  extension?: string,
+  description?: string,
+  id?: string,
+  name?: string,
+  outboundcid?: string,
+  secret?: string,
+  voicemail?: string,
+  voicemail_email?: string,
+  extension_id?: string,
+  outbound_callerid?: {
+    number?: string,
+    value?: string,
+  },
+  location?: string,
 }
 const sipSlice = createSlice({
   name: 'sip',
@@ -60,144 +75,152 @@ const sipSlice = createSlice({
     authMessage: "",
     authLoading: false,
     extAuth: true as boolean, //login by ext
-    apiAuth: undefined as  extAuthIn |undefined,
-    extNumber: null as number | null, 
+    apiAuth: undefined as extAuthIn | undefined,
+    extNumber: null as number | null,
     extAuthList: [] as extAuthIn[],
     loginSelectExtension: "",
     ringingInboundCalls: [] as inboundCallIn[],
-    ringingInboundCallActive:0,
+    ringingInboundCallActive: 0,
     answeredCalls: [] as answeredCallIn[],
-    answeredCallActive:0,
+    answeredCallActive: 0,
     ringingOutboundCalls: [] as outboundCallIn[],
-	  callEnding: [] as callEndingIn[],
-    ringingOutboundCallActive:0,
-    activeCallLineNumber:0,
+    callEnding: [] as callEndingIn[],
+    ringingOutboundCallActive: 0,
+    activeCallLineNumber: 0,
     logoutPopUp: false,
     microphoneDevice: [] as microphoneDeviceIn[],
     speakerDevice: [] as speakerDeviceIn[],
     hasAudioDevice: false,
     hasSpeakerDevice: false,
-    navigatePush:"",
+    navigatePush: "",
     aboutRingplan: false,
     statusMenu: false,
     status: {
-      main_status:"",
-      additional_status:""
+      main_status: "",
+      additional_status: ""
     },
     isProfileOpen: false,
     isExtensionOpen: false,
     isEditBoxOpen: false,
     editExtension: [] as extAuthIn,
     showMultipleCallListModal: false,
-    audioAutoGainControl: getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true, 
-    audioNoiseSuppression: getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true, 
+    audioAutoGainControl: getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true,
+    audioNoiseSuppression: getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true,
     audioEchoCancellation: getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true,
     sipRegistrationStatus: "",
     accountId: "",
+    suggestPortraitOnMobileModalShow: false,
+    instance_id: "",
   },
   reducers: {
-    audioAutoGainControl: (state, action) =>  {
+    audioAutoGainControl: (state, action) => {
       state.audioAutoGainControl = action.payload
     },
-    sipRegistrationStatus: (state, action) =>  {
+    sipRegistrationStatus: (state, action) => {
       state.sipRegistrationStatus = action.payload
     },
-    status: (state, action) =>  {
-      if(state.status != action.payload){
+    status: (state, action) => {
+      if (state.status != action.payload) {
         state.status = action.payload
         state.statusMenu = false
       }
     },
-    audioNoiseSuppression: (state, action) =>  {
+    audioNoiseSuppression: (state, action) => {
       state.audioNoiseSuppression = action.payload
     },
-    accountId: (state, action) =>  {
+    instance_id: (state, action) => {
+      state.instance_id = action.payload
+    },
+    accountId: (state, action) => {
       state.accountId = action.payload
     },
-    audioEchoCancellation: (state, action) =>  {
+    audioEchoCancellation: (state, action) => {
       state.audioEchoCancellation = action.payload
     },
-    authMessage: (state, action) =>  {
+    authMessage: (state, action) => {
       state.authMessage = action.payload
     },
-    showMultipleCallListModal: (state, action) =>  {
+    showMultipleCallListModal: (state, action) => {
       state.showMultipleCallListModal = action.payload
     },
-    aboutRingplan: (state, action) =>  {
+    aboutRingplan: (state, action) => {
       state.aboutRingplan = action.payload
       state.isProfileOpen = false
     },
-    statusMenu: (state, action) =>  {
+    statusMenu: (state, action) => {
       state.statusMenu = action.payload
       state.isProfileOpen = false
     },
-    isExtensionOpen: (state, action) =>  {
+    isExtensionOpen: (state, action) => {
       state.isExtensionOpen = action.payload
       state.isProfileOpen = false
     },
-    isEditBoxOpen: (state, action) =>  {
+    isEditBoxOpen: (state, action) => {
       state.isEditBoxOpen = action.payload
     },
-    editExtension: (state, action) =>  {
+    editExtension: (state, action) => {
       state.editExtension = action.payload
     },
-    isProfileOpen: (state, action) =>  {
+    isProfileOpen: (state, action) => {
       state.isProfileOpen = action.payload
       state.isExtensionOpen = false
     },
-    navigatePush: (state, action) =>  {
+    navigatePush: (state, action) => {
       state.navigatePush = action.payload
     },
-    extAuth: (state, action) =>  {
+    extAuth: (state, action) => {
       state.extAuth = action.payload
     },
-    apiAuth: (state, action) =>  {
+    apiAuth: (state, action) => {
       state.apiAuth = action.payload
     },
-    extNumber: (state, action) =>  {
+    extNumber: (state, action) => {
       state.extNumber = action.payload
     },
-    authLoading: (state, aciton) =>  {
+    authLoading: (state, aciton) => {
       state.authLoading = aciton.payload
     },
-    loginSelectExtension: (state, aciton) =>  {
+    loginSelectExtension: (state, aciton) => {
       state.loginSelectExtension = aciton.payload
     },
-    activeCallLineNumber: (state, aciton) =>  {
+    activeCallLineNumber: (state, aciton) => {
       state.activeCallLineNumber = aciton.payload
     },
-		endCall: (state) => {
-			state.callEnding = state.callEnding.slice(1)
-		},
-		extAuthList: (state, action)=> {
+    endCall: (state) => {
+      state.callEnding = state.callEnding.slice(1)
+    },
+    extAuthList: (state, action) => {
       console.log(action.payload)
-			state.extAuthList = action.payload
-		},
-		addEndCall: (state, action)=>{
-			state.callEnding = [ ...state.callEnding, action.payload ]
-		},
-    ringingInboundCallActive: (state, aciton) =>  {
+      state.extAuthList = action.payload
+    },
+    addEndCall: (state, action) => {
+      state.callEnding = [...state.callEnding, action.payload]
+    },
+    ringingInboundCallActive: (state, aciton) => {
       state.ringingInboundCallActive = aciton.payload
     },
-    ringingOutboundCallActive: (state, aciton) =>  {
+    ringingOutboundCallActive: (state, aciton) => {
       state.ringingOutboundCallActive = aciton.payload
     },
-    logoutPopUp: (state, action) =>  {
+    logoutPopUp: (state, action) => {
       state.logoutPopUp = action.payload
       state.isProfileOpen = false
     },
-    hasAudioDevice: (state, action) =>  {
+    hasAudioDevice: (state, action) => {
       state.hasAudioDevice = action.payload
       // console.log(state.hasAudioDevice)
     },
-    hasSpeakerDevice: (state, action) =>  {
+    hasSpeakerDevice: (state, action) => {
       state.hasSpeakerDevice = action.payload
       // console.log(state.hasSpeakerDevice)
     },
-    microphoneDevice: (state, action) =>  {
-      switch(action.payload.action){
+    suggestPortraitOnMobileModalShow: (state, action) => {
+      state.suggestPortraitOnMobileModalShow = action.payload
+    },
+    microphoneDevice: (state, action) => {
+      switch (action.payload.action) {
         case "add": {
-          const microphoneDevice = {...action.payload.data}
+          const microphoneDevice = { ...action.payload.data }
           state.microphoneDevice = [...state.microphoneDevice, microphoneDevice]
           // console.log(state.microphoneDevice)
           break
@@ -208,10 +231,10 @@ const sipSlice = createSlice({
         }
       }
     },
-    speakerDevice: (state, action) =>  {
-      switch(action.payload.action){
+    speakerDevice: (state, action) => {
+      switch (action.payload.action) {
         case "add": {
-          const speakerDevice = {...action.payload.data}
+          const speakerDevice = { ...action.payload.data }
           state.speakerDevice = [...state.speakerDevice, speakerDevice]
           // console.log(state.speakerDevice)
           break
@@ -223,10 +246,10 @@ const sipSlice = createSlice({
       }
 
     },
-    ringingInboundCalls:(state, action) =>  {
-      switch(action.payload.action){
+    ringingInboundCalls: (state, action) => {
+      switch (action.payload.action) {
         case "add": {
-          const inboundCall = {...action.payload.data}
+          const inboundCall = { ...action.payload.data }
           state.ringingInboundCalls = [...state.ringingInboundCalls, inboundCall]
           state.ringingInboundCallActive = inboundCall.LineNumber
           state.activeCallLineNumber = inboundCall.LineNumber
@@ -235,26 +258,26 @@ const sipSlice = createSlice({
         case "remove": {
           const lineNum = action.payload.data
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
-            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
-                state.ringingInboundCalls=[
+            if (state.ringingInboundCalls[index].LineNumber === lineNum) {
+              state.ringingInboundCalls = [
                 ...state.ringingInboundCalls.slice(0, index),
                 ...state.ringingInboundCalls.slice(index + 1)
-                ]
+              ]
               break;
             }
           }
-          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+          if (state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined) {
             //Inbound Call
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
             state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
-          }else if(state.ringingInboundCalls.length > 0 ){
+          } else if (state.ringingInboundCalls.length > 0) {
             //Inbound Call
             state.activeCallLineNumber = state.ringingInboundCallActive
-          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+          } else if (state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined) {
             //Answered
             state.activeCallLineNumber = state.answeredCalls[0].LineNumber
             state.answeredCallActive = state.answeredCalls[0].LineNumber
-          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+          } else if (state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined) {
             //Outbound Call
             state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
@@ -264,8 +287,8 @@ const sipSlice = createSlice({
         case "ringtoneOff": {
           const lineNum = action.payload.data
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
-            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
-                state.ringingInboundCalls[index].ringtone = true
+            if (state.ringingInboundCalls[index].LineNumber === lineNum) {
+              state.ringingInboundCalls[index].ringtone = true
             }
           }
           break
@@ -273,31 +296,31 @@ const sipSlice = createSlice({
         case "ringtoneOn": {
           const lineNum = action.payload.data
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
-            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
-                state.ringingInboundCalls[index].ringtone = false
+            if (state.ringingInboundCalls[index].LineNumber === lineNum) {
+              state.ringingInboundCalls[index].ringtone = false
             }
           }
           break
         }
         case "answer": {
           const lineNum = action.payload.data
-          console.log("ans:"+lineNum)
+          console.log("ans:" + lineNum)
           state.answeredCallActive = lineNum
           state.activeCallLineNumber = lineNum
           for (let index = 0; index < state.ringingInboundCalls.length; index++) {
-            if (state.ringingInboundCalls[index].LineNumber === lineNum ) {
-                const answered : answeredCallIn = state.ringingInboundCalls[index]
-                answered.answered = true
-                answered.callTimer = "00:00"
-                state.answeredCalls = [...state.answeredCalls, answered]; 
-                state.ringingInboundCalls=[
+            if (state.ringingInboundCalls[index].LineNumber === lineNum) {
+              const answered: answeredCallIn = state.ringingInboundCalls[index]
+              answered.answered = true
+              answered.callTimer = "00:00"
+              state.answeredCalls = [...state.answeredCalls, answered];
+              state.ringingInboundCalls = [
                 ...state.ringingInboundCalls.slice(0, index),
                 ...state.ringingInboundCalls.slice(index + 1)
-                ]
+              ]
               break;
             }
           }
-          if(state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+          if (state.ringingInboundCallActive === lineNum && state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined) {
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
             state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
           }
@@ -306,38 +329,38 @@ const sipSlice = createSlice({
         }
       }
     },
-    answeredCalls:(state, action) =>  {
-      switch(action.payload.action){
+    answeredCalls: (state, action) => {
+      switch (action.payload.action) {
         case "add": {
-          const answeredCall = {...action.payload.data}
-          state.answeredCalls = [...state.answeredCalls, answeredCall]; 
+          const answeredCall = { ...action.payload.data }
+          state.answeredCalls = [...state.answeredCalls, answeredCall];
           break
         }
         case "remove": {
           const lineNum = action.payload.data
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
-                const endingCall = {name:state.answeredCalls[index].DisplayName , callTimer:state.answeredCalls[index].callTimer }
-                state.callEnding = [ ...state.callEnding, endingCall ]
-                state.answeredCalls=[
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              const endingCall = { name: state.answeredCalls[index].DisplayName, callTimer: state.answeredCalls[index].callTimer, number: state.answeredCalls[index].DisplayNumber }
+              state.callEnding = [...state.callEnding, endingCall]
+              state.answeredCalls = [
                 ...state.answeredCalls.slice(0, index),
                 ...state.answeredCalls.slice(index + 1)
-                ]
+              ]
               break;
             }
           }
-          if(state.answeredCallActive === lineNum && state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+          if (state.answeredCallActive === lineNum && state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined) {
             //Answered
             state.answeredCallActive = state.answeredCalls[0].LineNumber
             state.activeCallLineNumber = state.answeredCalls[0].LineNumber
-          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+          } else if (state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined) {
             //Answered
             state.activeCallLineNumber = state.answeredCallActive
-          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+          } else if (state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined) {
             //Outbound Call
             state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
-          }else if(state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+          } else if (state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined) {
             //Inbound Call
             state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
@@ -350,7 +373,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const callTimer = action.payload.data.callTimer
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].callTimer = callTimer
               break;
             }
@@ -363,7 +386,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const isMute = action.payload.data.isMute
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].isMute = isMute
               break;
             }
@@ -376,7 +399,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const isHold = action.payload.data.isHold
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].isHold = isHold;
               break;
             }
@@ -389,7 +412,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const volumeLevel = action.payload.data.volumeLevel
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].volumeLevel = volumeLevel
               break;
             }
@@ -402,7 +425,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const showDTMF = action.payload.data.showDTMF
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showDTMF = showDTMF
               break;
             }
@@ -415,7 +438,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const showAddCall = action.payload.data.showAddCall
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showAddCall = showAddCall
               break;
             }
@@ -428,7 +451,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const showTransferCall = action.payload.data.showTransferCall
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showTransferCall = showTransferCall
               break;
             }
@@ -441,7 +464,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const showTransferCallAtt = action.payload.data.showTransferCallAtt
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showTransferCallAtt = showTransferCallAtt
               break;
             }
@@ -454,7 +477,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const audioSettingOnCallModal = action.payload.data.audioSettingOnCallModal
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].audioSettingOnCallModal = audioSettingOnCallModal
               break;
             }
@@ -467,7 +490,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const callSpeakerDevice = action.payload.data.callSpeakerDevice
           for (let index = 0; index < state.answeredCalls.length; index++) {
-            if (state.answeredCalls[index].LineNumber === lineNum ) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].callSpeakerDevice = callSpeakerDevice
               break;
             }
@@ -477,10 +500,10 @@ const sipSlice = createSlice({
       }
     },
 
-    ringingOutboundCalls:(state, action) =>  {
-      switch(action.payload.action){
+    ringingOutboundCalls: (state, action) => {
+      switch (action.payload.action) {
         case "add": {
-          const outboundCall = {...action.payload.data}
+          const outboundCall = { ...action.payload.data }
           state.ringingOutboundCalls = [...state.ringingOutboundCalls, outboundCall]
           state.ringingOutboundCallActive = outboundCall.LineNumber
           state.activeCallLineNumber = outboundCall.LineNumber
@@ -490,27 +513,27 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data
           console.log(state.ringingOutboundCalls)
           for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
-            if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
-                state.ringingOutboundCalls=[
+            if (state.ringingOutboundCalls[index].LineNumber === lineNum) {
+              state.ringingOutboundCalls = [
                 ...state.ringingOutboundCalls.slice(0, index),
                 ...state.ringingOutboundCalls.slice(index + 1)
-                ]
+              ]
               break;
             }
           }
           console.log(state.ringingOutboundCalls)
-          if(state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+          if (state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined) {
             //Outbound Call
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
             state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
-          }else if(state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+          } else if (state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined) {
             //Outbound Call
             state.activeCallLineNumber = state.ringingOutboundCallActive
-          }else if(state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined){
+          } else if (state.ringingInboundCalls.length > 0 && state.ringingInboundCalls[0].LineNumber !== undefined) {
             //Inbound Call
             state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
             state.ringingInboundCallActive = state.ringingInboundCalls[0].LineNumber
-          }else if(state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined){
+          } else if (state.answeredCalls.length > 0 && state.answeredCalls[0].LineNumber !== undefined) {
             //Answered
             state.activeCallLineNumber = state.answeredCalls[0].LineNumber
             state.answeredCallActive = state.answeredCalls[0].LineNumber
@@ -522,19 +545,19 @@ const sipSlice = createSlice({
           state.answeredCallActive = lineNum
           state.activeCallLineNumber = lineNum
           for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
-            if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
-                const answered:answeredCallIn =  state.ringingOutboundCalls[index]
-                answered.answered = true
-                answered.callTimer = "00:00"
-                state.answeredCalls = [...state.answeredCalls, answered]; 
-                state.ringingOutboundCalls=[
+            if (state.ringingOutboundCalls[index].LineNumber === lineNum) {
+              const answered: answeredCallIn = state.ringingOutboundCalls[index]
+              answered.answered = true
+              answered.callTimer = "00:00"
+              state.answeredCalls = [...state.answeredCalls, answered];
+              state.ringingOutboundCalls = [
                 ...state.ringingOutboundCalls.slice(0, index),
                 ...state.ringingOutboundCalls.slice(index + 1)
-                ]
+              ]
               break;
             }
           }
-          if(state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined){
+          if (state.ringingOutboundCallActive === lineNum && state.ringingOutboundCalls.length > 0 && state.ringingOutboundCalls[0].LineNumber !== undefined) {
             state.ringingOutboundCallActive = state.ringingOutboundCalls[0].LineNumber
             state.activeCallLineNumber = state.ringingOutboundCalls[0].LineNumber
           }
@@ -547,7 +570,7 @@ const sipSlice = createSlice({
           const lineNum = action.payload.data.lineNum
           const isMute = action.payload.data.isMute
           for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
-            if (state.ringingOutboundCalls[index].LineNumber === lineNum ) {
+            if (state.ringingOutboundCalls[index].LineNumber === lineNum) {
               state.ringingOutboundCalls[index].isMute = isMute
               break;
             }
@@ -556,9 +579,9 @@ const sipSlice = createSlice({
         }
       }
     },
-    
+
   },
 })
 
-export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth, logoutPopUp, extAuthList} = sipSlice.actions
-export default  sipSlice.reducer;
+export const { authMessage, authLoading, ringingInboundCalls, ringingOutboundCalls, ringingOutboundCallActive, extAuth, logoutPopUp, extAuthList } = sipSlice.actions
+export default sipSlice.reducer;

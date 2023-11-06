@@ -65,7 +65,8 @@ const ContactDetails = () => {
 			// 	dst: phone,
 			// }).toString();
 
-			const srcDstParam = `src=${phone}&dst=${phone}`;
+			// const srcDstParam = `src=${phone}&dst=${phone}`;
+			const srcDstParam = `src=${phone}`;
 
 			const fetchHistory = async () => {
 				await getCallHistories(srcDstParam);

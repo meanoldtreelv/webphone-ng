@@ -11,7 +11,7 @@ import { callHistory, queries, selectedCallHistory, strQueries } from "redux/cal
 import { useEffect, useState } from "react";
 import { useLazyGetCallHistoriesQuery } from "services/call";
 import { setCallHistory, setQueries } from "redux/call-history/callHistorySlice";
-import Calendar from "components/UI/Calender";
+import Calendar from "components/UI/CalendarMain";
 import { setPage } from "redux/voicemail/voicemailSlice";
 import { formatFilterDate } from "utils";
 
@@ -29,6 +29,7 @@ const CallHistory = () => {
 		from_date: "",
 		to_date: "",
 	});
+	const historyDetails = useSelector(selectedCallHistory);
 
 	useEffect(() => {
 		const callHistoryJson = localStorage?.getItem("call-history");
@@ -121,15 +122,14 @@ const CallHistory = () => {
 					</>
 				) : (
 					<section className={styles.recent}>
-						{!Object.keys(callHistoryDetails).length ? (
-							<RecentsSidebar
-								dispCalendar={dispCalendar}
-								setDispCalendar={setDispCalendar}
-								loading={isLoading}
-								fetching={isFetching}
-								callLen={CallHistory.length}
-							/>
-						) : null}
+						{/* {!Object.keys(callHistoryDetails).length ? ( */}
+						<RecentsSidebar
+							dispCalendar={dispCalendar}
+							setDispCalendar={setDispCalendar}
+							loading={isLoading}
+							fetching={isFetching}
+							callLen={CallHistory.length}
+						/>
 
 						{dispCalendar ? (
 							<Calendar
@@ -143,12 +143,15 @@ const CallHistory = () => {
 							/>
 						) : null}
 
-						<div className={styles.rightCont}>
+						<div
+							className={`${styles.rightCont} ${
+								historyDetails && Object.keys(historyDetails).length ? styles.rightCont_disp : null
+							}`}>
 							<div className={styles.header}>
 								<Header />
 							</div>
 
-							{detailsOn && Object.keys(callHistoryDetails).length ? <ContactDetails /> : null}
+							{detailsOn && Object.keys(callHistoryDetails).length ? <ContactDetails /> : ""}
 
 							{!detailsOn && (
 								<div className={styles.noRecords}>

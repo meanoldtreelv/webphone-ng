@@ -9,6 +9,7 @@
 	padding: 8px 12px;
 	height: fit-content;
 	position: relative;
+	margin: 0 auto !important;
 
 	&_mainCont {
 		display: flex;
@@ -82,12 +83,14 @@
 		width: 88px;
 		font-size: 13px;
 		color: var(--text-primary);
+		margin: 0;
 	}
 
 	&_time {
 		width: 72px;
 		font-size: 13px;
 		color: var(--text-primary);
+		margin: 0;
 	}
 
 	&_ext {

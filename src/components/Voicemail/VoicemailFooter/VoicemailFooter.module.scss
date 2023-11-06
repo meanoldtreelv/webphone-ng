@@ -21,6 +21,7 @@
 	&_totalDuration {
 		font-size: 13px;
 		color: var(--text-primary);
+		margin: 0;
 	}
 
 	&_month,
@@ -30,6 +31,7 @@
 	&_morning {
 		font-size: 13px;
 		color: var(--text-secondary);
+		margin: 0;
 	}
 
 	&_actionBtn {
@@ -74,6 +76,24 @@
 		& span {
 			padding: 7px;
 		}
+	}
+}
+
+.footerVolume {
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+.volumeSlider {
+	position: absolute;
+	bottom: 20px;
+	left: 15px;
+
+	& input {
+		writing-mode: bt-lr;
+		-webkit-appearance: slider-vertical;
+		width: 10px;
 	}
 }
 
@@ -164,7 +184,7 @@
 		position: fixed;
 		width: 100%;
 		left: 0;
-		bottom: 56px;
+		bottom: 55px;
 	}
 
 	.footer_progress {

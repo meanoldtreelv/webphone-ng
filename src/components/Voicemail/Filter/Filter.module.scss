@@ -19,6 +19,7 @@
 	background: var(--background-secondary, #fff);
 	display: flex;
 	flex-direction: column;
+	animation: slide_left 0.3s;
 
 	&_heading {
 		color: var(--text-primary, #1f2023);
@@ -33,6 +34,16 @@
 	&_cross {
 		padding: 10px;
 		cursor: pointer;
+	}
+}
+
+@keyframes slide_left {
+	from {
+		right: -350px;
+	}
+
+	to {
+		right: 0;
 	}
 }
 
@@ -102,4 +113,10 @@ label {
 	font-weight: 400;
 	line-height: 20px; /* 133.333% */
 	letter-spacing: -0.5px;
+}
+
+@media only screen and (max-width: 400px) {
+	.edit {
+		width: 100%;
+	}
 }

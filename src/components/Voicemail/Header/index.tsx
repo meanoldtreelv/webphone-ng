@@ -6,7 +6,11 @@ import React from "react";
 import DeleteIcon from "./../../../components/UI/Icons/Delete";
 import CheckIcon from "./../../../components/UI/Icons/Voicemail/Check";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectVoicemails, setSelectedVoicemailList } from "./../../../redux/voicemail/voicemailSlice";
+import {
+	setSelectVoicemails,
+	setSelectedVoicemailList,
+	setVoicemailResults,
+} from "./../../../redux/voicemail/voicemailSlice";
 import {
 	selectVoicemails,
 	selectedVoicemails,
@@ -16,12 +20,13 @@ import {
 } from "redux/voicemail/voicemailSelectors";
 import { useLazyUpdateVoicemailsQuery } from "./../../../services/voicemail";
 import { IHeader } from "./../../../constants/interfaces";
+import { ClipLoader } from "react-spinners";
 
 const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, search, filterSlider, filterDate }) => {
 	const dispatch = useDispatch();
 	const isSelectVoicemails = useSelector(selectVoicemails);
 	const selectedVoicemailsCount = useSelector(selectedVoicemails).length;
-	const [bulkVoicemailUpdate] = useLazyUpdateVoicemailsQuery();
+	const [bulkVoicemailUpdate, { isLoading, isFetching }] = useLazyUpdateVoicemailsQuery();
 	const voicemail_ids = useSelector(selectedVoicemails);
 	const voicemails = useSelector(voicemailResults);
 	const filtered = useSelector(voicemailFilterExt);
@@ -36,7 +41,30 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 
 	const handleUpdateListened = () => {
 		if (voicemail_ids.length) {
-			bulkVoicemailUpdate(voicemail_ids);
+			const voicemailsJson = localStorage?.getItem("voicemails");
+			let voicemailsParsed: [];
+
+			try {
+				voicemailsParsed = JSON.parse(String(voicemailsJson));
+			} catch (e) {
+				voicemailsParsed = [];
+			}
+
+			const updateVoicemails = async () => {
+				await bulkVoicemailUpdate(voicemail_ids);
+
+				const voicemailFiltered = voicemailsParsed?.map((voicemail: any) => {
+					if (voicemail_ids.includes(voicemail?._id)) {
+						voicemail.listened = true;
+					}
+					return voicemail;
+				});
+
+				localStorage?.setItem("voicemails", JSON?.stringify(voicemailFiltered));
+				dispatch(setVoicemailResults(voicemailFiltered?.slice(0, 20)));
+			};
+
+			updateVoicemails();
 		}
 	};
 
@@ -48,7 +76,7 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 	return (
 		<>
 			<section className={styles.header}>
-				<div className={styles.header_pageName}>Voicemail</div>
+				<h1 className={styles.header_pageName}>Voicemail</h1>
 				<div className={styles.header_cont}>
 					<div className={styles.header_search}>
 						<input type="text" placeholder="Search voicemails..." onChange={handleVoicemailSearch} />
@@ -89,7 +117,15 @@ const Header: React.FC<IHeader> = ({ filterClicked, deleteClicked, dateClicked, 
 								className={styles.actionsUpdate}
 								onClick={handleUpdateListened}
 								disabled={!selectedVoicemailsCount}>
-								Mark as Listened
+								{isLoading || isFetching ? (
+									<>
+										<ClipLoader color="white" size={13} />
+										<span className={styles.mlUpdate}></span>
+									</>
+								) : (
+									""
+								)}
+								<span>Mark as Listened</span>
 							</button>
 						</div>
 					</div>

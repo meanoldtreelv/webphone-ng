@@ -23,12 +23,18 @@ import {
 import { setNewFilter, setPage, setVoicemailQueries, setVoicemailResults } from "redux/voicemail/voicemailSlice";
 // import PopupMenu from "components/Voicemail/PopupMenu";
 import { ClipLoader } from "react-spinners";
-import FormModal from "components/FormModal";
+// import FormModal from "components/FormModal";
 import SimpleNotification from "components/SimpleNotification/inex";
 import { simpleNotification } from "redux/common/commonSelectors";
 import { useGetExtensionsQuery } from "services/extension";
 import NoVoicemailSearch from "components/Voicemail/NoVoicemailSearch";
-import Calendar from "components/UI/Calender";
+import Calendar from "components/UI/CalendarMain";
+import BottomSheet from "components/UI/BottomSheet";
+import BottomPlayer from "components/Voicemail/BottomPlayer";
+import LinkIcon from "components/UI/Icons/Voicemail/Link";
+import CopyIcon from "components/UI/Icons/Voicemail/Copy";
+import EnvelopIcon from "components/UI/Icons/Voicemail/Envelop";
+import { formatFilterDate } from "utils";
 // import { formatFilterDate } from "utils";
 
 const Voicemail = () => {
@@ -38,6 +44,7 @@ const Voicemail = () => {
 	const [filterDate, setFilterDate] = useState(false);
 	const voicemailId = useSelector(moreOptVoicemail);
 	const page = useSelector(voicemailPage);
+	const [audioSlide, setAudioSlide] = useState(false);
 	const strQueries = useSelector(voicemailStrQueries);
 	const queries = useSelector(voicemailQueries);
 	const [getVoicemails, { data, isLoading, isFetching }] = useLazyGetVoicemailsQuery();
@@ -47,12 +54,28 @@ const Voicemail = () => {
 	const [filterAnim, setFilterAnim] = useState(false);
 	const [search, setSearch] = useState("");
 	const [pageSize, setPageSize] = useState(20);
+	const [filterAppliedV, setFilterAppliedV] = useState<any>();
 	const [date, setDate] = useState({
 		from_date: "",
 		to_date: "",
 	});
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
+	const btmMore = [
+		{
+			icon: <LinkIcon />,
+			text: "Copy Link",
+		},
+		{
+			icon: <CopyIcon />,
+			text: "Copy Text",
+		},
+
+		{
+			icon: <EnvelopIcon />,
+			text: "Share via Email",
+		},
+	];
 
 	useEffect(() => {
 		const voicemailsJson = localStorage?.getItem("voicemails");
@@ -77,6 +100,7 @@ const Voicemail = () => {
 
 	useEffect(() => {
 		if (!isLoading && !isFetching && data) {
+			console.log(data);
 			if (Object.keys(queries).length <= 2) {
 				const parsedData = JSON.parse(String(localStorage?.getItem("voicemails")));
 				if (parsedData) {
@@ -160,24 +184,20 @@ const Voicemail = () => {
 
 	const filterVoicemailDate = () => {
 		let dateFilter = {};
-		if (date.from_date) {
-			dateFilter = {
-				...dateFilter,
-				from_date: date.from_date,
-			};
-		} else if (date.to_date) {
-			dateFilter = {
-				...dateFilter,
-				to_date: date.to_date,
-			};
-		}
+		dateFilter = {
+			from_date: date.from_date && formatFilterDate(date.from_date),
+			to_date: date.to_date && formatFilterDate(date.to_date),
+		};
+		dateFilter = Object.fromEntries(Object.entries(dateFilter).filter(([key, value]) => value !== ""));
 
-		dispatch(
-			setVoicemailQueries({
-				...queries,
-				...dateFilter,
-			}),
-		);
+		if (Object.keys(dateFilter).length) {
+			dispatch(
+				setVoicemailQueries({
+					...queries,
+					...dateFilter,
+				}),
+			);
+		}
 	};
 
 	return (
@@ -195,22 +215,22 @@ const Voicemail = () => {
 						/>
 					</div>
 
-					<div className={styles.body} onScroll={handleScroll}>
-						{!voicemailResultsList?.length && !isLoading && (
+					<div className={`${styles.body} ${isLoading ? styles.body_NoOverflow : ""}`} onScroll={handleScroll}>
+						{!voicemailResultsList?.length && !isLoading && !search && (
 							<div className={styles.noVoiceBox}>
 								<NoVoicemail />
 							</div>
 						)}
 
-						<div className={styles.body_box}>
+						<div className={`${styles.body_box} ${!search ? styles.body_boxPadding : ""} `}>
 							{isLoading ? (
-								<>
+								<div className={styles.skeletonVLoading}>
 									{Array(15)
 										.fill(null)
 										.map((el) => (
 											<VoicemailCardSkeleton />
 										))}
-								</>
+								</div>
 							) : (
 								voicemailResultsList?.map((voicemail: IVoicemail, idx: number) => (
 									<VoicemailCard
@@ -241,7 +261,7 @@ const Voicemail = () => {
 						</div>
 
 						<div className={styles.footer}>
-							<VoicemailFooter />
+							<VoicemailFooter setAudioSlide={setAudioSlide} />
 						</div>
 					</div>
 				</section>

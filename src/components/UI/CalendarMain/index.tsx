@@ -18,7 +18,7 @@ interface ICalendar {
 	setDate: ({ from_date, to_date }: { from_date: string; to_date: string }) => void;
 }
 
-const Calendar: React.FC<ICalendar> = ({
+const CalendarMain: React.FC<ICalendar> = ({
 	placeholder1,
 	placeholder2,
 	setDispCalendar,
@@ -86,4 +86,4 @@ const Calendar: React.FC<ICalendar> = ({
 	);
 };
 
-export default Calendar;
+export default CalendarMain;

@@ -1,21 +1,42 @@
 @import "./../abstracts/variables";
 
+@font-face {
+	font-family: poppins_bold;
+	src: url("./../../assets/fonts/Poppins/Poppins-Bold.ttf");
+}
+
+@font-face {
+	font-family: poppins_semibold;
+	src: url("./../../assets/fonts/Poppins/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+	font-family: poppins_medium;
+	src: url("./../../assets/fonts/Poppins/Poppins-Medium.ttf");
+}
+
+@font-face {
+	font-family: poppins_regular;
+	src: url("./../../assets/fonts/Poppins/Poppins-Regular.ttf");
+}
+
 * {
 	padding: 0px;
 	margin: 0px;
-	box-sizing: border-box;
+	box-sizing: border-box !important;
+	line-height: unset !important;
+	-webkit-font-smoothing: auto;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 html,
 body {
 	font-display: swap;
 	font-family: "Poppins";
-	line-height: 1.5;
 	max-width: 100vw;
 }
 
 .Wrapper {
-	// width: $sc-lg;
 	margin: auto;
 }
 
@@ -31,4 +52,15 @@ img {
 
 button {
 	cursor: pointer;
+}
+
+a,
+p,
+span,
+li,
+div,
+button,
+input,
+textarea {
+	font-family: poppins_regular !important;
 }

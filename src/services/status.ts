@@ -11,4 +11,4 @@ export const statusService = apiService.injectEndpoints({
     })
 });
 
-export const { useLazySetStatusQuery, useLazyGetStatusQuery} = statusService;
+export const { useLazySetStatusQuery, useGetStatusQuery} = statusService;

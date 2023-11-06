@@ -6,10 +6,14 @@ import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
 import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
 import sip from "../../../lib/sip";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContactCard from "components/Contact/ContactCard";
 
-const Keypad = () => {
+interface IKeypad {
+	addContact: (disp: boolean) => void;
+}
+
+const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber);
 	const [contacts, setContacts] = useState<any>([]);
@@ -60,7 +64,7 @@ const Keypad = () => {
 			</div>
 			<Dialpad LineNumber={undefined} />
 			<div className={styles.dialpad_keypad}>
-				<div className={styles.dialpad_key2}>
+				<button className={styles.dialpad_key2} onClick={() => addContact(true)}>
 					{/* here lies add user icon, pass props and use the icon */}
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / add_user">
@@ -74,7 +78,7 @@ const Keypad = () => {
 							/>
 						</g>
 					</svg>
-				</div>
+				</button>
 				<div
 					className={styles.dialpad_key2}
 					style={{ background: number.length ? "#75c322" : "var(--primary-disabled, #C8D3E0)" }}

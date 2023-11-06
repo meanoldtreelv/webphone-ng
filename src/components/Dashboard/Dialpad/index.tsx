@@ -55,6 +55,7 @@ const Dialpad = ({ LineNumber }: { LineNumber?: number | undefined }) => {
 			<div className={styles.dialpad_keypad}>
 				{dialpad_arr.map((key_arr) => (
 					<button
+						key={key_arr[0].toString()}
 						className={styles.dialpad_key}
 						onMouseDown={() => {
 							if (key_arr[0] == "0") {

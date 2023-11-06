@@ -1,6 +1,8 @@
 import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
+
 import loginSideImage from "./../../assets/images/bg/login.png";
+
 import ExtensionIcon from "./../../components/UI/Icons/Extension";
 import EnvelopeIcon from "./../../components/UI/Icons/Envelope";
 import LockIcon from "./../../components/UI/Icons/Lock";
@@ -16,6 +18,7 @@ import { store } from "../../redux/store";
 import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
+import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 
 const Login = () => {
 	setCookie("id_token", getCookie("id_token"));
@@ -40,6 +43,7 @@ const Login = () => {
 	}
 	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
 	const loginWithExtension = () => {
+		// sip.logout()
 		store.dispatch({ type: "sip/extAuth", payload: true });
 		setCookie("extAuth", "true");
 		form?.extension === ""
@@ -66,7 +70,7 @@ const Login = () => {
 		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server);
 		// sip.CreateUserAgent("", "", "")
 	};
-	const { authMessage, authLoading } = useSelector((state: any) => state.sip);
+	const { authMessage, authLoading, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 
 	useEffect(() => {
 		if (authMessage === "continue") {
@@ -76,6 +80,8 @@ const Login = () => {
 	const login = () => {
 		return (
 			<section className={`${styles.login} ${theme}`}>
+
+				{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
 				</div>
