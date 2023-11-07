@@ -5,8 +5,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDateRange } from "redux/meet/meetSlice";
-import { DateRangePicker, Stack } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
+import { CustomProvider, DateRangePicker, Stack } from "rsuite";
+
+import "./DateRange.scss";
 
 const DateRange = () => {
 	// Get the current date
@@ -38,22 +39,25 @@ const DateRange = () => {
 	// console.log(value, "value");
 
 	return (
-		<Stack direction="column" spacing={8} alignItems="flex-start">
-			<DateRangePicker
-				value={value}
-				onChange={setValue}
-				block
-				defaultCalendarValue={[new Date("2022-02-01 00:00:00"), new Date("2022-03-01 23:59:59")]}
-			/>
+		<CustomProvider>
+			<Stack direction="column" spacing={8} alignItems="flex-start">
+				<DateRangePicker
+					value={value}
+					onChange={setValue}
+					block
+					defaultCalendarValue={[new Date("2022-02-01 00:00:00"), new Date("2022-03-01 23:59:59")]}
+					appearance="default"
+				/>
 
-			{/* <DateRangePicker
+				{/* <DateRangePicker
 				value={value}
 				onChange={setValue}
 				showMeridian
 				format="yyyy-MM-dd HH:mm:ss"
 				defaultCalendarValue={[new Date("2022-02-01 00:00:00"), new Date("2022-03-01 23:59:59")]}
 			/> */}
-		</Stack>
+			</Stack>
+		</CustomProvider>
 	);
 };
 

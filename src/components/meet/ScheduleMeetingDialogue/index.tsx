@@ -7,6 +7,7 @@ import moment from "moment-timezone";
 import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 import { useLazyCreateMeetQuery } from "services/meet";
+import { ClipLoader } from "react-spinners";
 const timezones = moment.tz.names();
 
 const ScheduleMeetingDialogue = () => {
@@ -15,7 +16,7 @@ const ScheduleMeetingDialogue = () => {
 	const [selectedOption, setSelectedOption] = useState("never");
 	const [when, setWhen] = useState("");
 
-	const [createMeet, { data: createMeetData }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isLoading }] = useLazyCreateMeetQuery();
 
 	const [list] = useState([
 		{ value: "DAILY", name: "Daily", selected: true },
@@ -62,6 +63,11 @@ const ScheduleMeetingDialogue = () => {
 	const [deleteEmail, setDeleteEmail] = useState("");
 
 	const [recurrenceData, setRecurrenceData] = useState({ frequency: newFrequency, interval: +interval });
+
+	const filteredDay = byWeekdayList.filter((item) => item.bool === true);
+	console.log("====================================");
+	console.log(filteredDay?.map(({ value }) => value));
+	console.log("====================================");
 
 	function convertDateToTimezoneDate(date, timeZone) {
 		const inputDateTime = new Date(date);
@@ -175,25 +181,20 @@ const ScheduleMeetingDialogue = () => {
 		if (frequency === "CustomRange") {
 			setNewFrequency("WEEKLY");
 			updatedRecurrenceData.frequency = "WEEKLY";
-			updatedRecurrenceData.by_week_day = byWeekday;
+			updatedRecurrenceData.by_week_day = filteredDay?.map(({ value }) => value).map((value) => Number(value));
 		}
 		setRecurrenceData(updatedRecurrenceData); // Update the state
-	}, [frequency]);
-
-	// if (frequency === "WEEKLY") {
-	// 	// data.recurrence?.by_week_day = ["1"];
-	// 	// appendToObject(data?.recurrence, by_week_day, ["1"]);
-	// }
+	}, [frequency, byWeekdayList]);
 
 	useEffect(() => {
 		const updatedRecurrenceData = { ...recurrenceData }; // Create a copy
 		if (selectedOption === "after") {
 			updatedRecurrenceData.count = +count;
-			delete updatedRecurrenceData.end;
+			// delete updatedRecurrenceData.end;
 		}
 		if (selectedOption === "on_date") {
 			updatedRecurrenceData.end = end2;
-			delete updatedRecurrenceData.count;
+			// delete updatedRecurrenceData.count;
 		}
 		setRecurrenceData(updatedRecurrenceData); // Update the state
 	}, [selectedOption]);
@@ -225,6 +226,7 @@ const ScheduleMeetingDialogue = () => {
 		}
 		title && start && end && (await createMeet(data));
 		// console.log(createMeetData, "create meet data");
+		dispatch(setScheduleDialogue(false));
 	};
 
 	const removeHandler = (emailId) => {
@@ -538,7 +540,7 @@ const ScheduleMeetingDialogue = () => {
 						Close
 					</button>
 					<button className={styles.submit} onClick={handleSubmit} type="submit">
-						Schedule
+						{isLoading ? <ClipLoader color="white" size={13} /> : "Schedule"}
 					</button>
 				</div>
 			</form>

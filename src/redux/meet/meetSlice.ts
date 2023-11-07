@@ -16,6 +16,7 @@ const initialMeetState: IMeetState = {
 	videoRecordingData: [],
 	calendarType: "",
 	meetingId: "",
+	meetList: [],
 };
 
 const meetSlice = createSlice({
@@ -67,6 +68,9 @@ const meetSlice = createSlice({
 		setMeetingId(state, action) {
 			state.meetingId = action.payload;
 		},
+		setMeetList(state, action) {
+			state.meetList = action.payload;
+		},
 	},
 });
 
@@ -85,6 +89,7 @@ export const {
 	setVideoRecordingData,
 	setCalendarType,
 	setMeetingId,
+	setMeetList,
 } = meetSlice.actions;
 
 export default meetSlice.reducer;

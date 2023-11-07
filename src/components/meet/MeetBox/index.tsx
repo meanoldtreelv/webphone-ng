@@ -3,12 +3,12 @@ import styles from "./MeetBox.module.scss";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import MeetingCard from "../MeetingCard";
 import { useDispatch, useSelector } from "react-redux";
-import { setSettingsDialogue } from "redux/meet/meetSlice";
+import { setMeetList, setSettingsDialogue } from "redux/meet/meetSlice";
 // import { getMeetList } from "effects/apiEffect";
 import { dateRange } from "redux/meet/meetSelectors";
 import MeetCalendar from "components/UI/Calendar2";
 import { useLazyGetMeetQuery } from "services/meet";
-// import Calendar from "components/UI/Calendar";
+import Calendar from "components/UI/Calendar";
 
 const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
@@ -24,7 +24,7 @@ const MeetBox = () => {
 
 	const [getMeetList, { data: meetListData, headers }] = useLazyGetMeetQuery();
 
-	const perPage = 3;
+	const perPage = 100;
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,13 +34,14 @@ const MeetBox = () => {
 		start && end && fetchData();
 		// start && end && console.log(fetchData(), "fetchdata");
 
-		setTotalPageCount(headers?.["x-pagination-page-count"]);
-		setPage(2);
+		// setTotalPageCount(headers?.["x-pagination-page-count"]);
+		// setPage(2);
 		// console.log(meetingList, meetListData, "both");
 	}, [start, end]);
 
 	useEffect(() => {
 		setMeetingList(meetListData);
+		dispatch(setMeetList(meetListData));
 	}, [meetListData]);
 
 	// console.log(headers, "headers");
@@ -98,6 +99,9 @@ const MeetBox = () => {
 	};
 
 	// console.log(totalPageCount, page);
+	// console.log("====================================");
+	// console.log(headers, "headerData");
+	// console.log("====================================");
 
 	return (
 		<div className={styles.queues}>
@@ -139,8 +143,8 @@ const MeetBox = () => {
 
 			{tabSelected === "calendar" && (
 				<div className={styles.calendar}>
-					{/* <Calendar /> */}
-					<MeetCalendar />
+					<Calendar />
+					{/* <MeetCalendar /> */}
 				</div>
 			)}
 		</div>

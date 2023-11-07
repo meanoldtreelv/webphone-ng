@@ -1,0 +1,21 @@
+@import "rsuite/dist/rsuite.min.css";
+// @import "react-date-range/dist/styles.css"; // main css file
+// @import "react-date-range/dist/theme/default.css"; // theme css file
+
+// Enable dark mode
+@enable-dark-mode: true;
+
+.rs-picker-default .rs-btn,
+.rs-picker-default .rs-picker-toggle,
+.rs-picker-input .rs-btn,
+.rs-picker-input .rs-picker-toggle {
+	background-color: var(--background-primary) !important;
+}
+
+.rs-picker-toggle-textbox {
+	// color: var(--background-primary);
+	background-color: var(--background-primary) !important;
+}
+.rs-picker-menu {
+	background-color: var(--background-primary) !important;
+}

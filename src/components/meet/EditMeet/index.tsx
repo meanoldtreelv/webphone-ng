@@ -45,10 +45,61 @@ const EditMeet = () => {
 		return outputDateString;
 	};
 
+	function convertDateToTimezoneDate(date, timeZone) {
+		const inputDateTime = new Date(date);
+		// const timeZone = "Africa/Bissau";
+
+		// Output time zone
+		const outputTimeZone = "UTC";
+
+		// Convert the input date and time to the output time zone
+		const inputDateTimeInUTC = new Date(inputDateTime.toLocaleString("en-US", { timeZone: timeZone }));
+
+		// Format the converted date and time as "2023-11-06T19:52"
+		const options = {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+			timeZoneName: "short",
+		};
+
+		const formatter = new Intl.DateTimeFormat("en-US", options);
+
+		let formattedDateTime = formatter.format(inputDateTimeInUTC);
+		const newDate = new Date(formattedDateTime);
+
+		return newDate.toISOString().slice(0, 16);
+	}
+
+	// function findTimezoneString(newDate) {
+	// 	const date = new Date(newDate);
+	// 	const timezoneOffsetMinutes = date.getTimezoneOffset();
+
+	// 	// Convert the offset in minutes to hours and minutes
+	// 	const hours = Math.abs(Math.floor(timezoneOffsetMinutes / 60));
+	// 	const minutes = Math.abs(timezoneOffsetMinutes % 60);
+
+	// 	// Determine the sign of the offset
+	// 	const offsetSign = timezoneOffsetMinutes > 0 ? "-" : "+";
+
+	// 	// Create the formatted timezone string
+	// 	const timezoneString = `UTC${offsetSign}${hours.toString().padStart(2, "0")}:${minutes
+	// 		.toString()
+	// 		.padStart(2, "0")}`;
+
+	// 	console.log(timezoneString);
+	// 	return timezoneString;
+	// }
+	// findTimezoneString(editData.start);
+
+	const [timezone, setTimezone] = useState("Africa/Abidjan");
 	const [title, setTitle] = useState<string | null>(editData?.title);
 	const [description, setDescription] = useState(editData?.description);
-	const [start, setStart] = useState(convertToDateTime(editData?.start));
-	const [end, setEnd] = useState("");
+	const [start, setStart] = useState(convertDateToTimezoneDate(editData?.start, timezone));
+	const [end, setEnd] = useState(convertDateToTimezoneDate(editData?.start, timezone));
 	const [password, setPassword] = useState("");
 	const [attendees, setAttendees] = useState<string | null>(null);
 	const [attendeesList, setAttendeesList] = useState<{}[]>(newArray);
@@ -57,7 +108,6 @@ const EditMeet = () => {
 	const [byWeek, setByWeek] = useState("");
 	const [count, setCount] = useState("1");
 	const [interval, setInterval] = useState("1");
-	const [timezone, setTimezone] = useState("");
 
 	const [deleteEmail, setDeleteEmail] = useState("");
 
@@ -76,6 +126,11 @@ const EditMeet = () => {
 		// 	interval: +interval,
 		// },
 	};
+
+	useEffect(() => {
+		setStart(convertDateToTimezoneDate(editData?.start, timezone));
+		setEnd(convertDateToTimezoneDate(editData?.end, timezone));
+	}, [timezone]);
 
 	// useLazyCreateMeetQuery(data);
 
@@ -128,6 +183,10 @@ const EditMeet = () => {
 
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
+
+	console.log("====================================");
+	console.log(editData, "editData");
+	console.log("====================================");
 
 	return (
 		<>
