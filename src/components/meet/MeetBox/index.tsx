@@ -22,7 +22,7 @@ const MeetBox = () => {
 	const [totalPageCount, setTotalPageCount] = useState(0);
 	const [page, setPage] = useState(1);
 
-	const [getMeetList, { data: meetListData, headers }] = useLazyGetMeetQuery();
+	const [getMeetList, { data: meetListData }] = useLazyGetMeetQuery();
 
 	const perPage = 100;
 
@@ -135,7 +135,7 @@ const MeetBox = () => {
 						<div>17 OCTOBER, TUE</div>
 						{meetingList?.map((item) => <MeetingCard key={item.id} meetData={item} />)}
 						<div className={styles.loadMore}>
-							{totalPageCount > page && <button onClick={loadMoreHandler}>Load More...</button>}
+							{meetListData?.length === perPage && <button onClick={loadMoreHandler}>Load More...</button>}
 						</div>
 					</div>
 				</div>
