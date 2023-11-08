@@ -8,9 +8,10 @@ import RecentsIcon from "components/UI/Icons/meet/Recents";
 import ConferenceIcon from "components/UI/Icons/meet/Conference";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateRange, setJoinDialogue, setScheduleDialogue } from "redux/meet/meetSlice";
-import { createMeet } from "effects/apiEffect";
+// import { createMeet } from "effects/apiEffect";
 import { calendarView, dateRange } from "redux/meet/meetSelectors";
 import DateRange from "components/UI/DateRange";
+import { useLazyCreateMeetQuery } from "services/meet";
 
 const MeetHeader = () => {
 	const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const MeetHeader = () => {
 	const view = useSelector(calendarView);
 	const dateRanges = useSelector(dateRange);
 	const { start, end } = useSelector(dateRange);
+	const [createMeet, { data: createMeetData }] = useLazyCreateMeetQuery();
 
 	const [list] = useState([
 		{ value: "Day", name: "Day", selected: true },
@@ -34,22 +36,25 @@ const MeetHeader = () => {
 		return date.toISOString().split("T")[0];
 	}
 
-	const startMeetingHandler = () => {
-		createMeet(
-			{},
-			(res: any) => {
-				console.log(res, "meet created ");
+	const startMeetingHandler = async () => {
+		await createMeet({});
+		setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
+		window.open(`https://meet.ringplan.com/auth/?id=${createMeetData?.[0]?.jitsi_meeting_room_id}`, "_blank");
+		// createMeet(
+		// 	{},
+		// 	(res: any) => {
+		// 		console.log(res, "meet created ");
 
-				if (res?.status === 201) {
-					console.log("success in account retrieve");
-					setMeetingCode(res?.data?.[0]?.jitsi_meeting_room_id);
-					window.open(`https://meet.ringplan.com/auth/?id=${res?.data?.[0]?.jitsi_meeting_room_id}`, "_blank");
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in meet creation");
-			},
-		);
+		// 		if (res?.status === 201) {
+		// 			console.log("success in account retrieve");
+		// 			setMeetingCode(res?.data?.[0]?.jitsi_meeting_room_id);
+		// 			window.open(`https://meet.ringplan.com/auth/?id=${res?.data?.[0]?.jitsi_meeting_room_id}`, "_blank");
+		// 		}
+		// 	},
+		// 	(err: any) => {
+		// 		console.error(err, "err in meet creation");
+		// 	},
+		// );
 	};
 
 	const previousRangeHandler = () => {

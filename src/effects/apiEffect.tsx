@@ -6,7 +6,7 @@ import axiosInstance from "config/axios.config";
 // import API_ENDPOINTS from "../constants/endPoints";
 
 const authToken =
-	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiIwOGY5MWFlMi05OTI3LTRjYzktYWRlMi0xMWQ4OWU0ZDRlNWUiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTg4NjExMDcsImlhdCI6MTY5ODgzMjMwNywiYXV0aF90aW1lIjoxNjk4ODMyMzA2LCJnaXZlbl9uYW1lIjoiU2hpdmFtIiwiZmFtaWx5X25hbWUiOiJHdXB0YSIsImV4dGVuc2lvbl9jb21wYW55IjoiU3RhcnQgWCBMYWJzIiwiZW1haWxzIjpbImdzaGl2YW1Ac3RhcnR4bGFicy5pbiJdLCJ0aWQiOiJkZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkiLCJhdF9oYXNoIjoialZBOGVmVVFueXcyTlM5TDhtNHV3ZyIsIm5iZiI6MTY5ODgzMjMwN30.TZRea_yqgHL00SAv3kQo-_nh5k8E_BljgMSZI_pgVxjPmSXSMhbHGe4o0ovWO2dd6avDmiRjiEg4A-pWeVQft1546oPqk8IH2NORZh_1itUH0Y_rnmfiCvte8AT6zI9fSdSJG4FYk8ZY6kF5wandxbBacSpPSIiMX43_G_4UX-7KFo1uXuPriO_uSk4pZ7Pf5h-K9wf8ztjmlLhhGZXxECZ8uB-uoKV4z7mBGekIKssOchKYfc6SuabO8vucEoRNLYl-Pb2oyPvpTTgCFlA3IL8c4swlFShKmZJGQ6u6DGrQ5lyFnhdFGAJPzzH3isw1n8Og2dts-Gj0bBlEHQJZkw";
+	"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVHeXkwR1Z0YXZHeFVnX3FMbUdqXzgyODNDWEoyWTdnLW1CdVFSZlNjV0EiLCJ0eXAiOiJKV1QifQ.eyJ2ZXIiOiIxLjAiLCJpc3MiOiJodHRwczovL3JpbmdwbGFuLmIyY2xvZ2luLmNvbS9kZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkvdjIuMC8iLCJzdWIiOiIwOGY5MWFlMi05OTI3LTRjYzktYWRlMi0xMWQ4OWU0ZDRlNWUiLCJhdWQiOiI3MzZjMzdkMy1jYTFjLTQ2NWItOGIzNi01ZWRkMDRkMTI5ZjMiLCJleHAiOjE2OTkyNjM3NTAsImlhdCI6MTY5OTIzNDk1MCwiYXV0aF90aW1lIjoxNjk5MjM0OTQ4LCJnaXZlbl9uYW1lIjoiU2hpdmFtIiwiZmFtaWx5X25hbWUiOiJHdXB0YSIsImV4dGVuc2lvbl9jb21wYW55IjoiU3RhcnQgWCBMYWJzIiwiZW1haWxzIjpbImdzaGl2YW1Ac3RhcnR4bGFicy5pbiJdLCJ0aWQiOiJkZDgzOTc4OS0xYzExLTQ4YWYtYTQxMy1lZTVhOGRjM2I5MTkiLCJhdF9oYXNoIjoickItZ2t5UzVtOG1QbGExalBUTlJuUSIsIm5iZiI6MTY5OTIzNDk1MH0.jSRFA8sRl36nbOWuWLUrokmAhGyFIPJuNYyzuMqdGaU770XDGkvl7-5_fLBxgJCrzOHNeX53Xt0QIjjnocKfY99eD7PJf_S5YbglOAFWIzo7_0NB7uWWVOlfH6sjxpVnMvXY2GoSRoUPwxvbfwaEWvX4_Qjj2DfXUH61I9F1qpEWyEvnQm9EN988RHv2MJfoTV59q5W43-JhmqffXmm-DQdlnj6PfQzYSK0TcfbN35QCTpCEGe6u3UvQmF4X223AeBI2pm2aj5iAYdl3RRo14pgu6iLKn8HFDCRMrraa4omya9q-C-_3iN9mfBRUJKhPtg7Nm_iw6zpcQwW3IG_Cvw";
 
 const Headers = {
 	headers: {
@@ -154,72 +154,82 @@ export const UPDATE_Contact_API = (dircnt_id: String, success: Function, error: 
 		.catch((err) => error?.(err));
 };
 
-export const createMeet = (payload: Object, success: Function, error: Function) => {
-	axios
-		.post(`https://ssp-backend.ringplan.com/meet/v2/events`, payload, Headers)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const createMeet = (payload: Object, success: Function, error: Function) => {
+// 	axios
+// 		.post(`https://ssp-backend.ringplan.com/meet/v2/events`, payload, Headers)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const editMeet = (event_id: string, payload: Object, success: Function, error: Function) => {
-	axios
-		.patch(`https://ssp-backend.ringplan.com/meet/v2/events/${event_id}`, payload, Headers)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const editMeet = (event_id: string, payload: Object, success: Function, error: Function) => {
+// 	axios
+// 		.patch(`https://ssp-backend.ringplan.com/meet/v2/events/${event_id}`, payload, Headers)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const getMeetList = (dateFrom: string, dateTo: string, success: Function, error: Function) => {
-	axios
-		.get(`https://ssp-backend.ringplan.com/meet/v2/events?date_from=${dateFrom}&date_to=${dateTo}`, Headers)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const getMeetList = (
+// 	dateFrom: string,
+// 	dateTo: string,
+// 	perPage: number,
+// 	page: number,
+// 	success: Function,
+// 	error: Function,
+// ) => {
+// 	axios
+// 		.get(
+// 			`https://ssp-backend.ringplan.com/meet/v2/events?date_from=${dateFrom}&date_to=${dateTo}&per_page=${perPage}&page=${page}`,
+// 			Headers,
+// 		)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const deleteMeet = (event_id: string, success: Function, error: Function) => {
-	axiosInstance
-		.delete(`/meet/v2/events/${event_id}`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const deleteMeet = (event_id: string, success: Function, error: Function) => {
+// 	axiosInstance
+// 		.delete(`/meet/v2/events/${event_id}`)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const GetGoogleCalendar = (success: Function, error: Function) => {
-	axiosInstance
-		.get(`/meet/app/calendar/get-auth-url`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const GetGoogleCalendar = (success: Function, error: Function) => {
+// 	axiosInstance
+// 		.get(`/meet/app/calendar/get-auth-url`)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const GetOutlookCalendar = (success: Function, error: Function) => {
-	axiosInstance
-		.get(`/meet/app/outlook/get-auth-url`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const GetOutlookCalendar = (success: Function, error: Function) => {
+// 	axiosInstance
+// 		.get(`/meet/app/outlook/get-auth-url`)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const GetCalendar = (success: Function, error: Function) => {
-	axiosInstance
-		.get(`/meet/app/calendar`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const GetCalendar = (success: Function, error: Function) => {
+// 	axiosInstance
+// 		.get(`/meet/app/calendar`)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const RevokeGoogleCalendar = (data: Object, success: Function, error: Function) => {
-	axiosInstance
-		.post(`/meet/google/revoke`, data)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const RevokeGoogleCalendar = (data: Object, success: Function, error: Function) => {
+// 	axiosInstance
+// 		.post(`/meet/google/revoke`, data)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const RevokeOutlookCalendar = (data: Object, success: Function, error: Function) => {
-	axiosInstance
-		.post(`/meet/outlook/revoke`, data)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const RevokeOutlookCalendar = (data: Object, success: Function, error: Function) => {
+// 	axiosInstance
+// 		.post(`/meet/outlook/revoke`, data)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };
 
-export const GetMeetFiles = (id: string, success: Function, error: Function) => {
-	axiosInstance
-		.get(`/meet/v2/meeting/files/${id}`)
-		.then((res) => success?.(res))
-		.catch((err) => error?.(err));
-};
+// export const GetMeetFiles = (id: string, success: Function, error: Function) => {
+// 	axiosInstance
+// 		.get(`/meet/v2/meeting/files/${id}`)
+// 		.then((res) => success?.(res))
+// 		.catch((err) => error?.(err));
+// };

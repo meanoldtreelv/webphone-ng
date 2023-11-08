@@ -39,21 +39,22 @@ const Meet = () => {
 
 	const dispatch = useDispatch();
 
-	const data = useLazyGetCalendarQuery();
+	const [getCalendarData, { data: calendarData, isLoading, isFetching }] = useLazyGetCalendarQuery();
 
 	useEffect(() => {
-		GetCalendar(
-			(res: any) => {
-				console.log(res, "get calender API retrieve");
-				if (res?.status === 200) {
-					dispatch(setCalendarType(res?.data?.type));
-				}
-			},
-			(err: any) => {
-				console.error(err, "err in calendar retrieve");
-			},
-		);
+		const fetchData = async () => {
+			await getCalendarData(null);
+		};
+
+		fetchData();
 	}, []);
+
+	useEffect(() => {
+		dispatch(setCalendarType(calendarData?.type));
+	}, [calendarData]);
+
+	// console.log(calendarData, "data");
+	// console.log(deleteMeet, "deleteMeet");
 
 	return (
 		<div className={styles.meet}>

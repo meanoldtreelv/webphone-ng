@@ -39,7 +39,8 @@
 	&_ques {
 		max-width: 280px;
 		text-align: center;
-		color: map-get($color, text-secondary-2);
+		// color: map-get($color, text-secondary-2);
+		color: var(--text-secondary-2);
 		font-size: 13px;
 	}
 
@@ -68,9 +69,11 @@
 	}
 
 	&_deleteBtn {
-		background: map-get($color, support-danger-default);
+		// background: map-get($color, support-danger-default);
+		background: var(--support-danger-default);
 		border-radius: 8px;
-		border: 1px solid map-get($color, support-danger-default);
+		// border: 1px solid map-get($color, support-danger-default);
+		border: 1px solid var(--support-danger-default);
 		width: 135px;
 		height: 42px;
 		display: flex;
@@ -78,7 +81,8 @@
 		align-items: center;
 
 		& span {
-			color: map-get($color, background-primary);
+			// color: map-get($color, background-primary);
+			color: var(--background-primary);
 		}
 	}
 

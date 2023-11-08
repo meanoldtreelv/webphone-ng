@@ -13,4 +13,5 @@ export interface IMeetState {
 	videoRecordingData: [];
 	calendarType: string;
 	meetingId: string;
+	meetList: {}[];
 }
