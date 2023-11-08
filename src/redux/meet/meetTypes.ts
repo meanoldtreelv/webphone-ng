@@ -14,4 +14,6 @@ export interface IMeetState {
 	calendarType: string;
 	meetingId: string;
 	meetList: {}[];
+	view: any;
+	date: any;
 }

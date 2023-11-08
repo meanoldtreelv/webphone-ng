@@ -5,10 +5,12 @@ import MeetingCard from "../MeetingCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setMeetList, setSettingsDialogue } from "redux/meet/meetSlice";
 // import { getMeetList } from "effects/apiEffect";
-import { dateRange } from "redux/meet/meetSelectors";
+import { calendarType, calendarView, dateRange } from "redux/meet/meetSelectors";
 import MeetCalendar from "components/UI/Calendar2";
 import { useLazyGetMeetQuery } from "services/meet";
 import Calendar from "components/UI/Calendar";
+import gsuite_small from "assets/images/img/google_small.png";
+import outlook from "assets/images/img/outlook_small.png";
 
 const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
@@ -25,6 +27,10 @@ const MeetBox = () => {
 	const [getMeetList, { data: meetListData }] = useLazyGetMeetQuery();
 
 	const perPage = 100;
+
+	const calendar = useSelector(calendarType);
+
+	const calendarViews = useSelector(calendarView);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -122,12 +128,16 @@ const MeetBox = () => {
 						Calender
 					</span>
 				</div>
-				<span
-					onClick={() => {
-						dispatch(setSettingsDialogue(true));
-					}}>
-					<SettingsIcon />
-				</span>
+				<div className={styles.settings}>
+					{calendar === "google" && <img src={gsuite_small} alt=""></img>}
+					{calendar === "outlook" && <img src={outlook} alt=""></img>}
+					<span
+						onClick={() => {
+							dispatch(setSettingsDialogue(true));
+						}}>
+						<SettingsIcon />
+					</span>
+				</div>
 			</div>
 			{tabSelected === "timeline" && (
 				<div>
