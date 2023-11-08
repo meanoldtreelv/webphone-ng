@@ -50,7 +50,7 @@ const MeetHeader = () => {
 
 	const startMeetingHandler = async () => {
 		await createMeet({});
-		setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
+		// setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
 		window.open(`https://meet.ringplan.com/auth/?id=${createMeetData?.[0]?.jitsi_meeting_room_id}`, "_blank");
 	};
 
