@@ -40,11 +40,13 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 		if (!contacts?.length) {
 			setContacts(JSON.parse(localStorage?.getItem("contacts")));
 		}
+		if(contacts){
+			const filteredDt = !number
+				? []
+				: contacts?.filter((contact: any) => String(contact?.phone).includes(number)).slice(0, 5);
+			setFilteredContacts(filteredDt);
+		}
 
-		const filteredDt = !number
-			? []
-			: contacts?.filter((contact: any) => String(contact?.phone).includes(number)).slice(0, 5);
-		setFilteredContacts(filteredDt);
 	}, [number]);
 
 	return (
