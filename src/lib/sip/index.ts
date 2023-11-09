@@ -4289,12 +4289,12 @@ const sip = {
       
     }
   },
-  logout: ()=>{
+  logout: (changeLocation=true)=>{
     try {Unregister()} catch (error) { }
     localStorage.clear();
     sessionStorage.clear();
     document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, name => window.location.hostname.split('.').reverse().reduce(domain => (domain=domain.replace(/^\.?[^.]+/, ''),document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`,domain), window.location.hostname));
-    window.location = "/";
+    changeLocation && (window.location = "/");
   },
   store:() => {return store}
 }
