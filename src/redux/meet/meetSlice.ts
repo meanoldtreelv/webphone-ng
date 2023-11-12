@@ -10,13 +10,15 @@ const initialMeetState: IMeetState = {
 	descriptionDialogue: false,
 	recordDialogue: false,
 	dateRange: { start: "", end: "" },
-	calendarView: "day",
+	calendarView: "week",
 	meetingDetails: {},
 	eventId: "",
 	videoRecordingData: [],
 	calendarType: "",
 	meetingId: "",
 	meetList: [],
+	view: null,
+	date: null,
 };
 
 const meetSlice = createSlice({
@@ -71,6 +73,12 @@ const meetSlice = createSlice({
 		setMeetList(state, action) {
 			state.meetList = action.payload;
 		},
+		setView(state, action) {
+			state.view = action.payload;
+		},
+		setDate(state, action) {
+			state.date = action.payload;
+		},
 	},
 });
 
@@ -90,6 +98,8 @@ export const {
 	setCalendarType,
 	setMeetingId,
 	setMeetList,
+	setView,
+	setDate,
 } = meetSlice.actions;
 
 export default meetSlice.reducer;

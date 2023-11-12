@@ -1,95 +1,127 @@
-import { useEffect } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-// import CustomWeekView from "./CustomWeekView";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useLazyGetMeetQuery } from "services/meet";
-import { useSelector } from "react-redux";
-import { meetList } from "redux/meet/meetSelectors";
-import events from "./events";
+import { useDispatch, useSelector } from "react-redux";
+import { calendarView, meetList, date } from "redux/meet/meetSelectors";
 import "./Calendar.scss";
+import { setDescriptionDialogue, setMeetingDetails } from "redux/meet/meetSlice";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
 // const allViews = Object.keys(BigCalendar.Views).map((k) => BigCalendar.Views[k]);
-// const events2 = [
-// 	{
-// 		title: "Some Event",
-// 		start: new Date(2023, 3, 9, 0, 0, 0),
-// 		end: new Date(2023, 3, 9, 0, 0, 0),
-// 	},
-// 	{
-// 		title: "Conference",
-// 		start: new Date(2023, 3, 11),
-// 		end: new Date(2023, 3, 13),
-// 		desc: "Big conference for important people",
-// 	},
-// 	{
-// 		title: "Meeting",
-// 		start: new Date(2023, 3, 12, 10, 30, 0, 0),
-// 		end: new Date(2023, 3, 12, 12, 30, 0, 0),
-// 		desc: "Pre-meeting meeting, to prepare for the meeting",
-// 	},
-// 	{
-// 		title: "Lunch",
-// 		start: new Date(2023, 3, 12, 12, 0, 0, 0),
-// 		end: new Date(2023, 3, 12, 13, 0, 0, 0),
-// 		desc: "Power lunch",
-// 	},
-// ];
 
 const MyCalendar = () => {
-	// const [getMeetList, { data: meetListDatas, headers }] = useLazyGetMeetQuery();
+	const [id, setId] = useState("");
+	const [view, setView] = useState(Views.WEEK);
+
+	const dispatch = useDispatch();
+
+	const meetingList = useSelector(meetList);
+	const meetListData = useSelector(meetList);
+	const datee = useSelector(date);
+	const calendarViews = useSelector(calendarView);
 
 	useEffect(() => {
-		// const fetchData = async () => {
-		// 	await getMeetList({ dateFrom: null, dateTo: null, perPage: 100, page: 1 });
-		// };
-		// fetchData();
-		// start && end && console.log(fetchData(), "fetchdata");
-		// setTotalPageCount(headers?.["x-pagination-page-count"]);
-		// setPage(2);
-		// console.log(meetingList, meetListData, "both");
-	}, []);
+		// Update the view based on calendarViews value
+		if (calendarViews === "day") {
+			setView(Views.DAY);
+		} else if (calendarViews === "week") {
+			setView(Views.WEEK);
+		} else if (calendarViews === "month") {
+			setView(Views.MONTH);
+		}
+	}, [calendarViews]);
 
-	const meetListData = useSelector(meetList);
-	const filteredEvents = meetListData?.map(({ start, end, title }) => ({
+	const filteredEvents = meetListData?.map(({ start, end, title, id }) => ({
 		start: new Date(start),
 		end: new Date(end),
 		title,
+		id,
 	}));
-	// console.log(meetListData, "meeting list");
-	// console.log("====================================");
-	// console.log(filteredEvents, "filteredEvents");
-	// console.log("====================================");
 
-	//...
-	// const {views, ...otherProps} = useMemo(() => ({
-	//   views: {
-	//     month: true,
-	//     week: CustomWeekView,
-	//     day: true
-	//   },
-	//   // ... other props
-	// }), [])
 	const views = {
-		month: true,
-		week: true,
-		day: true,
-		// myweek: WorkWeekViewComponent,
+		month: false, // Hide Month view
+		week: false, // Hide Week view
+		day: false, // Hide Day view
+		agenda: false, // Hide Agenda view
 	};
+
+	const onView = useCallback((newView) => setView(newView), [setView]);
+	// const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
+
+	// const [view, setView] = useState("month");
+	// const [date, setDate] = useState(new Date());
+	const [newDate, setNewDate] = useState(datee);
+
+	// const handleNext = () => {
+	// 	if (view === Views.DAY) {
+	// 		setDate(moment(date).add(1, "days").toDate());
+	// 	} else if (view === Views.WEEK) {
+	// 		setDate(moment(date).add(1, "weeks").toDate());
+	// 	} else if (view === Views.MONTH) {
+	// 		setDate(moment(date).add(1, "months").toDate());
+	// 	}
+	// };
+
+	// const handleBack = () => {
+	// 	if (view === Views.MONTH) {
+	// 		setDate(moment(date).subtract(1, "months").toDate());
+	// 	} else if (view === Views.WEEK) {
+	// 		setDate(moment(date).subtract(1, "weeks").toDate());
+	// 	} else if (view === Views.DAY) {
+	// 		setDate(moment(date).subtract(1, "days").toDate());
+	// 	}
+	// };
+
+	const MyEvent = ({ event }) => (
+		<div
+			onClick={() => {
+				setId(event.id);
+			}}>
+			<strong>{event?.title}</strong>
+			<p>{event?.description}</p>
+		</div>
+	);
+
+	useEffect(() => {
+		if (!id) return;
+		const selectedData = (meetingList ?? []).filter((item) => item.id === id);
+
+		dispatch(setMeetingDetails(selectedData[0]));
+		dispatch(setDescriptionDialogue(true));
+	}, [id]);
+
+	const components = {
+		event: MyEvent,
+	};
+
+	console.log(datee, "dateee");
 
 	return (
 		<div style={{ height: "100%" }}>
+			{/* <button onClick={handleBack}>Back</button>
+			<button onClick={handleNext}>Next</button> */}
+
 			<Calendar
 				localizer={localizer}
 				events={filteredEvents}
 				startAccessor="start"
 				endAccessor="end"
 				style={{ height: "100%" }}
-				views={views}
-				// {...otherProps}
+				// onNavigate={onNavigate}
+				onView={onView}
+				view={view}
+				// views={views}
+				// toolbar={false}
+				components={components}
+				date={datee}
+				// onView={(newView) => setView(newView)}
+				onNavigate={(newDate, newView) => {
+					setNewDate(newDate);
+					setView(newView);
+				}}
 			/>
 		</div>
 	);

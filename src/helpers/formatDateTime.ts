@@ -24,22 +24,48 @@ export const toSecMinAndHr = (totalSeconds: number) => {
 	return `${hoursString}:${minutesString}:${secondsString}`;
 };
 
+// export const convertDateFormat = (dateString: string) => {
+// 	const dateComponents = dateString?.split("-");
+
+// 	const year = parseInt(dateComponents[0]);
+// 	const month = parseInt(dateComponents[1]);
+// 	const day = parseInt(dateComponents[2]);
+
+// 	const date = new Date(year, month - 1, day);
+
+// 	const formattedDate = date?.toLocaleDateString("en-US", {
+// 		month: "long",
+// 		day: "numeric",
+// 		year: "numeric",
+// 	});
+
+// 	return formattedDate;
+// };
+
 export const convertDateFormat = (dateString: string) => {
-	const dateComponents = dateString.split("-");
+	const dateComponents = dateString?.split("-");
 
-	const year = parseInt(dateComponents[0]);
-	const month = parseInt(dateComponents[1]);
-	const day = parseInt(dateComponents[2]);
+	if (dateComponents && dateComponents.length === 3) {
+		const year = parseInt(dateComponents[0]);
+		const month = parseInt(dateComponents[1]);
+		const day = parseInt(dateComponents[2]);
 
-	const date = new Date(year, month - 1, day);
+		if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+			const date = new Date(year, month - 1, day);
 
-	const formattedDate = date.toLocaleDateString("en-US", {
-		month: "long",
-		day: "numeric",
-		year: "numeric",
-	});
+			if (!isNaN(date.getTime())) {
+				const formattedDate = date.toLocaleDateString("en-US", {
+					month: "long",
+					day: "numeric",
+					year: "numeric",
+				});
 
-	return formattedDate;
+				return formattedDate;
+			}
+		}
+	}
+
+	return "Invalid Date"; // Handle the case where the input date is invalid
 };
 
 export const formatTime = (time: number) => {
