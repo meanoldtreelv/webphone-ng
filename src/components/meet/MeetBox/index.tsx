@@ -14,7 +14,7 @@ import outlook from "assets/images/img/outlook_small.png";
 import { ClipLoader } from "react-spinners";
 
 const MeetBox = () => {
-	const [tabSelected, setTabSelected] = useState("calendar");
+	const [tabSelected, setTabSelected] = useState("timeline");
 
 	const dispatch = useDispatch();
 	const { start, end } = useSelector(dateRange);
@@ -113,6 +113,7 @@ const MeetBox = () => {
 	// console.log("====================================");
 
 	// console.log(isLoading, isFetching);
+	console.log(meetingList);
 
 	return (
 		<div className={styles.queues}>

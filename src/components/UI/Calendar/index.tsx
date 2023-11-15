@@ -98,8 +98,6 @@ const MyCalendar = () => {
 		event: MyEvent,
 	};
 
-	// console.log(datee, "dateee");
-
 	return (
 		<div style={{ height: "100%" }}>
 			{/* <button onClick={handleBack}>Back</button>

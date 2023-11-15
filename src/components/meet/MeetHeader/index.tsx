@@ -7,34 +7,20 @@ import OutputIcon from "components/UI/Icons/meet/Output";
 import RecentsIcon from "components/UI/Icons/meet/Recents";
 import ConferenceIcon from "components/UI/Icons/meet/Conference";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	setCalendarView,
-	setDate,
-	setDateRange,
-	setJoinDialogue,
-	setScheduleDialogue,
-	setView,
-} from "redux/meet/meetSlice";
+import { setCalendarView, setDateRange, setJoinDialogue, setScheduleDialogue } from "redux/meet/meetSlice";
 import { calendarView, dateRange } from "redux/meet/meetSelectors";
 import DateRange from "components/UI/DateRange";
 import { useLazyCreateMeetQuery } from "services/meet";
-import { Views } from "react-big-calendar";
-import moment from "moment";
+// import { Views } from "react-big-calendar";
+// import moment from "moment";
 
 const MeetHeader = () => {
 	const dispatch = useDispatch();
-
-	// const [views, setViews] = useState("week");
-
-	//this is for show date on top of the calendar
-	const [datee, setDatee] = useState(new Date());
 
 	const [createMeet, { data: createMeetData }] = useLazyCreateMeetQuery();
 
 	const { start, end } = useSelector(dateRange);
 	const calendarViews = useSelector(calendarView);
-
-	// const [view, setView] = useState(Views.WEEK);
 
 	const [list] = useState([
 		{ value: "week", name: "Week", selected: true },
@@ -54,40 +40,6 @@ const MeetHeader = () => {
 		// setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
 		window.open(`https://meet.ringplan.com/auth/?id=${createMeetData?.[0]?.jitsi_meeting_room_id}`, "_blank");
 	};
-
-	// useEffect(() => {
-	// 	if (views === "Week") {
-	// 		// Get the current date
-	// 		const currentDate = new Date(start);
-
-	// 		// Get the first day of the week (Sunday)
-	// 		const firstDayOfWeek = new Date(currentDate);
-	// 		firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-
-	// 		// Get the last day of the week (Saturday)
-	// 		const lastDayOfWeek = new Date(currentDate);
-	// 		lastDayOfWeek.setDate(currentDate.getDate() + (6 - currentDate.getDay()));
-
-	// 		// console.log("First Day of the Week (Sunday): " + firstDayOfWeek.toDateString());
-	// 		// console.log("Last Day of the Week (Saturday): " + lastDayOfWeek.toDateString());
-	// 		dispatch(setDateRange({ start: firstDayOfWeek.toDateString(), end: lastDayOfWeek.toDateString() }));
-	// 	}
-	// 	if (views === "Month") {
-	// 		// Get the current date
-	// 		const currentDate = new Date(start);
-
-	// 		// Get the first day of the current month
-	// 		const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
-	// 		// Get the last day of the current month
-	// 		const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
-	// 		// console.log("Start Date of the Month: " + firstDayOfMonth.toDateString());
-	// 		// console.log("End Date of the Month: " + lastDayOfMonth.toDateString());
-
-	// 		dispatch(setDateRange({ start: firstDayOfMonth.toDateString(), end: lastDayOfMonth.toDateString() }));
-	// 	}
-	// }, [views]);
 
 	// useEffect(() => {
 	// 	// Update the view based on calendarViews value
@@ -273,10 +225,6 @@ const MeetHeader = () => {
 		dispatch(setDateRange({ start: today, end: today }));
 	};
 
-	console.log(calendarViews, "calendar views");
-	// console.log(datee, "datee");
-	console.log(start, end, "start end");
-
 	return (
 		<div className={styles.meet}>
 			<div className={styles.dateBox}>
@@ -298,7 +246,6 @@ const MeetHeader = () => {
 					<Select
 						options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 						onChange={(e) => {
-							// setViews(e.target.value);
 							dispatch(setCalendarView(e.target.value));
 						}}
 					/>
