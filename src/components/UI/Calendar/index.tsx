@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
-import { calendarView, meetList, date } from "redux/meet/meetSelectors";
+import { calendarView, meetList, date, dateRange } from "redux/meet/meetSelectors";
 import "./Calendar.scss";
 import { setDescriptionDialogue, setMeetingDetails } from "redux/meet/meetSlice";
 
@@ -20,6 +20,7 @@ const MyCalendar = () => {
 
 	const meetingList = useSelector(meetList);
 	const meetListData = useSelector(meetList);
+	const { start, end } = useSelector(dateRange);
 	const datee = useSelector(date);
 	const calendarViews = useSelector(calendarView);
 
@@ -41,12 +42,12 @@ const MyCalendar = () => {
 		id,
 	}));
 
-	const views = {
-		month: false, // Hide Month view
-		week: false, // Hide Week view
-		day: false, // Hide Day view
-		agenda: false, // Hide Agenda view
-	};
+	// const views = {
+	// 	month: false, // Hide Month view
+	// 	week: false, // Hide Week view
+	// 	day: false, // Hide Day view
+	// 	agenda: false, // Hide Agenda view
+	// };
 
 	const onView = useCallback((newView) => setView(newView), [setView]);
 	// const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
@@ -97,8 +98,6 @@ const MyCalendar = () => {
 		event: MyEvent,
 	};
 
-	console.log(datee, "dateee");
-
 	return (
 		<div style={{ height: "100%" }}>
 			{/* <button onClick={handleBack}>Back</button>
@@ -116,7 +115,7 @@ const MyCalendar = () => {
 				// views={views}
 				// toolbar={false}
 				components={components}
-				date={datee}
+				date={start}
 				// onView={(newView) => setView(newView)}
 				onNavigate={(newDate, newView) => {
 					setNewDate(newDate);
