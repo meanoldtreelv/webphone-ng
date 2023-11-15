@@ -10,6 +10,7 @@ import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import { settingsRoutes } from "./settings/routes";
 import { sidecarRoutes } from "./sidecar/routes";
 import { meetRoutes } from "./meet/routes";
+import { clioRoutes } from "./clio/routes";
 import { getCookie } from "utils";
 import sip from "lib/sip";
 import { store } from "redux/store";
@@ -82,6 +83,7 @@ export default createBrowserRouter([
 			...sidecarRoutes,
 			...callbackRoutes,
 			...meetRoutes,
+			...clioRoutes,
 		],
 	},
 ]);

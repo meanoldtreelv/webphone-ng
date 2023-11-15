@@ -50,4 +50,8 @@ export default {
 		__PATH: "callback",
 		ROUTE: "/callback",
 	},
+	CLIO: {
+		__PATH: "clio",
+		ROUTE: "/clio",
+	},
 };

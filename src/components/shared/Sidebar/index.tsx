@@ -14,6 +14,7 @@ import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
 import { useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
+import ClioIcon from "components/UI/Icons/Clio";
 
 interface ISidebarLinks {
 	path: string;
@@ -104,6 +105,7 @@ const Sidebar = () => {
 
 	const sidebarBtmLinks: ISidebarLinks[] = extAuth
 		? [
+				{ path: routePaths.CLIO.ROUTE, icon: <ClioIcon />, name: "Clio", unread: 1 },
 				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
