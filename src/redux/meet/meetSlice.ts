@@ -1,6 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IMeetState } from "./meetTypes";
 
+let currentDate = new Date();
+
+// Set time to 00:00:00
+// currentDate.setHours(23, 0, 0, 0);
+
+// Format the date to a string with the desired format
+let formattedStartDate = currentDate.toISOString().split("T")[0] + " 00:00:00";
+
+// console.log(formattedStartDate);
+
+// Create a new date 7 days from the current date
+const newDate = new Date(currentDate);
+newDate.setDate(currentDate.getDate() + 7);
+let formattedEndDate = newDate.toISOString().split("T")[0] + " 23:59:59";
+// console.log(formattedEndDate, "formattedEndDate");
+
 const initialMeetState: IMeetState = {
 	scheduleDialogue: false,
 	settingsDialogue: false,
@@ -9,7 +25,9 @@ const initialMeetState: IMeetState = {
 	deleteDialogue: false,
 	descriptionDialogue: false,
 	recordDialogue: false,
-	dateRange: { start: "", end: "" },
+	dateRange: { start: null, end: null },
+	meetDateRange: { meetStart: null, meetEnd: null },
+	loading: false,
 	calendarView: "week",
 	meetingDetails: {},
 	eventId: "",
@@ -48,6 +66,14 @@ const meetSlice = createSlice({
 			const { start, end } = action.payload;
 
 			state.dateRange = { start: start, end: end };
+		},
+		setMeetDateRange(state, action) {
+			const { meetStart, meetEnd } = action.payload;
+
+			state.meetDateRange = { meetStart: meetStart, meetEnd: meetEnd };
+		},
+		setLoading(state, action) {
+			state.loading = action.payload;
 		},
 		setCalendarView(state, action) {
 			state.calendarView = action.payload;
@@ -90,6 +116,8 @@ export const {
 	setDeleteDialogue,
 	setDescriptionDialogue,
 	setDateRange,
+	setMeetDateRange,
+	setLoading,
 	setCalendarView,
 	setMeetingDetails,
 	seteventId,

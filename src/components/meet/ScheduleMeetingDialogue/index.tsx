@@ -210,6 +210,9 @@ const ScheduleMeetingDialogue = () => {
 	};
 
 	const addAttendeesHandler = () => {
+		if (!attendees?.includes("@")) {
+			return;
+		}
 		setAttendeesList([
 			...attendeesList,
 			{
@@ -329,7 +332,7 @@ const ScheduleMeetingDialogue = () => {
 				<label htmlFor="">Attendees emails</label>
 				<div className={styles.emailBox}>
 					<input
-						type="text"
+						type="email"
 						name=""
 						id=""
 						placeholder="Enter email here..."
@@ -338,9 +341,7 @@ const ScheduleMeetingDialogue = () => {
 							setAttendees(e.target.value);
 						}}
 					/>
-					<button type="button" onClick={addAttendeesHandler}>
-						ADD
-					</button>
+					<span onClick={addAttendeesHandler}>ADD</span>
 				</div>
 				<div>
 					{attendeesList?.map((item) => (
@@ -531,17 +532,16 @@ const ScheduleMeetingDialogue = () => {
 				</div>
 
 				<div className={` ${styles.btnBox}`}>
-					<button
-						type="button"
+					<span
 						className={styles.cancel}
 						onClick={() => {
 							dispatch(setScheduleDialogue(false));
 						}}>
 						Close
-					</button>
-					<button className={styles.submit} onClick={handleSubmit} type="submit">
+					</span>
+					<span className={styles.submit} onClick={handleSubmit}>
 						{isLoading ? <ClipLoader color="white" size={13} /> : "Schedule"}
-					</button>
+					</span>
 				</div>
 			</form>
 		</>

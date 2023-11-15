@@ -89,7 +89,7 @@
 	justify-content: space-between;
 	margin-top: 30px;
 
-	button {
+	span {
 		display: flex;
 		padding: 7px 8px;
 		justify-content: center;
@@ -136,7 +136,7 @@
 		background: var(--background-tertiary);
 	}
 
-	& button {
+	& span {
 		display: flex;
 		padding: 7px 8px;
 		justify-content: center;
