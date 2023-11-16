@@ -1,0 +1,79 @@
+.wrapper {
+	padding: 15px;
+}
+
+.history {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--border-secondary);
+	margin-bottom: 20px;
+	div {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+	}
+	h4 {
+		color: var(--text-primary);
+	}
+}
+
+.arrow_right {
+	cursor: pointer;
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+}
+
+// ************************************ matter details *************************************
+.matter_details {
+}
+
+.matter_name {
+	display: flex;
+	justify-content: space-between;
+}
+
+.left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.name {
+	font-size: 20px;
+}
+
+.chevron {
+	cursor: pointer;
+}
+
+.seeDetails {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	gap: 8px;
+	color: var(--primary-default);
+}
+
+.box {
+	padding: 20px;
+	padding-bottom: 24px;
+}
+.heading {
+	font-size: 20px;
+	font-weight: 500;
+	color: var(--text-primary);
+	padding-top: 20px;
+}
+
+.contact_details {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	p {
+		color: var(--text-primary);
+		margin-bottom: 10px;
+	}
+}
