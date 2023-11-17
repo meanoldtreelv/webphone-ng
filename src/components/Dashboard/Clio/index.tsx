@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import styles from "./Clio.module.scss";
-import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
+// import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import ContactDetails from "components/Clio/ContactDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { contactDetails } from "redux/clio/clioSelectors";
+import { setContactDetails } from "redux/clio/clioSlice";
+import ChevronUpIcon from "components/UI/Icons/ClioIcon/ChevronUp";
 
 const Clio = () => {
 	const [clio, setClio] = useState(false);
+	const dispatch = useDispatch();
+	const contactDetail = useSelector(contactDetails);
 	return (
 		<div className={`${styles.clio} ${clio && styles.clio_active}`}>
 			<div className={styles.dropdown}>
@@ -18,9 +24,10 @@ const Clio = () => {
 					<ChevronUpIcon />
 				</span>
 			</div>
-			{false && (
+			{clio && !contactDetail && (
 				<div className={styles.clio_box}>
 					<div className={styles.contactHeading}>Contacts (1)</div>
+					{/* map the components here */}
 					<div className={styles.contact}>
 						<div>
 							<span className={styles.profile}>
@@ -29,7 +36,11 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>
@@ -41,7 +52,11 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>
@@ -53,13 +68,17 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>
 				</div>
 			)}
-			<ContactDetails />
+			{clio && contactDetail && <ContactDetails />}
 		</div>
 	);
 };

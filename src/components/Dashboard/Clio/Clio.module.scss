@@ -20,8 +20,9 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: var(--text-secondary);
-	background-color: var(--background-quaternary);
+	color: var(--text-on-color);
+	// background-color: var(--background-quaternary);
+	background-color: var(--default-primary);
 	padding: 15px;
 	border-bottom: 1px solid var(--border-secondary);
 }

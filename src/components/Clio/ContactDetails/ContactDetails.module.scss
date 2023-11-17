@@ -54,26 +54,6 @@
 	cursor: pointer;
 }
 
-.box {
-	padding: 20px;
-	padding-bottom: 24px;
-}
-.heading {
-	font-size: 20px;
-	font-weight: 500;
-	color: var(--text-primary);
-	padding-top: 20px;
-}
-
-.contact_details {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	p {
-		color: var(--text-primary);
-		margin-bottom: 10px;
-	}
-}
-
 // ************************** footer ****************************
 
 .footer {
@@ -99,5 +79,24 @@
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
+		color: var(--icon-primary);
 	}
+}
+
+.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 8px;
+	width: 32px;
+	height: 32px;
+	// border: 1px solid red;
+}
+
+.icon_active {
+	background: var(--background-active);
+}
+
+.text_active {
+	color: var(--primary-default);
 }
