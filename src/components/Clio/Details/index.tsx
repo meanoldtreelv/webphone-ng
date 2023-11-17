@@ -1,11 +1,16 @@
-import React from "react";
 import styles from "./Details.module.scss";
+import EditIcon from "components/UI/Icons/ClioIcon/Edit";
+import { Link } from "react-router-dom";
 
 const Details = () => {
 	return (
 		<div className={styles.box}>
 			<div className={styles.heading}>
 				<span>Contact Details</span>
+				{/* todo - redirect to the respective URL */}
+				<Link to={"/"}>
+					<EditIcon />
+				</Link>
 			</div>
 			<div className={styles.contact_details}>
 				<div>

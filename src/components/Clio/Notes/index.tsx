@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Notes.module.scss";
 
 const Notes = () => {
@@ -27,6 +26,7 @@ const Notes = () => {
 					</select>
 				</div>
 				<textarea name="" id="" cols="100%" rows="10" placeholder="Add this call notes here"></textarea>
+				<button>Add Note</button>
 			</div>
 		</div>
 	);

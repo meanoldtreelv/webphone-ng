@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./Matter.module.scss";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
-
 import { Link } from "react-router-dom";
 import EditIcon from "components/UI/Icons/ClioIcon/Edit";
 
 const Matter = () => {
 	const [matterDetails, setMatterDetails] = useState(false);
+
 	return (
 		<div className={styles.wrapper}>
 			{!matterDetails && (
@@ -36,7 +36,11 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>
@@ -48,7 +52,123 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.matter}>
+						<div>
+							<h4>00132 - Live free or pie, LLC</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem. end
+							</p>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setMatterDetails(true);
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>
@@ -71,7 +191,7 @@ const Matter = () => {
 						</div>
 						<Link to={"/"} className={styles.seeDetails}>
 							<EditIcon />
-							<span>See Details</span>
+							{/* <span>See Details</span> */}
 						</Link>
 					</div>
 					<div className={styles.box}>

@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./History.module.scss";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
-
-import { Link } from "react-router-dom";
-import EditIcon from "components/UI/Icons/ClioIcon/Edit";
 import CallMissedIcon from "components/UI/Icons/Call/CallMissed";
 
 const History = () => {
 	const [historyDetails, setHistoryDetails] = useState(false);
+
 	return (
 		<div className={styles.wrapper}>
 			{!historyDetails && (
@@ -16,7 +14,7 @@ const History = () => {
 					<div className={styles.history}>
 						<div>
 							<CallMissedIcon />
-							<h4>Wed, August 31, 2023 09:05AM</h4>
+							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
 						<span
 							className={styles.arrow_right}
@@ -29,9 +27,104 @@ const History = () => {
 					<div className={styles.history}>
 						<div>
 							<CallMissedIcon />
-							<h4>Wed, August 31, 2023 09:05AM</h4>
+							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span className={styles.arrow_right}>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.history}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM end</h5>
+						</div>
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								setHistoryDetails(true);
+							}}>
 							<ChevronRightIcon />
 						</span>
 					</div>

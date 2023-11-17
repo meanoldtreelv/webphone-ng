@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./Clio.module.scss";
-// import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import ContactDetails from "components/Clio/ContactDetails";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +11,7 @@ const Clio = () => {
 	const [clio, setClio] = useState(false);
 	const dispatch = useDispatch();
 	const contactDetail = useSelector(contactDetails);
+
 	return (
 		<div className={`${styles.clio} ${clio && styles.clio_active}`}>
 			<div className={styles.dropdown}>
@@ -66,6 +66,86 @@ const Clio = () => {
 								<img src="/img/dummy/girl.jpg" alt="" />
 							</span>
 							Sandra Pilon
+						</div>
+
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.contact}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.contact}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.contact}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.contact}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span
+							className={styles.arrow_right}
+							onClick={() => {
+								dispatch(setContactDetails(true));
+							}}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div className={styles.contact}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon end
 						</div>
 
 						<span

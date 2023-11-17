@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./ContactDetails.module.scss";
 import ChevronLeftIcon from "components/UI/Icons/Navigation/ChevronLeft";
 import ContactDetailsIcon from "components/UI/Icons/ClioIcon/ContactDetails";
@@ -17,6 +17,7 @@ const ContactDetails = () => {
 	const dispatch = useDispatch();
 	const [tabSelected, setTabSelected] = useState("details");
 	const [tabHover, setTabHover] = useState("");
+
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.contact}>
@@ -37,6 +38,7 @@ const ContactDetails = () => {
 					<img src="/img/dummy/girl.jpg" alt="" />
 				</span>
 			</div>
+
 			{tabSelected === "details" && <Details />}
 			{tabSelected === "matter" && <Matter />}
 			{tabSelected === "history" && <History />}
