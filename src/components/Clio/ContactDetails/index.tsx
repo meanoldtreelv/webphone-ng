@@ -12,6 +12,9 @@ import Notes from "../Notes";
 import { useDispatch } from "react-redux";
 import { setContactDetails } from "redux/clio/clioSlice";
 import Details from "../Details";
+import TaskIcon from "components/UI/Icons/ClioIcon/Task";
+import Tasks from "../Tasks";
+import More from "../More";
 
 const ContactDetails = () => {
 	const dispatch = useDispatch();
@@ -43,6 +46,8 @@ const ContactDetails = () => {
 			{tabSelected === "matter" && <Matter />}
 			{tabSelected === "history" && <History />}
 			{tabSelected === "notes" && <Notes />}
+			{tabSelected === "task" && <Tasks />}
+			{tabSelected === "more" && <More />}
 
 			<div className={styles.footer}>
 				<div
@@ -123,16 +128,34 @@ const ContactDetails = () => {
 					<span className={`${(tabHover === "notes" || tabSelected === "notes") && styles.text_active}`}>Notes</span>
 				</div>
 				<div
+					onClick={() => {
+						setTabSelected("task");
+					}}
+					onMouseOver={() => {
+						setTabHover("task");
+					}}
+					onMouseOut={() => {
+						setTabHover("");
+					}}>
+					<span className={`${styles.icon} ${(tabHover === "task" || tabSelected === "task") && styles.icon_active}`}>
+						<TaskIcon color={`${tabHover === "task" || tabSelected === "task" ? "default-primary" : "icon-primary"}`} />
+					</span>
+					<span className={`${(tabHover === "task" || tabSelected === "task") && styles.text_active}`}>Task</span>
+				</div>
+				<div
+					onClick={() => {
+						setTabSelected("more");
+					}}
 					onMouseOver={() => {
 						setTabHover("more");
 					}}
 					onMouseOut={() => {
 						setTabHover("");
 					}}>
-					<span className={`${styles.icon} ${tabHover === "more" && styles.icon_active}`}>
-						<MoreIcon color={`${tabHover === "more" ? "default-primary" : "icon-primary"}`} />
+					<span className={`${styles.icon} ${(tabHover === "more" || tabSelected === "more") && styles.icon_active}`}>
+						<MoreIcon color={`${tabHover === "more" || tabSelected === "more" ? "default-primary" : "icon-primary"}`} />
 					</span>
-					<span className={`${tabHover === "more" && styles.text_active}`}>More</span>
+					<span className={`${(tabHover === "more" || tabSelected === "more") && styles.text_active}`}>More</span>
 				</div>
 			</div>
 		</div>

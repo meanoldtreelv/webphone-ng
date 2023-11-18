@@ -4,6 +4,9 @@ import { IClioState } from "./clioTypes";
 const initialClioState: IClioState = {
 	isClioActivated: true,
 	contactDetails: false,
+	isAddNoteOpen: false,
+	isAddTaskOpen: false,
+	isNewExpenseOpen: false,
 };
 
 const clioSlice = createSlice({
@@ -17,6 +20,15 @@ const clioSlice = createSlice({
 		setContactDetails(state, action) {
 			state.contactDetails = action.payload;
 		},
+		setIsAddNoteOpen(state, action) {
+			state.isAddNoteOpen = action.payload;
+		},
+		setIsAddTaskOpen(state, action) {
+			state.isAddTaskOpen = action.payload;
+		},
+		setIsNewExpenseOpen(state, action) {
+			state.isNewExpenseOpen = action.payload;
+		},
 
 		// setDateRange(state, action) {
 		// 	const { start, end } = action.payload;
@@ -29,6 +41,9 @@ const clioSlice = createSlice({
 export const {
 	setIsClioActivated,
 	setContactDetails,
+	setIsAddNoteOpen,
+	setIsAddTaskOpen,
+	setIsNewExpenseOpen,
 
 	// setDateRange,
 } = clioSlice.actions;

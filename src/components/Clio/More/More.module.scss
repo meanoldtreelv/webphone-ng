@@ -1,0 +1,17 @@
+.wrapper {
+	padding: 15px;
+}
+
+.heading {
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--text-primary);
+	padding-top: 20px;
+}
+
+.description {
+	span {
+		color: var(--default-primary);
+		cursor: pointer;
+	}
+}
