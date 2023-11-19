@@ -26,7 +26,7 @@ const More = () => {
 							New Expense page
 						</span>
 					</div>
-					<div>
+					<div className={styles.description}>
 						To schedule a follow-up Event, Please go to the <Link to={"/"}>Calendar page</Link> (Calendar &gt; New
 						Event)
 					</div>

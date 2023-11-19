@@ -52,12 +52,18 @@
 	justify-content: space-between;
 	font-size: 20px;
 	padding-bottom: 10px;
+	padding-top: 15px;
 	border-bottom: 1px solid var(--border-primary);
-	margin-bottom: 15px;
+	cursor: pointer;
+	// margin-bottom: 15px;
 
 	div {
 		display: flex;
 		align-items: center;
+	}
+
+	&:hover {
+		background-color: var(--background-hover);
 	}
 }
 .profile {

@@ -1,5 +1,7 @@
 .wrapper {
 	padding: 15px;
+	height: calc(100% - 71px);
+	overflow: auto;
 }
 
 .heading {
@@ -7,9 +9,12 @@
 	font-weight: 600;
 	color: var(--text-primary);
 	padding-top: 20px;
+	margin-bottom: 20px;
 }
 
 .description {
+	margin-bottom: 10px;
+	padding-left: 10px;
 	span {
 		color: var(--default-primary);
 		cursor: pointer;

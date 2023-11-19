@@ -1,5 +1,7 @@
 .wrapper {
 	padding: 15px;
+	overflow: auto;
+	height: calc(100% - 71px); // height of top contact bar
 }
 
 .matter {
@@ -8,7 +10,13 @@
 	align-items: center;
 	padding-bottom: 10px;
 	border-bottom: 1px solid var(--border-secondary);
-	margin-bottom: 20px;
+	// margin-bottom: 20px;
+	padding-top: 15px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--background-hover);
+	}
 
 	h4 {
 		color: var(--text-primary);

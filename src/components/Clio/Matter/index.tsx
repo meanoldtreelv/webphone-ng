@@ -12,7 +12,11 @@ const Matter = () => {
 		<div className={styles.wrapper}>
 			{!matterDetails && (
 				<>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -20,15 +24,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -36,15 +40,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -52,15 +56,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -68,15 +72,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -84,15 +88,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -100,15 +104,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -116,15 +120,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -132,15 +136,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -148,15 +152,15 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setMatterDetails(true);
+						}}>
 						<div>
 							<h4>00132 - Live free or pie, LLC</h4>
 							<p>
@@ -164,11 +168,7 @@ const Matter = () => {
 								repellendus aliquid saepe eaque dolorem. end
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setMatterDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>

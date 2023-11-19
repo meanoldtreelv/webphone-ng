@@ -19,21 +19,21 @@ const AddTask = () => {
 			</div>
 			<div className={styles.notes_details}>
 				<div>
-					<label htmlFor="">Name</label>
+					<label htmlFor="name">Name</label>
 					<br />
-					<input type="text" placeholder="Enter name here..." />
+					<input type="text" placeholder="Enter name here..." id="name" />
 				</div>
 				<div>
-					<label htmlFor="selected_matter">Priority </label>
-					<select name="selected_matter" id="selected_matter">
+					<label htmlFor="priority">Priority </label>
+					<select name="priority" id="priority">
 						<option value={""}>High</option>
 						<option value={""}>Normal</option>
 						<option value={""}>Low</option>
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Assign to* </label>
-					<select name="call_purpose" id="call_purpose">
+					<label htmlFor="assign_to">Assign to* </label>
+					<select name="assign_to" id="assign_to">
 						<option value={""}>None</option>
 						<option value={""}>Deep </option>
 						<option value={""}>Shivam</option>
@@ -41,8 +41,8 @@ const AddTask = () => {
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Matter </label>
-					<select name="call_purpose" id="call_purpose">
+					<label htmlFor="matter">Matter </label>
+					<select name="matter" id="matter">
 						<option value={""}>None</option>
 						<option value={""}>matter 1 </option>
 						<option value={""}>Matter 2</option>
@@ -50,9 +50,9 @@ const AddTask = () => {
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Due Date</label>
+					<label htmlFor="due_date">Due Date</label>
 					<br />
-					<input type="date" placeholder="Enter due date here..." />
+					<input type="date" placeholder="Enter due date here..." id="due_date" />
 				</div>
 				<textarea name="" id="" cols="100%" rows="10" placeholder="Enter task description here..."></textarea>
 				<button>Add Task</button>
