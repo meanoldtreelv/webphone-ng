@@ -1,7 +1,5 @@
-import React from "react";
 import styles from "./CallConnectorWidget.module.scss";
 import Backdrop from "components/UI/Backdrop";
-import InfoIcon from "components/UI/Icons/Info";
 
 const CallConnectorWidget = () => {
 	return (
@@ -14,7 +12,7 @@ const CallConnectorWidget = () => {
 				<div>Contacts(1)</div>
 				<div className={styles.contact}>
 					<span>
-						<img src="/img/dummy/profile-icon.png"></img>
+						<img src="/img/dummy/profile-icon.png" alt=""></img>
 					</span>
 					Sandra Pilon
 				</div>
