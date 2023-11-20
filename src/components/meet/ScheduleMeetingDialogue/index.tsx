@@ -8,15 +8,29 @@ import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 import { useLazyCreateMeetQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
+import { formatFilterDate } from "utils";
+import { convertDateFormat } from "helpers/formatDateTime";
 const timezones = moment.tz.names();
 
 const ScheduleMeetingDialogue = () => {
-	const [isRepeat, setIsRepeat] = useState(false);
 	const [isPrivate, setIsPrivate] = useState(false);
+	const [isRepeat, setIsRepeat] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 	const [when, setWhen] = useState("");
 
-	const [createMeet, { data: createMeetData, isLoading }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isLoading, isError }] = useLazyCreateMeetQuery();
+
+	//current date
+
+	let currentDate = new Date(); // Creates a new Date object with the current date and time
+
+	let year = currentDate.getFullYear(); // Extracts the year (YYYY)
+	let month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Extracts the month (MM)
+	let day = String(currentDate.getDate()).padStart(2, "0"); // Extracts the day (DD)
+
+	let formattedDate = `${year}-${month}-${day}`; // Constructs the formatted date string
+
+	console.log(formattedDate); // Outputs the date in YYYY/MM/DD format
 
 	const [list] = useState([
 		{ value: "DAILY", name: "Daily", selected: true },
@@ -26,10 +40,10 @@ const ScheduleMeetingDialogue = () => {
 	]);
 
 	const repeatEveryList = [
-		{ value: "Day", name: "Day", selected: true },
-		{ value: "Week", name: "Week", selected: false },
-		{ value: "Month", name: "Month", selected: false },
-		{ value: "Year", name: "Year", selected: false },
+		{ value: "DAILY", name: "Day", selected: false },
+		{ value: "WEEKLY", name: "Week", selected: true },
+		{ value: "MONTHLY", name: "Month", selected: false },
+		{ value: "YEARLY", name: "Year", selected: false },
 	];
 
 	const [byWeekdayList, setByWeekdayList] = useState([
@@ -57,7 +71,7 @@ const ScheduleMeetingDialogue = () => {
 	const [count, setCount] = useState("1");
 	const [interval, setInterval] = useState("1");
 	const [timezone, setTimezone] = useState("Africa/Bissau");
-	const [end2, setEnd2] = useState(null);
+	const [end2, setEnd2] = useState(formattedDate);
 	const [newFrequency, setNewFrequency] = useState("DAILY");
 
 	const [deleteEmail, setDeleteEmail] = useState("");
@@ -65,16 +79,16 @@ const ScheduleMeetingDialogue = () => {
 	const [recurrenceData, setRecurrenceData] = useState({ frequency: newFrequency, interval: +interval });
 
 	const filteredDay = byWeekdayList.filter((item) => item.bool === true);
-	console.log("====================================");
-	console.log(filteredDay?.map(({ value }) => value));
-	console.log("====================================");
+	// console.log("====================================");
+	// console.log(filteredDay?.map(({ value }) => value));
+	// console.log("====================================");
 
 	function convertDateToTimezoneDate(date, timeZone) {
 		const inputDateTime = new Date(date);
 		// const timeZone = "Africa/Bissau";
 
 		// Output time zone
-		const outputTimeZone = "UTC";
+		// const outputTimeZone = "UTC";
 
 		// Convert the input date and time to the output time zone
 		const inputDateTimeInUTC = new Date(inputDateTime.toLocaleString("en-US", { timeZone: timeZone }));
@@ -98,7 +112,7 @@ const ScheduleMeetingDialogue = () => {
 		return newDate.toISOString().slice(0, 16);
 	}
 
-	const data = {
+	let data = {
 		title: title,
 		description: description,
 		start: start + ":00Z",
@@ -127,11 +141,11 @@ const ScheduleMeetingDialogue = () => {
 		const newDate = new Date(originalDate.getTime() + 345 * 60 * 1000); // Add 15 minutes in milliseconds
 
 		// console.log(newDate.toISOString().slice(0, 16)); // This will display the new date and time
-		console.log(newDate);
+		// console.log(newDate);
 
 		if (start) {
-			console.log(start);
-			console.log(newDate.toISOString().slice(0, 16));
+			// console.log(start);
+			// console.log(newDate.toISOString().slice(0, 16));
 
 			setEnd(newDate.toISOString().slice(0, 16));
 		}
@@ -171,12 +185,12 @@ const ScheduleMeetingDialogue = () => {
 		if (frequency === "WeeklyonMonday") {
 			setNewFrequency("WEEKLY");
 			updatedRecurrenceData.frequency = "WEEKLY";
-			updatedRecurrenceData.by_week_day = ["1"];
+			updatedRecurrenceData.by_week_day = [1];
 		}
 		if (frequency === "MondaytoFriday") {
 			setNewFrequency("WEEKLY");
 			updatedRecurrenceData.frequency = "WEEKLY";
-			updatedRecurrenceData.by_week_day = ["1", "2", "3", "4", "5"];
+			updatedRecurrenceData.by_week_day = [1, 2, 3, 4, 5];
 		}
 		if (frequency === "CustomRange") {
 			setNewFrequency("WEEKLY");
@@ -188,16 +202,52 @@ const ScheduleMeetingDialogue = () => {
 
 	useEffect(() => {
 		const updatedRecurrenceData = { ...recurrenceData }; // Create a copy
+		if (selectedOption === "never") {
+			delete updatedRecurrenceData.count;
+			delete updatedRecurrenceData.end;
+		}
 		if (selectedOption === "after") {
 			updatedRecurrenceData.count = +count;
-			// delete updatedRecurrenceData.end;
+			delete updatedRecurrenceData.end;
 		}
 		if (selectedOption === "on_date") {
 			updatedRecurrenceData.end = end2;
-			// delete updatedRecurrenceData.count;
+			delete updatedRecurrenceData.count;
 		}
 		setRecurrenceData(updatedRecurrenceData); // Update the state
-	}, [selectedOption]);
+	}, [selectedOption, count, end2]);
+
+	useEffect(() => {
+		const updatedRecurrenceData = { ...recurrenceData }; // Create a copy
+		if (newFrequency === "DAILY") {
+			updatedRecurrenceData.frequency = newFrequency;
+			updatedRecurrenceData.interval = +interval;
+			delete updatedRecurrenceData.by_week_day;
+			// delete updatedRecurrenceData.end;
+		}
+		if (newFrequency === "WEEKLY") {
+			updatedRecurrenceData.frequency = newFrequency;
+			updatedRecurrenceData.interval = +interval;
+			// delete updatedRecurrenceData.count;
+			// delete updatedRecurrenceData.end;
+		}
+		if (newFrequency === "MONTHLY") {
+			updatedRecurrenceData.frequency = newFrequency;
+			updatedRecurrenceData.interval = +interval;
+			delete updatedRecurrenceData.by_week_day;
+			// delete updatedRecurrenceData.count;
+			// delete updatedRecurrenceData.end;
+		}
+		if (newFrequency === "YEARLY") {
+			updatedRecurrenceData.frequency = newFrequency;
+			updatedRecurrenceData.interval = +interval;
+			delete updatedRecurrenceData.by_week_day;
+			// delete updatedRecurrenceData.count;
+			// delete updatedRecurrenceData.end;
+		}
+
+		setRecurrenceData(updatedRecurrenceData); // Update the state
+	}, [frequency === "CustomRange", newFrequency, interval]);
 
 	const toggleBoolValue = (value) => {
 		setByWeekdayList((prevList) =>
@@ -247,11 +297,9 @@ const ScheduleMeetingDialogue = () => {
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
 
-	// console.log(timezone, "timezone");
-	// console.log(start, "start");
-	// console.log(end, "end");
-	// console.log(attendeesList, "attendeesList");
-	console.log(data, "data");
+	// console.log(data);
+	console.log(recurrenceData);
+	console.log(interval);
 
 	return (
 		<>
@@ -398,33 +446,37 @@ const ScheduleMeetingDialogue = () => {
 											name=""
 											id=""
 											placeholder="1"
-											// value={count}
-											// onChange={(e) => {
-											// 	setCount(e.target.value);
-											// }}
+											value={interval}
+											onChange={(e) => {
+												setInterval(e.target.value);
+											}}
 										/>
 										<Select
 											options={repeatEveryList
 												.map((x: any) => [{ name: x["name"], value: x["value"] }])
 												.map((y: any) => y[0])}
-											// value={frequency}
+											value={newFrequency}
 											onChange={(e) => {
 												// console.log(e.target.value);
-												// setWhen(e.target.value);
+												setNewFrequency(e.target.value);
 											}}
 										/>
 									</div>
-									<label htmlFor="">Repeat On:</label>
-									<div className={styles.repeat_on}>
-										{byWeekdayList?.map((item) => (
-											<span
-												key={item.value}
-												className={`${item.bool ? styles.active_day : {}}`}
-												onClick={() => toggleBoolValue(item.value)}>
-												{item.name}
-											</span>
-										))}
-									</div>
+									{newFrequency === "WEEKLY" && (
+										<>
+											<label htmlFor="">Repeat On:</label>
+											<div className={styles.repeat_on}>
+												{byWeekdayList?.map((item) => (
+													<span
+														key={item.value}
+														className={`${item.bool ? styles.active_day : {}}`}
+														onClick={() => toggleBoolValue(item.value)}>
+														{item.name}
+													</span>
+												))}
+											</div>
+										</>
+									)}
 								</div>
 							) : (
 								<></>
