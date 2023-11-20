@@ -7,6 +7,7 @@ const initialClioState: IClioState = {
 	isAddNoteOpen: false,
 	isAddTaskOpen: false,
 	isNewExpenseOpen: false,
+	isNewTimeEntryOpen: false,
 };
 
 const clioSlice = createSlice({
@@ -29,6 +30,9 @@ const clioSlice = createSlice({
 		setIsNewExpenseOpen(state, action) {
 			state.isNewExpenseOpen = action.payload;
 		},
+		setIsNewTimeEntryOpen(state, action) {
+			state.isNewTimeEntryOpen = action.payload;
+		},
 
 		// setDateRange(state, action) {
 		// 	const { start, end } = action.payload;
@@ -44,6 +48,7 @@ export const {
 	setIsAddNoteOpen,
 	setIsAddTaskOpen,
 	setIsNewExpenseOpen,
+	setIsNewTimeEntryOpen,
 
 	// setDateRange,
 } = clioSlice.actions;

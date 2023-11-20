@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { contactDetails } from "redux/clio/clioSelectors";
 import { setContactDetails } from "redux/clio/clioSlice";
 import ChevronUpIcon from "components/UI/Icons/ClioIcon/ChevronUp";
+import StopWatch from "components/Clio/StopWatch";
 
 const Clio = () => {
 	const [clio, setClio] = useState(false);
@@ -16,6 +17,7 @@ const Clio = () => {
 		<div className={`${styles.clio} ${clio && styles.clio_active}`}>
 			<div className={styles.dropdown}>
 				<span>Clio/Connector</span>
+				<StopWatch />
 				<span
 					className={`${styles.chevron} ${clio && styles.active}`}
 					onClick={() => {

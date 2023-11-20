@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAddTaskOpen } from "redux/clio/clioSelectors";
 import { setIsAddTaskOpen } from "redux/clio/clioSlice";
 import AddTask from "../AddTask";
+import PlusIcon from "components/UI/Icons/Sidecar/Plus";
 
 const Tasks = () => {
 	const [tasksDetails, setTasksDetails] = useState(false);
@@ -249,7 +250,7 @@ const Tasks = () => {
 							onClick={() => {
 								dispatch(setIsAddTaskOpen(true));
 							}}>
-							Add Task
+							<PlusIcon /> <span>Task</span>
 						</button>
 					</div>
 				</>
