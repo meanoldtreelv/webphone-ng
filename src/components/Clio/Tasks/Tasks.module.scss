@@ -1,6 +1,8 @@
 .wrapper {
 	padding: 15px;
 	// position: relative;
+	height: calc(100% - 71px);
+	overflow: auto;
 }
 
 .button {
@@ -8,6 +10,10 @@
 	justify-content: end;
 
 	button {
+		position: absolute;
+		z-index: 2000;
+		bottom: 15px;
+		right: 50px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -25,7 +31,13 @@
 	align-items: center;
 	padding-bottom: 10px;
 	border-bottom: 1px solid var(--border-secondary);
-	margin-bottom: 20px;
+	// margin-bottom: 20px;
+	padding-top: 15px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--background-hover);
+	}
 
 	h4 {
 		color: var(--text-primary);
@@ -94,5 +106,16 @@
 	p {
 		color: var(--text-primary);
 		margin-bottom: 10px;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.button {
+		button {
+			bottom: 80px;
+			right: 15px;
+
+			padding: 6px 10px;
+		}
 	}
 }

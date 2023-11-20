@@ -11,120 +11,289 @@ const History = () => {
 		<div className={styles.wrapper}>
 			{!historyDetails && (
 				<>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.history}>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
+						<div>
+							<CallMissedIcon />
+							<h5>Wed, August 31, 2023 09:05AM</h5>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.history}
+						onClick={() => {
+							setHistoryDetails(true);
+						}}>
 						<div>
 							<CallMissedIcon />
 							<h5>Wed, August 31, 2023 09:05AM end</h5>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setHistoryDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>

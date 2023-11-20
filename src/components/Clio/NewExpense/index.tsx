@@ -19,31 +19,31 @@ const NewExpense = () => {
 			</div>
 			<div className={styles.notes_details}>
 				<div>
-					<label htmlFor="">Expense Category </label>
-					<select name="" id="">
+					<label htmlFor="expense_category">Expense Category </label>
+					<select name="expense_category" id="expense_category">
 						<option value={""}>High</option>
 						<option value={""}>Normal</option>
 						<option value={""}>Low</option>
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Quantity</label>
+					<label htmlFor="quantity">Quantity</label>
 					<br />
-					<input type="text" placeholder="Enter quantity here..." />
+					<input type="text" placeholder="Enter quantity here..." id="quantity" />
 				</div>
 				<div>
-					<label htmlFor="">Rate</label>
+					<label htmlFor="rate">Rate</label>
 					<br />
-					<input type="text" placeholder="Enter rate here..." />
+					<input type="text" placeholder="Enter rate here..." id="rate" />
 				</div>
 				<div>
-					<label htmlFor="">Amount</label>
+					<label htmlFor="amount">Amount</label>
 					<br />
-					<input type="text" placeholder="Enter amount here..." />
+					<input type="text" placeholder="Enter amount here..." id="amount" />
 				</div>
 				<div>
-					<label htmlFor="">Firm User</label>
-					<select name="" id="">
+					<label htmlFor="firm_user">Firm User</label>
+					<select name="firm_user" id="firm_user">
 						<option value={""}>None</option>
 						<option value={""}>Deep </option>
 						<option value={""}>Shivam</option>
@@ -51,8 +51,8 @@ const NewExpense = () => {
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Matter </label>
-					<select name="" id="">
+					<label htmlFor="matter">Matter </label>
+					<select name="matter" id="matter">
 						<option value={""}>None</option>
 						<option value={""}>matter 1 </option>
 						<option value={""}>Matter 2</option>
@@ -60,9 +60,9 @@ const NewExpense = () => {
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Date</label>
+					<label htmlFor="date">Date</label>
 					<br />
-					<input type="date" placeholder="Enter date here..." />
+					<input type="date" placeholder="Enter date here..." id="date" />
 				</div>
 				<textarea name="" id="" cols="100%" rows="10" placeholder="Enter description here..."></textarea>
 				<button>Save Expense</button>

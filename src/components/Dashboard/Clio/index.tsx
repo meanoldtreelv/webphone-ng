@@ -28,7 +28,11 @@ const Clio = () => {
 				<div className={styles.clio_box}>
 					<div className={styles.contactHeading}>Contacts (1)</div>
 					{/* map the components here */}
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -36,15 +40,15 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -52,15 +56,15 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -68,15 +72,15 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -84,15 +88,15 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -100,15 +104,15 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.contact}>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
 						<div>
 							<span className={styles.profile}>
 								<img src="/img/dummy/girl.jpg" alt="" />
@@ -116,11 +120,103 @@ const Clio = () => {
 							Sandra Pilon
 						</div>
 
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								dispatch(setContactDetails(true));
-							}}>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.contact}
+						onClick={() => {
+							dispatch(setContactDetails(true));
+						}}>
+						<div>
+							<span className={styles.profile}>
+								<img src="/img/dummy/girl.jpg" alt="" />
+							</span>
+							Sandra Pilon
+						</div>
+
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>

@@ -20,7 +20,11 @@ const Tasks = () => {
 		<div className={styles.wrapper}>
 			{!tasksDetails && !isAddTaskOpens && (
 				<>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -28,15 +32,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -44,15 +48,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -60,15 +64,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -76,15 +80,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -92,15 +96,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -108,15 +112,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -124,15 +128,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -140,15 +144,15 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -156,15 +160,79 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
+						<div>
+							<h4>000 1234 Task 1</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
+						<div>
+							<h4>000 1234 Task 1</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
+						<div>
+							<h4>000 1234 Task 1</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
+						<div>
+							<h4>000 1234 Task 1</h4>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum cupiditate velit repellat sequi
+								repellendus aliquid saepe eaque dolorem.
+							</p>
+						</div>
+						<span className={styles.arrow_right}>
+							<ChevronRightIcon />
+						</span>
+					</div>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setTasksDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Task 1</h4>
 							<p>
@@ -172,11 +240,7 @@ const Tasks = () => {
 								repellendus aliquid saepe eaque dolorem. end
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setTasksDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>

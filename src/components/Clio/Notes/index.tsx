@@ -19,7 +19,11 @@ const Notes = () => {
 		<div className={styles.wrapper}>
 			{!notesDetails && !isAddNoteOpens && (
 				<>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -27,15 +31,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -43,15 +47,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -59,15 +63,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -75,15 +79,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -91,15 +95,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -107,15 +111,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -123,15 +127,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -139,15 +143,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -155,15 +159,15 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem.
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>
-					<div className={styles.matter}>
+					<div
+						className={styles.matter}
+						onClick={() => {
+							setNotesDetails(true);
+						}}>
 						<div>
 							<h4>000 1234 Note 1</h4>
 							<p>
@@ -171,11 +175,7 @@ const Notes = () => {
 								repellendus aliquid saepe eaque dolorem. end
 							</p>
 						</div>
-						<span
-							className={styles.arrow_right}
-							onClick={() => {
-								setNotesDetails(true);
-							}}>
+						<span className={styles.arrow_right}>
 							<ChevronRightIcon />
 						</span>
 					</div>

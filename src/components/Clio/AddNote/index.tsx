@@ -27,7 +27,7 @@ const AddNote = () => {
 					</select>
 				</div>
 				<div>
-					<label htmlFor="">Call Purpose </label>
+					<label htmlFor="call_purpose">Call Purpose </label>
 					<select name="call_purpose" id="call_purpose">
 						<option value={""}>New Matter</option>
 						<option value={""}>A/R Follow Up</option>
