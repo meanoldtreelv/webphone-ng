@@ -17,7 +17,8 @@ const Clio = () => {
 		<div className={`${styles.clio} ${clio && styles.clio_active}`}>
 			<div className={styles.dropdown}>
 				<span>Clio/Connector</span>
-				<StopWatch />
+				{clio && <StopWatch />}
+
 				<span
 					className={`${styles.chevron} ${clio && styles.active}`}
 					onClick={() => {
