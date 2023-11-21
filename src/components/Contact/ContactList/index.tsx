@@ -23,8 +23,10 @@ const ContactList = () => {
 	const contactList = useSelector(contactLists);
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
 	const [noSearchResult, setNoSearchResult] = useState(false);
-	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
-		useLazyGetContactsQuery();
+	const [
+		getContacts,
+		{ data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching },
+	] = useLazyGetContactsQuery();
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
 	const isContactSelected = useSelector(contactSelectd);

@@ -1,8 +1,6 @@
 import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
-
 import loginSideImage from "./../../assets/images/bg/login.png";
-
 import ExtensionIcon from "./../../components/UI/Icons/Extension";
 import EnvelopeIcon from "./../../components/UI/Icons/Envelope";
 import LockIcon from "./../../components/UI/Icons/Lock";
@@ -21,7 +19,6 @@ import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 
 const Login = () => {
-	setCookie("id_token", getCookie("id_token"));
 	const navigate = useNavigate();
 	const theme = useTheme();
 
@@ -45,7 +42,9 @@ const Login = () => {
 	const loginWithExtension = () => {
 		// sip.logout()
 		store.dispatch({ type: "sip/extAuth", payload: true });
+		
 		setCookie("extAuth", "true");
+		
 		form?.extension === ""
 			? setForm((prevState) => {
 					return { ...prevState, extensionErrorMsg: "This field is required" };
@@ -77,6 +76,7 @@ const Login = () => {
 			navigate("/dashboard");
 		}
 	}, [authMessage]);
+
 	const login = () => {
 		return (
 			<section className={`${styles.login} ${theme}`}>
