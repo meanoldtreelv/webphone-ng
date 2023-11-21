@@ -19,14 +19,15 @@ const Callback = () => {
 	const instance_id: string = useGetInstancesQuery(null).data?.[0]["uuid"];
 	const navigate = useNavigate();
 	const theme = useTheme();
+
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
+	
 	const loginWithExtensionandSecret = () => {
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		navigate("/auth/login");
 	};
+	
 	const loginWithAPI = () => {
-		console.log(loginSelectExtension);
-		console.log(extAuthList);
 		for (const ext of extAuthList) {
 			if (ext["user"] == loginSelectExtension) {
 				sip.LoginWithAPI(ext);

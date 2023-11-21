@@ -15,3 +15,7 @@ export const videoRecordingData = (state: RootState) => state.meet.videoRecordin
 export const calendarType = (state: RootState) => state.meet.calendarType;
 export const meetingId = (state: RootState) => state.meet.meetingId;
 export const meetList = (state: RootState) => state.meet.meetList;
+export const view = (state: RootState) => state.meet.view;
+export const date = (state: RootState) => state.meet.date;
+export const meetDateRange = (state: RootState) => state.meet.meetDateRange;
+export const loading = (state: RootState) => state.meet.loading;

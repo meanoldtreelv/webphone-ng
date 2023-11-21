@@ -27,10 +27,6 @@ const CalendarMain: React.FC<ICalendar> = ({
 	date,
 	setDate,
 }) => {
-	// const handleOnChange = ({ target }) => {
-	// 	console.log(formatFilterDate(target.value));
-	// };
-
 	return (
 		<div className={styles.calendar}>
 			<div className={styles.calendar_backdrop}></div>
@@ -46,7 +42,6 @@ const CalendarMain: React.FC<ICalendar> = ({
 					<div className={styles.calendar_indate}>
 						<DatePicker
 							placeholder={placeholder1}
-							id="datepicker-id"
 							onChange={({ target }) => setDate({ ...date, from_date: target.value })}
 							value={date.from_date}
 						/>
@@ -56,7 +51,6 @@ const CalendarMain: React.FC<ICalendar> = ({
 						<DatePicker
 							placeholder={placeholder2}
 							onChange={({ target }) => setDate({ ...date, to_date: target.value })}
-							// onChange={handleOnChange}
 							value={date.to_date}
 						/>
 					</div>

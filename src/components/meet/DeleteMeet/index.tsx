@@ -4,9 +4,9 @@ import InfoIcon from "components/UI/Icons/Info";
 import { ClipLoader } from "react-spinners";
 import { setDeleteDialogue, setDescriptionDialogue } from "redux/meet/meetSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { eventId } from "redux/meet/meetSelectors";
-import { deleteMeet } from "effects/apiEffect";
-import { useLazyDeleteMeetQuery } from "services/meet";
+import { eventId, meetingDetails } from "redux/meet/meetSelectors";
+// import { deleteMeet } from "effects/apiEffect";
+import { useLazyDeleteAllMeetQuery, useLazyDeleteMeetQuery } from "services/meet";
 // import { useLazyDeleteMeetQuery } from "services/meet";
 
 const DeleteMeet = () => {
@@ -14,15 +14,29 @@ const DeleteMeet = () => {
 	const [selectedOption, setSelectedOption] = useState("option1");
 	const dispatch = useDispatch();
 	const event_id = useSelector(eventId);
+	const meetSelected = useSelector(meetingDetails);
+	console.log("====================================");
+	console.log(meetSelected);
+	console.log("====================================");
 
-	const [deleteMeet, { isLoading }] = useLazyDeleteMeetQuery();
+	const [deleteMeet, { isLoading: isLoading1 }] = useLazyDeleteMeetQuery();
+	const [deleteAllMeet, { isLoading: isLoading2 }] = useLazyDeleteAllMeetQuery();
 
 	const handleOptionChange = (e) => {
 		setSelectedOption(e.target.value);
 	};
 
 	const deleteHandler = async () => {
-		await deleteMeet(event_id);
+		if (selectedOption === "option1") {
+			await deleteMeet(event_id);
+		}
+		if (selectedOption === "option2") {
+			await deleteAllMeet(meetSelected?.gid);
+		}
+		if (selectedOption === "option3") {
+			await deleteAllMeet(meetSelected?.gid);
+		}
+
 		dispatch(setDeleteDialogue(false));
 		dispatch(setDescriptionDialogue(false));
 
@@ -45,13 +59,13 @@ const DeleteMeet = () => {
 		// dispatch(seteventId(""));
 	};
 
-	useEffect(() => {
-		// console.log(deleteMeetStatus, "delete meta data");
-		if (!isLoading) {
-			// dispatch(setDeleteDialogue(false));
-			// dispatch(setDescriptionDialogue(false));
-		}
-	}, [isLoading]);
+	// useEffect(() => {
+	// 	// console.log(deleteMeetStatus, "delete meta data");
+	// 	if (!isLoading) {
+	// 		// dispatch(setDeleteDialogue(false));
+	// 		// dispatch(setDescriptionDialogue(false));
+	// 	}
+	// }, [isLoading]);
 
 	// console.log(isLoading, "isLoading");
 
@@ -104,7 +118,7 @@ const DeleteMeet = () => {
 						<span>No</span>
 					</button>
 					<button className={styles.delete_deleteBtn}>
-						{isLoading ? (
+						{isLoading1 || isLoading2 ? (
 							<>
 								<ClipLoader color="white" size={13} />
 								<span style={{ marginLeft: "7px" }}>Deleting...</span>

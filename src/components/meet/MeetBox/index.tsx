@@ -3,18 +3,22 @@ import styles from "./MeetBox.module.scss";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import MeetingCard from "../MeetingCard";
 import { useDispatch, useSelector } from "react-redux";
-import { setMeetList, setSettingsDialogue } from "redux/meet/meetSlice";
+import { setLoading, setMeetList, setSettingsDialogue } from "redux/meet/meetSlice";
 // import { getMeetList } from "effects/apiEffect";
-import { dateRange } from "redux/meet/meetSelectors";
+import { calendarType, calendarView, dateRange, loading, meetDateRange } from "redux/meet/meetSelectors";
 import MeetCalendar from "components/UI/Calendar2";
 import { useLazyGetMeetQuery } from "services/meet";
 import Calendar from "components/UI/Calendar";
+import gsuite_small from "assets/images/img/google_small.png";
+import outlook from "assets/images/img/outlook_small.png";
+import { ClipLoader } from "react-spinners";
 
 const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
 
 	const dispatch = useDispatch();
 	const { start, end } = useSelector(dateRange);
+	const { meetStart, meetEnd } = useSelector(meetDateRange);
 
 	const [meetingList, setMeetingList] = useState<{}[]>([]);
 
@@ -22,22 +26,27 @@ const MeetBox = () => {
 	const [totalPageCount, setTotalPageCount] = useState(0);
 	const [page, setPage] = useState(1);
 
-	const [getMeetList, { data: meetListData }] = useLazyGetMeetQuery();
+	const [getMeetList, { data: meetListData, isLoading: isLoading, isFetching }] = useLazyGetMeetQuery();
 
 	const perPage = 100;
 
+	const calendar = useSelector(calendarType);
+
+	const calendarViews = useSelector(calendarView);
+
 	useEffect(() => {
 		const fetchData = async () => {
-			await getMeetList({ dateFrom: start, dateTo: end, perPage, page: 1 });
+			dispatch(setLoading(isLoading));
+			await getMeetList({ dateFrom: meetStart, dateTo: meetEnd, perPage, page: 1 });
 		};
 
-		start && end && fetchData();
+		meetStart && meetEnd && fetchData();
 		// start && end && console.log(fetchData(), "fetchdata");
 
 		// setTotalPageCount(headers?.["x-pagination-page-count"]);
 		// setPage(2);
 		// console.log(meetingList, meetListData, "both");
-	}, [start, end]);
+	}, [meetStart]);
 
 	useEffect(() => {
 		setMeetingList(meetListData);
@@ -73,7 +82,7 @@ const MeetBox = () => {
 	// }, [start, end]);
 
 	const loadMoreHandler = async () => {
-		await getMeetList({ dateFrom: start, dateTo: end, perPage, page });
+		await getMeetList({ dateFrom: meetStart, dateTo: meetEnd, perPage, page });
 		setMeetingList([...meetingList, ...meetListData]);
 		setPage(page + 1);
 		// getMeetList(
@@ -103,6 +112,9 @@ const MeetBox = () => {
 	// console.log(headers, "headerData");
 	// console.log("====================================");
 
+	// console.log(isLoading, isFetching);
+	console.log(meetingList);
+
 	return (
 		<div className={styles.queues}>
 			<div className={styles.headerBox}>
@@ -122,29 +134,54 @@ const MeetBox = () => {
 						Calender
 					</span>
 				</div>
-				<span
-					onClick={() => {
-						dispatch(setSettingsDialogue(true));
-					}}>
-					<SettingsIcon />
-				</span>
+				<div className={styles.settings}>
+					{calendar === "google" && <img src={gsuite_small} alt=""></img>}
+					{calendar === "outlook" && <img src={outlook} alt=""></img>}
+					<span
+						onClick={() => {
+							dispatch(setSettingsDialogue(true));
+						}}>
+						<SettingsIcon />
+					</span>
+				</div>
 			</div>
 			{tabSelected === "timeline" && (
 				<div>
 					<div className={styles.meetBox}>
-						<div>17 OCTOBER, TUE</div>
-						{meetingList?.map((item) => <MeetingCard key={item.id} meetData={item} />)}
-						<div className={styles.loadMore}>
-							{meetListData?.length === perPage && <button onClick={loadMoreHandler}>Load More...</button>}
-						</div>
+						{isFetching ? (
+							<div className={styles.loader}>
+								<ClipLoader />
+							</div>
+						) : (
+							<>
+								{/* <div>17 OCTOBER, TUE</div> */}
+								{meetingList?.map((item) => <MeetingCard key={item.id} meetData={item} />)}
+								<div className={styles.loadMore}>
+									{meetListData?.length === perPage && <button onClick={loadMoreHandler}>Load More...</button>}
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			)}
 
 			{tabSelected === "calendar" && (
 				<div className={styles.calendar}>
+					{/* {isFetching ? (
+						<div className={styles.loader}>
+							<ClipLoader />
+						</div>
+					) : (
+						<>
+							<Calendar />
+						</>
+					)} */}
+					{isFetching && (
+						<div className={styles.loader}>
+							<ClipLoader />
+						</div>
+					)}
 					<Calendar />
-					{/* <MeetCalendar /> */}
 				</div>
 			)}
 		</div>

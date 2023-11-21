@@ -10,6 +10,7 @@ import { setEditDialogue } from "redux/meet/meetSlice";
 import { meetingDetails } from "redux/meet/meetSelectors";
 import moment from "moment-timezone";
 import { useLazyEditMeetQuery } from "services/meet";
+import { ClipLoader } from "react-spinners";
 
 // import { DateTime } from "luxon";
 // import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
@@ -306,7 +307,7 @@ const EditMeet = () => {
 						Close
 					</button>
 					<button className={styles.submit} onClick={handleSubmit}>
-						Save
+						{isLoading ? <ClipLoader color="white" size={13} /> : "save"}
 					</button>
 				</div>
 			</div>

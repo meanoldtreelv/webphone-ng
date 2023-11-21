@@ -30,3 +30,12 @@
 	// background-color: var(--background-hover);
 	// border-color: #adadad;
 }
+
+//to hide the view button
+.rbc-btn-group:last-child {
+	display: none;
+}
+
+.rbc-btn-group {
+	display: none;
+}
