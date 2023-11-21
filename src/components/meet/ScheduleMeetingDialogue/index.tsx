@@ -58,7 +58,7 @@ const ScheduleMeetingDialogue = () => {
 
 	const dispatch = useDispatch();
 
-	const [title, setTitle] = useState<string | null>("");
+	const [title, setTitle] = useState<string>("");
 	const [description, setDescription] = useState("");
 	const [start, setStart] = useState(new Date().toISOString().slice(0, 16));
 	const [end, setEnd] = useState("");
@@ -274,7 +274,8 @@ const ScheduleMeetingDialogue = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (!title && !start && !end) {
+		if (title.length === 0) return;
+		if (!start && !end) {
 			return;
 		}
 		title && start && end && (await createMeet(data));

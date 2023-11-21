@@ -11,13 +11,15 @@ import { setCalendarView, setDateRange, setJoinDialogue, setScheduleDialogue } f
 import { calendarView, dateRange } from "redux/meet/meetSelectors";
 import DateRange from "components/UI/DateRange";
 import { useLazyCreateMeetQuery } from "services/meet";
+import { ClipLoader } from "react-spinners";
 // import { Views } from "react-big-calendar";
 // import moment from "moment";
 
 const MeetHeader = () => {
+	const [meetingCode, setMeetingCode] = useState("");
 	const dispatch = useDispatch();
 
-	const [createMeet, { data: createMeetData }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isFetching }] = useLazyCreateMeetQuery();
 
 	const { start, end } = useSelector(dateRange);
 	const calendarViews = useSelector(calendarView);
@@ -37,9 +39,26 @@ const MeetHeader = () => {
 
 	const startMeetingHandler = async () => {
 		await createMeet({});
-		// setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
-		window.open(`https://meet.ringplan.com/auth/?id=${createMeetData?.[0]?.jitsi_meeting_room_id}`, "_blank");
+
+		// console.log(meetingCode);
+
+		// window.open(`https://meet.ringplan.com/auth/?id=${meetingCode}`, "_blank");
+		// if (meetingCode) {
+		// }
 	};
+	console.log(meetingCode);
+	console.log(createMeetData, "createMeetData");
+	useEffect(() => {
+		setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
+	}, [createMeetData]);
+
+	useEffect(() => {
+		// setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
+		if (meetingCode) {
+			window.open(`https://meet.ringplan.com/auth/?id=${meetingCode}`, "_blank");
+			setMeetingCode("");
+		}
+	}, [meetingCode]);
 
 	// useEffect(() => {
 	// 	// Update the view based on calendarViews value
@@ -272,6 +291,7 @@ const MeetHeader = () => {
 					<div onClick={startMeetingHandler}>
 						<ConferenceIcon />
 						<span>Start&nbsp;Meeting</span>
+						{isFetching && <ClipLoader color="white" size={13} />}
 					</div>
 				</div>
 			</div>
