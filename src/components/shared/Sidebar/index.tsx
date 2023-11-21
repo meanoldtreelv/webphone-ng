@@ -14,6 +14,8 @@ import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
 import { useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
+import { ClipLoader } from "react-spinners";
+import { loader } from "redux/common/commonSelectors";
 
 interface ISidebarLinks {
 	path: string;
@@ -23,7 +25,7 @@ interface ISidebarLinks {
 }
 const Sidebar = () => {
 	const [isCollapsed, setIsCollapsed] = useState(false);
-
+	const mainLoader = useSelector(loader);
 	const [tabActive, setTabActive] = useState("1");
 	const [tabHovered, setTabHovered] = useState("1");
 
@@ -125,6 +127,12 @@ const Sidebar = () => {
 
 	return (
 		<section className={styles.sidebarBox} style={{ width: `${!isCollapsed ? "64px" : "calc(100vw - 15px)"}` }}>
+			{mainLoader ? (
+				<div className={styles.spinnerMain}>
+					<ClipLoader size={13} color="var(--text-secondary)" />
+					<p>Loading...</p>
+				</div>
+			) : null}
 			<section className={styles.sidebar} style={{ width: `${!isCollapsed ? "64px" : "280px"}` }}>
 				<div
 					className={styles.sidebar_logoIcon}

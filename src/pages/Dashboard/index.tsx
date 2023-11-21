@@ -35,6 +35,7 @@ import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
+import { getCookie, setCookie } from "utils";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
