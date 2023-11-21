@@ -72,20 +72,21 @@ const CallHistory = () => {
 	}, [callHistoryDetails]);
 
 	const onFilter = () => {
-		dispatch(
-			setQueries({
-				...callHistoryQueries,
-				from_date: formatFilterDate(date.from_date),
-				to_date: formatFilterDate(date.to_date),
-			}),
-		);
-
-		const fetchCallHistory = async () => {
-			await getCallHistories(callHistoryStrQueries);
-			setDispCalendar(false);
+		let dateFilter = {};
+		dateFilter = {
+			from_date: date.from_date && formatFilterDate(date.from_date),
+			to_date: date.to_date && formatFilterDate(date.to_date),
 		};
+		dateFilter = Object.fromEntries(Object.entries(dateFilter).filter(([key, value]) => value !== ""));
 
-		fetchCallHistory();
+		if (Object.keys(dateFilter).length) {
+			dispatch(
+				setQueries({
+					...callHistoryQueries,
+					...dateFilter,
+				}),
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -93,7 +94,7 @@ const CallHistory = () => {
 		let historyParsed: [];
 
 		try {
-			historyParsed = JSON.parse(callHistoryJson);
+			historyParsed = JSON.parse(String(callHistoryJson));
 		} catch (e) {
 			historyParsed = [];
 		}
@@ -102,11 +103,12 @@ const CallHistory = () => {
 			await getCallHistories(callHistoryStrQueries);
 		};
 
-		if (historyParsed && historyParsed?.length !== pageSize) {
+		if (historyParsed && historyParsed?.length !== pageSize && Object.keys(callHistoryQueries).length == 2) {
 			dispatch(setCallHistory(historyParsed?.slice(0, pageSize + 20)));
 			setPageSize((prevState) => prevState + 20);
 		} else {
 			fetchCallHistory();
+			setDispCalendar(false);
 		}
 	}, [callHistoryStrQueries]);
 

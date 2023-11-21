@@ -37,6 +37,7 @@ import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import Clio from "components/Dashboard/Clio";
 import { isClioActivated } from "redux/clio/clioSelectors";
+import { getCookie, setCookie } from "utils";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();

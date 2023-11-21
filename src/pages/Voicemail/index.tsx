@@ -100,7 +100,6 @@ const Voicemail = () => {
 
 	useEffect(() => {
 		if (!isLoading && !isFetching && data) {
-			console.log(data);
 			if (Object.keys(queries).length <= 2) {
 				const parsedData = JSON.parse(String(localStorage?.getItem("voicemails")));
 				if (parsedData) {
@@ -138,7 +137,6 @@ const Voicemail = () => {
 			setPageSize((prevState) => prevState + 20);
 		} else {
 			fetchVoicemails();
-			console.log(strQueries);
 		}
 	}, [strQueries]);
 
@@ -157,7 +155,7 @@ const Voicemail = () => {
 		}
 
 		const filteredRes = voicemailsParsed?.filter((voicemail) => {
-			return voicemail.source_representation_name.toLowerCase().includes(search.toLowerCase());
+			return voicemail?.source_representation_name?.toLowerCase()?.includes(search.toLowerCase());
 		});
 
 		dispatch(setVoicemailResults(filteredRes?.slice(0, 20)));
@@ -169,6 +167,7 @@ const Voicemail = () => {
 		const clientHeight = e.target.clientHeight;
 
 		if (scrollTop + clientHeight >= scrollHeight) {
+			console.log('scroll inside');
 			if (Number(queries?.per_page) >= 10000 && !isLoading) {
 				dispatch(
 					setVoicemailQueries({
