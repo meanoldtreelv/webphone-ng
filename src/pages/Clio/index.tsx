@@ -2,11 +2,14 @@ import { useEffect } from "react";
 import axios from "axios"; // You may need to install axios using `npm install axios`
 import BaseLayout from "layouts/BaseLayout";
 import styles from "./Clio.module.scss";
-import { clioClientId, clioClientSecret } from "config/app.config";
+import { CLIO_BASE_URL, clioClientId, clioClientSecret } from "config/app.config";
 import { getClioCallBackUrl } from "config/env.config";
 import { setCookie } from "typescript-cookie";
+import { clioConstants } from "constants/clioConstants";
+import { useNavigate } from "react-router";
 
 const Clio = () => {
+	const navigate = useNavigate();
 	// Get the current URL
 	const currentURL = window.location.href;
 
@@ -17,8 +20,8 @@ const Clio = () => {
 	const code = url.searchParams.get("code");
 
 	// Log or use the 'code' value
-	console.log(code); // This will print the 'code' value if present in the URL
-	console.log(getClioCallBackUrl());
+	// console.log(code); // This will print the 'code' value if present in the URL
+	// console.log(getClioCallBackUrl());
 
 	const handleAuthorization = async () => {
 		const state = Math.random().toString(36).substring(7); // Generating a random state value
@@ -51,15 +54,16 @@ const Clio = () => {
 				redirect_uri: getClioCallBackUrl(),
 			});
 
-			const response = await axios.post("https://app.clio.com/oauth/token", data, {
+			const response = await axios.post(`${CLIO_BASE_URL}/oauth/token`, data, {
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded",
 				},
 			});
 
 			console.log(response.data); // Handle the response data here
-			setCookie("clio_access_token", response?.data?.access_token);
-			setCookie("clio_refresh_token", response?.data?.refresh_token);
+			setCookie(clioConstants.clioAccessToken, response?.data?.access_token);
+			setCookie(clioConstants.clioRefreshToken, response?.data?.refresh_token);
+			navigate("/dashboard");
 		} catch (error) {
 			console.error("Error:", error);
 		}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Clio.module.scss";
 import ChevronRightIcon from "components/UI/Icons/Navigation/ChevronRight";
 import ContactDetails from "components/Clio/ContactDetails";
@@ -7,11 +7,18 @@ import { contactDetails } from "redux/clio/clioSelectors";
 import { setContactDetails } from "redux/clio/clioSlice";
 import ChevronUpIcon from "components/UI/Icons/ClioIcon/ChevronUp";
 import StopWatch from "components/Clio/StopWatch";
+import { useLazyGetContactQuery } from "services/clio";
 
 const Clio = () => {
 	const [clio, setClio] = useState(false);
 	const dispatch = useDispatch();
 	const contactDetail = useSelector(contactDetails);
+
+	const [clioContact, { data, isLoading }] = useLazyGetContactQuery();
+
+	useEffect(() => {
+		clioContact(null);
+	}, []);
 
 	return (
 		<div className={`${styles.clio} ${clio && styles.clio_active}`}>
