@@ -29,7 +29,7 @@ const Sidebar = () => {
 	const [tabActive, setTabActive] = useState("1");
 	const [tabHovered, setTabHovered] = useState("1");
 
-	const [unreadMessage, setUnreadMessage] = useState(true);
+	const [unreadMessage, setUnreadMessage] = useState(false);
 
 	const { extAuth } = useSelector((state: any) => state.sip);
 	// the above two functions, they need to be removed
@@ -56,7 +56,7 @@ const Sidebar = () => {
 					path: routePaths.DASHBOARD.ROUTE,
 					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Keypad",
-					unread: 2,
+					unread: 0,
 				},
 		  ]
 		: [
@@ -64,7 +64,7 @@ const Sidebar = () => {
 					path: routePaths.DASHBOARD.ROUTE,
 					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Keypad",
-					unread: 2,
+					unread: 0,
 				},
 				{
 					path: routePaths.CONTACT.ROUTE,
@@ -106,7 +106,7 @@ const Sidebar = () => {
 
 	const sidebarBtmLinks: ISidebarLinks[] = extAuth
 		? [
-				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 3 },
+				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -116,7 +116,7 @@ const Sidebar = () => {
 		  ]
 		: [
 				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
-				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
+				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -156,7 +156,7 @@ const Sidebar = () => {
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										<span className={styles.sidebar_unreadMsg}>{link.unread}</span>
+										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 									</span>
 								)}
 							</NavLink>
@@ -176,7 +176,7 @@ const Sidebar = () => {
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										<span className={styles.sidebar_unreadMsg}>{link.unread}</span>
+										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 									</span>
 								)}
 							</NavLink>
