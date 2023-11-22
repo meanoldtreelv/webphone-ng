@@ -4,4 +4,5 @@ export interface IClioState {
 	isAddNoteOpen: boolean;
 	isAddTaskOpen: boolean;
 	isNewExpenseOpen: boolean;
+	isNewTimeEntryOpen: boolean;
 }

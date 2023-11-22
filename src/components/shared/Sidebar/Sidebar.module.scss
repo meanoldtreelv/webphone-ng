@@ -72,17 +72,17 @@
 	&_icon {
 		position: relative;
 
-		&::before {
-			content: "";
-			position: absolute;
-			top: 0px;
-			left: 15px;
-			z-index: 100;
-			width: 5px;
-			height: 5px;
-			background: var(--support-danger-default);
-			border-radius: 100%;
-		}
+		// &::before {
+		// 	content: "";
+		// 	position: absolute;
+		// 	top: 0px;
+		// 	left: 15px;
+		// 	z-index: 100;
+		// 	width: 5px;
+		// 	height: 5px;
+		// 	background: var(--support-danger-default);
+		// 	border-radius: 100%;
+		// }
 	}
 
 	&_unreadMsg {
@@ -101,6 +101,34 @@
 .active_tab {
 	background: var(--background-active);
 	color: var(--text-link) !important;
+}
+
+.spinnerMain {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	align-items: center;
+	padding: 10px 14px;
+	border-radius: 10px;
+	background: var(--border-tertiary);
+	cursor: default;
+
+	> p {
+		font-size: 0.9em;
+		width: 0px;
+		overflow: hidden;
+		cursor: default;
+		transition: 0.3s;
+		color: var(--text-secondary);
+	}
+
+	&:hover {
+		p {
+			width: unset;
+			margin-left: 10px;
+		}
+	}
 }
 
 @media only screen and (max-width: 500px) {

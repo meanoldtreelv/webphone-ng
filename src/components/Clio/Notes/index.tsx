@@ -8,6 +8,8 @@ import AddNote from "../AddNote";
 import { useDispatch, useSelector } from "react-redux";
 import { isAddNoteOpen } from "redux/clio/clioSelectors";
 import { setIsAddNoteOpen } from "redux/clio/clioSlice";
+import PlusIcon from "components/UI/Icons/Sidecar/Plus";
+// import PlusIcon from "components/UI/Icons/Plus";
 
 const Notes = () => {
 	const [notesDetails, setNotesDetails] = useState(false);
@@ -184,7 +186,8 @@ const Notes = () => {
 							onClick={() => {
 								dispatch(setIsAddNoteOpen(true));
 							}}>
-							Add Note
+							<PlusIcon />
+							<span>Note</span>
 						</button>
 					</div>
 				</>
