@@ -88,7 +88,6 @@ let AudioinputDevices = [];
 let VideoinputDevices = [];
 let SpeakerDevices = [];
 
-let selectedLine = "";
 
 $(window).on("beforeunload", function(event) {
   var CurrentCalls = countSessions("0");
@@ -1287,7 +1286,7 @@ window.setInterval(function () {
   DetectDevices();
 }, 10000);
 
-function AddLineHtml(lineObj, direction) {
+function AddLineHtml(lineObj:{LineNumber:number}) {
   var html = "";
   // Remote Audio Object
   html += '<div style="display:none;">';
@@ -1304,11 +1303,13 @@ function AddLineHtml(lineObj, direction) {
   $("#softphone").append(html);
   // alert(lineObj.LineNumber)
 }
-function SwitchLines(lineNum) {
+function SwitchLines(lineNum:number) {
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
     if (session.state === SIP.SessionState.Established) {
-      MuteSession(lineNum) //remove this when hold started working
+      if(session.data.line !== lineNum){
+        MuteSession(session.data.line) //remove this when hold started working
+      }
       if (session.isOnHold === false && session.data.line !== lineNum) {
         // holdSession(session.data.line); // uncomment this when hold started working
       }
@@ -1327,9 +1328,8 @@ function SwitchLines(lineNum) {
     }
     session.data.IsCurrentCall = true;
   }
-  selectedLine = lineNum;
 }
-function SelectLine(lineNum) {
+function SelectLine(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null) return;
 
@@ -2611,7 +2611,7 @@ function onInviteRejected(lineObj, response) {
   SelectLine(store.getState().sip.activeCallLineNumber)
   // onCallEndByOtherSide();
 }
-function CancelTransferSession(lineNum) {
+function CancelTransferSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) {
     console.warn("Null line or session");
@@ -3195,7 +3195,6 @@ function StartConferenceCall(lineNum) {
     return;
   }
   holdSession(lineNum);
-  RestoreCallControls(lineNum);
 }
 function CancelConference(lineNum) {
   var lineObj = FindLineByNumber(lineNum);
@@ -3220,10 +3219,14 @@ function CancelConference(lineNum) {
         // Suppress message
       });
   }
-
+  store.dispatch({
+    type: "sip/answeredCalls",
+    payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+  });
   unholdSession(lineNum);
 }
-function ConferenceDial(lineNum, phoneNo) {
+function ConferenceDial(lineNum:number, phoneNo:string) {
+  CancelTransferSession(lineNum)
   var dstNo = phoneNo;
   if (EnableAlphanumericDial) {
     dstNo = dstNo.replace(telAlphanumericRegEx, "").substring(0, MaxDidLength);
@@ -3320,11 +3323,16 @@ function ConferenceDial(lineNum, phoneNo) {
   newSession.delegate = {
     onBye: function (sip) {
       console.log("New call session ended with BYE");
-      alert("New call session ended with BYE");
+      // alert("New call session ended with BYE");
       session.data.confcalls[confCallId].disposition = "bye";
       session.data.confcalls[confCallId].dispositionTime = utcDateNow();
 
       console.log("#line-" + lineNum + "-msg" + "conference_call_terminated");
+      // alert("conf conference_call_terminated")
+      store.dispatch({
+        type: "sip/answeredCalls",
+        payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+      });
       // alert("#line-" + lineNum + "-msg" + "conference_call_terminated");
     },
     onSessionDescriptionHandler: function (sdh, provisional) {
@@ -3415,13 +3423,22 @@ function ConferenceDial(lineNum, phoneNo) {
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
 
         console.log("#line-" + lineNum + "-msg" + "conference_call_started");
+        // alert("conf progress")
+        store.dispatch({
+          type: "sip/answeredCalls",
+          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
+        });
       },
       onProgress: function (sip) {
         session.data.confcalls[confCallId].disposition = "progress";
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
 
         console.log("#line-" + lineNum + "-msg" + "conference_call_started");
-
+        // alert("conf progress")
+        store.dispatch({
+          type: "sip/answeredCalls",
+          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
+        });
         // {
         //     newSession.cancel().catch(function(error){
         //         console.warn("Failed to CANCEL", error);
@@ -3449,6 +3466,11 @@ function ConferenceDial(lineNum, phoneNo) {
           // Merge Call Audio
           if (!session.data.childsession) {
             console.warn("Conference session lost");
+            // alert("conf session lost")
+            store.dispatch({
+              type: "sip/answeredCalls",
+              payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+            });
             return;
           }
 
@@ -3526,8 +3548,7 @@ function ConferenceDial(lineNum, phoneNo) {
           );
         }
 
-        // End Call
-        // {
+        // const = ()=>{
         //     newSession.bye().catch(function(e){
         //         console.warn("Failed to BYE", e);
         //     });
@@ -3541,14 +3562,24 @@ function ConferenceDial(lineNum, phoneNo) {
         //     CancelConference(lineNum);
 
         // };
+        // alert("conf started")
+        store.dispatch({
+          type: "sip/answeredCalls",
+          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
+        });
       },
       onReject: function (sip) {
         console.log("New call session rejected: ", sip.message.reasonPhrase);
+        store.dispatch({
+          type: "sip/answeredCalls",
+          payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+        });
         session.data.confcalls[confCallId].disposition =
           sip.message.reasonPhrase;
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
 
         console.log("#line-" + lineNum + "-msg" + "conference_call_rejected");
+        alert("conf rejected")
       },
     },
   };
@@ -4252,6 +4283,12 @@ const sip = {
   },
   addCall: (LineNumber: number, number: string ) =>  {
     DialByLine("audio", number);
+  },
+  conference:(LineNumber: number, number: string ) =>  {
+    ConferenceDial(LineNumber, number);
+  },
+  cancelConference:(LineNumber: number) =>  {
+    CancelConference(LineNumber);
   },
   transferCall: (LineNumber: number, number: string ) =>  {
     BlindTransfer(LineNumber, number)

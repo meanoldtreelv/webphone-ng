@@ -16,16 +16,6 @@ import TransferCall from "../../components/Dashboard/TransferCall";
 import Signal from "../../components/TinyComponents/Signal";
 import LogoutPopUp from "../../components/Profile/LogoutPopup";
 import InboundCall from "../../components/shared/InboundCall";
-import {
-	GET_Contact_List_API,
-	GET_user_extension_API,
-	extension_API,
-	// account_API,
-	// callerId_API,
-	// extension_API,
-	// instances_API,
-	// user_API,
-} from "./../../effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
@@ -36,6 +26,7 @@ import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import { getCookie, setCookie } from "utils";
+import { setCallNumber } from "redux/call/callSlice";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -157,7 +148,7 @@ const Dashboard = () => {
 					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && (
+					{callEnding.length > 0 && dispatch(setCallNumber("")) && (
 						<EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />
 					)}
 

@@ -26,10 +26,12 @@ interface answeredCallIn {
   volumeLevel?: Number,
   showDTMF?: Boolean,
   showAddCall?: Boolean,
+  showAddConferenceCall?: Boolean,
   showTransferCall?: Boolean,
   showTransferCallAtt?: Boolean,
   audioSettingOnCallModal?: Boolean,
   callSpeakerDevice?: string,
+  subCall?:{number:string}
 }
 interface callEndingIn {
   name?: string,
@@ -440,6 +442,44 @@ const sipSlice = createSlice({
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showAddCall = showAddCall
+              break;
+            }
+          }
+          break
+        }
+        case "showAddConferenceCall": {
+          console.log("showAddConferenceCall:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const showAddConferenceCall = action.payload.data.showAddConferenceCall
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              state.answeredCalls[index].showAddConferenceCall = showAddConferenceCall
+              break;
+            }
+          }
+          break
+        }
+        case "addSubCall": {
+          console.log("addSubCall:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const subCall = action.payload.data.subCall
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              state.answeredCalls[index].subCall = subCall
+              break;
+            }
+          }
+          break
+        }
+        case "removeSubCall": {
+          console.log("removeSubCall:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              state.answeredCalls[index].subCall = undefined
               break;
             }
           }
