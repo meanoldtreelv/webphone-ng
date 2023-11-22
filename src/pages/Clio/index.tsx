@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios"; // You may need to install axios using `npm install axios`
 import BaseLayout from "layouts/BaseLayout";
 import styles from "./Clio.module.scss";
+import { clioClientId, clioClientSecret } from "config/app.config";
+import { getClioCallBackUrl } from "config/env.config";
+import { setCookie } from "typescript-cookie";
 
 const Clio = () => {
 	// Get the current URL
@@ -15,14 +18,15 @@ const Clio = () => {
 
 	// Log or use the 'code' value
 	console.log(code); // This will print the 'code' value if present in the URL
+	console.log(getClioCallBackUrl());
 
 	const handleAuthorization = async () => {
 		const state = Math.random().toString(36).substring(7); // Generating a random state value
 
 		const params = new URLSearchParams({
 			response_type: "code",
-			client_id: "jYlHcnubtdNSKp54GSYFZydDRpdOWwfLhxd9UcGV", // Your client ID
-			redirect_uri: "http://127.0.0.1:3000/clio", // Your redirect URI
+			client_id: clioClientId, // Your client ID
+			redirect_uri: getClioCallBackUrl(), // Your redirect URI
 			redirect_on_decline: true,
 		});
 
@@ -40,11 +44,11 @@ const Clio = () => {
 	const handleToken = async () => {
 		try {
 			const data = new URLSearchParams({
-				client_id: "jYlHcnubtdNSKp54GSYFZydDRpdOWwfLhxd9UcGV",
-				client_secret: "1B8RmcDzBKVKV2QKw1fJsTmVQQ9jYbhy3biNzCGp",
+				client_id: clioClientId,
+				client_secret: clioClientSecret,
 				grant_type: "authorization_code",
 				code: code,
-				redirect_uri: "http://127.0.0.1:3000/clio",
+				redirect_uri: getClioCallBackUrl(),
 			});
 
 			const response = await axios.post("https://app.clio.com/oauth/token", data, {
@@ -54,6 +58,8 @@ const Clio = () => {
 			});
 
 			console.log(response.data); // Handle the response data here
+			setCookie("clio_access_token", response?.data?.access_token);
+			setCookie("clio_refresh_token", response?.data?.refresh_token);
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -70,7 +76,7 @@ const Clio = () => {
 		<div className={styles.clio}>
 			<BaseLayout>
 				{!code && (
-					<div>
+					<div className={styles.button}>
 						<button onClick={handleAuthorization}>Authorize with Clio</button>
 					</div>
 				)}
