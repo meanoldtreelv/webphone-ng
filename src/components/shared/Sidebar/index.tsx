@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
 import { ClipLoader } from "react-spinners";
 import { loader } from "redux/common/commonSelectors";
+import { getCookie } from "typescript-cookie";
 
 interface ISidebarLinks {
 	path: string;
@@ -156,31 +157,35 @@ const Sidebar = () => {
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
+										{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
 									</span>
 								)}
 							</NavLink>
 						))}
 					</div>
 					<div className={styles.sidebar_topTab}>
-						{sidebarBtmLinks.map((link: ISidebarLinks) => (
-							<NavLink
-								to={link.path}
-								className={({ isActive }: { isActive: boolean }) =>
-									[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
-								}
-								key={link.name}
-								// onClick={toggleCollapsed}
-							>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
-								{isCollapsed && (
-									<span className={`${styles.sidebar_tabExpanded}`}>
-										<span>{link.name}</span>
-										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
-									</span>
-								)}
-							</NavLink>
-						))}
+						{sidebarBtmLinks.map((link: ISidebarLinks) => {
+							if (getCookie("extAuth") === 'true' && link.name === "RingPlan Meet") return null;
+
+							return (
+								<NavLink
+									to={link.path}
+									className={({ isActive }: { isActive: boolean }) =>
+										[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
+									}
+									key={link.name}
+									// onClick={toggleCollapsed}
+								>
+									<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+									{isCollapsed && (
+										<span className={`${styles.sidebar_tabExpanded}`}>
+											<span>{link.name}</span>
+											{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+										</span>
+									)}
+								</NavLink>
+							);
+						})}
 					</div>
 				</div>
 			</section>

@@ -1,14 +1,14 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { BASE_URL } from "./app.config";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query/react";
-import {getCookie} from "typescript-cookie";
+import { getCookie } from "typescript-cookie";
 
 const axiosInstance = axios.create({
 	baseURL: BASE_URL,
 	headers: {
 		Authorization: getCookie("id_token"),
 		"Content-Type": "application/json",
-		"Access-Control-Allow-Origin": "*"
+		"Access-Control-Allow-Origin": "*",
 	},
 });
 
@@ -22,7 +22,6 @@ export const axiosBaseQuery =
 				data,
 				params,
 			});
-
 			return { data: result.data };
 		} catch (axiosError) {
 			const error = axiosError as AxiosError;
@@ -30,7 +29,8 @@ export const axiosBaseQuery =
 			if (axiosError?.response?.data?.status === 401) {
 				// await axios.post('https://b2clogin.ringplan.com/refresh-token')
 				await axiosInstance
-					.post("/refresh-token").then(resp => console.log('this is your response'))
+					.post("/refresh-token")
+					.then((resp) => console.log("this is your response"))
 					.catch((e) => {
 						console.log("this is your error message", e);
 					});

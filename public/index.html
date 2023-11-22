@@ -5,22 +5,59 @@
 		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<meta name="theme-color" content="#ffffff" />
-		<meta name="description" content="A Powerful business phone system; RingPlan's in-demand cloud services include phone, video, text, fax, and more. Make us your UCaaS provider">
-		<meta property="og:title" content="A Powerful Business Phone System in the Palm of Your Hands">
-		<meta property="og:description" content="Get multi-line conference phone functionality on all your desktop and mobile phones, while taking advantage of enterprise tools such as video conferencing, text messaging, digital fax, and more.">
-		<meta property="og:site_name" content="RingPlan">
-		<meta property="og:locale" content="en_US">
+		<meta
+			name="description"
+			content="A Powerful business phone system; RingPlan's in-demand cloud services include phone, video, text, fax, and more. Make us your UCaaS provider"
+		/>
+		<meta property="og:title" content="A Powerful Business Phone System in the Palm of Your Hands" />
+		<meta
+			property="og:description"
+			content="Get multi-line conference phone functionality on all your desktop and mobile phones, while taking advantage of enterprise tools such as video conferencing, text messaging, digital fax, and more."
+		/>
+		<meta property="og:site_name" content="RingPlan" />
+		<meta property="og:locale" content="en_US" />
 
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 		<title>RingPlan</title>
 	</head>
-	<body>
+	<body class="light-mode">
+		<script>
+			(function () {
+				var storageKey = "darkMode";
+				var classNameDark = "dark-mode";
+				var classNameLight = "light-mode";
+				function setClassOnDocumentBody(darkMode) {
+					document.body.classList.add(darkMode ? classNameDark : classNameLight);
+					document.body.classList.remove(darkMode ? classNameLight : classNameDark);
+				}
+				var preferDarkQuery = "(prefers-color-scheme: dark)";
+				var mql = window.matchMedia(preferDarkQuery);
+				var supportsColorSchemeQuery = mql.media === preferDarkQuery;
+				var localStorageTheme = null;
+				try {
+					localStorageTheme = localStorage.getItem(storageKey);
+				} catch (err) {}
+				var localStorageExists = localStorageTheme !== null;
+				if (localStorageExists) {
+					localStorageTheme = JSON.parse(localStorageTheme);
+				}
+
+				if (localStorageExists) {
+					setClassOnDocumentBody(localStorageTheme);
+				} else if (supportsColorSchemeQuery) {
+					setClassOnDocumentBody(mql.matches);
+					localStorage.setItem(storageKey, mql.matches);
+				} else {
+					var isDarkMode = document.body.classList.contains(classNameDark);
+					localStorage.setItem(storageKey, JSON.stringify(isDarkMode));
+				}
+			})();
+		</script>
 		<noscript>You need to enable JavaScript to run this app.</noscript>
 		<div id="notification"></div>
 		<div id="softphone"></div>
 		<div id="root"></div>
-
 		<script>
 			try {
 				Notification.requestPermission();

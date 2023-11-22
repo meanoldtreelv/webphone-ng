@@ -35,6 +35,7 @@ import LinkIcon from "components/UI/Icons/Voicemail/Link";
 import CopyIcon from "components/UI/Icons/Voicemail/Copy";
 import EnvelopIcon from "components/UI/Icons/Voicemail/Envelop";
 import { formatFilterDate } from "utils";
+import { setLoader } from "redux/common/commonSlice";
 // import { formatFilterDate } from "utils";
 
 const Voicemail = () => {
@@ -89,10 +90,13 @@ const Voicemail = () => {
 
 		const fetchVoicemails = async () => {
 			await getVoicemails(strQueries);
+			dispatch(setLoader(false))
 		};
 
 		if (voicemailsParsed && voicemailsParsed?.length) {
 			dispatch(setVoicemailResults(voicemailsParsed?.slice(0, 20)));
+			dispatch(setLoader(true))
+			fetchVoicemails()
 		} else {
 			fetchVoicemails();
 		}
