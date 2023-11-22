@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 import { useLazyCreateMeetQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
-import { convertErrorString } from "helpers/extractString";
 import { showToast } from "utils";
 const timezones = moment.tz.names();
 
@@ -17,10 +16,8 @@ const ScheduleMeetingDialogue = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 
-	// error
 	const [titleErr, setTitleErr] = useState(false);
 	const [emailError, setEmailError] = useState(false);
-	const [isAPIError, setIsAPIError] = useState(false);
 	const [scheduleSrvrError, setScheduleSrvrError] = useState("");
 
 	const [createMeet, { data: createMeetData, isLoading, isFetching, isError }] = useLazyCreateMeetQuery();
@@ -198,9 +195,6 @@ const ScheduleMeetingDialogue = () => {
 		setRecurrenceData(updatedRecurrenceData); // Update the state
 	}, [frequencyList, list]);
 
-	// console.log(frequencyList, "frequencyList");
-	// console.log(newFrequency, "newFrequency");
-
 	useEffect(() => {
 		const updatedRecurrenceData = { ...recurrenceData }; // Create a copy
 		if (newFrequency === "DAILY") {
@@ -259,9 +253,6 @@ const ScheduleMeetingDialogue = () => {
 		if (!start && !end) {
 			return;
 		}
-		// title && start && end && (await createMeet(data));
-		// console.log(isFetching, "isFetching");
-		// console.log(isError, "isError");
 
 		const { error } = await createMeet(data);
 
@@ -273,8 +264,6 @@ const ScheduleMeetingDialogue = () => {
 			showToast("Meeting created successfully", "success");
 		}
 	};
-
-	console.log(scheduleSrvrError);
 
 	const removeHandler = (emailId) => {
 		const list = attendeesList;
@@ -290,10 +279,6 @@ const ScheduleMeetingDialogue = () => {
 	useEffect(() => {
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
-
-	// console.log(recurrenceData);
-	// console.log(attendees, "atttendies");
-	// console.log(attendeesList, "attendeesList");
 
 	return (
 		<>
@@ -356,9 +341,6 @@ const ScheduleMeetingDialogue = () => {
 						}}
 						required
 					/>
-					{/* <span>
-						<ContactBookIcon />
-					</span> */}
 				</div>
 				<label>Time Zone</label>
 				<div className={styles.row2}>
@@ -366,7 +348,6 @@ const ScheduleMeetingDialogue = () => {
 						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
 						value={timezone}
 						onChange={(e) => {
-							// console.log(e.target.value);
 							setTimezone(e.target.value);
 							setStart(convertDateToTimezoneDate(start, timezone));
 						}}
@@ -426,9 +407,6 @@ const ScheduleMeetingDialogue = () => {
 									options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 									defaultValue={"DAILY"}
 									onChange={(e) => {
-										// console.log(e.target.value);
-										// setFrequency(e.target.value);
-										// setWhen(e.target.value);
 										setFrequencyList(e.target.value);
 									}}
 								/>
@@ -457,7 +435,6 @@ const ScheduleMeetingDialogue = () => {
 												.map((y: any) => y[0])}
 											value={newFrequency}
 											onChange={(e) => {
-												// console.log(e.target.value);
 												setNewFrequency(e.target.value);
 											}}
 										/>

@@ -4,9 +4,7 @@ import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import MeetingCard from "../MeetingCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setMeetList, setSettingsDialogue } from "redux/meet/meetSlice";
-// import { getMeetList } from "effects/apiEffect";
-import { calendarType, calendarView, dateRange, loading, meetDateRange } from "redux/meet/meetSelectors";
-import MeetCalendar from "components/UI/Calendar2";
+import { calendarType, calendarView, dateRange, meetDateRange } from "redux/meet/meetSelectors";
 import { useLazyGetMeetQuery } from "services/meet";
 import Calendar from "components/UI/Calendar";
 import gsuite_small from "assets/images/img/google_small.png";
@@ -17,13 +15,11 @@ const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
 
 	const dispatch = useDispatch();
-	const { start, end } = useSelector(dateRange);
+
 	const { meetStart, meetEnd } = useSelector(meetDateRange);
 
 	const [meetingList, setMeetingList] = useState<{}[]>([]);
 
-	const [loadMore, setLoadMore] = useState(false);
-	const [totalPageCount, setTotalPageCount] = useState(0);
 	const [page, setPage] = useState(1);
 
 	const [getMeetList, { data: meetListData, isLoading: isLoading, isFetching }] = useLazyGetMeetQuery();
@@ -32,8 +28,6 @@ const MeetBox = () => {
 
 	const calendar = useSelector(calendarType);
 
-	const calendarViews = useSelector(calendarView);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			dispatch(setLoading(isLoading));
@@ -41,11 +35,6 @@ const MeetBox = () => {
 		};
 
 		meetStart && meetEnd && fetchData();
-		// start && end && console.log(fetchData(), "fetchdata");
-
-		// setTotalPageCount(headers?.["x-pagination-page-count"]);
-		// setPage(2);
-		// console.log(meetingList, meetListData, "both");
 	}, [meetStart]);
 
 	useEffect(() => {
@@ -53,67 +42,11 @@ const MeetBox = () => {
 		dispatch(setMeetList(meetListData));
 	}, [meetListData]);
 
-	// console.log(headers, "headers");
-	// console.log(totalPageCount, "totalPageCount");
-	// console.log(page, "page");
-
-	// useEffect(() => {
-	// 	start &&
-	// 		getMeetList(
-	// 			start,
-	// 			end,
-	// 			perPage,
-	// 			1,
-	// 			(res: any) => {
-	// 				console.log(res, "meet List API retrieve");
-	// 				if (res?.status === 200) {
-	// 					console.log("success in meet List retrieve");
-	// 					console.log(res);
-
-	// 					setMeetingList(res?.data);
-	// 					setTotalPageCount(res?.headers?.["x-pagination-page-count"]);
-	// 					setPage(2);
-	// 				}
-	// 			},
-	// 			(err: any) => {
-	// 				console.error(err, "err in account retrieve");
-	// 			},
-	// 		);
-	// }, [start, end]);
-
 	const loadMoreHandler = async () => {
 		await getMeetList({ dateFrom: meetStart, dateTo: meetEnd, perPage, page });
 		setMeetingList([...meetingList, ...meetListData]);
 		setPage(page + 1);
-		// getMeetList(
-		// 	start,
-		// 	end,
-		// 	perPage,
-		// 	page,
-		// 	(res: any) => {
-		// 		console.log(res, "meet List API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in meet List retrieve");
-		// 			console.log(res);
-
-		// 			setMeetingList([...meetingList, ...res?.data]);
-		// 			// setTotalPageCount(res?.headers?.["x-pagination-page-count"]);
-		// 			setPage(page + 1);
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in account retrieve");
-		// 	},
-		// );
 	};
-
-	// console.log(totalPageCount, page);
-	// console.log("====================================");
-	// console.log(headers, "headerData");
-	// console.log("====================================");
-
-	// console.log(isLoading, isFetching);
-	// console.log(meetingList);
 
 	return (
 		<div className={styles.queues}>
@@ -167,15 +100,6 @@ const MeetBox = () => {
 
 			{tabSelected === "calendar" && (
 				<div className={styles.calendar}>
-					{/* {isFetching ? (
-						<div className={styles.loader}>
-							<ClipLoader />
-						</div>
-					) : (
-						<>
-							<Calendar />
-						</>
-					)} */}
 					{isFetching && (
 						<div className={styles.loader}>
 							<ClipLoader />

@@ -218,9 +218,9 @@
 
 .repeat_on {
 	display: flex;
-	// justify-content: center;
 	gap: 10px;
 	margin-bottom: 20px;
+
 	span {
 		width: 40px;
 		height: 40px;
@@ -240,6 +240,7 @@
 		color: white;
 	}
 }
+
 @media screen and (max-width: 768px) {
 	.dialogueBox {
 		width: 300px;
