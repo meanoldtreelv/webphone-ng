@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./DeleteMeet.module.scss";
 import InfoIcon from "components/UI/Icons/Info";
 import { ClipLoader } from "react-spinners";
 import { setDeleteDialogue, setDescriptionDialogue } from "redux/meet/meetSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { eventId, meetingDetails } from "redux/meet/meetSelectors";
-// import { deleteMeet } from "effects/apiEffect";
 import { useLazyDeleteAllMeetQuery, useLazyDeleteFollowingMeetQuery, useLazyDeleteMeetQuery } from "services/meet";
-// import { useLazyDeleteMeetQuery } from "services/meet";
 
 const DeleteMeet = () => {
-	// const [loading, setLoading] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("option1");
 	const dispatch = useDispatch();
 	const event_id = useSelector(eventId);
 	const meetSelected = useSelector(meetingDetails);
 
 	const [deleteSrvrError, setDeleteSrvrError] = useState("");
-	console.log("====================================");
-	console.log(meetSelected);
-	console.log("====================================");
 
 	const [deleteMeet, { isLoading: isLoading1 }] = useLazyDeleteMeetQuery();
 	const [deleteAllMeet, { isLoading: isLoading2 }] = useLazyDeleteAllMeetQuery();
 	const [deleteFollowingMeet, { isLoading: isLoading3 }] = useLazyDeleteFollowingMeetQuery();
+
 	const handleOptionChange = (e) => {
 		setSelectedOption(e.target.value);
 	};
@@ -31,7 +26,7 @@ const DeleteMeet = () => {
 	const deleteHandler = async () => {
 		if (selectedOption === "option1") {
 			setDeleteSrvrError("");
-			// await deleteMeet(event_id);
+
 			const { error } = await deleteMeet(event_id);
 
 			if (error) {
@@ -42,6 +37,7 @@ const DeleteMeet = () => {
 				dispatch(setDescriptionDialogue(false));
 			}
 		}
+
 		if (selectedOption === "option2") {
 			setDeleteSrvrError("");
 			let currentDate = new Date(); // Creates a new Date object with the current date and time
@@ -49,9 +45,7 @@ const DeleteMeet = () => {
 			let month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Extracts the month (MM)
 			let day = String(currentDate.getDate()).padStart(2, "0"); // Extracts the day (DD)
 			let formattedCurrentDate = `${year}-${month}-${day}`; // Constructs the formatted date str
-			console.log(formattedCurrentDate);
 
-			// await deleteAllMeet(meetSelected?.gid);
 			const { error } = await deleteFollowingMeet({ g_id: meetSelected?.gid, from_date: formattedCurrentDate });
 
 			if (error) {
@@ -62,9 +56,10 @@ const DeleteMeet = () => {
 				dispatch(setDescriptionDialogue(false));
 			}
 		}
+
 		if (selectedOption === "option3") {
 			setDeleteSrvrError("");
-			// await deleteAllMeet(meetSelected?.gid);
+
 			const { error } = await deleteAllMeet(meetSelected?.gid);
 
 			if (error) {
@@ -85,7 +80,7 @@ const DeleteMeet = () => {
 					<span>
 						<InfoIcon />
 					</span>
-					{/* */}
+
 					<div className={styles.delete_head}>
 						{meetSelected?.recurrence ? "Delete Meet ?" : "Are you sure you want to delete this meeting?"}
 					</div>

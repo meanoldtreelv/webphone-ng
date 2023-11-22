@@ -7,7 +7,6 @@ import gsuite from "assets/images/img/calender.png";
 import outlook from "assets/images/img/outlook.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setCalendarType, setSettingsDialogue } from "redux/meet/meetSlice";
-// import { GetGoogleCalendar, GetOutlookCalendar, RevokeGoogleCalendar, RevokeOutlookCalendar } from "effects/apiEffect";
 import { calendarType } from "redux/meet/meetSelectors";
 import {
 	useLazyDeleteGoogleCalendarQuery,
@@ -42,7 +41,6 @@ const SettingDialogue = () => {
 			setOutlookCalendar(true);
 		}
 	}, [calendar]);
-	console.log(isLoading1, "isLoading1");
 
 	const gsuiteHandler = async () => {
 		if (gsuiteCalendar) {
@@ -50,69 +48,16 @@ const SettingDialogue = () => {
 				calendar: email,
 			});
 			dispatch(setCalendarType(""));
-			// RevokeGoogleCalendar(
-			// 	{
-			// 		calendar: email,
-			// 	},
-			// 	(res: any) => {
-			// 		console.log(res, "gsuiteCalendar revoke");
-			// 		if (res?.status === 200) {
-			// 			dispatch(setCalendarType(""));
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in gsuite calendar revoke");
-			// 	},
-			// );
 		} else if (outlookCalendar) {
 			await revokeOutlookCalendar({
 				calendar: email,
 			});
-			// RevokeOutlookCalendar(
-			// 	{
-			// 		calendar: email,
-			// 	},
-			// 	(res: any) => {
-			// 		console.log(res, "outlook revoke");
-			// 		if (res?.status === 200) {
-			// 			dispatch(setCalendarType(""));
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in outlook calendar revoke");
-			// 	},
-			// );
+
 			await getGoogleCalendar(null);
-			// window.open(googleCalendarData?.auth_url);
-			// GetGoogleCalendar(
-			// 	(res: any) => {
-			// 		console.log(res, "gsuiteCalendar ");
-			// 		if (res?.status === 200) {
-			// 			window.open(res?.data?.auth_url);
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in gsuite calendar");
-			// 	},
-			// );
 		} else {
 			await getGoogleCalendar(null);
-			// window.open(googleCalendarData?.auth_url);
-			// GetGoogleCalendar(
-			// 	(res: any) => {
-			// 		console.log(res, "gsuiteCalendar ");
-			// 		if (res?.status === 200) {
-			// 			window.open(res?.data?.auth_url);
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in gsuite calendar");
-			// 	},
-			// );
 		}
-		// setGsuiteCalendar(!gsuiteCalendar);
 
-		// setGsuiteCalendar(false);
 		dispatch(setSettingsDialogue(false));
 	};
 
@@ -127,72 +72,18 @@ const SettingDialogue = () => {
 			});
 
 			dispatch(setCalendarType(""));
-			// RevokeOutlookCalendar(
-			// 	{
-			// 		calendar: email,
-			// 	},
-			// 	(res: any) => {
-			// 		console.log(res, "outlook revoke");
-			// 		if (res?.status === 200) {
-			// 			dispatch(setCalendarType(""));
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in outlook calendar revoke");
-			// 	},
-			// );
 		} else if (gsuiteCalendar) {
 			await revokeGoogleCalendar({
 				calendar: email,
 			});
-			// RevokeGoogleCalendar(
-			// 	{
-			// 		calendar: email,
-			// 	},
-			// 	(res: any) => {
-			// 		console.log(res, "gsuiteCalendar revoke");
-			// 		if (res?.status === 200) {
-			// 			dispatch(setCalendarType(""));
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in gsuite calendar revoke");
-			// 	},
-			// );
+
 			await getOutlookCalendar(null);
 			window.open(outlookCalendarData?.auth_url);
-			// GetOutlookCalendar(
-			// 	(res: any) => {
-			// 		console.log(res, "outlookCalendar ");
-			// 		if (res?.status === 200) {
-			// 			window.open(res?.data?.auth_url);
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in outlook calendar");
-			// 	},
-			// );
 		} else {
 			await getOutlookCalendar(null);
 			window.open(outlookCalendarData?.auth_url);
-			// GetOutlookCalendar(
-			// 	(res: any) => {
-			// 		console.log(res, "outlookCalendar ");
-			// 		if (res?.status === 200) {
-			// 			// console.log("success in account retrieve");
-			// 			// dispatch(setScheduleDialogue(false));
-			// 			window.open(res?.data?.auth_url);
-			// 		}
-			// 	},
-			// 	(err: any) => {
-			// 		console.error(err, "err in outlook calendar");
-			// 	},
-			// );
 		}
 
-		// setOutlookCalendar(!outlookCalendar);
-
-		// setOutlookCalendar(false);
 		dispatch(setSettingsDialogue(false));
 	};
 

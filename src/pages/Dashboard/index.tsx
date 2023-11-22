@@ -16,16 +16,6 @@ import TransferCall from "../../components/Dashboard/TransferCall";
 import Signal from "../../components/TinyComponents/Signal";
 import LogoutPopUp from "../../components/Profile/LogoutPopup";
 import InboundCall from "../../components/shared/InboundCall";
-import {
-	GET_Contact_List_API,
-	GET_user_extension_API,
-	extension_API,
-	// account_API,
-	// callerId_API,
-	// extension_API,
-	// instances_API,
-	// user_API,
-} from "./../../effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
