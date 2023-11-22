@@ -21,6 +21,9 @@ const EditMeet = () => {
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 
+	const [editSrvrError, setEditSrvrError] = useState("");
+	const [emailError, setEmailError] = useState(false);
+
 	const [editMeet, { data: editMeetData, isLoading }] = useLazyEditMeetQuery();
 
 	const dispatch = useDispatch();
@@ -136,23 +139,17 @@ const EditMeet = () => {
 	// useLazyCreateMeetQuery(data);
 
 	const handleSubmit = async () => {
-		await editMeet({ event_id: editData?.id, data });
-		dispatch(setEditDialogue(false));
-		// editMeet(
-		// 	editData?.id,
-		// 	data,
-		// 	(res: any) => {
-		// 		console.log(res, "meet created ");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in account retrieve");
-		// 			dispatch(setEditDialogue(false));
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in meet creation");
-		// 	},
-		// );
+		// await editMeet({ event_id: editData?.id, data });
 		// dispatch(setEditDialogue(false));
+
+		const { error } = await editMeet({ event_id: editData?.id, data });
+
+		if (error) {
+			setEditSrvrError("Something went wrong...!!");
+		} else {
+			setEditSrvrError("");
+			dispatch(setEditDialogue(false));
+		}
 	};
 
 	const removeHandler = (emailId) => {
@@ -170,13 +167,27 @@ const EditMeet = () => {
 		setSelectedOption(event.target.value);
 	};
 
+	// const addAttendeesHandler = () => {
+	// 	setAttendeesList([
+	// 		...attendeesList,
+	// 		{
+	// 			email: attendees,
+	// 		},
+	// 	]);
+	// };
 	const addAttendeesHandler = () => {
+		setEmailError(false);
+		if (!attendees?.includes("@")) {
+			setEmailError(true);
+			return;
+		}
 		setAttendeesList([
 			...attendeesList,
 			{
 				email: attendees,
 			},
 		]);
+		setAttendees("");
 	};
 
 	useEffect(() => {
@@ -276,6 +287,10 @@ const EditMeet = () => {
 					<button onClick={addAttendeesHandler}>ADD</button>
 				</div>
 
+				{emailError && (
+					<div style={{ color: "var(--text-danger)", fontSize: "11px" }}>Please enter correct email id !!</div>
+				)}
+
 				<div>
 					<label htmlFor="">Attendees added(1):</label>
 					<div className={styles.attendees}>
@@ -310,6 +325,7 @@ const EditMeet = () => {
 						{isLoading ? <ClipLoader color="white" size={13} /> : "save"}
 					</button>
 				</div>
+				{editSrvrError && <div style={{ color: "var(--text-danger)", fontSize: "11px" }}>{editSrvrError}</div>}
 			</div>
 		</>
 	);

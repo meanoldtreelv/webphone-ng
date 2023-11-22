@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 import { useLazyCreateMeetQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
+import { convertErrorString } from "helpers/extractString";
+import { showToast } from "utils";
 const timezones = moment.tz.names();
 
 const ScheduleMeetingDialogue = () => {
@@ -18,8 +20,10 @@ const ScheduleMeetingDialogue = () => {
 	// error
 	const [titleErr, setTitleErr] = useState(false);
 	const [emailError, setEmailError] = useState(false);
+	const [isAPIError, setIsAPIError] = useState(false);
+	const [scheduleSrvrError, setScheduleSrvrError] = useState("");
 
-	const [createMeet, { data: createMeetData, isLoading, isError }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isLoading, isFetching, isError }] = useLazyCreateMeetQuery();
 
 	let currentDate = new Date(); // Creates a new Date object with the current date and time
 	let year = currentDate.getFullYear(); // Extracts the year (YYYY)
@@ -255,10 +259,22 @@ const ScheduleMeetingDialogue = () => {
 		if (!start && !end) {
 			return;
 		}
-		title && start && end && (await createMeet(data));
+		// title && start && end && (await createMeet(data));
+		// console.log(isFetching, "isFetching");
+		// console.log(isError, "isError");
 
-		dispatch(setScheduleDialogue(false));
+		const { error } = await createMeet(data);
+
+		if (error) {
+			setScheduleSrvrError("Something went wrong...!!");
+		} else {
+			setScheduleSrvrError("");
+			dispatch(setScheduleDialogue(false));
+			showToast("Meeting created successfully", "success");
+		}
 	};
+
+	console.log(scheduleSrvrError);
 
 	const removeHandler = (emailId) => {
 		const list = attendeesList;
@@ -276,8 +292,8 @@ const ScheduleMeetingDialogue = () => {
 	}, [deleteEmail]);
 
 	// console.log(recurrenceData);
-	console.log(attendees, "atttendies");
-	console.log(attendeesList, "attendeesList");
+	// console.log(attendees, "atttendies");
+	// console.log(attendeesList, "attendeesList");
 
 	return (
 		<>
@@ -579,6 +595,7 @@ const ScheduleMeetingDialogue = () => {
 						{isLoading ? <ClipLoader color="white" size={13} /> : "Schedule"}
 					</span>
 				</div>
+				{scheduleSrvrError && <div style={{ color: "var(--text-danger)", fontSize: "11px" }}>{scheduleSrvrError}</div>}
 			</form>
 		</>
 	);
