@@ -233,3 +233,12 @@ export const UPDATE_Contact_API = (dircnt_id: String, success: Function, error: 
 // 		.then((res) => success?.(res))
 // 		.catch((err) => error?.(err));
 // };
+
+// clio API CALL
+
+export const GetAuthorizationCode = (success: Function, error: Function) => {
+	axios
+		.get(`https://ssp-backend.ringplan.com/company/directory/contacts/options`, Headers)
+		.then((res) => success?.(res))
+		.catch((err) => error?.(err));
+};

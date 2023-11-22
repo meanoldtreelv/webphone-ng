@@ -1,0 +1,15 @@
+.stopWatch {
+	// font-family: sans-serif;
+	// text-align: center;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	h2 {
+		font-size: 14px;
+		font-weight: 500;
+	}
+	button {
+		display: flex;
+	}
+}

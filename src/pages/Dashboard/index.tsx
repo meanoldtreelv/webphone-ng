@@ -35,6 +35,8 @@ import MultipleCallButton from "components/Dashboard/MultipleCallButton";
 import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
+import Clio from "components/Dashboard/Clio";
+import { isClioActivated } from "redux/clio/clioSelectors";
 import { getCookie, setCookie } from "utils";
 
 const Dashboard = () => {
@@ -45,6 +47,7 @@ const Dashboard = () => {
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
+	const clioActivated = useSelector(isClioActivated);
 	const {
 		ringingInboundCalls,
 		answeredCalls,
@@ -142,6 +145,7 @@ const Dashboard = () => {
 					{answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) && (
 						<div className={styles.dialpad}>
 							<KeyPad addContact={setAddContact} />
+							{clioActivated && <Clio />}
 						</div>
 					)}
 

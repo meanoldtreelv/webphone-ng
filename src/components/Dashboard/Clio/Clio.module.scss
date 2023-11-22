@@ -1,0 +1,96 @@
+.clio {
+	background-color: var(--background-secondary);
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+
+	&_active {
+		height: calc(100% - 64px);
+	}
+}
+
+.dropdown {
+	height: 32px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--text-on-color);
+	background-color: var(--default-primary);
+	padding: 15px;
+	border-bottom: 1px solid var(--border-secondary);
+}
+
+.clio_box {
+	padding: 20px;
+	//subtract the height of clio up and down bar with border
+	height: calc(100% - 31px);
+	overflow: auto;
+}
+
+.chevron {
+	cursor: pointer;
+
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+}
+
+.active {
+	rotate: 180deg;
+}
+
+.contactHeading {
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 40px;
+}
+
+.contact {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 20px;
+	padding-bottom: 10px;
+	padding-top: 15px;
+	border-bottom: 1px solid var(--border-primary);
+	cursor: pointer;
+	// margin-bottom: 15px;
+
+	div {
+		display: flex;
+		align-items: center;
+	}
+
+	&:hover {
+		background-color: var(--background-hover);
+	}
+}
+.profile {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-right: 20px;
+}
+
+.arrow_right {
+	cursor: pointer;
+
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.clio {
+		bottom: 54px;
+
+		&_active {
+			bottom: 0;
+			z-index: 2000;
+			height: calc(100% - 64px);
+		}
+	}
+}
