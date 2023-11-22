@@ -7,7 +7,6 @@ import DownloadIcon from "components/UI/Icons/meet/Download";
 import { useDispatch, useSelector } from "react-redux";
 import { setRecordDialogue } from "redux/meet/meetSlice";
 import { meetingId } from "redux/meet/meetSelectors";
-import { GetMeetFiles } from "effects/apiEffect";
 import { useLazyGetMeetFilesQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
 
@@ -45,30 +44,11 @@ const MeetRecordingDialogue = () => {
 		};
 
 		getMeetFileHandler();
-
-		// setMeetFiles(meetFileData?.video_info);
-
-		// GetMeetFiles(
-		// 	meetId,
-		// 	(res: any) => {
-		// 		console.log(res, "meet files API retrieve");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in meet files retrieve");
-		// 			setMeetFiles(res?.data?.video_info);
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in meet flies retrieve");
-		// 	},
-		// );
 	}, []);
 
 	useEffect(() => {
 		setMeetFiles(meetFileData?.video_info);
 	}, [meetFileData]);
-
-	// console.log(isLoading, "isLoading");
-	// console.log(isFetching, "is fetching");
 
 	return (
 		<>

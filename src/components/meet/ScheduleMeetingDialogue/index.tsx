@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setScheduleDialogue } from "redux/meet/meetSlice";
 import { useLazyCreateMeetQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
+import { showToast } from "utils";
 const timezones = moment.tz.names();
 
 const ScheduleMeetingDialogue = () => {
@@ -15,11 +16,11 @@ const ScheduleMeetingDialogue = () => {
 	const [isRepeat, setIsRepeat] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
 
-	// error
 	const [titleErr, setTitleErr] = useState(false);
 	const [emailError, setEmailError] = useState(false);
+	const [scheduleSrvrError, setScheduleSrvrError] = useState("");
 
-	const [createMeet, { data: createMeetData, isLoading, isError }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isLoading, isFetching, isError }] = useLazyCreateMeetQuery();
 
 	let currentDate = new Date(); // Creates a new Date object with the current date and time
 	let year = currentDate.getFullYear(); // Extracts the year (YYYY)
@@ -194,9 +195,6 @@ const ScheduleMeetingDialogue = () => {
 		setRecurrenceData(updatedRecurrenceData); // Update the state
 	}, [frequencyList, list]);
 
-	// console.log(frequencyList, "frequencyList");
-	// console.log(newFrequency, "newFrequency");
-
 	useEffect(() => {
 		const updatedRecurrenceData = { ...recurrenceData }; // Create a copy
 		if (newFrequency === "DAILY") {
@@ -255,9 +253,16 @@ const ScheduleMeetingDialogue = () => {
 		if (!start && !end) {
 			return;
 		}
-		title && start && end && (await createMeet(data));
 
-		dispatch(setScheduleDialogue(false));
+		const { error } = await createMeet(data);
+
+		if (error) {
+			setScheduleSrvrError("Something went wrong...!!");
+		} else {
+			setScheduleSrvrError("");
+			dispatch(setScheduleDialogue(false));
+			showToast("Meeting created successfully", "success");
+		}
 	};
 
 	const removeHandler = (emailId) => {
@@ -274,10 +279,6 @@ const ScheduleMeetingDialogue = () => {
 	useEffect(() => {
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
-
-	// console.log(recurrenceData);
-	console.log(attendees, "atttendies");
-	console.log(attendeesList, "attendeesList");
 
 	return (
 		<>
@@ -340,9 +341,6 @@ const ScheduleMeetingDialogue = () => {
 						}}
 						required
 					/>
-					{/* <span>
-						<ContactBookIcon />
-					</span> */}
 				</div>
 				<label>Time Zone</label>
 				<div className={styles.row2}>
@@ -350,7 +348,6 @@ const ScheduleMeetingDialogue = () => {
 						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
 						value={timezone}
 						onChange={(e) => {
-							// console.log(e.target.value);
 							setTimezone(e.target.value);
 							setStart(convertDateToTimezoneDate(start, timezone));
 						}}
@@ -410,9 +407,6 @@ const ScheduleMeetingDialogue = () => {
 									options={list.map((x: any) => [{ name: x["name"], value: x["value"] }]).map((y: any) => y[0])}
 									defaultValue={"DAILY"}
 									onChange={(e) => {
-										// console.log(e.target.value);
-										// setFrequency(e.target.value);
-										// setWhen(e.target.value);
 										setFrequencyList(e.target.value);
 									}}
 								/>
@@ -441,7 +435,6 @@ const ScheduleMeetingDialogue = () => {
 												.map((y: any) => y[0])}
 											value={newFrequency}
 											onChange={(e) => {
-												// console.log(e.target.value);
 												setNewFrequency(e.target.value);
 											}}
 										/>
@@ -579,6 +572,7 @@ const ScheduleMeetingDialogue = () => {
 						{isLoading ? <ClipLoader color="white" size={13} /> : "Schedule"}
 					</span>
 				</div>
+				{scheduleSrvrError && <div style={{ color: "var(--text-danger)", fontSize: "11px" }}>{scheduleSrvrError}</div>}
 			</form>
 		</>
 	);
