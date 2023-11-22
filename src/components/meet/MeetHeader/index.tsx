@@ -11,13 +11,13 @@ import { setCalendarView, setDateRange, setJoinDialogue, setScheduleDialogue } f
 import { calendarView, dateRange } from "redux/meet/meetSelectors";
 import DateRange from "components/UI/DateRange";
 import { useLazyCreateMeetQuery } from "services/meet";
-// import { Views } from "react-big-calendar";
-// import moment from "moment";
+import { ClipLoader } from "react-spinners";
 
 const MeetHeader = () => {
+	const [meetingCode, setMeetingCode] = useState("");
 	const dispatch = useDispatch();
 
-	const [createMeet, { data: createMeetData }] = useLazyCreateMeetQuery();
+	const [createMeet, { data: createMeetData, isFetching }] = useLazyCreateMeetQuery();
 
 	const { start, end } = useSelector(dateRange);
 	const calendarViews = useSelector(calendarView);
@@ -32,25 +32,22 @@ const MeetHeader = () => {
 	function addDaysToDate(inputDate, daysToAdd) {
 		const date = new Date(inputDate);
 		return date.setDate(date.getDate() + daysToAdd);
-		//  date.toISOString().split("T")[0];
 	}
 
 	const startMeetingHandler = async () => {
 		await createMeet({});
-		// setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
-		window.open(`https://meet.ringplan.com/auth/?id=${createMeetData?.[0]?.jitsi_meeting_room_id}`, "_blank");
 	};
 
-	// useEffect(() => {
-	// 	// Update the view based on calendarViews value
-	// 	if (calendarViews === "Day") {
-	// 		dispatch(setView(Views.DAY));
-	// 	} else if (calendarViews === "Week") {
-	// 		dispatch(setView(Views.WEEK));
-	// 	} else if (calendarViews === "Month") {
-	// 		dispatch(setView(Views.MONTH));
-	// 	}
-	// }, [calendarViews]);
+	useEffect(() => {
+		setMeetingCode(createMeetData?.[0]?.jitsi_meeting_room_id);
+	}, [createMeetData]);
+
+	useEffect(() => {
+		if (meetingCode) {
+			window.open(`https://meet.ringplan.com/auth/?id=${meetingCode}`, "_blank");
+			setMeetingCode("");
+		}
+	}, [meetingCode]);
 
 	const handleBack = () => {
 		if (calendarViews === "week") {
@@ -85,45 +82,19 @@ const MeetHeader = () => {
 			const newEnd = addDaysToDate(start, -1);
 			dispatch(setDateRange({ start: newStart, end: newEnd }));
 		}
-
-		// if (calendarViews === Views.MONTH) {
-		// 	setDatee(moment(datee).subtract(1, "months").toDate());
-		// } else if (calendarViews === Views.WEEK) {
-		// 	setDatee(moment(datee).subtract(1, "weeks").toDate());
-		// } else if (calendarViews === Views.DAY) {
-		// 	setDatee(moment(datee).subtract(1, "days").toDate());
-		// }
 	};
 
 	const handleNext = () => {
-		// if (calendarViews === Views.DAY) {
-		// 	setDatee(moment(start).add(1, "days").toDate());
-		// } else if (calendarViews === Views.WEEK) {
-		// 	setDatee(moment(start).add(1, "weeks").toDate());
-		// 	// dispatch(
-		// 	// 	setDateRange({ start: moment(start).add(1, "weeks").toDate(), end: moment(end).add(1, "weeks").toDate() }),
-		// 	// );
-		// } else if (calendarViews === Views.MONTH) {
-		// 	setDatee(moment(start).add(1, "months").toDate());
-		// 	// dispatch(
-		// 	// 	setDateRange({ start: moment(start).add(1, "months").toDate(), end: moment(end).add(1, "months").toDate() }),
-		// 	// );
-		// }
-
 		if (calendarViews === "week") {
 			const date = new Date(end);
 			const dayOfWeek = date.getDay();
 
 			if (dayOfWeek === 6) {
-				// console.log("November 15, 2023, is the first day of the week.");
 				const newStart = addDaysToDate(end, 1);
 				const newEnd = addDaysToDate(end, 7);
 
-				// console.log();
-
 				dispatch(setDateRange({ start: newStart, end: newEnd }));
 			} else {
-				// console.log("November 15, 2023, is not the first day of the week.");
 				const currentDate = new Date(start);
 
 				// Get the first day of the week (Sunday)
@@ -134,8 +105,8 @@ const MeetHeader = () => {
 				const lastDayOfWeek = new Date(currentDate);
 				lastDayOfWeek.setDate(currentDate.getDate() + (6 - currentDate.getDay()));
 
-				console.log("First Day of the Week (Sunday): " + firstDayOfWeek.toDateString());
-				console.log("Last Day of the Week (Saturday): " + lastDayOfWeek.toDateString());
+				// console.log("First Day of the Week (Sunday): " + firstDayOfWeek.toDateString());
+				// console.log("Last Day of the Week (Saturday): " + lastDayOfWeek.toDateString());
 				dispatch(setDateRange({ start: firstDayOfWeek.toDateString(), end: lastDayOfWeek.toDateString() }));
 			}
 		}
@@ -156,8 +127,8 @@ const MeetHeader = () => {
 			const lastDateOfNextMonth = new Date(year, month + 2, 0);
 			lastDateOfNextMonth.setHours(23, 59, 59, 999); // Set time to 23:59:59
 
-			console.log("First date of next month:", firstDateOfNextMonth.toISOString().split("T")[0]);
-			console.log("Last date of next month:", lastDateOfNextMonth.toISOString().split("T")[0]);
+			// console.log("First date of next month:", firstDateOfNextMonth.toISOString().split("T")[0]);
+			// console.log("Last date of next month:", lastDateOfNextMonth.toISOString().split("T")[0]);
 			// const firstDate = firstDateOfNextMonth.toISOString().split("T")[0];
 			// const lastDate = lastDateOfNextMonth.toISOString().split("T")[0];
 
@@ -170,10 +141,6 @@ const MeetHeader = () => {
 			dispatch(setDateRange({ start: newStart, end: newEnd }));
 		}
 	};
-
-	// useEffect(() => {
-	// 	dispatch(setDate(datee));
-	// }, [datee]);
 
 	useEffect(() => {
 		if (!start) return;
@@ -188,10 +155,9 @@ const MeetHeader = () => {
 			const lastDayOfWeek = new Date(currentDate);
 			lastDayOfWeek.setDate(currentDate.getDate() + (6 - currentDate.getDay()));
 
-			console.log("First Day of the Week (Sunday): " + firstDayOfWeek.toDateString());
-			console.log("Last Day of the Week (Saturday): " + lastDayOfWeek.toDateString());
+			// console.log("First Day of the Week (Sunday): " + firstDayOfWeek.toDateString());
+			// console.log("Last Day of the Week (Saturday): " + lastDayOfWeek.toDateString());
 			dispatch(setDateRange({ start: firstDayOfWeek.toDateString(), end: lastDayOfWeek.toDateString() }));
-			// setDateRange({ start: moment(start).subtract(1, "weeks").toDate(), end: datee });
 		}
 		if (calendarViews === "month") {
 			const givenDate = new Date(start);
@@ -208,8 +174,8 @@ const MeetHeader = () => {
 			const lastDateOfLastMonth = new Date(year, month, 0);
 			lastDateOfLastMonth.setHours(23, 59, 59, 999); // Set time to 23:59:59
 
-			console.log("First date of last month:", firstDateOfLastMonth.toISOString().split("T")[0]);
-			console.log("Last date of last month:", lastDateOfLastMonth.toISOString().split("T")[0]);
+			// console.log("First date of last month:", firstDateOfLastMonth.toISOString().split("T")[0]);
+			// console.log("Last date of last month:", lastDateOfLastMonth.toISOString().split("T")[0]);
 			dispatch(setDateRange({ start: firstDateOfLastMonth, end: lastDateOfLastMonth }));
 		}
 		if (calendarViews === "day") {
@@ -272,6 +238,7 @@ const MeetHeader = () => {
 					<div onClick={startMeetingHandler}>
 						<ConferenceIcon />
 						<span>Start&nbsp;Meeting</span>
+						{isFetching && <ClipLoader color="white" size={13} />}
 					</div>
 				</div>
 			</div>

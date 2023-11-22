@@ -31,7 +31,7 @@ const BaseLayout = ({ children }: any) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	return (
-		<div className={`${styles.wrapper} ${theme}`}>
+		<div className={`${styles.wrapper}`}>
 			{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">

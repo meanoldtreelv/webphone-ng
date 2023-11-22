@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./Header.module.scss";
 import ProfileAndExtension from "components/shared/ProfileAndExtension";
 

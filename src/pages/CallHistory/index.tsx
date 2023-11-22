@@ -14,6 +14,7 @@ import { setCallHistory, setQueries } from "redux/call-history/callHistorySlice"
 import Calendar from "components/UI/CalendarMain";
 import { setPage } from "redux/voicemail/voicemailSlice";
 import { formatFilterDate } from "utils";
+import { setLoader } from "redux/common/commonSlice";
 
 const CallHistory = () => {
 	const dispatch = useDispatch();
@@ -43,10 +44,13 @@ const CallHistory = () => {
 
 		const fetchCallHistory = async () => {
 			await getCallHistories(callHistoryStrQueries);
+			dispatch(setLoader(false));
 		};
 
 		if (historyParsed && historyParsed?.length) {
 			dispatch(setCallHistory(historyParsed.slice(0, 20)));
+			dispatch(setLoader(true));
+			fetchCallHistory();
 		} else {
 			fetchCallHistory();
 		}
