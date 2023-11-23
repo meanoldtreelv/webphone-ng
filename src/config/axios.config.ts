@@ -18,6 +18,9 @@ export const clioAxiosInstance = axios.create({
 	headers: {
 		Authorization: `Bearer ${getCookie(clioConstants.clioAccessToken)}`,
 		"Content-Type": "application/x-www-form-urlencoded",
+		// "Request-Headers": "Origin",
+		// "Response-Headers":
+		// 	"Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Access-Control-Expose-Headers",
 	},
 });
 

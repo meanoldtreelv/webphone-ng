@@ -1,14 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios"; // You may need to install axios using `npm install axios`
 import BaseLayout from "layouts/BaseLayout";
 import styles from "./Clio.module.scss";
 import { CLIO_BASE_URL, clioClientId, clioClientSecret } from "config/app.config";
 import { getClioCallBackUrl } from "config/env.config";
-import { setCookie } from "typescript-cookie";
+import { getCookie, removeCookie, setCookie } from "typescript-cookie";
 import { clioConstants } from "constants/clioConstants";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { isClioLoggedIn } from "redux/clio/clioSelectors";
+import { Link } from "react-router-dom";
+
+import { ClipLoader } from "react-spinners";
+import { setIsClioLoggedIn } from "redux/clio/clioSlice";
 
 const Clio = () => {
+	const clioLoggedIn = useSelector(isClioLoggedIn);
+	const dispatch = useDispatch();
+
+	const [loading, setLoading] = useState(false);
+	const [srvrError, setSrvrError] = useState(false);
+
 	const navigate = useNavigate();
 	// Get the current URL
 	const currentURL = window.location.href;
@@ -76,12 +88,58 @@ const Clio = () => {
 		}
 	}, [code]);
 
+	const deAuthorizeHandler = async () => {
+		setLoading(true);
+		setSrvrError(false);
+		const token = getCookie(clioConstants.clioAccessToken);
+
+		try {
+			const data = new URLSearchParams({
+				token: token,
+			});
+
+			const response = await axios.post(`${CLIO_BASE_URL}/oauth/deauthorize`, data, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			});
+
+			console.log(response); // Handle the response data here
+			setSrvrError(false);
+			removeCookie(clioConstants.clioAccessToken, response?.data?.access_token);
+			removeCookie(clioConstants.clioRefreshToken, response?.data?.refresh_token);
+			dispatch(setIsClioLoggedIn(false));
+			setLoading(false);
+		} catch (error) {
+			console.error("Error:", error);
+			setSrvrError(true);
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className={styles.clio}>
 			<BaseLayout>
-				{!code && (
+				{!clioLoggedIn ? (
 					<div className={styles.button}>
 						<button onClick={handleAuthorization}>Authorize with Clio</button>
+					</div>
+				) : (
+					<div className={styles.text}>
+						You are currently Logged-In on Clio, Please go to <Link to={"/dashboard"}>Dashboard</Link> to see more...!!!
+						<br />
+						or
+						<br />
+						you want to log out ?{" "}
+						<span onClick={deAuthorizeHandler}>
+							Click here {loading && <ClipLoader color="var(--default-primary)" size={14} />}
+						</span>
+						<br />
+						<br />
+						{srvrError && (
+							<p className={styles.error}>Something went wrong, please refresh the page or try again later...!!!</p>
+						)}
 					</div>
 				)}
 			</BaseLayout>
