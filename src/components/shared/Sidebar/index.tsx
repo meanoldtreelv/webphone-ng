@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import routePaths from "./../../../constants/routes";
@@ -12,11 +12,15 @@ import ContactIcon from "components/UI/Icons/Sidebar/Contact";
 import KeypadIcon from "components/UI/Icons/Sidebar/Keypad";
 import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
 import ClioIcon from "components/UI/Icons/Clio";
 import { ClipLoader } from "react-spinners";
 import { loader } from "redux/common/commonSelectors";
+import { getCookie } from "typescript-cookie";
+import { clioConstants } from "constants/clioConstants";
+import { setIsClioLoggedIn } from "redux/clio/clioSlice";
+import { isClioLoggedIn } from "redux/clio/clioSelectors";
 
 interface ISidebarLinks {
 	path: string;
@@ -33,6 +37,7 @@ const Sidebar = () => {
 	const [unreadMessage, setUnreadMessage] = useState(false);
 
 	const { extAuth } = useSelector((state: any) => state.sip);
+
 	// the above two functions, they need to be removed
 	// use sass
 	const activeTabStyle = {
@@ -50,6 +55,17 @@ const Sidebar = () => {
 	// };
 
 	// const sidebarTopLinks: ISidebarLinks[] = extAuth
+
+	const dispatch = useDispatch();
+	const clioLoggedIn = useSelector(isClioLoggedIn);
+
+	// clio authentication condition
+	useEffect(() => {
+		const clioToken = getCookie(clioConstants.clioAccessToken);
+		if (clioToken) {
+			dispatch(setIsClioLoggedIn(true));
+		}
+	}, []);
 
 	const sidebarTopLinks: ISidebarLinks[] = extAuth
 		? [
@@ -107,7 +123,12 @@ const Sidebar = () => {
 
 	const sidebarBtmLinks: ISidebarLinks[] = extAuth
 		? [
-				{ path: routePaths.CLIO.ROUTE, icon: <ClioIcon />, name: "Clio", unread: 0 },
+				{
+					path: routePaths.CLIO.ROUTE,
+					icon: <ClioIcon color={`${clioLoggedIn ? "icon-emphasis" : "icon-primary"}`} />,
+					name: "Clio",
+					unread: 0,
+				},
 				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
@@ -158,31 +179,35 @@ const Sidebar = () => {
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
+										{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
 									</span>
 								)}
 							</NavLink>
 						))}
 					</div>
 					<div className={styles.sidebar_topTab}>
-						{sidebarBtmLinks.map((link: ISidebarLinks) => (
-							<NavLink
-								to={link.path}
-								className={({ isActive }: { isActive: boolean }) =>
-									[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
-								}
-								key={link.name}
-								// onClick={toggleCollapsed}
-							>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
-								{isCollapsed && (
-									<span className={`${styles.sidebar_tabExpanded}`}>
-										<span>{link.name}</span>
-										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
-									</span>
-								)}
-							</NavLink>
-						))}
+						{sidebarBtmLinks.map((link: ISidebarLinks) => {
+							if (getCookie("extAuth") === "true" && link.name === "RingPlan Meet") return null;
+
+							return (
+								<NavLink
+									to={link.path}
+									className={({ isActive }: { isActive: boolean }) =>
+										[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
+									}
+									key={link.name}
+									// onClick={toggleCollapsed}
+								>
+									<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+									{isCollapsed && (
+										<span className={`${styles.sidebar_tabExpanded}`}>
+											<span>{link.name}</span>
+											{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+										</span>
+									)}
+								</NavLink>
+							);
+						})}
 					</div>
 				</div>
 			</section>

@@ -16,16 +16,6 @@ import TransferCall from "../../components/Dashboard/TransferCall";
 import Signal from "../../components/TinyComponents/Signal";
 import LogoutPopUp from "../../components/Profile/LogoutPopup";
 import InboundCall from "../../components/shared/InboundCall";
-import {
-	GET_Contact_List_API,
-	GET_user_extension_API,
-	extension_API,
-	// account_API,
-	// callerId_API,
-	// extension_API,
-	// instances_API,
-	// user_API,
-} from "./../../effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import BaseLayout from "./../../layouts/BaseLayout";
 import { addCall, callDailer, callInProgress, transferCall } from "./../../redux/call/callSelectors";
@@ -36,11 +26,13 @@ import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import Clio from "components/Dashboard/Clio";
-import { isClioActivated } from "redux/clio/clioSelectors";
+import { isClioActivated, isClioLoggedIn } from "redux/clio/clioSelectors";
 import { getCookie, setCookie } from "utils";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
+
+	const clioLoggedIn = useSelector(isClioLoggedIn);
 
 	const isDialerActive = useSelector(callDailer);
 	const isCallInProgress = useSelector(callInProgress);
@@ -145,7 +137,7 @@ const Dashboard = () => {
 					{answeredCalls.length < 1 && ringingOutboundCalls.length < 1 && !(callEnding.length > 0) && (
 						<div className={styles.dialpad}>
 							<KeyPad addContact={setAddContact} />
-							{clioActivated && <Clio />}
+							{clioLoggedIn && <Clio />}
 						</div>
 					)}
 

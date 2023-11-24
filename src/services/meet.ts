@@ -35,6 +35,12 @@ export const meetService = apiService.injectEndpoints({
 				url: `/meet/v2/bulk/events/${g_id}`,
 			}),
 		}),
+		deleteFollowingMeet: build.query({
+			query: ({ g_id, from_date }) => ({
+				method: "DELETE",
+				url: `/meet/v2/bulk/events/${g_id}?date_from=${from_date}`,
+			}),
+		}),
 		getMeetFiles: build.query({
 			query: (id) => ({
 				method: "GET",
@@ -83,6 +89,7 @@ export const {
 	useLazyEditMeetQuery,
 	useLazyDeleteMeetQuery,
 	useLazyDeleteAllMeetQuery,
+	useLazyDeleteFollowingMeetQuery,
 	useLazyGetMeetFilesQuery,
 	useLazyGetCalendarQuery,
 	useLazyGetGoogleCalendarQuery,

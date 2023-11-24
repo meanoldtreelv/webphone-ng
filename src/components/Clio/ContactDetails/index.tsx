@@ -9,17 +9,20 @@ import MoreIcon from "components/UI/Icons/ClioIcon/More";
 import Matter from "../Matter";
 import History from "../History";
 import Notes from "../Notes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setContactDetails } from "redux/clio/clioSlice";
 import Details from "../Details";
 import TaskIcon from "components/UI/Icons/ClioIcon/Task";
 import Tasks from "../Tasks";
 import More from "../More";
+import { contact } from "redux/clio/clioSelectors";
 
 const ContactDetails = () => {
 	const dispatch = useDispatch();
 	const [tabSelected, setTabSelected] = useState("details");
 	const [tabHover, setTabHover] = useState("");
+
+	const contactDetails = useSelector(contact);
 
 	return (
 		<div className={styles.wrapper}>
@@ -33,7 +36,7 @@ const ContactDetails = () => {
 						<ChevronLeftIcon />
 					</span>
 					<div>
-						<span className={styles.name}>Sandra Pilons</span>
+						<span className={styles.name}>{contactDetails?.name}</span>
 						<span>Outgoing Call</span>
 					</div>
 				</div>

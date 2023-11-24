@@ -17,16 +17,15 @@ import { useLazyGetContactQuery, useLazyGetContactsQuery } from "services/contac
 import React, { useEffect, useState } from "react";
 import ContactCardSkeleton from "../ContactCardSkeleton";
 import SearchResultIcon from "components/UI/Icons/SearchResult";
+import { setLoader } from "redux/common/commonSlice";
 
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const contactList = useSelector(contactLists);
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
 	const [noSearchResult, setNoSearchResult] = useState(false);
-	const [
-		getContacts,
-		{ data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching },
-	] = useLazyGetContactsQuery();
+	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
+		useLazyGetContactsQuery();
 	const [getContact, { data: contactData, isLoading: contactLoading }] = useLazyGetContactQuery();
 	const [search, setSearch] = useState("");
 	const isContactSelected = useSelector(contactSelectd);
@@ -44,10 +43,13 @@ const ContactList = () => {
 
 		const fetchContacts = async () => {
 			await getContacts(null);
+			dispatch(setLoader(false));
 		};
 
 		if (contactsParsed && contactsParsed.length) {
 			dispatch(setContactList(contactsParsed));
+			dispatch(setLoader(true));
+			fetchContacts();
 		} else {
 			fetchContacts();
 		}

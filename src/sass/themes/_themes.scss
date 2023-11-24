@@ -447,10 +447,10 @@ $themes: (
 	}
 }
 
-.dark-mode {
-	@include styles("dark");
-}
-
 .light-mode {
 	@include styles("light");
+}
+
+.dark-mode {
+	@include styles("dark");
 }

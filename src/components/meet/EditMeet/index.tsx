@@ -3,23 +3,19 @@ import styles from "./EditMeet.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import Select from "components/UI/Forms/Select";
-
-// import { editMeet } from "effects/apiEffect";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditDialogue } from "redux/meet/meetSlice";
 import { meetingDetails } from "redux/meet/meetSelectors";
 import moment from "moment-timezone";
 import { useLazyEditMeetQuery } from "services/meet";
 import { ClipLoader } from "react-spinners";
-
-// import { DateTime } from "luxon";
-// import { useLazyCreateMeetQuery, useLazyGetMeetQuery } from "services/meet";
 const timezones = moment.tz.names();
 
 const EditMeet = () => {
-	const [isRepeat, setIsRepeat] = useState(false);
-	const [isPrivate, setIsPrivate] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("never");
+
+	const [editSrvrError, setEditSrvrError] = useState("");
+	const [emailError, setEmailError] = useState(false);
 
 	const [editMeet, { data: editMeetData, isLoading }] = useLazyEditMeetQuery();
 
@@ -29,22 +25,6 @@ const EditMeet = () => {
 	const filteredAttendees = editData?.attendees?.filter((item) => item.is_organizer === false);
 
 	const newArray = filteredAttendees.map((obj) => ({ email: obj.email }));
-
-	const convertToDateTime = (inputDateString) => {
-		// Create a Date object from the input string
-		const inputDate = new Date(inputDateString);
-
-		// Extract the date and time components
-		const year = inputDate.getFullYear();
-		const month = String(inputDate.getMonth() + 1).padStart(2, "0");
-		const day = String(inputDate.getDate()).padStart(2, "0");
-		const hours = String(inputDate.getHours()).padStart(2, "0");
-		const minutes = String(inputDate.getMinutes()).padStart(2, "0");
-
-		// Create the output date string in the desired format
-		const outputDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
-		return outputDateString;
-	};
 
 	function convertDateToTimezoneDate(date, timeZone) {
 		const inputDateTime = new Date(date);
@@ -75,40 +55,13 @@ const EditMeet = () => {
 		return newDate.toISOString().slice(0, 16);
 	}
 
-	// function findTimezoneString(newDate) {
-	// 	const date = new Date(newDate);
-	// 	const timezoneOffsetMinutes = date.getTimezoneOffset();
-
-	// 	// Convert the offset in minutes to hours and minutes
-	// 	const hours = Math.abs(Math.floor(timezoneOffsetMinutes / 60));
-	// 	const minutes = Math.abs(timezoneOffsetMinutes % 60);
-
-	// 	// Determine the sign of the offset
-	// 	const offsetSign = timezoneOffsetMinutes > 0 ? "-" : "+";
-
-	// 	// Create the formatted timezone string
-	// 	const timezoneString = `UTC${offsetSign}${hours.toString().padStart(2, "0")}:${minutes
-	// 		.toString()
-	// 		.padStart(2, "0")}`;
-
-	// 	console.log(timezoneString);
-	// 	return timezoneString;
-	// }
-	// findTimezoneString(editData.start);
-
 	const [timezone, setTimezone] = useState("Africa/Abidjan");
 	const [title, setTitle] = useState<string | null>(editData?.title);
 	const [description, setDescription] = useState(editData?.description);
 	const [start, setStart] = useState(convertDateToTimezoneDate(editData?.start, timezone));
 	const [end, setEnd] = useState(convertDateToTimezoneDate(editData?.start, timezone));
-	const [password, setPassword] = useState("");
 	const [attendees, setAttendees] = useState<string | null>(null);
 	const [attendeesList, setAttendeesList] = useState<{}[]>(newArray);
-	const [frequency, setFrequency] = useState("DAILY");
-	const [weekday, setWeekDay] = useState([]);
-	const [byWeek, setByWeek] = useState("");
-	const [count, setCount] = useState("1");
-	const [interval, setInterval] = useState("1");
 
 	const [deleteEmail, setDeleteEmail] = useState("");
 
@@ -117,15 +70,7 @@ const EditMeet = () => {
 		description: description,
 		start: start + ":00Z",
 		end: end + ":00Z",
-		// password: password,
 		attendees: attendeesList,
-		// recurrence: {
-		// 	frequency: frequency,
-		// 	// by_week_day: [1, 5],
-		// 	// by_week: 2,
-		// 	count: +count,
-		// 	interval: +interval,
-		// },
 	};
 
 	useEffect(() => {
@@ -133,26 +78,15 @@ const EditMeet = () => {
 		setEnd(convertDateToTimezoneDate(editData?.end, timezone));
 	}, [timezone]);
 
-	// useLazyCreateMeetQuery(data);
-
 	const handleSubmit = async () => {
-		await editMeet({ event_id: editData?.id, data });
-		dispatch(setEditDialogue(false));
-		// editMeet(
-		// 	editData?.id,
-		// 	data,
-		// 	(res: any) => {
-		// 		console.log(res, "meet created ");
-		// 		if (res?.status === 200) {
-		// 			console.log("success in account retrieve");
-		// 			dispatch(setEditDialogue(false));
-		// 		}
-		// 	},
-		// 	(err: any) => {
-		// 		console.error(err, "err in meet creation");
-		// 	},
-		// );
-		// dispatch(setEditDialogue(false));
+		const { error } = await editMeet({ event_id: editData?.id, data });
+
+		if (error) {
+			setEditSrvrError("Something went wrong...!!");
+		} else {
+			setEditSrvrError("");
+			dispatch(setEditDialogue(false));
+		}
 	};
 
 	const removeHandler = (emailId) => {
@@ -166,28 +100,24 @@ const EditMeet = () => {
 		}
 	};
 
-	const handleOptionChange = (event) => {
-		setSelectedOption(event.target.value);
-	};
-
 	const addAttendeesHandler = () => {
+		setEmailError(false);
+		if (!attendees?.includes("@")) {
+			setEmailError(true);
+			return;
+		}
 		setAttendeesList([
 			...attendeesList,
 			{
 				email: attendees,
 			},
 		]);
+		setAttendees("");
 	};
 
 	useEffect(() => {
-		console.log(deleteEmail);
-
 		removeHandler(deleteEmail);
 	}, [deleteEmail]);
-
-	console.log("====================================");
-	console.log(editData, "editData");
-	console.log("====================================");
 
 	return (
 		<>
@@ -246,9 +176,6 @@ const EditMeet = () => {
 							setEnd(e.target.value);
 						}}
 					/>
-					{/* <span>
-						<ContactBookIcon />
-					</span> */}
 				</div>
 				<label>Time Zone</label>
 				<div className={styles.row2}>
@@ -256,7 +183,6 @@ const EditMeet = () => {
 						options={timezones?.map((x: any) => [{ name: x, value: x }]).map((y: any) => y[0])}
 						value={timezone}
 						onChange={(e) => {
-							// console.log(e.target.value);
 							setTimezone(e.target.value);
 						}}
 					/>
@@ -275,6 +201,10 @@ const EditMeet = () => {
 					/>
 					<button onClick={addAttendeesHandler}>ADD</button>
 				</div>
+
+				{emailError && (
+					<div style={{ color: "var(--text-danger)", fontSize: "11px" }}>Please enter correct email id !!</div>
+				)}
 
 				<div>
 					<label htmlFor="">Attendees added(1):</label>
@@ -307,9 +237,10 @@ const EditMeet = () => {
 						Close
 					</button>
 					<button className={styles.submit} onClick={handleSubmit}>
-						{isLoading ? <ClipLoader color="white" size={13} /> : "save"}
+						{isLoading ? <ClipLoader color="white" size={13} /> : "Save"}
 					</button>
 				</div>
+				{editSrvrError && <div style={{ color: "var(--text-danger)", fontSize: "11px" }}>{editSrvrError}</div>}
 			</div>
 		</>
 	);

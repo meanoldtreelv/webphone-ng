@@ -2,12 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IClioState } from "./clioTypes";
 
 const initialClioState: IClioState = {
+	isClioLoggedIn: false,
 	isClioActivated: true,
 	contactDetails: false,
 	isAddNoteOpen: false,
 	isAddTaskOpen: false,
 	isNewExpenseOpen: false,
 	isNewTimeEntryOpen: false,
+	contact: {},
+	matter: {},
 };
 
 const clioSlice = createSlice({
@@ -15,6 +18,9 @@ const clioSlice = createSlice({
 	initialState: initialClioState,
 
 	reducers: {
+		setIsClioLoggedIn(state, action) {
+			state.isClioLoggedIn = action.payload;
+		},
 		setIsClioActivated(state, action) {
 			state.isClioActivated = action.payload;
 		},
@@ -33,6 +39,12 @@ const clioSlice = createSlice({
 		setIsNewTimeEntryOpen(state, action) {
 			state.isNewTimeEntryOpen = action.payload;
 		},
+		setContact(state, action) {
+			state.contact = action.payload;
+		},
+		setMatter(state, action) {
+			state.matter = action.payload;
+		},
 
 		// setDateRange(state, action) {
 		// 	const { start, end } = action.payload;
@@ -43,12 +55,15 @@ const clioSlice = createSlice({
 });
 
 export const {
+	setIsClioLoggedIn,
 	setIsClioActivated,
 	setContactDetails,
 	setIsAddNoteOpen,
 	setIsAddTaskOpen,
 	setIsNewExpenseOpen,
 	setIsNewTimeEntryOpen,
+	setContact,
+	setMatter,
 
 	// setDateRange,
 } = clioSlice.actions;

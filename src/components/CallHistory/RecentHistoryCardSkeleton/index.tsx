@@ -24,6 +24,7 @@ const RecentHistoryCardSkeleton = () => {
 						<Skeleton
 							highlightColor={theme === "light-mode" ? "#f5f5f5" : "var(--background-primary)"}
 							baseColor={theme === "light-mode" ? "#ebebeb" : "var(--background-tertiary)"}
+							height={17}
 						/>
 					</p>
 					<div>
@@ -31,12 +32,14 @@ const RecentHistoryCardSkeleton = () => {
 							<Skeleton
 								highlightColor={theme === "light-mode" ? "#f5f5f5" : "var(--background-primary)"}
 								baseColor={theme === "light-mode" ? "#ebebeb" : "var(--background-tertiary)"}
+								height={17}
 							/>
 						</span>
 						<span className={`caption_1`}>
 							<Skeleton
 								highlightColor={theme === "light-mode" ? "#f5f5f5" : "var(--background-primary)"}
 								baseColor={theme === "light-mode" ? "#ebebeb" : "var(--background-tertiary)"}
+								height={17}
 							/>
 						</span>
 					</div>
@@ -47,12 +50,14 @@ const RecentHistoryCardSkeleton = () => {
 					<Skeleton
 						highlightColor={theme === "light-mode" ? "#f5f5f5" : "var(--background-primary)"}
 						baseColor={theme === "light-mode" ? "#ebebeb" : "var(--background-tertiary)"}
+						height={17}
 					/>
 				</p>
-				<p>
+				<p className={styles.cardRight_btm}>
 					<Skeleton
 						highlightColor={theme === "light-mode" ? "#f5f5f5" : "var(--background-primary)"}
 						baseColor={theme === "light-mode" ? "#ebebeb" : "var(--background-tertiary)"}
+						height={17}
 					/>
 				</p>
 			</div>
