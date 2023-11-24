@@ -23,6 +23,7 @@ const Login = () => {
 	const theme = useTheme();
 
 	const onContinueWithRingplan = () => {
+		sip.logout(false)
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		// navigate("/dashboard"); // Remove the extra parentheses
 		const loginUrl = getLoginUrl();
@@ -30,6 +31,7 @@ const Login = () => {
 		window.location.href = `${loginUrl}/login?back=${backUrl}`;
 	};
 
+	setCookie("id_token", getCookie("id_token"));
 	interface FormData {
 		extension?: string;
 		server?: string;
@@ -42,7 +44,7 @@ const Login = () => {
 	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
 
 	const loginWithExtension = () => {
-		// sip.logout()
+		sip.logout(false)
 		store.dispatch({ type: "sip/extAuth", payload: true });
 		
 		setCookie("extAuth", "true");

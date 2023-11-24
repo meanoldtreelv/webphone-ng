@@ -25,6 +25,7 @@ import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
 import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
 import { nameIcon } from "utils";
+import CallConference from "components/UI/Icons/Call/CallConference";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -34,7 +35,7 @@ const Dialer = () => {
 		border: "1px solid var(--border-disabled, #c8d3e0)",
 	};
 	const dispatch = useDispatch();
-	dispatch(setCallNumber(""));
+	// dispatch(setCallNumber(""));
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	};
@@ -49,7 +50,7 @@ const Dialer = () => {
 		if (activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber) {
 			return (
 				(item.showDTMF && <DTMF LineNumber={item.LineNumber} />) ||
-				(item.showAddCall && <AddCall LineNumber={item.LineNumber} />) ||
+				((item.showAddCall || item.showAddConferenceCall ) && <AddCall LineNumber={item.LineNumber} forConferenceCall={item.showAddConferenceCall} subCall={item.subCall} />) ||
 				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
 				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
@@ -116,6 +117,23 @@ const Dialer = () => {
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										Add Call
+									</p>
+								</div>
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered &&
+											store.dispatch({
+												type: "sip/answeredCalls",
+												payload: { action: "showAddConferenceCall", data: { lineNum: item.LineNumber, showAddConferenceCall: true } },
+											});
+										dispatch(setCallNumber(""));
+									}}>
+									<span className={styles.dialer_icon} style={ item.subCall ? { background: "var(--background-danger, #FFEBEB)" } :  IconDisableStyle } >
+										<CallConference answered={item.answered} fill={""} />
+									</span>
+									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+										Conference
 									</p>
 								</div>
 								{/* check if this icon works too */}

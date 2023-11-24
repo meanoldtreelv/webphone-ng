@@ -26,6 +26,7 @@ import MultipleCallListModal from "components/Dashboard/MultipleCallListModal";
 import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import { getCookie, setCookie } from "utils";
+import { setCallNumber } from "redux/call/callSlice";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -147,7 +148,7 @@ const Dashboard = () => {
 					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && (
+					{callEnding.length > 0 && dispatch(setCallNumber("")) && (
 						<EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />
 					)}
 

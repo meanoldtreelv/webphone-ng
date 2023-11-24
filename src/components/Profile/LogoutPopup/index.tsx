@@ -14,7 +14,7 @@ const LogoutPopUp = () => {
 				</div>
 				<div className={styles.popUp_button}>
 					<button className={styles.btnCancel} onClick={()=>{store.dispatch({type:"sip/logoutPopUp", payload:false})}}>Cancel</button>
-					<button className={styles.btnConfirm} onClick={sip.logout}>Logout</button>
+					<button className={styles.btnConfirm} onClick={()=>{sip.logout()}}>Logout</button>
 				</div>
 			</div>
 		</section>
