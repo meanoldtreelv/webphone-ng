@@ -3,9 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@fullcalendar/core": "^6.1.9",
-		"@fullcalendar/daygrid": "^6.1.9",
-		"@fullcalendar/react": "^6.1.9",
 		"@gsebdev/react-simple-datepicker": "^1.0.21",
 		"@mui/x-date-pickers": "^6.16.3",
 		"@reduxjs/toolkit": "^1.9.5",
@@ -19,13 +16,11 @@
 		"@types/react-router": "^5.1.20",
 		"@types/react-router-dom": "^5.3.3",
 		"copy-to-clipboard": "^3.3.3",
-		"countries-and-timezones": "^3.5.1",
 		"crypto-js": "^4.2.0",
 		"dayjs": "^1.11.10",
 		"dotenv": "^16.3.1",
 		"jquery": "^3.7.1",
 		"js-cookie": "^3.0.5",
-		"luxon": "^3.4.3",
 		"moment": "^2.29.4",
 		"node-gyp": "^9.4.0",
 		"nopt": "^7.2.0",
@@ -93,7 +88,6 @@
 		"@types/css-modules": "^1.0.3",
 		"@types/jquery": "^3.5.19",
 		"@types/js-cookie": "^3.0.4",
-		"@types/luxon": "^3.3.3",
 		"@types/react": "^18.2.21",
 		"@types/react-big-calendar": "^1.8.2",
 		"eslint": "^8.48.0",
@@ -101,8 +95,7 @@
 		"husky": "^8.0.3",
 		"lint-staged": "^14.0.1",
 		"netlify-cli": "^16.5.0",
-		"prettier": "3.0.3",
-		"tailwindcss": "^3.3.3"
+		"prettier": "3.0.3"
 	},
 	"husky": {
 		"hooks": {
