@@ -9,7 +9,7 @@ const SearchBar: React.FC<IInput> = ({ type = "text", placeholder, required, onC
 		<div className={styles.search}>
 			<input
 				type={type}
-				placeholder={"Search call history..."}
+				placeholder={placeholder}
 				onChange={onChange}
 				required={required}
 				value={value}
