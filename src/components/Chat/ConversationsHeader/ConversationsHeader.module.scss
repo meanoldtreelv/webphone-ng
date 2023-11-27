@@ -15,6 +15,12 @@
 	top: 0;
 }
 
+.left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
 .initials {
 	width: 32px;
 	height: 32px;
@@ -44,11 +50,18 @@
 		right: -5px;
 		bottom: -5px;
 	}
-}
 
-.left {
-	display: flex;
-	gap: 10px;
+	&_group {
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
+		border-radius: 50%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: var(--accent-grey-secondary, #e3eaf2);
+	}
 }
 
 .right {
@@ -58,6 +71,8 @@
 
 	span {
 		cursor: pointer;
+		display: flex;
+		align-items: center;
 	}
 }
 

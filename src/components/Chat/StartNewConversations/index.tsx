@@ -2,9 +2,10 @@ import { useState } from "react";
 import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
+import Group from "./Group";
 
 const StartNewConversations = () => {
-	const [tabActive, setTabActive] = useState("conversations");
+	const [tabActive, setTabActive] = useState("group");
 
 	return (
 		<div className={styles.overlay}>
@@ -38,7 +39,8 @@ const StartNewConversations = () => {
 						Campaign
 					</span>
 				</div>
-				<Conversations />
+				{tabActive === "conversations" && <Conversations />}
+				{tabActive === "group" && <Group />}
 			</div>
 		</div>
 	);

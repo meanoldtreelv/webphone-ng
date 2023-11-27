@@ -7,6 +7,7 @@ import NoConversationsSelected from "components/Chat/NoConversationsSelected";
 import ConversationsBox from "components/Chat/ConversationsBox";
 import PromptDialog from "components/Modal/PromptDialog";
 import StartNewConversations from "components/Chat/StartNewConversations";
+import AddMember from "components/Chat/AddMember";
 
 const Chat = () => {
 	useEffect(() => {
@@ -42,7 +43,8 @@ const Chat = () => {
 					Are you sure that you want to delete conversation ?
 				</PromptDialog>
 			)}
-			{true && <StartNewConversations />}
+			{false && <StartNewConversations />}
+			{false && <AddMember />}
 		</div>
 	);
 };
