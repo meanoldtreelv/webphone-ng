@@ -8,6 +8,7 @@ import ConversationsBox from "components/Chat/ConversationsBox";
 import PromptDialog from "components/Modal/PromptDialog";
 import StartNewConversations from "components/Chat/StartNewConversations";
 import AddMember from "components/Chat/AddMember";
+import ImgViewer from "components/Chat/Viewer/ImgViewer";
 
 const Chat = () => {
 	useEffect(() => {
@@ -45,6 +46,7 @@ const Chat = () => {
 			)}
 			{false && <StartNewConversations />}
 			{false && <AddMember />}
+			{false && <ImgViewer />}
 		</div>
 	);
 };

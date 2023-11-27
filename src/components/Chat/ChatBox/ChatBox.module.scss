@@ -6,7 +6,11 @@
 	flex-direction: column;
 	overflow-y: auto;
 	padding-top: 54px; //height header
-	padding-bottom: 72px; //height footer
+	// padding-bottom: 72px; //height footer
+
+	&_imgSelected {
+		padding-bottom: calc(44px + 8px + 8px);
+	}
 }
 
 .sendChat {

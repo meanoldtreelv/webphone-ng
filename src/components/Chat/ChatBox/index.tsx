@@ -6,10 +6,12 @@ import SendTime from "./SendTime";
 import SendMessage from "./SendMessage";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
+import { useState } from "react";
 
 const ChatBox = () => {
+	const [imgSelected, setImgSelected] = useState(false);
 	return (
-		<div className={styles.chatBox}>
+		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>
 			<ReceiveTime />
 			<InfoMessage />
 			<ReceiveMessage />
