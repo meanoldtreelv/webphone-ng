@@ -5,6 +5,8 @@ import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
 import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import CrossIcon from "components/UI/Icons/ChatIcons/Cross";
 import SelectedImg from "./SelectedImg";
+import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
+import SelectedVideo from "./SelectedVideo";
 
 const ConversationsFooter = () => {
 	const [sendActive, setSendActive] = useState(true);
@@ -26,8 +28,9 @@ const ConversationsFooter = () => {
 				</div>
 			</div>
 			<div className={styles.bottom}>
-				{/* If img selected please dispatch an action for padding bottom to chatBox */}
+				{/* If img or video selected please dispatch an boolean action for padding bottom to chatBox */}
 				<SelectedImg />
+				<SelectedVideo />
 				{/* please don't use this component.this is for testing only, use the above component */}
 				<div className={styles.selectedImg}>
 					<img src="/img/dummy/photo.jpg" alt="" />
@@ -39,6 +42,15 @@ const ConversationsFooter = () => {
 					<img src="/img/dummy/dummy_video.png" alt="" />
 					<span>
 						<CrossIcon />
+					</span>
+				</div>
+				<div className={styles.selectedVideo}>
+					<img src="/img/dummy/dummy_video.png" alt="" />
+					<span className={styles.close}>
+						<CrossIcon />
+					</span>
+					<span className={styles.btnPlay}>
+						<BtnPlay />
 					</span>
 				</div>
 			</div>

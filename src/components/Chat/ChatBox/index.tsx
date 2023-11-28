@@ -7,6 +7,9 @@ import SendMessage from "./SendMessage";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
 import { useState } from "react";
+import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
+import SendVideo from "./SendVideo";
+import ReceiveVideo from "./ReceiveVideo";
 
 const ChatBox = () => {
 	const [imgSelected, setImgSelected] = useState(false);
@@ -19,6 +22,8 @@ const ChatBox = () => {
 			<SendTime />
 			<SendMessage />
 			<SendImg />
+			<SendVideo />
+			<ReceiveVideo />
 			<div className={styles.info}>
 				<span> Conversation with +1(635) 071 0331 created!</span>
 			</div>
@@ -77,6 +82,15 @@ const ChatBox = () => {
 					<img src="/img/dummy/dummy_video.png" alt=""></img>
 				</span>
 			</div>
+			<div className={styles.receiveVideo}>
+				<span>
+					<img src="/img/dummy/dummy_video.png" alt="" />
+					<span className={styles.btnPlay}>
+						<BtnPlay />
+					</span>
+					<span className={styles.duration}>01:30</span>
+				</span>
+			</div>
 			<div className={styles.receiveImg}>
 				<span>
 					<img src="/img/dummy/profile.png" alt=""></img>
@@ -84,6 +98,15 @@ const ChatBox = () => {
 			</div>
 			<div className={styles.sendTime}>
 				<span> 02:30AM</span>
+			</div>
+			<div className={styles.sendVideo}>
+				<span>
+					<img src="/img/dummy/profile.png" alt="" />
+					<span className={styles.btnPlay}>
+						<BtnPlay />
+					</span>
+					<span className={styles.duration}>01:30</span>
+				</span>
 			</div>
 			<div className={styles.sendChat}>
 				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>

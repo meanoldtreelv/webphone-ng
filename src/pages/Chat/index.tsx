@@ -9,6 +9,7 @@ import PromptDialog from "components/Modal/PromptDialog";
 import StartNewConversations from "components/Chat/StartNewConversations";
 import AddMember from "components/Chat/AddMember";
 import ImgViewer from "components/Chat/Viewer/ImgViewer";
+import VideoViewer from "components/Chat/Viewer/VideoViewer";
 
 const Chat = () => {
 	useEffect(() => {
@@ -47,6 +48,7 @@ const Chat = () => {
 			{false && <StartNewConversations />}
 			{false && <AddMember />}
 			{false && <ImgViewer />}
+			{true && <VideoViewer />}
 		</div>
 	);
 };
