@@ -1,0 +1,23 @@
+import React from "react";
+import styles from "./SendAudio.module.scss";
+import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
+import SoundWaves2 from "../../../../assets/images/img/sound_wave_send.svg";
+
+const SendAudio = () => {
+	return (
+		<div className={styles.sendAudio}>
+			<div className={styles.audio}>
+				<PlayerPlay color="icon-on-color" />
+				<div>
+					<img src={SoundWaves2} alt="" />
+					<span className={styles.soundDetails}>
+						<span>Call record 2402.wav</span>
+						<span className={styles.duration}>01:30</span>
+					</span>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default SendAudio;

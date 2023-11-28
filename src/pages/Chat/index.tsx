@@ -10,6 +10,7 @@ import StartNewConversations from "components/Chat/StartNewConversations";
 import AddMember from "components/Chat/AddMember";
 import ImgViewer from "components/Chat/Viewer/ImgViewer";
 import VideoViewer from "components/Chat/Viewer/VideoViewer";
+import AudioViewer from "components/Chat/Viewer/AudioViewer";
 
 const Chat = () => {
 	useEffect(() => {
@@ -48,7 +49,8 @@ const Chat = () => {
 			{false && <StartNewConversations />}
 			{false && <AddMember />}
 			{false && <ImgViewer />}
-			{true && <VideoViewer />}
+			{false && <VideoViewer />}
+			{false && <AudioViewer />}
 		</div>
 	);
 };

@@ -10,6 +10,11 @@ import { useState } from "react";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
 import SendVideo from "./SendVideo";
 import ReceiveVideo from "./ReceiveVideo";
+import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
+import SoundWaves1 from "../../../assets/images/img/sound_wave_receive.svg";
+import SoundWaves2 from "../../../assets/images/img/sound_wave_send.svg";
+import SendAudio from "./SendAudio";
+import ReceiveAudio from "./ReceiveAudio";
 
 const ChatBox = () => {
 	const [imgSelected, setImgSelected] = useState(false);
@@ -24,6 +29,8 @@ const ChatBox = () => {
 			<SendImg />
 			<SendVideo />
 			<ReceiveVideo />
+			<SendAudio />
+			<ReceiveAudio />
 			<div className={styles.info}>
 				<span> Conversation with +1(635) 071 0331 created!</span>
 			</div>
@@ -111,6 +118,31 @@ const ChatBox = () => {
 			<div className={styles.sendChat}>
 				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
 			</div>
+			<div className={styles.receiveAudio}>
+				<div className={styles.audio}>
+					<PlayerPlay color="primary-default" />
+					<div>
+						<img src={SoundWaves1} alt="" />
+						<span className={styles.soundDetails}>
+							<span>Call record 2402.wav</span>
+							<span className={styles.duration}>01:30</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div className={styles.sendAudio}>
+				<div className={styles.audio}>
+					<PlayerPlay color="icon-on-color" />
+					<div>
+						<img src={SoundWaves2} alt="" />
+						<span className={styles.soundDetails}>
+							<span>Call record 2402.wav</span>
+							<span className={styles.duration}>01:30</span>
+						</span>
+					</div>
+				</div>
+			</div>
+
 			<div className={styles.sendImg}>
 				<span>
 					<img src="/img/dummy/video_call.jpeg" alt=""></img>
