@@ -4,7 +4,7 @@ import ContactProfile from "components/UI/ContactProfile";
 import CallMissedIcon from "./../../../components/UI/Icons/Call/CallMissed";
 import CallIncomingIcon from "./../../../components/UI/Icons/Call/CallIncoming";
 import CallOutgoingIcon from "./../../../components/UI/Icons/Call/CallOutgoing";
-import { formatDate, toSecMinAndHr } from "helpers/formatDateTime";
+import { formatDate, recentDateFormat, toSecMinAndHr } from "helpers/formatDateTime";
 import { CallHistoryCDR } from "redux/call-history/callHistoryTypes";
 import { useDispatch } from "react-redux";
 import { setSelectedCallHistory } from "redux/call-history/callHistorySlice";
@@ -32,7 +32,7 @@ const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({ details }) => {
 					<ContactProfile abbreviation={details?.cdr?.dst.slice(0, 2)} />
 				</div>
 				<div className={styles.cardLeft_right}>
-					<p>{details?.cdr?.dst}</p>
+					<p>{details?.cdr?.dst || details?.cdr?.src}</p>
 					<p>
 						<span
 							className={`caption_1`}
@@ -41,13 +41,14 @@ const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({ details }) => {
 									? { color: "var(--text-danger, #EE3939)" }
 									: { color: "var(--text-secondary, #5C6168)" }
 							}>
-							Inbound Call
+							{details?.cdr?.dst ? "Outbound Call" : "Inbound Call"}
 						</span>
 					</p>
 				</div>
 			</div>
 			<div className={styles.cardRight}>
-				<p>{formatDate(details?.cdr?.starttime)}</p>
+				{/* <p>{formatDate(details?.cdr?.starttime)}</p> */}
+				<p>{recentDateFormat(details?.cdr?.starttime)}</p>
 				<p
 				// style={
 				// 	callType === "missed"
@@ -55,7 +56,7 @@ const RecentHistoryCard: React.FC<IRecentHistoryCard> = ({ details }) => {
 				// 		: { color: "var(--text-secondary, #5C6168)", textAlign: "right" }
 				// }
 				>
-					{toSecMinAndHr(details?.cdr?.billsec)}
+					{details?.cdr?.billsec ? toSecMinAndHr(details?.cdr?.billsec) : recentDateFormat(details?.cdr?.starttime)}
 				</p>
 			</div>
 		</button>

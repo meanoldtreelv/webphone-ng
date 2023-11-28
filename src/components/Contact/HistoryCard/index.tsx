@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./HistoryCard.module.scss";
 import CallMissedIcon from "./../../../components/UI/Icons/Call/CallMissed";
 import CallOutgoingIcon from "./../../../components/UI/Icons/Call/CallOutgoing";
+import { recentDateFormat } from "helpers/formatDateTime";
 
 interface IHistoryCard {
 	number: string;

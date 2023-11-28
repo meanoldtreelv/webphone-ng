@@ -27,15 +27,21 @@ import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import { getCookie, setCookie } from "utils";
 import { setCallNumber } from "redux/call/callSlice";
+import { setLoader } from "redux/common/commonSlice";
+import { setContactList } from "redux/contact/contactSlice";
+import { useLazyGetContactsQuery } from "services/contact";
+import { extChange } from "redux/common/commonSelectors";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
+	const [getContacts, { data: contactsData, isLoading: contactsLoading }] = useLazyGetContactsQuery();
 
 	const isDialerActive = useSelector(callDailer);
 	const isCallInProgress = useSelector(callInProgress);
 	const isCallTransfer = useSelector(transferCall);
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
+	const extChanged = useSelector(extChange);
 	const {
 		ringingInboundCalls,
 		answeredCalls,
@@ -47,6 +53,38 @@ const Dashboard = () => {
 		statusMenu,
 	} = useSelector((state: any) => state.sip);
 	const [addContact, setAddContact] = useState(false);
+
+	useEffect(() => {
+		const contactsJson = localStorage?.getItem("contacts");
+		let contactsParsed: [];
+
+		try {
+			contactsParsed = JSON.parse(String(contactsJson))?.slice(0, 20);
+		} catch (e) {
+			contactsParsed = [];
+		}
+
+		const fetchContacts = async () => {
+			await getContacts(null);
+			dispatch(setLoader(false));
+		};
+
+		if (contactsParsed && contactsParsed.length) {
+			dispatch(setContactList(contactsParsed));
+			dispatch(setLoader(true));
+			fetchContacts();
+		} else {
+			dispatch(setLoader(true));
+			fetchContacts();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!contactsLoading && contactsData) {
+			localStorage.setItem("contacts", JSON.stringify(contactsData));
+			dispatch(setContactList(contactsData?.slice(0, 20)));
+		}
+	}, [contactsLoading]);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));

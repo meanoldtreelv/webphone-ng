@@ -7,7 +7,7 @@ import { setCallHistory } from "redux/call-history/callHistorySlice";
 import { callHistory } from "redux/call-history/callHistorySelectors";
 import RecentHistoryCardSkeleton from "components/CallHistory/RecentHistoryCardSkeleton";
 import { setLoader } from "redux/common/commonSlice";
-import { loader } from "redux/common/commonSelectors";
+import { extChange, loader } from "redux/common/commonSelectors";
 import RecentIcon from "components/UI/Icons/Recent";
 import { getCookie } from "utils";
 
@@ -17,6 +17,7 @@ const RecentsSidebar = () => {
 	const [search, setSearch] = useState("");
 	const [getCallHistories, { data, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
 	const backLoad = useSelector(loader);
+	const extChanged = useSelector(extChange);
 
 	useEffect(() => {
 		const callHistoryJson = localStorage?.getItem("call-history");
@@ -54,6 +55,16 @@ const RecentsSidebar = () => {
 		}
 	}, [isLoading, isFetching]);
 
+	useEffect(() => {
+		const fetchCallHistory = async () => {
+			await getCallHistories("page=1&page_size=80");
+			dispatch(setLoader(false));
+		};
+
+		dispatch(setLoader(true));
+		fetchCallHistory();
+	}, [extChanged]);
+
 	return (
 		<div className={styles.contact}>
 			<div className={styles.smlHeader}>
@@ -61,7 +72,7 @@ const RecentsSidebar = () => {
 			</div>
 			<div className={`${styles.list} ${!allCallHistory.length ? styles.list_hidden : null}`}>
 				<div>
-					{!allCallHistory.length && !backLoad && (getCookie('extAuth') === 'false') ? (
+					{!allCallHistory.length && !backLoad && getCookie("extAuth") === "false" ? (
 						Array(18)
 							.fill(null)
 							.map((el) => <RecentHistoryCardSkeleton />)

@@ -8,6 +8,7 @@ import { callNumber } from "./../../../redux/call/callSelectors";
 import sip from "../../../lib/sip";
 import React, { useEffect, useState } from "react";
 import ContactCard from "components/Contact/ContactCard";
+import { setCallHistory } from "redux/call-history/callHistorySlice";
 
 interface IKeypad {
 	addContact: (disp: boolean) => void;
@@ -36,17 +37,62 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 		}
 	};
 
+	const makeCall = () => {
+		sip.call(number);
+
+		const callHistoryJson = localStorage?.getItem("call-history");
+		let historyParsed: [];
+
+		try {
+			historyParsed = JSON.parse(String(callHistoryJson));
+		} catch (e) {
+			historyParsed = [];
+		}
+
+		if (historyParsed?.length) {
+			localStorage.setItem(
+				"call-history",
+				JSON.stringify([
+					{
+						cdr: {
+							id: "",
+							dst: number,
+							starttime: Date.now(),
+						},
+						recording: {},
+					},
+					...historyParsed,
+				]),
+			);
+		} else {
+			localStorage.setItem(
+				"call-history",
+				JSON.stringify([
+					{
+						cdr: {
+							id: "",
+							dst: number,
+							starttime: Date.now(),
+						},
+						recording: {},
+					},
+				]),
+			);
+		}
+
+		dispatch(setCallHistory(JSON.parse(localStorage.getItem("call-history"))));
+	};
+
 	useEffect(() => {
 		if (!contacts?.length) {
 			setContacts(JSON.parse(localStorage?.getItem("contacts")));
 		}
-		if(contacts){
+		if (contacts) {
 			const filteredDt = !number
 				? []
 				: contacts?.filter((contact: any) => String(contact?.phone).includes(number)).slice(0, 5);
 			setFilteredContacts(filteredDt);
 		}
-
 	}, [number]);
 
 	return (
@@ -66,14 +112,20 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 			</div>
 			<Dialpad LineNumber={undefined} />
 			<div className={styles.dialpad_keypad}>
-				<button className={styles.dialpad_key2} onClick={() => addContact(true)}>
+				<button
+					className={styles.dialpad_key2}
+					onClick={() => {
+						if (number) {
+							addContact(true);
+						}
+					}}>
 					{/* here lies add user icon, pass props and use the icon */}
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="line / add_user">
 							<path
 								id="Vector"
 								d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H6C4.93913 15 3.92172 15.4214 3.17157 16.1716C2.42143 16.9217 2 17.9391 2 19V21M19 8V14M22 11H16M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z"
-								stroke="#C8D3E0"
+								stroke={number.length > 0 ? "var(--icon-primary)" : "var(--icon-disabled)"}
 								strokeWidth="1.5"
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -84,9 +136,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 				<div
 					className={styles.dialpad_key2}
 					style={{ background: number.length ? "#75c322" : "var(--primary-disabled, #C8D3E0)" }}
-					onClick={() => {
-						sip.call(number);
-					}}>
+					onClick={makeCall}>
 					{/* here lies phone icon, pass props and use the component accordingly */}
 					<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="fill / phone">
