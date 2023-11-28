@@ -3196,7 +3196,7 @@ function StartConferenceCall(lineNum) {
   }
   holdSession(lineNum);
 }
-function CancelConference(lineNum) {
+function CancelConference(lineNum: number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) {
     console.warn("Null line or session");
@@ -3221,12 +3221,11 @@ function CancelConference(lineNum) {
   }
   store.dispatch({
     type: "sip/answeredCalls",
-    payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+    payload: { action: "removeConferenceCall", data: { lineNum: lineNum } },
   });
   unholdSession(lineNum);
 }
 function ConferenceDial(lineNum:number, phoneNo:string) {
-  CancelTransferSession(lineNum)
   var dstNo = phoneNo;
   if (EnableAlphanumericDial) {
     dstNo = dstNo.replace(telAlphanumericRegEx, "").substring(0, MaxDidLength);
@@ -3251,6 +3250,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
     startTime: utcDateNow(),
     disposition: "invite",
     dispositionTime: utcDateNow(),
+    callTimer: "00:00",
     accept: {
       complete: null,
       eventTime: null,
@@ -3331,8 +3331,10 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
       // alert("conf conference_call_terminated")
       store.dispatch({
         type: "sip/answeredCalls",
-        payload: { action: "removeSubCall", data: { lineNum: lineNum } },
+        payload: { action: "removeConferenceCall", data: { lineNum: lineNum } },
       });
+      window.clearInterval(session.data.confcalls[confCallId].callTimer);
+      store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Bye"}}})
       // alert("#line-" + lineNum + "-msg" + "conference_call_terminated");
     },
     onSessionDescriptionHandler: function (sdh, provisional) {
@@ -3413,6 +3415,8 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
           }
         });
       }
+      window.clearInterval(session.data.confcalls[confCallId].callTimer);
+      store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Bye"}}})
     }
   });
   session.data.childsession = newSession;
@@ -3421,13 +3425,14 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
       onTrying: function (sip) {
         session.data.confcalls[confCallId].disposition = "trying";
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
-
+        
         console.log("#line-" + lineNum + "-msg" + "conference_call_started");
         // alert("conf progress")
-        store.dispatch({
-          type: "sip/answeredCalls",
-          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
-        });
+        // store.dispatch({
+        //   type: "sip/answeredCalls",
+        //   payload: { action: "addConferenceCall", data: { lineNum: lineNum, conferenceCallList: {number:"00"} } },
+        // });
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Trying"}}})
       },
       onProgress: function (sip) {
         session.data.confcalls[confCallId].disposition = "progress";
@@ -3435,10 +3440,10 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
 
         console.log("#line-" + lineNum + "-msg" + "conference_call_started");
         // alert("conf progress")
-        store.dispatch({
-          type: "sip/answeredCalls",
-          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
-        });
+        // store.dispatch({
+        //   type: "sip/answeredCalls",
+        //   payload: { action: "addConferenceCall", data: { lineNum: lineNum, conferenceCall: {number:"00"} } },
+        // });
         // {
         //     newSession.cancel().catch(function(error){
         //         console.warn("Failed to CANCEL", error);
@@ -3452,6 +3457,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
         //     console.log("#line-" + lineNum + "-msgconference_call_cancelled")
 
         // };
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Progress"}}})
       },
       onRedirect: function (sip) {
         console.log("Redirect received:", sip);
@@ -3467,10 +3473,6 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
           if (!session.data.childsession) {
             console.warn("Conference session lost");
             // alert("conf session lost")
-            store.dispatch({
-              type: "sip/answeredCalls",
-              payload: { action: "removeSubCall", data: { lineNum: lineNum } },
-            });
             return;
           }
 
@@ -3546,6 +3548,18 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
           console.log(
             "#line-" + lineNum + "-msg" + "conference_call_in_progress"
           );
+          var joinTime = moment.utc();
+          session.data.confcalls[confCallId].joinTime = joinTime;
+          session.data.confcalls[confCallId].callTimer = window.setInterval(function () {
+            var now = moment.utc();
+            var duration = moment.duration(now.diff(joinTime));
+            var timeStr = formatShortDuration(duration.asSeconds());
+            console.log("#conf-" + confCallId + "-timer:" + timeStr);
+            console.log("#conf-" + confCallId + "-datetime:" + timeStr);
+            store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallTimer",data:{confCallId:confCallId, lineNum:lineNum, callTimer:timeStr}}})
+          }, 1000);
+          store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Joined"}}})
+          // window.clearInterval(session.data.confcalls[confCallId].callTimer);
         }
 
         // const = ()=>{
@@ -3563,28 +3577,41 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
 
         // };
         // alert("conf started")
-        store.dispatch({
-          type: "sip/answeredCalls",
-          payload: { action: "addSubCall", data: { lineNum: lineNum, subCall: {number:"00"} } },
-        });
+        // store.dispatch({
+        //   type: "sip/answeredCalls",
+        //   payload: { action: "addConferenceCall", data: { lineNum: lineNum, conferenceCallList: {number:"00"} } },
+        // });
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Accepted"}}})
       },
       onReject: function (sip) {
         console.log("New call session rejected: ", sip.message.reasonPhrase);
-        store.dispatch({
-          type: "sip/answeredCalls",
-          payload: { action: "removeSubCall", data: { lineNum: lineNum } },
-        });
         session.data.confcalls[confCallId].disposition =
           sip.message.reasonPhrase;
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
-
         console.log("#line-" + lineNum + "-msg" + "conference_call_rejected");
-        alert("conf rejected")
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:sip.message.reasonPhrase}}})
       },
     },
   };
   newSession.invite(inviterOptions).catch(function (e) {
     console.warn("Failed to send INVITE:", e);
+  });
+  session.data.confcalls[confCallId].session = newSession;
+  store.dispatch({
+    type: "sip/answeredCalls",
+    payload: {
+      action: "addConferenceCall", data: {
+        lineNum: lineNum,
+        conferenceCallList: {
+          id:confCallId,
+          startTime: new Date().toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3"),
+          disposition: session.data.confcalls[confCallId].disposition,
+          dispositionTime: session.data.confcalls[confCallId].dispositionTime,
+          to: session.data.confcalls[confCallId].to,
+          callTimer: session.data.confcalls[confCallId].callTimer,
+        }
+      }
+    },
   });
 }
 
@@ -4226,7 +4253,7 @@ const sip = {
     SipDomain = domain;
     SipUsername = username;
     SipPassword = password;
-
+	
     setCookie("ext_user_id", SipUsername);
     setCookie("ext_password", SipPassword);
     setCookie("ext_domain", SipDomain);
@@ -4288,7 +4315,11 @@ const sip = {
     ConferenceDial(LineNumber, number);
   },
   cancelConference:(LineNumber: number) =>  {
-    CancelConference(LineNumber);
+    // CancelConference(LineNumber);
+  },
+  disposeConference:(LineNumber: number, id: number) =>  {
+    
+    FindLineByNumber(LineNumber)?.SipSession?.data?.confcalls[id]?.session.dispose()
   },
   transferCall: (LineNumber: number, number: string ) =>  {
     BlindTransfer(LineNumber, number)
