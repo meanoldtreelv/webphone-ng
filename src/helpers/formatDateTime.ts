@@ -112,3 +112,36 @@ export const convertToHourMinuteFormat = (dateTimeString) => {
 	// Return the time in "HH:MM" format
 	return `${formattedHours}:${formattedMinutes}`;
 };
+
+export const getWeek = (date: Date) => {
+	const d = new Date(date.getFullYear(), 0, 1);
+	const dayNum = d.getDay();
+	d.setMonth(0);
+	d.setDate(d.getDate() - dayNum + 1);
+	const weeks = Math.ceil((date.getTime() - d.getTime()) / (86400000 * 7));
+	return weeks;
+};
+
+export const recentDateFormat = (dateStr: any) => {
+	const dateNum = Date.parse(dateStr);
+	const date = new Date(dateNum);
+	const today = new Date();
+	const yesterday = new Date(today);
+	yesterday.setDate(yesterday.getDate() - 1);
+
+	if (date.toDateString() === today.toDateString()) {
+		return "Today";
+	} else if (date.toDateString() === yesterday.toDateString()) {
+		return "Yesterday";
+	} else {
+		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+		const currentWeek = today.getFullYear() === date.getFullYear() && getWeek(date) === getWeek(today);
+		return currentWeek
+			? days[date.getDay()]
+			: date.toLocaleDateString("en-US", {
+					year: "numeric",
+					month: "short",
+					day: "numeric",
+			  });
+	}
+};

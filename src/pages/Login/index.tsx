@@ -23,7 +23,7 @@ const Login = () => {
 	const theme = useTheme();
 
 	const onContinueWithRingplan = () => {
-		sip.logout(false)
+		sip.logout(false);
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		// navigate("/dashboard"); // Remove the extra parentheses
 		const loginUrl = getLoginUrl();
@@ -31,7 +31,6 @@ const Login = () => {
 		window.location.href = `${loginUrl}/login?back=${backUrl}`;
 	};
 
-	setCookie("id_token", getCookie("id_token"));
 	interface FormData {
 		extension?: string;
 		server?: string;
@@ -44,13 +43,14 @@ const Login = () => {
 	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
 
 	const loginWithExtension = () => {
-		sip.logout(false)
+		sip.logout(false);
 		store.dispatch({ type: "sip/extAuth", payload: true });
-		
+
 		setCookie("extAuth", "true");
+
 		localStorage.clear();
-    	sessionStorage.clear();
-		
+		sessionStorage.clear();
+
 		form?.extension === ""
 			? setForm((prevState) => {
 					return { ...prevState, extensionErrorMsg: "This field is required" };
@@ -86,8 +86,7 @@ const Login = () => {
 	const login = () => {
 		return (
 			<section className={`${styles.login} ${theme}`}>
-
-				{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
+				{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
 				</div>

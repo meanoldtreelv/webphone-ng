@@ -19,9 +19,19 @@ interface IRecentsSidebar {
 	dispCalendar: boolean;
 	setDispCalendar: (calendar: boolean) => void;
 	fetching: boolean;
+	setPage: (page: number) => void;
+	page: number;
 }
 
-const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalendar, setDispCalendar, fetching }) => {
+const RecentsSidebar: React.FC<IRecentsSidebar> = ({
+	loading,
+	callLen,
+	dispCalendar,
+	setDispCalendar,
+	fetching,
+	setPage,
+	page,
+}) => {
 	const dispatch = useDispatch();
 	const allCallHistory = useSelector(callHistory);
 	const [search, setSearch] = useState("");
@@ -37,17 +47,24 @@ const RecentsSidebar: React.FC<IRecentsSidebar> = ({ loading, callLen, dispCalen
 		const clientHeight = e.target.clientHeight;
 
 		if (scrollTop + clientHeight >= scrollHeight) {
-			if (Number(callHistoryQueries?.page_size) >= 1000 && !loading) {
+			const callHistoryJson = localStorage?.getItem("call-history");
+			let historyParsed: [];
+
+			try {
+				historyParsed = JSON.parse(String(callHistoryJson));
+			} catch (e) {
+				historyParsed = [];
+			}
+
+			if (historyParsed?.length === page * 20) {
 				dispatch(
 					setQueries({
-						page: Number(callHistoryQueries?.page) + 1,
-						page_size: Number(callHistoryQueries?.page_size) + 80,
+						page: historyParsed?.length / 80 + 1,
+						page_size: Number(callHistoryQueries?.page_size),
 					}),
 				);
 			} else {
-				dispatch(
-					setQueries({ page: Number(callHistoryQueries?.page) + 1, page_size: Number(callHistoryQueries?.page_size) }),
-				);
+				setPage(page + 1);
 			}
 		}
 	};

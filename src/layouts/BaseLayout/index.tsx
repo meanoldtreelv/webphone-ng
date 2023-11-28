@@ -16,11 +16,8 @@ const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
 	const { navigatePush, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 	const theme = useTheme();
-	const {
-		ringingInboundCalls,
-		answeredCalls,
-		ringingOutboundCalls,
-	} = useSelector((state: any) => state.sip);
+	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip);
+
 	useEffect(() => {
 		if (navigatePush !== "") {
 			navigate(navigatePush);
@@ -32,10 +29,12 @@ const BaseLayout = ({ children }: any) => {
 	const location = useLocation();
 	return (
 		<div className={`${styles.wrapper}`}>
-			{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
+			{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
-				{ (location.pathname != "/dashboard") && answeredCalls.length + ringingOutboundCalls.length > 0 && <ProgressCallPopUpBar />}
+				{location.pathname != "/dashboard" && answeredCalls.length + ringingOutboundCalls.length > 0 && (
+					<ProgressCallPopUpBar />
+				)}
 			</div>
 			<InboundCall />
 			<div>

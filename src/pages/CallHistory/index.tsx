@@ -26,6 +26,7 @@ const CallHistory = () => {
 	const callHistoryQueries = useSelector(queries);
 	const callHistoryStrQueries = useSelector(strQueries);
 	const [pageSize, setPageSize] = useState(20);
+	const [page, setPage] = useState(1);
 	const [date, setDate] = useState({
 		from_date: "",
 		to_date: "",
@@ -50,6 +51,12 @@ const CallHistory = () => {
 		if (historyParsed && historyParsed?.length) {
 			dispatch(setCallHistory(historyParsed.slice(0, 20)));
 			dispatch(setLoader(true));
+			dispatch(
+				setQueries({
+					page: Number(historyParsed?.length) / 80,
+					page_size: 80,
+				}),
+			);
 			fetchCallHistory();
 		} else {
 			fetchCallHistory();
@@ -81,6 +88,7 @@ const CallHistory = () => {
 			from_date: date.from_date && formatFilterDate(date.from_date),
 			to_date: date.to_date && formatFilterDate(date.to_date),
 		};
+
 		dateFilter = Object.fromEntries(Object.entries(dateFilter).filter(([key, value]) => value !== ""));
 
 		if (Object.keys(dateFilter).length) {
@@ -107,19 +115,24 @@ const CallHistory = () => {
 			await getCallHistories(callHistoryStrQueries);
 		};
 
-		if (historyParsed && historyParsed?.length !== pageSize && Object.keys(callHistoryQueries).length == 2) {
+		if (
+			historyParsed &&
+			historyParsed?.length !== pageSize &&
+			historyParsed?.length !== Number(callHistoryQueries?.page) * 20 &&
+			Object.keys(callHistoryQueries).length === 2
+		) {
 			dispatch(setCallHistory(historyParsed?.slice(0, pageSize + 20)));
 			setPageSize((prevState) => prevState + 20);
 		} else {
 			fetchCallHistory();
 			setDispCalendar(false);
 		}
-	}, [callHistoryStrQueries]);
+	}, [callHistoryStrQueries, page]);
 
 	return (
 		<div className={styles.callHistory}>
 			<BaseLayout>
-				{!CallHistory.length && !isLoading && !isFetching ? (
+				{!CallHistory?.length && !isLoading && !isFetching ? (
 					<>
 						<NoRecentActivity />
 						<div className={styles.header}>
@@ -135,6 +148,8 @@ const CallHistory = () => {
 							loading={isLoading}
 							fetching={isFetching}
 							callLen={CallHistory.length}
+							setPage={setPage}
+							page={page}
 						/>
 
 						{dispCalendar ? (

@@ -3,11 +3,62 @@ import Signal from "components/TinyComponents/Signal";
 import { useDispatch, useSelector } from "react-redux";
 import sip from "../../../lib/sip";
 import { nameIcon } from "utils";
+import { useEffect } from "react";
+import { setCallHistory } from "redux/call-history/callHistorySlice";
 
 const InboundCall = () => {
+	const dispatch = useDispatch();
 	const { ringingInboundCalls, ringingInboundCallActive, activeCallLineNumber } = useSelector(
 		(state: any) => state.sip,
 	);
+
+	useEffect(() => {
+		if (ringingInboundCalls.length) {
+			const callHistoryJson = localStorage?.getItem("call-history");
+			let historyParsed: [];
+
+			try {
+				historyParsed = JSON.parse(String(callHistoryJson));
+			} catch (e) {
+				historyParsed = [];
+			}
+
+			if (historyParsed?.length) {
+				localStorage.setItem(
+					"call-history",
+					JSON.stringify([
+						{
+							cdr: {
+								id: "",
+								dst: "",
+								src: ringingInboundCalls[0]?.DisplayNumber,
+								starttime: Date.now(),
+							},
+							recording: {},
+						},
+						...historyParsed,
+					]),
+				);
+			} else {
+				localStorage.setItem(
+					"call-history",
+					JSON.stringify([
+						{
+							cdr: {
+								id: "",
+								dst: "",
+								src: ringingInboundCalls[0]?.DisplayNumber,
+								starttime: Date.now(),
+							},
+							recording: {},
+						},
+					]),
+				);
+			}
+
+			dispatch(setCallHistory(JSON.parse(localStorage.getItem("call-history"))));
+		}
+	}, [ringingInboundCalls]);
 
 	// return (
 	// 	<section className={styles.popUp}>
@@ -156,9 +207,7 @@ const InboundCall = () => {
 										strokeLinejoin="round"
 									/>
 								</svg>
-								<span
-									className={`footnote`}
-									style={{ color: "var(--text-primary, #1F2023)" }}>
+								<span className={`footnote`} style={{ color: "var(--text-primary, #1F2023)" }}>
 									Silent
 								</span>
 							</span>

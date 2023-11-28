@@ -59,6 +59,30 @@ const Sidebar = () => {
 					name: "Keypad",
 					unread: 0,
 				},
+				{
+					path: routePaths.CONTACT.ROUTE,
+					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Contacts",
+					unread: 3,
+				},
+				{
+					path: routePaths.CHAT.ROUTE,
+					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Texting",
+					unread: 1,
+				},
+				{
+					path: routePaths.CALL_HISTORY.ROUTE,
+					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Recent",
+					unread: 1,
+				},
+				{
+					path: routePaths.VOICEMAIL.ROUTE,
+					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Voicemail",
+					unread: 4,
+				},
 		  ]
 		: [
 				{
@@ -165,7 +189,7 @@ const Sidebar = () => {
 					</div>
 					<div className={styles.sidebar_topTab}>
 						{sidebarBtmLinks.map((link: ISidebarLinks) => {
-							if (getCookie("extAuth") === 'true' && link.name === "RingPlan Meet") return null;
+							if (getCookie("extAuth") === "true" && link.name === "RingPlan Meet") return null;
 
 							return (
 								<NavLink

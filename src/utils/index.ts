@@ -41,7 +41,16 @@ export const parseCookies = (req: { headers: { cookie?: string } } | null = null
 };
 
 // export const setCookie = (name, value) => Cookies.set(name, value);
-export const setCookie = (name: string, value: any) => Cookies.set(name, value);
+export const setCookie = (
+	name: string,
+	value: any,
+	exp: {
+		expires: 7;
+	},
+) =>
+	Cookies.set(name, value, {
+		expires: 7,
+	});
 
 export const resetUserCookie = () => Cookies.remove("user");
 
