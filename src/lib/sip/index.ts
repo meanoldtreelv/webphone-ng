@@ -4253,12 +4253,6 @@ const sip = {
     SipDomain = domain;
     SipUsername = username;
     SipPassword = password;
-
-    wssServer = "localhost";
-    WebSocketPort = "8089";
-    ServerPath = "/ws";
-    SipDomain = "localhost";
-    SipPassword = "@300300";
 	
     setCookie("ext_user_id", SipUsername);
     setCookie("ext_password", SipPassword);
