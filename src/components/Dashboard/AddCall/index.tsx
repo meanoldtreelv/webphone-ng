@@ -10,7 +10,7 @@ import { store } from "redux/store";
 import sip from "lib/sip";
 import CallEndIcon from "components/UI/Icons/Call/CallEnd";
 
-const AddCall = ({LineNumber, forConferenceCall=false, subCall=undefined}:{LineNumber:number, forConferenceCall?:boolean, subCall?:any}) => {
+const AddCall = ({LineNumber, forConferenceCall=false, conferenceCallList=undefined}:{LineNumber:number, forConferenceCall?:boolean, conferenceCallList?:any}) => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber)
 
@@ -31,8 +31,16 @@ const AddCall = ({LineNumber, forConferenceCall=false, subCall=undefined}:{LineN
 		sip.addCall(LineNumber, number)
 		close();
 	}
+	const showConferenceCallsList = () => {
+		store.dispatch({
+			type: "sip/answeredCalls",
+			payload: { action: "showConferenceCallsList", data: { lineNum: LineNumber, showConferenceCallsList: true } },
+		});
+	}
 	const addConference = () =>{
 		sip.conference(LineNumber, number)
+		showConferenceCallsList()
+		close()
 	}
 	const cancelConference = () =>{
 		sip.cancelConference(LineNumber)
@@ -56,7 +64,7 @@ const AddCall = ({LineNumber, forConferenceCall=false, subCall=undefined}:{LineN
 				</div>
 			</div>
 			
-			{ subCall &&
+			{ conferenceCallList && false &&
 				<div className={styles.layer1}>
 					<div
 						style={{ position: "fixed", bottom: "0px", left: "0px", height: "100vh", width: "100%" }}
