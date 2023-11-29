@@ -1,10 +1,10 @@
+import { useState } from "react";
 import styles from "./AudioViewer.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import DownloadIcon from "components/UI/Icons/meet/Download";
 import VolumeIcon from "components/UI/Icons/ChatIcons/Volume";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
-import { useState } from "react";
 import MusicIcon from "components/UI/Icons/ChatIcons/Music";
 import PlayPrevIcon from "components/UI/Icons/ChatIcons/PlayPrev";
 import PlayNextIcon from "components/UI/Icons/ChatIcons/PlayNext";

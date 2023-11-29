@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styles from "./Group.module.scss";
-import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchBar from "components/UI/SearchBar";
 import ContactCard from "components/Contact/ContactCard";
 import FromNumberPopUp from "../../FromNumberPopUp";
+import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchIcon from "components/UI/Icons/Search";
 import UsersGroupIcon from "components/UI/Icons/ChatIcons/UsersGroup";
 import PlusIcon from "components/UI/Icons/Plus";

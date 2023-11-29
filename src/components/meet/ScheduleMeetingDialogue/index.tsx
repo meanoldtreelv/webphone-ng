@@ -374,7 +374,7 @@ const ScheduleMeetingDialogue = () => {
 				<div>
 					{attendeesList?.map((item) => (
 						<p key={item.email}>
-							{item.email}{" "}
+							{item.email}
 							<span
 								style={{ cursor: "pointer" }}
 								onClick={() => {

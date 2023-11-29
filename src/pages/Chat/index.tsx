@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import { useEffect } from "react";
+import { useState } from "react";
 import styles from "./Chat.module.scss";
 import NoMessages from "components/Chat/NoMessages";
 import ConversationsList from "components/Chat/ConversationsList";
@@ -41,18 +41,15 @@ const Chat = () => {
 	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
 
-	useEffect(() => {
-		const fetchData = async () => {};
-
-		fetchData();
-	}, []);
+	const [isDeleteChatLoading, setIsDeleteChatLoading] = useState(false);
 
 	const deleteConversationsHandler = () => {
+		setIsDeleteChatLoading(true);
 		dispatch(setIsDeleteConversationDialogueOpen(false));
 	};
 
 	return (
-		<div className={styles.chat}>
+		<div className={`pagePopUp`}>
 			<BaseLayout>
 				<div className={styles.noMessageBox}>
 					{conversationsLists.length === 0 ? (
@@ -71,8 +68,7 @@ const Chat = () => {
 					title="Delete Conversations"
 					actionBtnTxt="Delete"
 					onClick={deleteConversationsHandler}
-					// loading={isLoading}
-				>
+					loading={isDeleteChatLoading}>
 					Are you sure that you want to delete conversation ?
 				</PromptDialog>
 			)}

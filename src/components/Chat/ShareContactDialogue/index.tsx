@@ -1,7 +1,7 @@
 import styles from "./ShareContactDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
-import SearchBar from "components/UI/SearchBar";
 import SearchIcon from "components/UI/Icons/Search";
+import SearchBar from "components/UI/SearchBar";
 import ContactCard from "components/Contact/ContactCard";
 
 const ShareContactDialogue = () => {

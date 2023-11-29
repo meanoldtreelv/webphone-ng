@@ -3,13 +3,7 @@ const ChevronDownIcon = () => (
 		<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
 		<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
 		<g id="SVGRepo_iconCarrier">
-			{" "}
-			<path
-				d="M6 9L12 15L18 9"
-				stroke="#000000"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"></path>{" "}
+			<path d="M6 9L12 15L18 9" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
 		</g>
 	</svg>
 );

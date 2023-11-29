@@ -1,12 +1,12 @@
 import styles from "./ConversationsList.module.scss";
-import SortIcon from "components/UI/Icons/Sort";
-import SearchIcon from "components/UI/Icons/Search";
 import { useState } from "react";
-import SearchResultIcon from "components/UI/Icons/SearchResult";
 import ContactCardSkeleton from "components/Contact/ContactCardSkeleton";
-import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import ConversationsCard from "../ConversationsCard";
 import ConversationsSortingPopUp from "../ConversationsSortingPopUp";
+import SortIcon from "components/UI/Icons/Sort";
+import SearchIcon from "components/UI/Icons/Search";
+import SearchResultIcon from "components/UI/Icons/SearchResult";
+import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SearchBar from "components/UI/SearchBar";
 import { useDispatch } from "react-redux";
@@ -22,9 +22,8 @@ const ConversationsList = () => {
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
 			<div className={styles.contact_header}>
-				<h1 className={styles.respContacts_header}>Contacts</h1>
+				{/* <h1 className={styles.respContacts_header}>Contacts</h1> */}
 				<div className={styles.contact_search}>
-					{/* <input type="text" placeholder="Search conversations..." value={searchText} onChange={} /> */}
 					<SearchBar
 						placeholder="Search conversations..."
 						value={searchText}
@@ -40,10 +39,6 @@ const ConversationsList = () => {
 						}}>
 						<EditIcon color="icon-on-color" />
 					</button>
-
-					<div className={styles.search_icon}>
-						<SearchIcon />
-					</div>
 				</div>
 			</div>
 			{true ? (

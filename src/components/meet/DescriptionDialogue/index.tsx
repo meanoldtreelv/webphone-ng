@@ -80,7 +80,7 @@ const DescriptionDialogue = () => {
 				)}
 
 				<div className={styles.date}>
-					{details?.attendees?.length} Attendees,{" "}
+					{details?.attendees?.length} Attendees,
 					<span>
 						{acceptedData.length} Yes, {details?.attendees?.length - acceptedData?.length} Awaiting
 					</span>

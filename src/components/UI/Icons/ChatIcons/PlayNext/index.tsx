@@ -1,4 +1,6 @@
-const PlayNextIcon = ({ color }: { color: string }) => {
+import { IIcon } from "constants/interfaces";
+
+const PlayNextIcon = ({ color }: IIcon) => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
 			<path

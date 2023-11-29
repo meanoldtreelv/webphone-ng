@@ -1,8 +1,8 @@
 import styles from "./AddMember.module.scss";
-import CloseIcon from "components/UI/Icons/Close";
 import SearchBar from "components/UI/SearchBar";
-import SearchIcon from "components/UI/Icons/Search";
 import ContactCard from "components/Contact/ContactCard";
+import CloseIcon from "components/UI/Icons/Close";
+import SearchIcon from "components/UI/Icons/Search";
 import PlusIcon from "components/UI/Icons/Plus";
 
 const AddMember = () => {
@@ -34,7 +34,7 @@ const AddMember = () => {
 							<div>Add this number to members list?</div>
 							<p>9876542872</p>
 							<button>
-								<PlusIcon />
+								<PlusIcon color="icon-on-color" />
 								<span>Add Member</span>
 							</button>
 						</div>

@@ -71,3 +71,7 @@ export interface IExtensionList {
 		extension: number;
 	};
 }
+
+export interface IIcon {
+	color?: string;
+}
