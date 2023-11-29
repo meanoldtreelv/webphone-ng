@@ -1,9 +1,16 @@
 import styles from "./SendDoc.module.scss";
 import DocImg from "../../../../assets/images/img/doc.svg";
+import { useDispatch } from "react-redux";
+import { setIsDocumentViewerDialogueOpen } from "redux/chat/chatSlice";
 
 const SendDoc = () => {
+	const dispatch = useDispatch();
 	return (
-		<div className={styles.sendDoc}>
+		<div
+			className={styles.sendDoc}
+			onClick={() => {
+				dispatch(setIsDocumentViewerDialogueOpen(true));
+			}}>
 			<div>
 				<span>
 					<img src={DocImg} alt="" />

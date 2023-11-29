@@ -24,23 +24,25 @@ const ConversationsFooter = () => {
 	return (
 		<>
 			<div className={styles.footer}>
-				<div className={styles.audioPlaying}>
-					<div>
-						<span>
-							<PlayerPause color="default-primary" />
-						</span>
-						<b>Call record 2402.wav</b>
+				{false && (
+					<div className={styles.audioPlaying}>
+						<div>
+							<span>
+								<PlayerPause color="default-primary" />
+							</span>
+							<b>Call record 2402.wav</b>
+						</div>
+						<div>
+							<b>02:30</b>
+							<span>
+								<CloseIcon />
+							</span>
+						</div>
 					</div>
-					<div>
-						<b>02:30</b>
-						<span>
-							<CloseIcon />
-						</span>
-					</div>
-				</div>
+				)}
 
 				<div className={styles.top}>
-					{true && <SharePopUp />}
+					{isAttachmentClicked && <SharePopUp />}
 					<span
 						onClick={() => {
 							setIsAttachmentClicked(!isAttachmentClicked);

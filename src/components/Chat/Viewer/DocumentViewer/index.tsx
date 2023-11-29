@@ -3,8 +3,11 @@ import CloseIcon from "components/UI/Icons/Close";
 import PlusIcon from "components/UI/Icons/ChatIcons/Plus";
 import MinusIcon from "components/UI/Icons/ChatIcons/Minus";
 import DownloadIcon from "components/UI/Icons/meet/Download";
+import { useDispatch } from "react-redux";
+import { setIsDocumentViewerDialogueOpen } from "redux/chat/chatSlice";
 
 const DocumentViewer = () => {
+	const dispatch = useDispatch();
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
@@ -16,7 +19,11 @@ const DocumentViewer = () => {
 							<p>{"March 8, 2023 11:49 AM - blake-verdoorn-cssvEZacHvQ-unsplash.jpg - 256Kb"}</p>
 						</div>
 					</div>
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsDocumentViewerDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</div>

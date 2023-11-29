@@ -5,10 +5,15 @@ import DeleteIcon from "components/UI/Icons/Delete";
 import CallIcon from "components/UI/Icons/ChatIcons/Call";
 import InfoIcon from "components/UI/Icons/ChatIcons/Info";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import { isDeleteConversationDialogueOpen } from "redux/chat/chatSelectors";
 
 const ConversationsHeader = () => {
+	const dispatch = useDispatch();
+	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+
 	const [deleteIconHover, setDeleteIconHover] = useState(false);
-	const [isdeletePopUpTrue, setIsDeletePopUpTrue] = useState(false);
 
 	return (
 		<div className={styles.header}>
@@ -46,10 +51,12 @@ const ConversationsHeader = () => {
 						setDeleteIconHover(false);
 					}}
 					onClick={() => {
-						setIsDeletePopUpTrue(!isdeletePopUpTrue);
+						dispatch(setIsDeleteConversationDialogueOpen(true));
 					}}
-					className={`${styles.delete} ${isdeletePopUpTrue ? styles.delete_active : ""}`}>
-					<DeleteIcon color={deleteIconHover || isdeletePopUpTrue ? "support-danger-default" : "icon-primary"} />
+					className={`${styles.delete} ${deleteConversationDialogueOpen ? styles.delete_active : ""}`}>
+					<DeleteIcon
+						color={deleteIconHover || deleteConversationDialogueOpen ? "support-danger-default" : "icon-primary"}
+					/>
 				</span>
 			</div>
 		</div>

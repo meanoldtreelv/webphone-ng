@@ -13,31 +13,59 @@ import VideoViewer from "components/Chat/Viewer/VideoViewer";
 import AudioViewer from "components/Chat/Viewer/AudioViewer";
 import DocumentViewer from "components/Chat/Viewer/DocumentViewer";
 import ShareContactDialogue from "components/Chat/ShareContactDialogue";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	conversationLists,
+	isAddMemberDialogueOpen,
+	isAudioViewerDialogueOpen,
+	isConversationSelected,
+	isDeleteConversationDialogueOpen,
+	isDocumentViewerDialogueOpen,
+	isImgViewerDialogueOpen,
+	isShareContactDialogueOpen,
+	isStartNewConversationDialogueOpen,
+	isVideoViewerDialogueOpen,
+} from "redux/chat/chatSelectors";
+import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
 
 const Chat = () => {
+	const dispatch = useDispatch();
+	const conversationsLists = useSelector(conversationLists);
+	const conversationSelected = useSelector(isConversationSelected);
+	const startNewConversationDialogueOpen = useSelector(isStartNewConversationDialogueOpen);
+	const addMemberDialogueOpen = useSelector(isAddMemberDialogueOpen);
+	const imgViewerDialogueOpen = useSelector(isImgViewerDialogueOpen);
+	const videoViewerDialogueOpen = useSelector(isVideoViewerDialogueOpen);
+	const audioViewerDialogueOpen = useSelector(isAudioViewerDialogueOpen);
+	const documentViewerDialogueOpen = useSelector(isDocumentViewerDialogueOpen);
+	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
+	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+
 	useEffect(() => {
 		const fetchData = async () => {};
 
 		fetchData();
 	}, []);
 
-	const deleteConversationsHandler = () => {};
+	const deleteConversationsHandler = () => {
+		dispatch(setIsDeleteConversationDialogueOpen(false));
+	};
 
 	return (
 		<div className={styles.chat}>
 			<BaseLayout>
 				<div className={styles.noMessageBox}>
-					{true ? (
+					{conversationsLists.length === 0 ? (
 						<section className={styles.contact_container}>
 							<ConversationsList />
-							{true ? <ConversationsBox /> : <NoConversationsSelected />}
+							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
 						<NoMessages />
 					)}
 				</div>
 			</BaseLayout>
-			{false && (
+			{deleteConversationDialogueOpen && (
 				<PromptDialog
 					type="warning"
 					title="Delete Conversations"
@@ -48,13 +76,13 @@ const Chat = () => {
 					Are you sure that you want to delete conversation ?
 				</PromptDialog>
 			)}
-			{false && <StartNewConversations />}
-			{false && <AddMember />}
-			{false && <ImgViewer />}
-			{false && <VideoViewer />}
-			{false && <AudioViewer />}
-			{false && <DocumentViewer />}
-			{false && <ShareContactDialogue />}
+			{startNewConversationDialogueOpen && <StartNewConversations />}
+			{addMemberDialogueOpen && <AddMember />}
+			{imgViewerDialogueOpen && <ImgViewer />}
+			{videoViewerDialogueOpen && <VideoViewer />}
+			{audioViewerDialogueOpen && <AudioViewer />}
+			{documentViewerDialogueOpen && <DocumentViewer />}
+			{shareContactDialogueOpen && <ShareContactDialogue />}
 		</div>
 	);
 };

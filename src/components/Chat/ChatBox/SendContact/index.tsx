@@ -1,8 +1,10 @@
 import styles from "./SendContact.module.scss";
 import ThreeDots from "components/UI/Icons/meet/ThreeDots";
 import ContactDetailsPopUp from "../ContactDetailsPopup";
+import { useState } from "react";
 
 const SendContact = () => {
+	const [isContactMenuPopUpOpen, setIsContactMenuPopUpOpen] = useState(false);
 	return (
 		<div className={styles.sendContact}>
 			<div className={styles.contactBox}>
@@ -14,10 +16,13 @@ const SendContact = () => {
 							<span className={styles.number}>987643131</span>
 						</span>
 					</div>
-					<span>
+					<span
+						onClick={() => {
+							setIsContactMenuPopUpOpen(!isContactMenuPopUpOpen);
+						}}>
 						<ThreeDots />
 					</span>
-					{true && <ContactDetailsPopUp />}
+					{isContactMenuPopUpOpen && <ContactDetailsPopUp />}
 				</div>
 				<div className={styles.contact}>
 					<div>
@@ -27,9 +32,13 @@ const SendContact = () => {
 							<span className={styles.number}>987643131</span>
 						</span>
 					</div>
-					<span>
+					<span
+						onClick={() => {
+							setIsContactMenuPopUpOpen(!isContactMenuPopUpOpen);
+						}}>
 						<ThreeDots />
 					</span>
+					{isContactMenuPopUpOpen && <ContactDetailsPopUp />}
 				</div>
 			</div>
 		</div>

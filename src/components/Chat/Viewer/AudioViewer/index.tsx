@@ -8,8 +8,11 @@ import { useState } from "react";
 import MusicIcon from "components/UI/Icons/ChatIcons/Music";
 import PlayPrevIcon from "components/UI/Icons/ChatIcons/PlayPrev";
 import PlayNextIcon from "components/UI/Icons/ChatIcons/PlayNext";
+import { useDispatch } from "react-redux";
+import { setIsAudioViewerDialogueOpen } from "redux/chat/chatSlice";
 
 const AudioViewer = () => {
+	const dispatch = useDispatch();
 	const [isPlayBtnTrue, setIsPlayBtnTrue] = useState(false);
 	return (
 		<div className={styles.overlay}>
@@ -22,7 +25,11 @@ const AudioViewer = () => {
 							<p>{"March 8, 2023 11:49 AM - blake-verdoorn-cssvEZacHvQ-unsplash.jpg - 256Kb"}</p>
 						</div>
 					</div>
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsAudioViewerDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</div>

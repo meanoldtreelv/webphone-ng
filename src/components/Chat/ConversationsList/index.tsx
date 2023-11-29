@@ -8,20 +8,37 @@ import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import ConversationsCard from "../ConversationsCard";
 import ConversationsSortingPopUp from "../ConversationsSortingPopUp";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
+import SearchBar from "components/UI/SearchBar";
+import { useDispatch } from "react-redux";
+import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
 
 const ConversationsList = () => {
+	const dispatch = useDispatch();
 	const [sortingIconHover, setSortingIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
+
+	const [searchText, setSearchText] = useState("");
 
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
 			<div className={styles.contact_header}>
 				<h1 className={styles.respContacts_header}>Contacts</h1>
 				<div className={styles.contact_search}>
-					<input type="text" placeholder="Search conversations..." />
+					{/* <input type="text" placeholder="Search conversations..." value={searchText} onChange={} /> */}
+					<SearchBar
+						placeholder="Search conversations..."
+						value={searchText}
+						onChange={(e) => {
+							setSearchText(e.target.value);
+						}}
+					/>
 
-					<button className={styles.add_contact} onClick={() => {}}>
-						<EditIcon />
+					<button
+						className={styles.add_contact}
+						onClick={() => {
+							dispatch(setIsStartNewConversationDialogueOpen(true));
+						}}>
+						<EditIcon color="icon-on-color" />
 					</button>
 
 					<div className={styles.search_icon}>
@@ -35,13 +52,17 @@ const ConversationsList = () => {
 					// onScroll={handleScroll}
 				>
 					<div>
-						{false ? (
+						{searchText.length > 0 ? (
 							<p className={styles.contact_favorites}>
 								<span>
 									<SearchIcon />
 									<span>Search results (8)</span>
 								</span>
-								<span className={styles.contact_sorting}>
+								<span
+									className={styles.contact_sorting}
+									onClick={() => {
+										setSearchText("");
+									}}>
 									<CloseIcon />
 								</span>
 								{isSortingPopUpTrue && <ConversationsSortingPopUp />}
@@ -79,7 +100,12 @@ const ConversationsList = () => {
 									))}
 							</>
 						) : (
-							<ConversationsCard />
+							<>
+								<ConversationsCard />
+								<ConversationsCard />
+								<ConversationsCard />
+								<ConversationsCard />
+							</>
 						)}
 					</div>
 				</div>

@@ -6,8 +6,11 @@ import VolumeIcon from "components/UI/Icons/ChatIcons/Volume";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setIsVideoViewerDialogueOpen } from "redux/chat/chatSlice";
 
 const VideoViewer = () => {
+	const dispatch = useDispatch();
 	const [isPlayBtnTrue, setIsPlayBtnTrue] = useState(false);
 	return (
 		<div className={styles.overlay}>
@@ -20,7 +23,11 @@ const VideoViewer = () => {
 							<p>{"March 8, 2023 11:49 AM - blake-verdoorn-cssvEZacHvQ-unsplash.jpg - 256Kb"}</p>
 						</div>
 					</div>
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsVideoViewerDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</div>

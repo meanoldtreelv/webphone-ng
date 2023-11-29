@@ -2,10 +2,17 @@ import React from "react";
 import styles from "./ConversationsCard.module.scss";
 import UserIcon from "components/UI/Icons/ChatIcons/User";
 import GroupIcon from "components/UI/Icons/ChatIcons/Group";
+import { useDispatch } from "react-redux";
+import { setIsConversationSelected } from "redux/chat/chatSlice";
 
 const ConversationsCard: React.FC = () => {
+	const dispatch = useDispatch();
 	return (
-		<button className={styles.contact}>
+		<button
+			className={styles.contact}
+			onClick={() => {
+				dispatch(setIsConversationSelected(true));
+			}}>
 			{true ? (
 				<span className={styles.groupIcon}>
 					<GroupIcon />
