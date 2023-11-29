@@ -4,9 +4,9 @@ const MinusIcon = ({ color }: { color: string }) => {
 			<path
 				d="M3.3335 8H12.6668"
 				stroke={`var(--${color ? color : "icon-primary"})`}
-				stroke-width="1.5"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);

@@ -4,9 +4,9 @@ const PlusIcon = ({ color }: { color: string }) => {
 			<path
 				d="M8.00016 3.3335V12.6668M3.3335 8.00016H12.6668"
 				stroke={`var(--${color ? color : "icon-primary"})`}
-				stroke-width="1.5"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);

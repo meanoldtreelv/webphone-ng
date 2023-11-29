@@ -4,9 +4,9 @@ const ChevronDownIcon = ({ color }: { color: string }) => {
 			<path
 				d="M4 6L8 10L12 6"
 				stroke={`var(--${color ? color : "icon-primary"})`}
-				stroke-width="1.5"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);
