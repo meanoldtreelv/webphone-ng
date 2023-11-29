@@ -61,7 +61,7 @@ const ConversationsFooter = () => {
 						/>
 					</span>
 					<div className={styles.inputBox}>
-						<input placeholder="Enter your message" />
+						<input type="text" placeholder="Enter your message" />
 						<span className={styles.icon}>
 							<MicrophoneIcon />
 						</span>
@@ -78,7 +78,7 @@ const ConversationsFooter = () => {
 					<SelectedDoc />
 					<SelectedContact />
 					{/* please don't use this component.this is for testing only, use the above component */}
-					<div className={styles.selectedImg}>
+					{/* <div className={styles.selectedImg}>
 						<img src="/img/dummy/photo.jpg" alt="" />
 						<span>
 							<CrossIcon />
@@ -120,7 +120,7 @@ const ConversationsFooter = () => {
 						<span>
 							<CrossIcon />
 						</span>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</>

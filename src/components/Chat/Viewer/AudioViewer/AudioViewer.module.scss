@@ -16,7 +16,7 @@
 }
 
 .box {
-	width: 700px;
+	width: 80%;
 	height: 80%;
 	flex-shrink: 0;
 
@@ -271,4 +271,11 @@
 
 	background: var(--primary-default, #0c6dc7);
 	width: 50%;
+}
+
+@media screen and (max-width: 900px) {
+	.box {
+		width: 90%;
+		height: 90%;
+	}
 }

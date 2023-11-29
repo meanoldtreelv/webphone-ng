@@ -6,15 +6,14 @@ import { setIsVideoViewerDialogueOpen } from "redux/chat/chatSlice";
 const SendVideo = () => {
 	const dispatch = useDispatch();
 	return (
-		<div
-			className={styles.sendVideo}
-			onClick={() => {
-				dispatch(setIsVideoViewerDialogueOpen(true));
-			}}>
-			<span>
+		<div className={styles.sendVideo}>
+			<span
+				onClick={() => {
+					dispatch(setIsVideoViewerDialogueOpen(true));
+				}}>
 				<img src="/img/dummy/profile.png" alt="" />
 				<span className={styles.btnPlay}>
-					<BtnPlay />
+					<BtnPlay color="icon-on-color" />
 				</span>
 				<span className={styles.duration}>01:30</span>
 			</span>

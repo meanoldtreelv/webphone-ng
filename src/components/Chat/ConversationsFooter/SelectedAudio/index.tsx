@@ -8,7 +8,7 @@ const SelectedAudio = () => {
 			<MusicIcon />
 			<b>Call record 1309.wav</b>
 			<span>
-				<CrossIcon />
+				<CrossIcon color="icon-on-color" />
 			</span>
 		</div>
 	);

@@ -7,12 +7,12 @@ import { setIsAudioViewerDialogueOpen } from "redux/chat/chatSlice";
 const SendAudio = () => {
 	const dispatch = useDispatch();
 	return (
-		<div
-			className={styles.sendAudio}
-			onClick={() => {
-				dispatch(setIsAudioViewerDialogueOpen(true));
-			}}>
-			<div className={styles.audio}>
+		<div className={styles.sendAudio}>
+			<div
+				className={styles.audio}
+				onClick={() => {
+					dispatch(setIsAudioViewerDialogueOpen(true));
+				}}>
 				<PlayerPlay color="icon-on-color" />
 				<div>
 					<img src={SoundWaves2} alt="" />

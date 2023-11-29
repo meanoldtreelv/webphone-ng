@@ -228,3 +228,10 @@
 
 	width: 50%;
 }
+
+@media screen and (max-width: 900px) {
+	.box {
+		width: 90%;
+		height: 90%;
+	}
+}

@@ -7,7 +7,7 @@ const SelectedVideo = () => {
 		<div className={styles.selectedVideo}>
 			<img src="/img/dummy/dummy_video.png" alt="" />
 			<span className={styles.close}>
-				<CrossIcon />
+				<CrossIcon color="icon-on-color" />
 			</span>
 			<span className={styles.btnPlay}>
 				<BtnPlay />

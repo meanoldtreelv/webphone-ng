@@ -5,12 +5,11 @@ import { setIsImgViewerDialogueOpen } from "redux/chat/chatSlice";
 const ReceiveImg = () => {
 	const dispatch = useDispatch();
 	return (
-		<div
-			className={styles.receiveImg}
-			onClick={() => {
-				dispatch(setIsImgViewerDialogueOpen(true));
-			}}>
-			<span>
+		<div className={styles.receiveImg}>
+			<span
+				onClick={() => {
+					dispatch(setIsImgViewerDialogueOpen(true));
+				}}>
 				<img src="/img/dummy/profile.png" alt="" />
 			</span>
 		</div>

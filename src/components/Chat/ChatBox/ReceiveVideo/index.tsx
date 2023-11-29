@@ -6,12 +6,11 @@ import { setIsVideoViewerDialogueOpen } from "redux/chat/chatSlice";
 const ReceiveVideo = () => {
 	const dispatch = useDispatch();
 	return (
-		<div
-			className={styles.receiveVideo}
-			onClick={() => {
-				dispatch(setIsVideoViewerDialogueOpen(true));
-			}}>
-			<span>
+		<div className={styles.receiveVideo}>
+			<span
+				onClick={() => {
+					dispatch(setIsVideoViewerDialogueOpen(true));
+				}}>
 				<img src="/img/dummy/dummy_video.png" alt="" />
 				<span className={styles.btnPlay}>
 					<BtnPlay />

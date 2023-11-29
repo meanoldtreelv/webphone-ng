@@ -7,7 +7,7 @@ const SelectedContact = () => {
 			<p className={styles.initials}> SG</p>
 			<b>Shivam Gupta</b>
 			<span>
-				<CrossIcon />
+				<CrossIcon color="icon-on-color" />
 			</span>
 		</div>
 	);

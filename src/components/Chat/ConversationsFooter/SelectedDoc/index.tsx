@@ -8,7 +8,7 @@ const SelectedDoc = () => {
 			<DocIcon />
 			<b>Pricing sheet 2023.dox</b>
 			<span>
-				<CrossIcon />
+				<CrossIcon color="icon-on-color" />
 			</span>
 		</div>
 	);

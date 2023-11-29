@@ -29,20 +29,31 @@ const ChatBox = () => {
 		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>
 			<ReceiveTime />
 			<InfoMessage />
-			<ReceiveMessage />
-			<ReceiveImg />
 			<SendTime />
 			<SendMessage />
+			<ReceiveTime />
+			<ReceiveMessage />
+			<SendTime />
 			<SendImg />
+			<ReceiveTime />
+			<ReceiveImg />
+			<SendTime />
 			<SendVideo />
+			<ReceiveTime />
 			<ReceiveVideo />
+			<SendTime />
 			<SendAudio />
+			<ReceiveTime />
 			<ReceiveAudio />
+			<SendTime />
 			<SendDoc />
+			<ReceiveTime />
 			<ReceiveDoc />
+			<SendTime />
 			<SendContact />
+			<ReceiveTime />
 			<ReceiveContact />
-			{/* <div className={styles.info}>
+			<div className={styles.info}>
 				<span> Conversation with +1(635) 071 0331 created!</span>
 			</div>
 			<div className={styles.sendTime}>
@@ -99,8 +110,8 @@ const ChatBox = () => {
 				<span>
 					<img src="/img/dummy/dummy_video.png" alt=""></img>
 				</span>
-			</div> */}
-			{/* <div className={styles.receiveVideo}>
+			</div>
+			<div className={styles.receiveVideo}>
 				<span>
 					<img src="/img/dummy/dummy_video.png" alt="" />
 					<span className={styles.btnPlay}>
@@ -237,7 +248,7 @@ const ChatBox = () => {
 				<span>
 					<img src="/img/dummy/video_call.jpeg" alt=""></img>
 				</span>
-			</div> */}
+			</div>
 		</div>
 	);
 };

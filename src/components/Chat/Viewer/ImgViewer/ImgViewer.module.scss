@@ -16,8 +16,10 @@
 }
 
 .box {
-	width: 912px;
-	height: 600px;
+	// width: 912px;
+	// height: 600px;
+	width: 80%;
+	height: 80%;
 	flex-shrink: 0;
 
 	border-radius: var(--modal-corner-radius, 8px);
@@ -178,4 +180,11 @@
 	font-size: 13px;
 	line-height: 18px; /* 138.462% */
 	letter-spacing: -0.2px;
+}
+
+@media screen and (max-width: 900px) {
+	.box {
+		width: 90%;
+		height: 90%;
+	}
 }

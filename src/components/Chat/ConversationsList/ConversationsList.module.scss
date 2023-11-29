@@ -1,7 +1,8 @@
 .contact {
 	padding: 15px;
 	height: 100vh;
-	width: 500px;
+	// width: 500px;
+	width: 33%;
 	flex-shrink: 0;
 	border-right: 1px solid var(--border-tertiary, #e3eaf2);
 	background: var(--background-primary, #fff);
@@ -139,16 +140,23 @@
 	}
 }
 
-@media only screen and (max-width: 990px) {
+@media only screen and (max-width: 1200px) {
+	.contact {
+		width: 50%;
+	}
+}
+
+@media only screen and (max-width: 900px) {
 	.contact {
 		width: 100%;
-	}
-
-	.respContacts_header {
-		display: block;
-	}
-
-	.contactListSml {
 		display: none;
 	}
+
+	// .respContacts_header {
+	// 	display: block;
+	// }
+
+	// .contactListSml {
+	// 	display: none;
+	// }
 }

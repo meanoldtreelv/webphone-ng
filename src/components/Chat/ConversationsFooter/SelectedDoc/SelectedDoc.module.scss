@@ -3,6 +3,7 @@
 	padding: 2px;
 	align-items: center;
 	gap: 6px;
+	flex-shrink: 0;
 
 	border-radius: 8px;
 	border: 1px solid var(--border-secondary, #c8d3e0);

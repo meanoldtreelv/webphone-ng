@@ -6,12 +6,11 @@ import { setIsDocumentViewerDialogueOpen } from "redux/chat/chatSlice";
 const SendDoc = () => {
 	const dispatch = useDispatch();
 	return (
-		<div
-			className={styles.sendDoc}
-			onClick={() => {
-				dispatch(setIsDocumentViewerDialogueOpen(true));
-			}}>
-			<div>
+		<div className={styles.sendDoc}>
+			<div
+				onClick={() => {
+					dispatch(setIsDocumentViewerDialogueOpen(true));
+				}}>
 				<span>
 					<img src={DocImg} alt="" />
 				</span>

@@ -6,7 +6,7 @@ const SelectedImg = () => {
 		<div className={styles.selectedImg}>
 			<img src="/img/dummy/photo.jpg" alt="" />
 			<span>
-				<CrossIcon />
+				<CrossIcon color="icon-on-color" />
 			</span>
 		</div>
 	);
