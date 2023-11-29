@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./SendAudio.module.scss";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import SoundWaves2 from "../../../../assets/images/img/sound_wave_send.svg";

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./SelectedAudio.module.scss";
 import MusicIcon from "components/UI/Icons/ChatIcons/Music";
 import CrossIcon from "components/UI/Icons/ChatIcons/Cross";

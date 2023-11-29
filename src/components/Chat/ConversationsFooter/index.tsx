@@ -11,9 +11,15 @@ import MusicIcon from "components/UI/Icons/ChatIcons/Music";
 import SelectedAudio from "./SelectedAudio";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
+import DocIcon from "components/UI/Icons/ChatIcons/Doc";
+import SelectedDoc from "./SelectedDoc";
+import SharePopUp from "./SharePopUp";
+import SelectedContact from "./SelectedContact";
 
 const ConversationsFooter = () => {
 	const [sendActive, setSendActive] = useState(true);
+	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
+	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
 
 	return (
 		<>
@@ -32,9 +38,25 @@ const ConversationsFooter = () => {
 						</span>
 					</div>
 				</div>
+
 				<div className={styles.top}>
-					<span onClick={() => {}} className={styles.attachment}>
-						<AttachmentIcon />
+					{true && <SharePopUp />}
+					<span
+						onClick={() => {
+							setIsAttachmentClicked(!isAttachmentClicked);
+						}}
+						onMouseOver={() => {
+							setIsAttachmentHovered(true);
+						}}
+						onMouseOut={() => {
+							setIsAttachmentHovered(false);
+						}}
+						className={`${styles.attachment} ${
+							isAttachmentHovered || isAttachmentClicked ? styles.attachment_active : ""
+						}`}>
+						<AttachmentIcon
+							color={`${isAttachmentHovered || isAttachmentClicked ? "primary-default" : "icon-primary"}`}
+						/>
 					</span>
 					<div className={styles.inputBox}>
 						<input placeholder="Enter your message" />
@@ -51,6 +73,8 @@ const ConversationsFooter = () => {
 					<SelectedImg />
 					<SelectedVideo />
 					<SelectedAudio />
+					<SelectedDoc />
+					<SelectedContact />
 					{/* please don't use this component.this is for testing only, use the above component */}
 					<div className={styles.selectedImg}>
 						<img src="/img/dummy/photo.jpg" alt="" />
@@ -77,6 +101,20 @@ const ConversationsFooter = () => {
 					<div className={styles.selectedAudio}>
 						<MusicIcon />
 						<b>Call record 1309.wav</b>
+						<span>
+							<CrossIcon />
+						</span>
+					</div>
+					<div className={styles.selectedDoc}>
+						<DocIcon />
+						<b>Pricing sheet 2023.dox</b>
+						<span>
+							<CrossIcon />
+						</span>
+					</div>
+					<div className={styles.selectedContact}>
+						<p className={styles.initials}> SG</p>
+						<b>Shivam Gupta</b>
 						<span>
 							<CrossIcon />
 						</span>

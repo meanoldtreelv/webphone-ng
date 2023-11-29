@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./AddMember.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import SearchBar from "components/UI/SearchBar";

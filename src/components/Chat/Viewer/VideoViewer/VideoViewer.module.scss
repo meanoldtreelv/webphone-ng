@@ -164,10 +164,7 @@
 	color: var(--text-primary, #1f2023);
 
 	/* Caption 1/Regular */
-	font-family: Poppins;
 	font-size: 13px;
-	font-style: normal;
-	font-weight: 400;
 	line-height: 18px; /* 138.462% */
 	letter-spacing: -0.2px;
 }
@@ -176,8 +173,6 @@
 	width: 34px;
 	height: 34px;
 	flex-shrink: 0;
-
-	// background: var(--primary-default);
 
 	border-radius: 50%;
 

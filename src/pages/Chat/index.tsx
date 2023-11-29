@@ -11,6 +11,8 @@ import AddMember from "components/Chat/AddMember";
 import ImgViewer from "components/Chat/Viewer/ImgViewer";
 import VideoViewer from "components/Chat/Viewer/VideoViewer";
 import AudioViewer from "components/Chat/Viewer/AudioViewer";
+import DocumentViewer from "components/Chat/Viewer/DocumentViewer";
+import ShareContactDialogue from "components/Chat/ShareContactDialogue";
 
 const Chat = () => {
 	useEffect(() => {
@@ -51,6 +53,8 @@ const Chat = () => {
 			{false && <ImgViewer />}
 			{false && <VideoViewer />}
 			{false && <AudioViewer />}
+			{false && <DocumentViewer />}
+			{false && <ShareContactDialogue />}
 		</div>
 	);
 };

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./SelectedVideo.module.scss";
 import CrossIcon from "components/UI/Icons/ChatIcons/Cross";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";

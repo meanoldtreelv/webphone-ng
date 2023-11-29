@@ -32,7 +32,6 @@ const ConversationsList = () => {
 			{true ? (
 				<div
 					className={styles.contact_lists}
-					// style={{ overflowY: contactsLoading ? "hidden" : undefined }}
 					// onScroll={handleScroll}
 				>
 					<div>

@@ -8,12 +8,18 @@
 	border: 1px solid var(--border-secondary, #c8d3e0);
 	background: var(--background-primary, #fff);
 
-	// width: 44px;
 	height: 44px;
 
 	padding-right: 8px;
 
 	position: relative;
+
+	color: var(--text-primary, #1f2023);
+
+	/* Caption 1/Regular */
+	font-size: 13px;
+	line-height: 18px; /* 138.462% */
+	letter-spacing: -0.2px;
 
 	span {
 		display: flex;

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ReceiveAudio.module.scss";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import SoundWaves1 from "../../../../assets/images/img/sound_wave_receive.svg";

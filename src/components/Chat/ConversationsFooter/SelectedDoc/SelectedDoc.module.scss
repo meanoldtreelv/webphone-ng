@@ -1,0 +1,41 @@
+.selectedDoc {
+	display: flex;
+	padding: 2px;
+	align-items: center;
+	gap: 6px;
+
+	border-radius: 8px;
+	border: 1px solid var(--border-secondary, #c8d3e0);
+	background: var(--background-primary, #fff);
+
+	height: 44px;
+
+	padding-right: 8px;
+
+	position: relative;
+
+	color: var(--text-primary, #1f2023);
+
+	/* Caption 1/Regular */
+	font-size: 13px;
+	line-height: 18px; /* 138.462% */
+	letter-spacing: -0.2px;
+
+	span {
+		display: flex;
+		width: 14px;
+		height: 14px;
+		padding: 4px;
+		justify-content: center;
+		align-items: center;
+
+		position: absolute;
+		right: -5px;
+		top: -5px;
+
+		border-radius: 23px;
+		background: var(--primary-default, #0c6dc7);
+
+		cursor: pointer;
+	}
+}

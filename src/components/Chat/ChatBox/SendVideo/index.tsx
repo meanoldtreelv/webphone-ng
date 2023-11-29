@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./SendVideo.module.scss";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
 

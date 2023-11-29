@@ -20,7 +20,7 @@ const ImgViewer = () => {
 						<CloseIcon />
 					</span>
 				</div>
-				{/* <img src="/img/dummy/photo.jpg" alt=""></img> */}
+
 				<img src="/img/dummy/dummy_video.png" alt=""></img>
 				<div className={styles.footer}>
 					<div className={styles.zoomBox}>

@@ -27,7 +27,7 @@ const Group = () => {
 					onClick={() => {
 						setIsFromNumberPopUpOpen(!isFromNumberPopUpOpen);
 					}}>
-					987654321{" "}
+					987654321
 					<span className={`${isFromNumberPopUpOpen ? styles.active : ""}`}>
 						<ChevronDownIcon color={`${isFromNumberHovered || isFromNumberPopUpOpen ? "text-link" : "text-primary"}`} />
 					</span>
@@ -46,7 +46,7 @@ const Group = () => {
 				) : (
 					<span>
 						<UsersGroupIcon />
-						<span>Members (0)</span>{" "}
+						<span>Members (0)</span>
 					</span>
 				)}
 			</div>
