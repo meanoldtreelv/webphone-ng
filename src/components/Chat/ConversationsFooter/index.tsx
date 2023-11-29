@@ -65,7 +65,7 @@ const ConversationsFooter = () => {
 						</span>
 					</div>
 					<div className={`${styles.send} ${sendActive ? styles.send_active : ""}`}>
-						<AirplaneIcon />
+						<AirplaneIcon color="icon-on-color" />
 					</div>
 				</div>
 				<div className={styles.bottom}>
