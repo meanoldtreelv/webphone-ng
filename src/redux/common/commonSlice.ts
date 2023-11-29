@@ -8,7 +8,8 @@ const initialCommonState = {
 		msg: "",
 	},
 	simpleNotification: "",
-	loader: false
+	loader: false,
+	extChange: false,
 };
 
 const commonSlice = createSlice({
@@ -28,11 +29,15 @@ const commonSlice = createSlice({
 			state.simpleNotification = action.payload;
 		},
 		setLoader(state, action) {
-			state.loader = action.payload
-		}
+			state.loader = action.payload;
+		},
+		setExtChange(state) {
+			state.extChange = !state.extChange;
+		},
 	},
 });
 
-export const { toggleModal, togglePlayPause, setNotification, setSimpleNotification, setLoader } = commonSlice.actions;
+export const { toggleModal, togglePlayPause, setNotification, setSimpleNotification, setLoader, setExtChange } =
+	commonSlice.actions;
 
 export default commonSlice.reducer;

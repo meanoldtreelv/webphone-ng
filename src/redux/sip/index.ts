@@ -15,6 +15,14 @@ interface outboundCallIn {
   isMute?: Boolean,
 }
 
+interface conferenceCallListIn{
+  id:number,
+  startTime:string, 
+  disposition:string, 
+  dispositionTime:string, 
+  to:string,
+  callTimer:string,
+}
 interface answeredCallIn {
   LineNumber?: number,
   DisplayName?: string,
@@ -31,7 +39,8 @@ interface answeredCallIn {
   showTransferCallAtt?: Boolean,
   audioSettingOnCallModal?: Boolean,
   callSpeakerDevice?: string,
-  subCall?:{number:string}
+  conferenceCallList?: Array<conferenceCallListIn>,
+  showConferenceCallsList?:boolean,
 }
 interface callEndingIn {
   name?: string,
@@ -447,6 +456,19 @@ const sipSlice = createSlice({
           }
           break
         }
+        case "showConferenceCallsList": {
+          console.log("showConferenceCallsList:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const showConferenceCallsList = action.payload.data.showConferenceCallsList
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              state.answeredCalls[index].showConferenceCallsList = showConferenceCallsList
+              break;
+            }
+          }
+          break
+        }
         case "showAddConferenceCall": {
           console.log("showAddConferenceCall:")
           console.log(action.payload.data)
@@ -460,26 +482,49 @@ const sipSlice = createSlice({
           }
           break
         }
-        case "addSubCall": {
-          console.log("addSubCall:")
+        case "addConferenceCall": {
+          console.log("addConferenceCall:")
           console.log(action.payload.data)
           const lineNum = action.payload.data.lineNum
-          const subCall = action.payload.data.subCall
+          const conferenceCallList = action.payload.data.conferenceCallList
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum) {
-              state.answeredCalls[index].subCall = subCall
+                state.answeredCalls[index].conferenceCallList = [...state.answeredCalls[index].conferenceCallList?? [], conferenceCallList] 
+                console.log("aaaaaaaaaaaaaaa", state.answeredCalls[index].conferenceCallList)
               break;
             }
           }
           break
         }
-        case "removeSubCall": {
-          console.log("removeSubCall:")
+        case "conferenceCallTimer": {
+          console.log("callTimer:")
           console.log(action.payload.data)
           const lineNum = action.payload.data.lineNum
+          const callTimer = action.payload.data.callTimer
+          const confCallId = action.payload.data.confCallId
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum) {
-              state.answeredCalls[index].subCall = undefined
+              const conferenceCallList = state.answeredCalls[index].conferenceCallList
+              if(conferenceCallList && conferenceCallList[confCallId]){
+                conferenceCallList[confCallId].callTimer = callTimer
+              }
+              break;
+            }
+          }
+          break
+        }
+        case "conferenceCallDisposition": {
+          console.log("disposition:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const disposition = action.payload.data.disposition
+          const confCallId = action.payload.data.confCallId
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              const conferenceCallList = state.answeredCalls[index].conferenceCallList
+              if(conferenceCallList && conferenceCallList[confCallId]){
+                conferenceCallList[confCallId].disposition = disposition
+              }
               break;
             }
           }

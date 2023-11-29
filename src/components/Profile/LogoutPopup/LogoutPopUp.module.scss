@@ -70,12 +70,12 @@
 }
 
 .btnCancel {
-	color: var(--text-primary);
+	color: var(--text-secondary);
 }
 
 .btnConfirm {
 	font-weight: 500;
-	color: var(--background-primary) !important;
-	background: map-get($color, primary-default);
-	border: 1px solid map-get($color, primary-default) !important;
+	color: var(--text-primary);
+	background: var(--primary-default);
+	border: 1px solid var(--primary-default) !important;
 }
