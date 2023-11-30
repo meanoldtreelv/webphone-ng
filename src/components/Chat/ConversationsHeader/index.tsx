@@ -7,33 +7,42 @@ import InfoIcon from "components/UI/Icons/ChatIcons/Info";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
-import { isDeleteConversationDialogueOpen } from "redux/chat/chatSelectors";
+import { conversationData, isDeleteConversationDialogueOpen } from "redux/chat/chatSelectors";
 
 const ConversationsHeader = () => {
 	const dispatch = useDispatch();
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+	const conversationDatas = useSelector(conversationData);
 
 	const [deleteIconHover, setDeleteIconHover] = useState(false);
 
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
-				{true ? (
+				{conversationDatas?.conversation_type === "group" ? (
+					<span className={styles.initials_group}>
+						<UserGroupIcon />
+					</span>
+				) : (
 					<span className={styles.initials}>
 						MW
 						<span>
 							<UserStatusIcon />
 						</span>
 					</span>
-				) : (
-					<span className={styles.initials_group}>
-						<UserGroupIcon />
-					</span>
 				)}
 
 				<div className={styles.contact}>
-					<span className={styles.name}>Shivam Gupta</span>
-					{true && <span className={styles.number}>98765431323</span>}
+					<span className={styles.name}>
+						{conversationDatas?.conversation_type === "group"
+							? conversationDatas?.campaign_info?.name
+							: conversationDatas?.contactsinfo?.[0]?.first_name +
+							  " " +
+							  conversationDatas?.contactsinfo?.[0]?.last_name}
+					</span>
+					{conversationDatas?.conversation_type === "direct" && (
+						<span className={styles.number}>{conversationDatas?.contactsinfo?.[0]?.number}</span>
+					)}
 				</div>
 			</div>
 			<div className={styles.right}>

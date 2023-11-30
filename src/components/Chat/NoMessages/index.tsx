@@ -17,7 +17,7 @@ const NoMessages = () => {
 			<div className={styles.noMessages_text}>When you have messages you'll see them here</div>
 			<Button
 				btnText={"Start new conversations"}
-				icon={<PlusIcon />}
+				icon={<PlusIcon color="icon-on-color" />}
 				onClick={() => {
 					dispatch(setIsStartNewConversationDialogueOpen(true));
 				}}

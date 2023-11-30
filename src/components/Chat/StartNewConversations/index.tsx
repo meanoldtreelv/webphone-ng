@@ -8,7 +8,7 @@ import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
 
 const StartNewConversations = () => {
 	const dispatch = useDispatch();
-	const [tabActive, setTabActive] = useState("group");
+	const [tabActive, setTabActive] = useState("conversations");
 
 	return (
 		<div className={styles.overlay}>

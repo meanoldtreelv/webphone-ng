@@ -24,7 +24,7 @@ const VideoViewer = () => {
 						</div>
 					</div>
 					<span
-						className={styles.close}
+						className={styles.icon}
 						onClick={() => {
 							dispatch(setIsVideoViewerDialogueOpen(false));
 						}}>
@@ -42,7 +42,7 @@ const VideoViewer = () => {
 							}}>
 							{isPlayBtnTrue ? <PlayerPlay color="primary-default" /> : <PlayerPause color="primary-default" />}
 						</span>
-						<span className={styles.volume}>
+						<span className={styles.icon}>
 							<VolumeIcon />
 						</span>
 						<span className={styles.duration}>02:30/03:30</span>

@@ -10,3 +10,7 @@ export const isAudioViewerDialogueOpen = (state: RootState) => state.chat.isAudi
 export const isDocumentViewerDialogueOpen = (state: RootState) => state.chat.isDocumentViewerDialogueOpen;
 export const isShareContactDialogueOpen = (state: RootState) => state.chat.isShareContactDialogueOpen;
 export const isDeleteConversationDialogueOpen = (state: RootState) => state.chat.isDeleteConversationDialogueOpen;
+export const queries = (state: RootState) => state.chat.queries;
+export const strQueries = (state: RootState) => state.chat.strQueries;
+export const conversationData = (state: RootState) => state.chat.conversationData;
+export const isSortingMessagePopUpOpen = (state: RootState) => state.chat.isSortingMessagePopUpOpen;
