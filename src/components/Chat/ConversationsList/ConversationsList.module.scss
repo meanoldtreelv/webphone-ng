@@ -7,13 +7,19 @@
 	border-right: 1px solid var(--border-tertiary, #e3eaf2);
 	background: var(--background-primary, #fff);
 
+	// background-color: red;
+
+	&_header {
+		// background-color: blue;
+	}
+
 	&_search {
 		position: relative;
 		margin-bottom: 15px;
 		display: flex;
 		gap: 5px;
 		align-items: center;
-		// background-color: red;
+		// background-color: green;
 
 		& input {
 			padding: 8px 12px 8px 32px;
@@ -34,8 +40,9 @@
 	}
 
 	&_lists {
-		height: calc(100% - 30px - 15px);
+		height: calc(100% - 30px - 15px - 30px);
 		overflow-y: auto;
+		// background-color: red;
 
 		&::-webkit-scrollbar {
 			width: 12px;
@@ -102,23 +109,23 @@
 	color: var(--text-primary);
 }
 
-.noSearchResult {
-	width: 100%;
-	height: 100%;
-	margin-bottom: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding-bottom: 60px;
-	transition: 0.3s;
-}
+// .noSearchResult {
+// 	width: 100%;
+// 	height: 100%;
+// 	margin-bottom: 100%;
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	padding-bottom: 60px;
+// 	transition: 0.3s;
+// }
 
-.noSearchResult_center {
+.noSearchResult {
 	width: 100%;
 	height: 100%;
 	contain: layout;
 	overflow-y: auto;
-	border-radius: 10px;
+	border-radius: 8px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -130,15 +137,21 @@
 		height: 50px;
 	}
 
-	svg,
-	path {
-		stroke: var(--icon-primary);
-	}
+	// svg,
+	// path {
+	// 	stroke: var(--icon-primary);
+	// }
 
 	p {
 		margin-top: 20px;
 		color: var(--text-secondary);
+		margin-bottom: 10px;
 	}
+}
+
+.err {
+	color: var(--text-danger);
+	font-size: 11px;
 }
 
 @media only screen and (max-width: 1200px) {

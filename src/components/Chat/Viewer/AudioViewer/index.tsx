@@ -14,6 +14,7 @@ import { setIsAudioViewerDialogueOpen } from "redux/chat/chatSlice";
 const AudioViewer = () => {
 	const dispatch = useDispatch();
 	const [isPlayBtnTrue, setIsPlayBtnTrue] = useState(false);
+
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
@@ -26,7 +27,7 @@ const AudioViewer = () => {
 						</div>
 					</div>
 					<span
-						className={styles.close}
+						className={styles.icon}
 						onClick={() => {
 							dispatch(setIsAudioViewerDialogueOpen(false));
 						}}>
@@ -54,7 +55,7 @@ const AudioViewer = () => {
 							<VolumeIcon />
 						</span>
 						<div className={styles.control}>
-							<span>
+							<span className={styles.nextPrev}>
 								<PlayPrevIcon />
 							</span>
 
@@ -65,7 +66,7 @@ const AudioViewer = () => {
 								}}>
 								{isPlayBtnTrue ? <PlayerPlay color="primary-default" /> : <PlayerPause color="primary-default" />}
 							</span>
-							<span>
+							<span className={styles.nextPrev}>
 								<PlayNextIcon />
 							</span>
 						</div>

@@ -3,37 +3,63 @@ import styles from "./ConversationsCard.module.scss";
 import UserIcon from "components/UI/Icons/ChatIcons/User";
 import GroupIcon from "components/UI/Icons/ChatIcons/Group";
 import { useDispatch } from "react-redux";
-import { setIsConversationSelected } from "redux/chat/chatSlice";
+import { setConversationData, setIsConversationSelected } from "redux/chat/chatSlice";
+import { limitCharacter } from "helpers";
+import { contactAbbreviation } from "utils";
+import { recentDateFormat } from "helpers/formatDateTime";
 
-const ConversationsCard: React.FC = () => {
+const ConversationsCard: React.FC = ({ conversationData }) => {
 	const dispatch = useDispatch();
+
+	const first_name = conversationData?.contactsinfo?.[0]?.first_name;
+	const last_name = conversationData?.contactsinfo?.[0]?.last_name;
+	const phone = conversationData?.contactsinfo?.[0]?.number;
 	return (
 		<button
 			className={styles.contact}
 			onClick={() => {
 				dispatch(setIsConversationSelected(true));
+				dispatch(setConversationData(conversationData));
 			}}>
-			{true ? (
+			{conversationData?.conversation_type === "group" ? (
 				<span className={styles.groupIcon}>
 					<GroupIcon />
 				</span>
 			) : (
-				<span className={styles.contact_circle}>BD</span>
+				<span className={styles.contact_circle}>
+					{contactAbbreviation(
+						conversationData?.contactsinfo?.[0]?.first_name,
+						conversationData?.contactsinfo?.[0]?.last_name,
+						conversationData?.contactsinfo?.[0]?.number,
+						"",
+					)}
+				</span>
 			)}
 
 			<div className={styles.contact_name}>
 				<div>
-					<span className={styles.name}>Shivam Gupta</span>
-					<span className={styles.dateTime}>9:54 AM</span>
+					<span className={styles.name}>
+						{conversationData?.conversation_type === "group"
+							? conversationData?.campaign_info?.name
+							: first_name + last_name
+							? first_name + " " + last_name
+							: phone}
+					</span>
+					<span className={styles.dateTime}>{recentDateFormat(conversationData?.last_message_created_at)}</span>
 				</div>
 				<div>
 					<span className={styles.msg}>
-						<span>
-							<UserIcon /> 8
-						</span>
-						Hello I am testing the chat...
+						{conversationData?.conversation_type === "group" && (
+							<span>
+								<UserIcon /> {conversationData?.contactsinfo.length}
+							</span>
+						)}
+
+						{limitCharacter(conversationData?.last_msg?.text, 50)}
 					</span>
-					{true && <span className={styles.unread}>12</span>}
+					{conversationData?.unread_msg_count > 0 && (
+						<span className={styles.unread}>{conversationData?.unread_msg_count}</span>
+					)}
 				</div>
 			</div>
 		</button>

@@ -9,4 +9,15 @@ export interface IChatState {
 	isDocumentViewerDialogueOpen: boolean;
 	isShareContactDialogueOpen: boolean;
 	isDeleteConversationDialogueOpen: boolean;
+	isSortingMessagePopUpOpen: boolean;
+	queries: {
+		contact_id?: string;
+		page?: number;
+		per_page?: number;
+		search?: string;
+		sort?: "last_activity" | "unread";
+		from_numbers?: string[];
+	};
+	strQueries: string;
+	conversationData: {};
 }

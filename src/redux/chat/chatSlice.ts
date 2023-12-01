@@ -12,6 +12,21 @@ const initialChatState: IChatState = {
 	isDocumentViewerDialogueOpen: false,
 	isShareContactDialogueOpen: false,
 	isDeleteConversationDialogueOpen: false,
+	isSortingMessagePopUpOpen: false,
+	queries: {
+		contact_id: "",
+		page: 1,
+		per_page: 20,
+		search: "",
+		sort: "last_activity",
+		from_numbers: ["8123772212", "8123772212"],
+	},
+	strQueries: new URLSearchParams({
+		page: 1,
+		per_page: 20,
+		sort: "last_activity",
+	}).toString(),
+	conversationData: {},
 };
 
 const chatSlice = createSlice({
@@ -49,6 +64,16 @@ const chatSlice = createSlice({
 		setIsDeleteConversationDialogueOpen(state, action) {
 			state.isDeleteConversationDialogueOpen = action.payload;
 		},
+		setIsSortingMessagePopUpOpen(state, action) {
+			state.isSortingMessagePopUpOpen = action.payload;
+		},
+		setQueries(state, action) {
+			state.queries = action.payload;
+			state.strQueries = new URLSearchParams(state.queries).toString();
+		},
+		setConversationData(state, action) {
+			state.conversationData = action.payload;
+		},
 	},
 });
 
@@ -63,6 +88,9 @@ export const {
 	setIsDocumentViewerDialogueOpen,
 	setIsShareContactDialogueOpen,
 	setIsDeleteConversationDialogueOpen,
+	setIsSortingMessagePopUpOpen,
+	setQueries,
+	setConversationData,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -43,7 +43,7 @@ ext_connected === "true" &&
 	ext_domain &&
 	store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) &&
 	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain);
-console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
+// console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
 const isMobile = () =>
 	window?.navigator?.userAgentData?.mobile ||
 	/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

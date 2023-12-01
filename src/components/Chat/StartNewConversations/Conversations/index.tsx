@@ -60,7 +60,7 @@ const Conversations = () => {
 						<div>Start Conversation with this number?</div>
 						<p>9876542872</p>
 						<button>
-							<ChatIcon />
+							<ChatIcon color="icon-on-color" />
 							<span>Start Conversation</span>
 						</button>
 					</div>

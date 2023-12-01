@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Chat.module.scss";
 import NoMessages from "components/Chat/NoMessages";
 import ConversationsList from "components/Chat/ConversationsList";
@@ -25,8 +25,15 @@ import {
 	isShareContactDialogueOpen,
 	isStartNewConversationDialogueOpen,
 	isVideoViewerDialogueOpen,
+	strQueries,
 } from "redux/chat/chatSelectors";
-import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import { setConversationData, setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import { useLazyGetConversationListsQuery } from "services/chat";
+import Loader from "components/UI/Loader";
+import { showToast } from "utils";
+// import { useLazyGetConversationListsQuery } from "services/meet";
+// import { useGetConversationListsQuery } from "services/chat";
+// import { useGetConversationListsQuery } from "services/texting";
 
 const Chat = () => {
 	const dispatch = useDispatch();
@@ -40,25 +47,69 @@ const Chat = () => {
 	const documentViewerDialogueOpen = useSelector(isDocumentViewerDialogueOpen);
 	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+	const strQuery = useSelector(strQueries);
+
+	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
+		useLazyGetConversationListsQuery();
+	// const [getCallHistories, { data: historyData, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
 
 	const [isDeleteChatLoading, setIsDeleteChatLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getConversationLists(strQuery);
+
+			if (data) {
+				// console.log(data, "data");
+
+				dispatch(setConversationLists(data));
+			}
+
+			if (error) {
+				// console.log("getting error in fetching conversations list API");
+				showToast("There is error in fetching Conversation Lists, please try again later  ", "error");
+			} else {
+				// console.log("====================================");
+				// console.log("succes in fetching conversation api");
+				// console.log("====================================");
+				// dispatch(setConversationData(conversationListsData));
+			}
+		};
+		fetchData();
+	}, []);
+
+	// useEffect(() => {
+	// 	dispatch(setConversationData(conversationListsData));
+	// }, [conversationListsData !== undefined]);
+
+	// if (conversationListsData !== undefined) {
+	// 	dispatch(setConversationData(conversationListsData));
+	// }
 
 	const deleteConversationsHandler = () => {
 		setIsDeleteChatLoading(true);
 		dispatch(setIsDeleteConversationDialogueOpen(false));
 	};
 
+	// console.log(strQuery, "strQuery");
+	// console.log(conversationListsData);
+
+	// console.log("====================================");
+	// console.log(conversationListsData);
+	// console.log(conversationsLists, "from redux");
+
+	// console.log("====================================");
 	return (
 		<div className={`pagePopUp`}>
 			<BaseLayout>
 				<div className={styles.noMessageBox}>
-					{conversationsLists.length === 0 ? (
+					{conversationsLists?.length > 0 ? (
 						<section className={styles.contact_container}>
 							<ConversationsList />
 							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
-						<NoMessages />
+						<>{isFetching1 ? <Loader /> : <NoMessages />}</>
 					)}
 				</div>
 			</BaseLayout>

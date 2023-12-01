@@ -68,9 +68,21 @@
 	padding: 11px 16px;
 }
 
-.close {
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	// padding: 7px;
+	border-radius: 8px;
 	cursor: pointer;
+
+	width: 32px;
+	height: 32px;
 	// background-color: red;
+
+	&:hover {
+		background-color: var(--background-active);
+	}
 }
 
 .initials {
@@ -150,6 +162,7 @@
 .iconBox {
 	display: flex;
 	align-items: center;
+	gap: 5px;
 }
 
 .icon {
@@ -233,5 +246,17 @@
 	.box {
 		width: 90%;
 		height: 90%;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.footer {
+		gap: 10px;
+	}
+
+	.left {
+		display: flex;
+		gap: 10px;
+		align-items: center;
 	}
 }

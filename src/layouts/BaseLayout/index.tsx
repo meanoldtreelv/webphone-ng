@@ -11,6 +11,7 @@ import BottomNav from "components/shared/BottomNav";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 import InboundCall from "components/shared/InboundCall";
+import { ToastContainer } from "react-toastify";
 
 const BaseLayout = ({ children }: any) => {
 	const dispNotification = useSelector(notification);
@@ -29,6 +30,7 @@ const BaseLayout = ({ children }: any) => {
 	const location = useLocation();
 	return (
 		<div className={`${styles.wrapper}`}>
+			<ToastContainer />
 			{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
