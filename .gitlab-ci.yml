@@ -41,6 +41,6 @@ deploy:
     - docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY}
     - &kubectl_change_context kubectl config use-context "${KUBECONFIG_CONTEXT}" --kubeconfig="${KUBECONFIG}"
   script:
-#    - kubectl delete -f deployment.yml
+    - kubectl delete -f deployment.yml
     - sed -i -e "s/latest/$IMAGE_TAG/g" deployment.yml
     - kubectl apply -f deployment.yml
