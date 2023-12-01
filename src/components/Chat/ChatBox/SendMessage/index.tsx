@@ -1,9 +1,9 @@
 import styles from "./SendMessage.module.scss";
 
-const SendMessage = () => {
+const SendMessage = ({ text }) => {
 	return (
 		<div className={styles.sendChat}>
-			<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
+			<span> {text}</span>
 		</div>
 	);
 };

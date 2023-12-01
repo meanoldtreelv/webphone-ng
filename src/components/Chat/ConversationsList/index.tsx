@@ -31,7 +31,6 @@ const ConversationsList = () => {
 
 	const [sortingIconHover, setSortingIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(20);
 	const [endOfTheList, setEndOfTheList] = useState(false);
@@ -78,29 +77,6 @@ const ConversationsList = () => {
 
 		if (scrollTop + clientHeight >= scrollHeight) {
 			setPage(page + 1);
-			// console.log("scolling happen");
-
-			// const voicemailsJson = localStorage?.getItem("voicemails");
-			// let voicemailsParsed: [];
-
-			// try {
-			// 	voicemailsParsed = JSON.parse(String(voicemailsJson));
-			// } catch (e) {
-			// 	voicemailsParsed = [];
-			// }
-
-			// if (voicemailsParsed?.length === page * 20) {
-			// 	dispatch(
-			// 		setVoicemailQueries({
-			// 			page: Math.ceil(voicemailsParsed?.length / 80 + 1),
-			// 			page_size: 80,
-			// 		}),
-			// 	);
-			// } else {
-			// 	if (voicemailsParsed?.length > page * 20) {
-			// 		setPage(page + 1);
-			// 	}
-			// }
 		}
 	};
 
@@ -117,7 +93,6 @@ const ConversationsList = () => {
 				const { error, data } = await getConversationLists(searchStrQuery);
 
 				if (data) {
-					// console.log("data");
 					if (data?.length < perPage) {
 						setEndOfTheList(true);
 					}
@@ -143,8 +118,6 @@ const ConversationsList = () => {
 				const { error, data } = await getConversationLists(searchStrQuery);
 
 				if (data) {
-					// console.log("data");
-
 					const newLists = [...searchedConversationLists, ...data];
 
 					setSearchedConversationLists(newLists);
@@ -160,10 +133,6 @@ const ConversationsList = () => {
 			fetchData();
 		}
 	}, [page]);
-
-	// console.log(isLoading1, "loading1");
-	// console.log(isFetching1, "isFetching1");
-	// console.log(isError1, "setIsErr1");
 
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
@@ -237,7 +206,6 @@ const ConversationsList = () => {
 									.map((item, index) => (
 										<ContactCardSkeleton key={index} />
 									))}
-								{/* <span>Loading...</span> */}
 							</>
 						) : (
 							<>
@@ -259,24 +227,7 @@ const ConversationsList = () => {
 							{isError1 && <span className={styles.err}>Something went wrong, please try again later</span>}
 						</div>
 					))}
-				{/* {searchText.length > 0 &&
-					(isFetching1 ? (
-						<>
-							{Array(16)
-								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
-								))}
-						</>
-					) : searchedConversationLists?.length > 0 ? (
-						<>{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : (
-						<div className={styles.noSearchResult}>
-							<SearchResultIcon />
-							<p>No Search Result</p>
-							{isError1 && <span className={styles.err}>Something went wrong, please try again later</span>}
-						</div>
-					))} */}
+
 				{searchText.length === 0 &&
 					(isFetching1 ? (
 						<>
@@ -286,26 +237,10 @@ const ConversationsList = () => {
 								.map((item, index) => (
 									<ContactCardSkeleton key={index} />
 								))}
-							{/* <span>Loading...</span> */}
 						</>
 					) : (
 						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
 					))}
-				{/* {searchText.length === 0 &&
-					(conversationsLists?.length > 0 ? (
-						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : isFetching1 ? (
-						<>
-							{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
-							{Array(16)
-								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
-								))}
-						</>
-					) : (
-						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					))} */}
 			</div>
 		</div>
 	);

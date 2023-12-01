@@ -15,6 +15,7 @@ import DocumentViewer from "components/Chat/Viewer/DocumentViewer";
 import ShareContactDialogue from "components/Chat/ShareContactDialogue";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	conversationData,
 	conversationLists,
 	isAddMemberDialogueOpen,
 	isAudioViewerDialogueOpen,
@@ -27,13 +28,10 @@ import {
 	isVideoViewerDialogueOpen,
 	strQueries,
 } from "redux/chat/chatSelectors";
-import { setConversationData, setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
-import { useLazyGetConversationListsQuery } from "services/chat";
+import { setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import { useLazyDeleteMessagesQuery, useLazyGetConversationListsQuery } from "services/chat";
 import Loader from "components/UI/Loader";
 import { showToast } from "utils";
-// import { useLazyGetConversationListsQuery } from "services/meet";
-// import { useGetConversationListsQuery } from "services/chat";
-// import { useGetConversationListsQuery } from "services/texting";
 
 const Chat = () => {
 	const dispatch = useDispatch();
@@ -47,58 +45,51 @@ const Chat = () => {
 	const documentViewerDialogueOpen = useSelector(isDocumentViewerDialogueOpen);
 	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+	const conversationDatas = useSelector(conversationData);
 	const strQuery = useSelector(strQueries);
 
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
-	// const [getCallHistories, { data: historyData, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
-
-	const [isDeleteChatLoading, setIsDeleteChatLoading] = useState(false);
+	const [deleteMessages, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteMessagesQuery();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			const { error, data } = await getConversationLists(strQuery);
 
 			if (data) {
-				// console.log(data, "data");
-
 				dispatch(setConversationLists(data));
 			}
 
 			if (error) {
-				// console.log("getting error in fetching conversations list API");
 				showToast("There is error in fetching Conversation Lists, please try again later  ", "error");
-			} else {
-				// console.log("====================================");
-				// console.log("succes in fetching conversation api");
-				// console.log("====================================");
-				// dispatch(setConversationData(conversationListsData));
 			}
 		};
+
 		fetchData();
 	}, []);
 
-	// useEffect(() => {
-	// 	dispatch(setConversationData(conversationListsData));
-	// }, [conversationListsData !== undefined]);
+	const deleteStrQueries = new URLSearchParams({
+		ids: ["abcd", "efg"],
+	}).toString();
 
-	// if (conversationListsData !== undefined) {
-	// 	dispatch(setConversationData(conversationListsData));
-	// }
+	const deleteMessage = async () => {
+		const { error, data } = await deleteMessages({
+			conversation_id: conversationDatas?.id,
+			message_id_list: "",
+		});
 
-	const deleteConversationsHandler = () => {
-		setIsDeleteChatLoading(true);
-		dispatch(setIsDeleteConversationDialogueOpen(false));
+		if (error) {
+			showToast("There is error in deleting text msg , please try again later  ", "error");
+		} else {
+			showToast("message deleted successfully", "info");
+			dispatch(setIsDeleteConversationDialogueOpen(false));
+		}
 	};
 
-	// console.log(strQuery, "strQuery");
-	// console.log(conversationListsData);
+	const deleteConversationsHandler = () => {
+		deleteMessage();
+	};
 
-	// console.log("====================================");
-	// console.log(conversationListsData);
-	// console.log(conversationsLists, "from redux");
-
-	// console.log("====================================");
 	return (
 		<div className={`pagePopUp`}>
 			<BaseLayout>
@@ -119,7 +110,7 @@ const Chat = () => {
 					title="Delete Conversations"
 					actionBtnTxt="Delete"
 					onClick={deleteConversationsHandler}
-					loading={isDeleteChatLoading}>
+					loading={isLoading2}>
 					Are you sure that you want to delete conversation ?
 				</PromptDialog>
 			)}

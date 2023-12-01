@@ -6,25 +6,50 @@ import SendTime from "./SendTime";
 import SendMessage from "./SendMessage";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
-import { useState } from "react";
-import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
-import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
-import ThreeDots from "components/UI/Icons/meet/ThreeDots";
+import { useEffect, useState } from "react";
 import SendVideo from "./SendVideo";
 import ReceiveVideo from "./ReceiveVideo";
-import SoundWaves1 from "../../../assets/images/img/sound_wave_receive.svg";
-import SoundWaves2 from "../../../assets/images/img/sound_wave_send.svg";
 import SendAudio from "./SendAudio";
 import ReceiveAudio from "./ReceiveAudio";
-import DocImg from "../../../assets/images/img/doc.svg";
 import SendDoc from "./SendDoc";
 import ReceiveDoc from "./ReceiveDoc";
-import ContactDetailsPopUp from "./ContactDetailsPopup";
 import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
+import { useLazyGetMessagesListsQuery } from "services/chat";
+import { showToast } from "utils";
+import { useSelector } from "react-redux";
+import { conversationData } from "redux/chat/chatSelectors";
+import Loader from "components/UI/Loader";
 
 const ChatBox = () => {
+	const conversationDatas = useSelector(conversationData);
+
+	const [getMessagesLists, { data, isFetching: isFetching1, isLoading: isLoading1 }] = useLazyGetMessagesListsQuery();
+
 	const [imgSelected, setImgSelected] = useState(false);
+	const [perPage, setPerPage] = useState(30);
+	const [messageList, setMessageList] = useState([]);
+
+	useEffect(() => {
+		const searchStrQuery = new URLSearchParams({
+			page: 1,
+			per_page: perPage,
+		}).toString();
+
+		const fetchData = async () => {
+			const { error, data } = await getMessagesLists({ id: conversationDatas?.id, queries: searchStrQuery });
+
+			if (data) {
+				setMessageList(data);
+			}
+
+			if (error) {
+				showToast("There is error in fetching Conversation text Lists, please try again later  ", "error");
+			}
+		};
+		fetchData();
+	}, [conversationDatas]);
+
 	return (
 		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>
 			<ReceiveTime />
@@ -53,202 +78,51 @@ const ChatBox = () => {
 			<SendContact />
 			<ReceiveTime />
 			<ReceiveContact />
-			<div className={styles.info}>
-				<span> Conversation with +1(635) 071 0331 created!</span>
-			</div>
-			<div className={styles.sendTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.sendChat}>
-				<span> send test chat </span>
-			</div>
-			<div className={styles.receiveTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.receiveChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.receiveChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.sendTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.sendChat}>
-				<span>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto tenetur ratione odio in! Labore ratione,
-					laboriosam laudantium esse dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis,
-					aspernatur laboriosam.
-				</span>
-			</div>
-			<div className={styles.sendTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.sendChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveChat}>
-				<span>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto tenetur ratione odio in! Labore ratione,
-					laboriosam laudantium esse dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis,
-					aspernatur laboriosam. thank you &#129392;
-				</span>
-			</div>
-			<div className={styles.receiveTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.receiveImg}>
-				<span>
-					<img src="/img/dummy/dummy_video.png" alt=""></img>
-				</span>
-			</div>
-			<div className={styles.receiveVideo}>
-				<span>
-					<img src="/img/dummy/dummy_video.png" alt="" />
-					<span className={styles.btnPlay}>
-						<BtnPlay />
-					</span>
-					<span className={styles.duration}>01:30</span>
-				</span>
-			</div>
-			<div className={styles.receiveImg}>
-				<span>
-					<img src="/img/dummy/profile.png" alt=""></img>
-				</span>
-			</div>
-			<div className={styles.sendTime}>
-				<span> 02:30AM</span>
-			</div>
-			<div className={styles.sendVideo}>
-				<span>
-					<img src="/img/dummy/profile.png" alt="" />
-					<span className={styles.btnPlay}>
-						<BtnPlay />
-					</span>
-					<span className={styles.duration}>01:30</span>
-				</span>
-			</div>
-			<div className={styles.receiveDoc}>
-				<div>
-					<span>
-						<img src={DocImg} alt="" />
-					</span>
-					<span className={styles.details}>
-						<span>Pricing sheet .......... 2022.dox</span>
-						<b>127 kb</b>
-					</span>
+			{isFetching1 ? (
+				<div className={styles.loader}>
+					<Loader />
 				</div>
-			</div>
-			<div className={styles.sendDoc}>
-				<div>
-					<span>
-						<img src={DocImg} alt="" />
-					</span>
-					<span className={styles.details}>
-						<span>Pricing sheet 2022.dox</span>
-						<b>127 kb</b>
-					</span>
-				</div>
-			</div>
-			<div className={styles.sendChat}>
-				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveAudio}>
-				<div className={styles.audio}>
-					<PlayerPlay color="primary-default" />
-					<div>
-						<img src={SoundWaves1} alt="" />
-						<span className={styles.soundDetails}>
-							<span>Call record 2402.wav</span>
-							<span className={styles.duration}>01:30</span>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.sendAudio}>
-				<div className={styles.audio}>
-					<PlayerPlay color="icon-on-color" />
-					<div>
-						<img src={SoundWaves2} alt="" />
-						<span className={styles.soundDetails}>
-							<span>Call record 2402.wav</span>
-							<span className={styles.duration}>01:30</span>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.sendContact}>
-				<div className={styles.contactBox}>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-						{true && <ContactDetailsPopUp />}
-					</div>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta Delhi India </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.receiveContact}>
-				<div className={styles.contactBox}>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-						{false && <ContactDetailsPopUp />}
-					</div>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta Delhi India </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.sendImg}>
-				<span>
-					<img src="/img/dummy/video_call.jpeg" alt=""></img>
-				</span>
-			</div>
+			) : (
+				<>
+					{messageList
+						?.slice()
+						.reverse()
+						.map((item) => {
+							if (item?.direction === "inbound") {
+								if (item?.text) {
+									return (
+										<>
+											<ReceiveTime time={item?.created_at} />
+											<ReceiveMessage text={item?.text} />
+										</>
+									);
+								}
+							}
+							if (item?.direction === "outbound") {
+								if (item?.text) {
+									return (
+										<>
+											<SendTime time={item?.created_at} />
+											<SendMessage text={item?.text} />
+										</>
+									);
+								}
+								// if (item.files.length > 0) {
+								// 	item?.files?.map((data) => {
+								// 		if (data?.mimetype === "image/jpeg") {
+								// 			return (
+								// 				<>
+								// 					<SendTime time={data?.uploaded_at} />
+								// 					<SendImg src={data?.preview?.base64} />
+								// 				</>
+								// 			);
+								// 		}
+								// 	});
+								// }
+							}
+						})}
+				</>
+			)}
 		</div>
 	);
 };
