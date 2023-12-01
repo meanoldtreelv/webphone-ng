@@ -5,9 +5,15 @@ import GroupIcon from "components/UI/Icons/ChatIcons/Group";
 import { useDispatch } from "react-redux";
 import { setConversationData, setIsConversationSelected } from "redux/chat/chatSlice";
 import { limitCharacter } from "helpers";
+import { contactAbbreviation } from "utils";
+import { recentDateFormat } from "helpers/formatDateTime";
 
 const ConversationsCard: React.FC = ({ conversationData }) => {
 	const dispatch = useDispatch();
+
+	const first_name = conversationData?.contactsinfo?.[0]?.first_name;
+	const last_name = conversationData?.contactsinfo?.[0]?.last_name;
+	const phone = conversationData?.contactsinfo?.[0]?.number;
 	return (
 		<button
 			className={styles.contact}
@@ -20,7 +26,14 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 					<GroupIcon />
 				</span>
 			) : (
-				<span className={styles.contact_circle}>BD</span>
+				<span className={styles.contact_circle}>
+					{contactAbbreviation(
+						conversationData?.contactsinfo?.[0]?.first_name,
+						conversationData?.contactsinfo?.[0]?.last_name,
+						conversationData?.contactsinfo?.[0]?.number,
+						"",
+					)}
+				</span>
 			)}
 
 			<div className={styles.contact_name}>
@@ -28,9 +41,11 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 					<span className={styles.name}>
 						{conversationData?.conversation_type === "group"
 							? conversationData?.campaign_info?.name
-							: conversationData?.contactsinfo?.[0]?.first_name + " " + conversationData?.contactsinfo?.[0]?.last_name}
+							: first_name + last_name
+							? first_name + " " + last_name
+							: phone}
 					</span>
-					<span className={styles.dateTime}>{conversationData?.last_message_created_at}</span>
+					<span className={styles.dateTime}>{recentDateFormat(conversationData?.last_message_created_at)}</span>
 				</div>
 				<div>
 					<span className={styles.msg}>

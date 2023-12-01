@@ -30,6 +30,7 @@ import {
 import { setConversationData, setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
 import { useLazyGetConversationListsQuery } from "services/chat";
 import Loader from "components/UI/Loader";
+import { showToast } from "utils";
 // import { useLazyGetConversationListsQuery } from "services/meet";
 // import { useGetConversationListsQuery } from "services/chat";
 // import { useGetConversationListsQuery } from "services/texting";
@@ -59,17 +60,18 @@ const Chat = () => {
 			const { error, data } = await getConversationLists(strQuery);
 
 			if (data) {
-				console.log(data, "data");
+				// console.log(data, "data");
 
 				dispatch(setConversationLists(data));
 			}
 
 			if (error) {
-				console.log("getting error in fetching conversations list API");
+				// console.log("getting error in fetching conversations list API");
+				showToast("There is error in fetching Conversation Lists, please try again later  ", "error");
 			} else {
-				console.log("====================================");
-				console.log("succes in fetching conversation api");
-				console.log("====================================");
+				// console.log("====================================");
+				// console.log("succes in fetching conversation api");
+				// console.log("====================================");
 				// dispatch(setConversationData(conversationListsData));
 			}
 		};
@@ -92,11 +94,11 @@ const Chat = () => {
 	// console.log(strQuery, "strQuery");
 	// console.log(conversationListsData);
 
-	console.log("====================================");
-	console.log(conversationListsData);
-	console.log(conversationsLists, "from redux");
+	// console.log("====================================");
+	// console.log(conversationListsData);
+	// console.log(conversationsLists, "from redux");
 
-	console.log("====================================");
+	// console.log("====================================");
 	return (
 		<div className={`pagePopUp`}>
 			<BaseLayout>

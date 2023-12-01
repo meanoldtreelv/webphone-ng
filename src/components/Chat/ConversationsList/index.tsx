@@ -10,10 +10,14 @@ import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SearchBar from "components/UI/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsSortingMessagePopUpOpen, setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
-import { conData } from "components/Data/conversationListData";
+import {
+	setConversationLists,
+	setIsSortingMessagePopUpOpen,
+	setIsStartNewConversationDialogueOpen,
+} from "redux/chat/chatSlice";
 import { conversationLists, isSortingMessagePopUpOpen } from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
+import { showToast } from "utils";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
@@ -27,20 +31,24 @@ const ConversationsList = () => {
 
 	const [sortingIconHover, setSortingIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
-	// const [searchListData, setSearchListData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [page, setPage] = useState(1);
+	const [perPage, setPerPage] = useState(20);
+	const [endOfTheList, setEndOfTheList] = useState(false);
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedConversationLists, setSearchedConversationLists] = useState([]);
 
 	useEffect(() => {
+		setEndOfTheList(false);
 		if (!searchText) {
 			return;
 		}
+		setPage(1);
 		setSearchedConversationLists([]);
 		const searchStrQuery = new URLSearchParams({
 			page: 1,
-			per_page: 20,
+			per_page: perPage,
 			search: searchText,
 			sort: "last_activity",
 		}).toString();
@@ -49,21 +57,113 @@ const ConversationsList = () => {
 			const { error, data } = await getConversationLists(searchStrQuery);
 
 			if (data) {
-				console.log(data, "data");
 				setSearchedConversationLists(data);
 			}
 
 			if (error) {
-				console.log("getting error in fetching search conversations list API");
+				showToast("There is an error in searching Conversation Lists, please try again later", "error");
 			}
 		};
 		fetchData();
 	}, [searchText]);
 
-	console.log(isLoading1, "loading");
-	console.log(isFetching1, "isFetching");
-	console.log(searchText?.length, "searchtext");
-	console.log(isError1, "setIsErr1");
+	const handleScroll = (e: any) => {
+		if (endOfTheList) return;
+		if (isFetching1) {
+			return;
+		}
+		const scrollTop = e.target.scrollTop;
+		const scrollHeight = e.target.scrollHeight;
+		const clientHeight = e.target.clientHeight;
+
+		if (scrollTop + clientHeight >= scrollHeight) {
+			setPage(page + 1);
+			// console.log("scolling happen");
+
+			// const voicemailsJson = localStorage?.getItem("voicemails");
+			// let voicemailsParsed: [];
+
+			// try {
+			// 	voicemailsParsed = JSON.parse(String(voicemailsJson));
+			// } catch (e) {
+			// 	voicemailsParsed = [];
+			// }
+
+			// if (voicemailsParsed?.length === page * 20) {
+			// 	dispatch(
+			// 		setVoicemailQueries({
+			// 			page: Math.ceil(voicemailsParsed?.length / 80 + 1),
+			// 			page_size: 80,
+			// 		}),
+			// 	);
+			// } else {
+			// 	if (voicemailsParsed?.length > page * 20) {
+			// 		setPage(page + 1);
+			// 	}
+			// }
+		}
+	};
+
+	useEffect(() => {
+		if (searchText?.length === 0) {
+			if (page === 1) return;
+			const searchStrQuery = new URLSearchParams({
+				page: page,
+				per_page: perPage,
+				sort: "last_activity",
+			}).toString();
+
+			const fetchData = async () => {
+				const { error, data } = await getConversationLists(searchStrQuery);
+
+				if (data) {
+					// console.log("data");
+					if (data?.length < perPage) {
+						setEndOfTheList(true);
+					}
+					const newLists = [...conversationsLists, ...data];
+
+					dispatch(setConversationLists(newLists));
+				}
+
+				if (error) {
+					showToast("There is an error in fetching Conversation Lists, please try again later", "error");
+				}
+			};
+			fetchData();
+		} else {
+			const searchStrQuery = new URLSearchParams({
+				page: page,
+				per_page: perPage,
+				sort: "last_activity",
+				search: searchText,
+			}).toString();
+
+			const fetchData = async () => {
+				const { error, data } = await getConversationLists(searchStrQuery);
+
+				if (data) {
+					// console.log("data");
+
+					const newLists = [...searchedConversationLists, ...data];
+
+					setSearchedConversationLists(newLists);
+					if (data?.length < perPage) {
+						setEndOfTheList(true);
+					}
+				}
+
+				if (error) {
+					showToast("There is an error in fetching Search Conversation Lists, please try again later", "error");
+				}
+			};
+			fetchData();
+		}
+	}, [page]);
+
+	// console.log(isLoading1, "loading1");
+	// console.log(isFetching1, "isFetching1");
+	// console.log(isError1, "setIsErr1");
 
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
@@ -101,7 +201,6 @@ const ConversationsList = () => {
 								}}>
 								<CloseIcon />
 							</span>
-							{/* {sortingMessagePopUpOpen && <ConversationsSortingPopUp />} */}
 						</p>
 					) : (
 						<p className={styles.contact_favorites}>
@@ -127,8 +226,40 @@ const ConversationsList = () => {
 					)}
 				</div>
 			</div>
-			<div className={styles.contact_lists}>
+			<div className={styles.contact_lists} onScroll={handleScroll}>
 				{searchText.length > 0 &&
+					(searchedConversationLists?.length > 0 ? (
+						isFetching1 ? (
+							<>
+								{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
+								{Array(2)
+									.fill(null)
+									.map((item, index) => (
+										<ContactCardSkeleton key={index} />
+									))}
+								{/* <span>Loading...</span> */}
+							</>
+						) : (
+							<>
+								{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
+							</>
+						)
+					) : isFetching1 ? (
+						<>
+							{Array(16)
+								.fill(null)
+								.map((item, index) => (
+									<ContactCardSkeleton key={index} />
+								))}
+						</>
+					) : (
+						<div className={styles.noSearchResult}>
+							<SearchResultIcon />
+							<p>No Search Result</p>
+							{isError1 && <span className={styles.err}>Something went wrong, please try again later</span>}
+						</div>
+					))}
+				{/* {searchText.length > 0 &&
 					(isFetching1 ? (
 						<>
 							{Array(16)
@@ -145,9 +276,22 @@ const ConversationsList = () => {
 							<p>No Search Result</p>
 							{isError1 && <span className={styles.err}>Something went wrong, please try again later</span>}
 						</div>
-					))}
-
+					))} */}
 				{searchText.length === 0 &&
+					(isFetching1 ? (
+						<>
+							{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
+							{Array(2)
+								.fill(null)
+								.map((item, index) => (
+									<ContactCardSkeleton key={index} />
+								))}
+							{/* <span>Loading...</span> */}
+						</>
+					) : (
+						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
+					))}
+				{/* {searchText.length === 0 &&
 					(conversationsLists?.length > 0 ? (
 						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
 					) : isFetching1 ? (
@@ -161,41 +305,7 @@ const ConversationsList = () => {
 						</>
 					) : (
 						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					))}
-				{/* {searchText.length === 0 &&
-					(isFetching1 ? (
-						<>
-							{Array(16)
-								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
-								))}
-						</>
-					) : searchedConversationLists?.length > 0 ? (
-						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : (
-						<></>
 					))} */}
-				{/* {searchText ? (
-					searchedConversationLists?.length > 0 ? (
-						<>{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : (
-						<div className={styles.noSearchResult}>
-							<SearchResultIcon />
-							<p>No Search Result</p>
-						</div>
-					)
-				) : isLoading ? (
-					<>
-						{Array(16)
-							.fill(null)
-							.map(() => (
-								<ContactCardSkeleton />
-							))}
-					</>
-				) : (
-					<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-				)} */}
 			</div>
 		</div>
 	);
