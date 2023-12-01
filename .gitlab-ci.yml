@@ -1,0 +1,46 @@
+variables:
+  DOCKER_REGISTRY: ${JFROG} 
+  DOCKER_REGISTRY_USER: ${JFROG_USER}
+  DOCKER_REGISTRY_PASSWORD: ${JFROG_PASSWORD}
+
+workflow:
+  rules:
+  - if: $CI_COMMIT_BRANCH == 'testing'
+    variables:
+      ENVIRONMENT: testing
+      KUBECONFIG_CONTEXT: testing
+      KUBERNETES_NAMESPACE: default
+      IMAGE_TAG: $CI_COMMIT_SHA
+  
+stages:
+  - build
+  - push
+  - deploy
+
+
+build:
+  stage: build
+  script:
+    - echo $IMAGE_TAG
+    - echo $DOCKER_REGISTRY
+    - echo $CI_COMMIT_REF_SLUG
+    - echo $CI_PROJECT_NAME
+    - echo $CI_PIPELINE_ID
+    - docker build -t $DOCKER_REGISTRY/testing/$CI_PROJECT_NAME:${IMAGE_TAG} .
+    
+push:
+  stage: push
+  before_script:
+    - docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY}
+  script:
+    - docker push $DOCKER_REGISTRY/testing/$CI_PROJECT_NAME:${IMAGE_TAG}
+  
+deploy:
+  stage: deploy
+  before_script:
+    - docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY}
+    - &kubectl_change_context kubectl config use-context "${KUBECONFIG_CONTEXT}" --kubeconfig="${KUBECONFIG}"
+  script:
+#    - kubectl delete -f deployment.yml
+    - sed -i -e "s/latest/$IMAGE_TAG/g" deployment.yml
+    - kubectl apply -f deployment.yml
