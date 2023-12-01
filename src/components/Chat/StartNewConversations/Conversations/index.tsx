@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styles from "./Conversations.module.scss";
-import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchBar from "components/UI/SearchBar";
 import ContactCard from "components/Contact/ContactCard";
 import FromNumberPopUp from "../../FromNumberPopUp";
+import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchIcon from "components/UI/Icons/Search";
 import ChatIcon from "components/UI/Icons/Chat";
 
@@ -26,7 +26,7 @@ const Conversations = () => {
 					onClick={() => {
 						setIsFromNumberPopUpOpen(!isFromNumberPopUpOpen);
 					}}>
-					987654321{" "}
+					987654321
 					<span className={`${isFromNumberPopUpOpen ? styles.active : ""}`}>
 						<ChevronDownIcon color={`${isFromNumberHovered || isFromNumberPopUpOpen ? "text-link" : "text-primary"}`} />
 					</span>
@@ -60,7 +60,7 @@ const Conversations = () => {
 						<div>Start Conversation with this number?</div>
 						<p>9876542872</p>
 						<button>
-							<ChatIcon />
+							<ChatIcon color="icon-on-color" />
 							<span>Start Conversation</span>
 						</button>
 					</div>

@@ -2,8 +2,12 @@ import { useState } from "react";
 import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
+import Group from "./Group";
+import { useDispatch } from "react-redux";
+import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
 
 const StartNewConversations = () => {
+	const dispatch = useDispatch();
 	const [tabActive, setTabActive] = useState("conversations");
 
 	return (
@@ -11,7 +15,11 @@ const StartNewConversations = () => {
 			<div className={styles.box}>
 				<div className={styles.header}>
 					<span>Start New Conversation</span>
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsStartNewConversationDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</div>
@@ -38,7 +46,8 @@ const StartNewConversations = () => {
 						Campaign
 					</span>
 				</div>
-				<Conversations />
+				{tabActive === "conversations" && <Conversations />}
+				{tabActive === "group" && <Group />}
 			</div>
 		</div>
 	);

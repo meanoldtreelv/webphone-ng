@@ -4,17 +4,17 @@ import { voicemailRoutes } from "./voicemail/routes";
 import { authRoutes } from "./auth/routes";
 import { conferenceRoutes } from "./conference/routes";
 import { callHistoryRoutes } from "./callHistory/routes";
-import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
-import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import { settingsRoutes } from "./settings/routes";
 import { sidecarRoutes } from "./sidecar/routes";
-import { meetRoutes } from "./meet/routes";
-import { getCookie } from "utils";
-import sip from "lib/sip";
-import { store } from "redux/store";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
+import { meetRoutes } from "./meet/routes";
+import { getCookie } from "utils";
+import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
+import Home from "./../pages/Home";
+import sip from "lib/sip";
+import { store } from "redux/store";
 
 const routes: RouteObject[] = [
 	{
