@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./ConversationsSortingPopUp.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationLists, setIsSortingMessagePopUpOpen, setQueries } from "redux/chat/chatSlice";
+import { setConversationLists } from "redux/chat/chatSlice";
 import { conversationLists } from "redux/chat/chatSelectors";
 import { filterUnreadMessagesToTop, sortConversationsByLastMessage } from "helpers";
 

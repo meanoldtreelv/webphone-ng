@@ -3,23 +3,49 @@ import styles from "./ConversationsFooter.module.scss";
 import AttachmentIcon from "components/UI/Icons/ChatIcons/Attachment";
 import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
 import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
-import CrossIcon from "components/UI/Icons/ChatIcons/Cross";
-import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
-import MusicIcon from "components/UI/Icons/ChatIcons/Music";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
-import DocIcon from "components/UI/Icons/ChatIcons/Doc";
 import SelectedImg from "./SelectedImg";
 import SelectedVideo from "./SelectedVideo";
 import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import SharePopUp from "./SharePopUp";
 import SelectedContact from "./SelectedContact";
+import { useLazySendOutboundMessageQuery } from "services/chat";
+import { useSelector } from "react-redux";
+import { conversationData } from "redux/chat/chatSelectors";
+import { showToast } from "utils";
 
 const ConversationsFooter = () => {
-	const [sendActive, setSendActive] = useState(true);
+	const conversationDatas = useSelector(conversationData);
+	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
+
+	const [text, setText] = useState("");
+
+	const sendData = async () => {
+		const { error, data } = await sendOutboundMessage({
+			id: conversationDatas?.id,
+			data: {
+				text: text,
+				with_warning: false,
+			},
+		});
+
+		if (data) {
+			setText("");
+			showToast("message send successfully", "info");
+		}
+
+		if (error) {
+			showToast("There is error in sending text msg , please try again later  ", "error");
+		}
+	};
+
+	const sendMessageHandler = () => {
+		sendData();
+	};
 
 	return (
 		<>
@@ -61,14 +87,23 @@ const ConversationsFooter = () => {
 						/>
 					</span>
 					<div className={styles.inputBox}>
-						<input type="text" placeholder="Enter your message" />
+						<input
+							type="text"
+							placeholder="Enter your message"
+							value={text}
+							onChange={(e) => {
+								setText(e.target.value);
+							}}
+						/>
 						<span className={styles.icon}>
 							<MicrophoneIcon />
 						</span>
 					</div>
-					<div className={`${styles.send} ${sendActive ? styles.send_active : ""}`}>
+					<button
+						className={`${styles.send} ${text.length > 0 ? styles.send_active : ""}`}
+						onClick={sendMessageHandler}>
 						<AirplaneIcon color="icon-on-color" />
-					</div>
+					</button>
 				</div>
 				<div className={styles.bottom}>
 					{/* If img or video selected please dispatch an boolean action for padding bottom to chatBox */}
@@ -77,50 +112,6 @@ const ConversationsFooter = () => {
 					<SelectedAudio />
 					<SelectedDoc />
 					<SelectedContact />
-					{/* please don't use this component.this is for testing only, use the above component */}
-					{/* <div className={styles.selectedImg}>
-						<img src="/img/dummy/photo.jpg" alt="" />
-						<span>
-							<CrossIcon />
-						</span>
-					</div>
-					<div className={styles.selectedImg}>
-						<img src="/img/dummy/dummy_video.png" alt="" />
-						<span>
-							<CrossIcon />
-						</span>
-					</div>
-
-					<div className={styles.selectedVideo}>
-						<img src="/img/dummy/dummy_video.png" alt="" />
-						<span className={styles.close}>
-							<CrossIcon />
-						</span>
-						<span className={styles.btnPlay}>
-							<BtnPlay />
-						</span>
-					</div>
-					<div className={styles.selectedAudio}>
-						<MusicIcon />
-						<b>Call record 1309.wav</b>
-						<span>
-							<CrossIcon />
-						</span>
-					</div>
-					<div className={styles.selectedDoc}>
-						<DocIcon />
-						<b>Pricing sheet 2023.dox</b>
-						<span>
-							<CrossIcon />
-						</span>
-					</div>
-					<div className={styles.selectedContact}>
-						<p className={styles.initials}> SG</p>
-						<b>Shivam Gupta</b>
-						<span>
-							<CrossIcon />
-						</span>
-					</div> */}
 				</div>
 			</div>
 		</>
