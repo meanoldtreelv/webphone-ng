@@ -6,53 +6,17 @@ import SendTime from "./SendTime";
 import SendMessage from "./SendMessage";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
-import { useState } from "react";
-import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
-import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
-import ThreeDots from "components/UI/Icons/meet/ThreeDots";
-import SendVideo from "./SendVideo";
-import ReceiveVideo from "./ReceiveVideo";
-import SoundWaves1 from "../../../assets/images/img/sound_wave_receive.svg";
-import SoundWaves2 from "../../../assets/images/img/sound_wave_send.svg";
-import SendAudio from "./SendAudio";
-import ReceiveAudio from "./ReceiveAudio";
-import DocImg from "../../../assets/images/img/doc.svg";
-import SendDoc from "./SendDoc";
-import ReceiveDoc from "./ReceiveDoc";
-import ContactDetailsPopUp from "./ContactDetailsPopup";
-import SendContact from "./SendContact";
-import ReceiveContact from "./ReceiveContact";
 
 const ChatBox = () => {
-	const [imgSelected, setImgSelected] = useState(false);
 	return (
-		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>
+		<div className={styles.chatBox}>
 			<ReceiveTime />
 			<InfoMessage />
-			<SendTime />
-			<SendMessage />
-			<ReceiveTime />
 			<ReceiveMessage />
-			<SendTime />
-			<SendImg />
-			<ReceiveTime />
 			<ReceiveImg />
 			<SendTime />
-			<SendVideo />
-			<ReceiveTime />
-			<ReceiveVideo />
-			<SendTime />
-			<SendAudio />
-			<ReceiveTime />
-			<ReceiveAudio />
-			<SendTime />
-			<SendDoc />
-			<ReceiveTime />
-			<ReceiveDoc />
-			<SendTime />
-			<SendContact />
-			<ReceiveTime />
-			<ReceiveContact />
+			<SendMessage />
+			<SendImg />
 			<div className={styles.info}>
 				<span> Conversation with +1(635) 071 0331 created!</span>
 			</div>
@@ -111,15 +75,6 @@ const ChatBox = () => {
 					<img src="/img/dummy/dummy_video.png" alt=""></img>
 				</span>
 			</div>
-			<div className={styles.receiveVideo}>
-				<span>
-					<img src="/img/dummy/dummy_video.png" alt="" />
-					<span className={styles.btnPlay}>
-						<BtnPlay />
-					</span>
-					<span className={styles.duration}>01:30</span>
-				</span>
-			</div>
 			<div className={styles.receiveImg}>
 				<span>
 					<img src="/img/dummy/profile.png" alt=""></img>
@@ -128,121 +83,8 @@ const ChatBox = () => {
 			<div className={styles.sendTime}>
 				<span> 02:30AM</span>
 			</div>
-			<div className={styles.sendVideo}>
-				<span>
-					<img src="/img/dummy/profile.png" alt="" />
-					<span className={styles.btnPlay}>
-						<BtnPlay />
-					</span>
-					<span className={styles.duration}>01:30</span>
-				</span>
-			</div>
-			<div className={styles.receiveDoc}>
-				<div>
-					<span>
-						<img src={DocImg} alt="" />
-					</span>
-					<span className={styles.details}>
-						<span>Pricing sheet .......... 2022.dox</span>
-						<b>127 kb</b>
-					</span>
-				</div>
-			</div>
-			<div className={styles.sendDoc}>
-				<div>
-					<span>
-						<img src={DocImg} alt="" />
-					</span>
-					<span className={styles.details}>
-						<span>Pricing sheet 2022.dox</span>
-						<b>127 kb</b>
-					</span>
-				</div>
-			</div>
 			<div className={styles.sendChat}>
 				<span> e dolor deleniti sequi sed, optio quaerat provident assumenda saepe. Omnis, aspernatur laboriosam.</span>
-			</div>
-			<div className={styles.receiveAudio}>
-				<div className={styles.audio}>
-					<PlayerPlay color="primary-default" />
-					<div>
-						<img src={SoundWaves1} alt="" />
-						<span className={styles.soundDetails}>
-							<span>Call record 2402.wav</span>
-							<span className={styles.duration}>01:30</span>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.sendAudio}>
-				<div className={styles.audio}>
-					<PlayerPlay color="icon-on-color" />
-					<div>
-						<img src={SoundWaves2} alt="" />
-						<span className={styles.soundDetails}>
-							<span>Call record 2402.wav</span>
-							<span className={styles.duration}>01:30</span>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.sendContact}>
-				<div className={styles.contactBox}>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-						{true && <ContactDetailsPopUp />}
-					</div>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta Delhi India </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className={styles.receiveContact}>
-				<div className={styles.contactBox}>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-						{false && <ContactDetailsPopUp />}
-					</div>
-					<div className={styles.contact}>
-						<div>
-							<span className={styles.initials}>SG</span>
-							<span className={styles.details}>
-								<span className={styles.name}>Shivam Gupta Delhi India </span>
-								<span className={styles.number}>987643131</span>
-							</span>
-						</div>
-						<span>
-							<ThreeDots />
-						</span>
-					</div>
-				</div>
 			</div>
 			<div className={styles.sendImg}>
 				<span>

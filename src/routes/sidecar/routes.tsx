@@ -1,3 +1,4 @@
+import React from "react";
 import { RouteObject } from "react-router-dom";
 import routePaths from "./../../constants/routes";
 import Sidecar from "./../../pages/Sidecar";

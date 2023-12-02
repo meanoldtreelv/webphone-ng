@@ -199,7 +199,7 @@ const VoicemailFooter = () => {
 
 							<div className={styles.footer_duration}>
 								<p className={`${styles.footer_totalDuration} ${styles.footer_timeProgress}`}>
-									{formatTime(timeProgress)}
+									{formatTime(timeProgress)}{" "}
 								</p>
 								<p className={styles.footer_timeSlash}>/</p>
 								<p className={styles.footer_totalDuration}>{formatTime(duration)}</p>

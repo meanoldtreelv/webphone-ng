@@ -30,9 +30,9 @@ export const axiosBaseQuery =
 				// await axios.post('https://b2clogin.ringplan.com/refresh-token')
 				await axiosInstance
 					.post("/refresh-token")
-					.then((resp) => console.log("this is your response in refresh token", resp))
+					.then((resp) => console.log("this is your response"))
 					.catch((e) => {
-						console.log("this is your error message in refresh token", e);
+						console.log("this is your error message", e);
 					});
 			}
 

@@ -14,7 +14,7 @@ import DeleteMeet from "components/meet/DeleteMeet";
 import EditMeet from "components/meet/EditMeet";
 import MeetRecordingDialogue from "components/meet/MeetRecordingDialogue";
 import { useLazyGetCalendarQuery } from "services/meet";
-// import { GetCalendar } from "effects/apiEffect";
+import { GetCalendar } from "effects/apiEffect";
 import { setCalendarType } from "redux/meet/meetSlice";
 import {
 	calendarType,

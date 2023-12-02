@@ -69,6 +69,7 @@ const MeetRecordingDialogue = () => {
 				</h1>
 				{isFetching ? (
 					<div className={styles.loader}>
+						{" "}
 						<ClipLoader color="black" size={20} />
 					</div>
 				) : (

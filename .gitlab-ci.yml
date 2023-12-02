@@ -5,10 +5,10 @@ variables:
 
 workflow:
   rules:
-  - if: $CI_COMMIT_BRANCH == 'dev'
+  - if: $CI_COMMIT_BRANCH == 'master'
     variables:
-      ENVIRONMENT: dev
-      KUBECONFIG_CONTEXT: dev
+      ENVIRONMENT: prod
+      KUBECONFIG_CONTEXT: prod
       KUBERNETES_NAMESPACE: default
       IMAGE_TAG: $CI_COMMIT_SHA
   
@@ -26,14 +26,14 @@ build:
     - echo $CI_COMMIT_REF_SLUG
     - echo $CI_PROJECT_NAME
     - echo $CI_PIPELINE_ID
-    - docker build -t $DOCKER_REGISTRY/$CI_COMMIT_REF_SLUG/$CI_PROJECT_NAME:${IMAGE_TAG} .
+    - docker build -t $DOCKER_REGISTRY/prod/$CI_PROJECT_NAME:${IMAGE_TAG} .
     
 push:
   stage: push
   before_script:
     - docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY}
   script:
-    - docker push $DOCKER_REGISTRY/$CI_COMMIT_REF_SLUG/$CI_PROJECT_NAME:${IMAGE_TAG}
+    - docker push $DOCKER_REGISTRY/prod/$CI_PROJECT_NAME:${IMAGE_TAG}
   
 deploy:
   stage: deploy

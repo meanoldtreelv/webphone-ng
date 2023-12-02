@@ -3,12 +3,13 @@ const ChevronUpIcon = () => (
 		<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
 		<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
 		<g id="SVGRepo_iconCarrier">
+			{" "}
 			<path
 				d="M6 15L12 9L18 15"
 				stroke="var(--icon-primary)"
 				strokeWidth="2"
 				strokeLinecap="round"
-				strokeLinejoin="round"></path>
+				strokeLinejoin="round"></path>{" "}
 		</g>
 	</svg>
 );

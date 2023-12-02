@@ -18,7 +18,7 @@ spec:
         app: app-websoftphone
     spec:
       containers:
-      - image: docker-registry.ringplan.com/dev/ringplan_voice_pwa:latest
+      - image: docker-registry.ringplan.com/prod/ringplan_voice_pwa:latest
         name: websoftphone
         ports:
         - containerPort: 3000
@@ -42,7 +42,7 @@ metadata:
   name: webphone-ingress
 spec:
   rules:
-  - host: "webphone.dev.k8s"
+  - host: "webphone.prod.k8s"
     http:
       paths:
       - path: /
