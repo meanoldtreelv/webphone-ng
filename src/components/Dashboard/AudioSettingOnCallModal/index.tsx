@@ -10,12 +10,15 @@ const AudioSettingOnCallModal = ({
 	LineNumber,
 	volumeLevel,
 	callSpeakerDevice = "",
+	callMicrophoneDevice = "",
 }: {
 	LineNumber: number;
 	volumeLevel: number;
 	callSpeakerDevice?: string;
+	callMicrophoneDevice?: string;
 }) => {
 	const { speakerDevice } = useSelector((state: any) => state.sip);
+	const { microphoneDevice } = useSelector((state: any) => state.sip);
 	return (
 		<div className={styles.layer1}>
 			<div
@@ -68,7 +71,40 @@ const AudioSettingOnCallModal = ({
 											key={x.deviceId}
 											styles={{
 												justifyContent: "flex-start",
-												backgroundColor: callSpeakerDevice === x.value ? "#e3effa" : "",
+												backgroundColor: callSpeakerDevice === x.value ? "var(--background-active)" : "",
+											}}
+											border>
+											<div style={{ width: "100%" }}>
+												<span style={{ paddingLeft: "30px", float: "left" }}>{x.name}</span>
+												{/* <span style={{ paddingLeft: "30px", float: "right" }}>{x.value}</span> */}
+											</div>
+										</Button>
+									</div>
+								))}
+						</div>
+						<h2 className={`caption_1 `} style={{ marginTop: "24px" }}>Capture Devices</h2>
+						<div style={{ gap: "0.5rem", overflow: "auto", maxHeight: "18rem" }}>
+							{microphoneDevice
+								.map((x: any) => [{ name: x["label"], value: x["deviceId"] }])
+								.map((y: any) => y[0])
+								.map((x: any) => (
+									<div
+										style={{
+											gap: "0.5rem",
+											display: "flex",
+											flexDirection: "column",
+											overflow: "auto",
+											maxHeight: "18rem",
+											paddingTop: "12px",
+										}}>
+										<Button
+											onClick={() => {
+												sip.callMicrophoneDevice(LineNumber, x.value);
+											}}
+											key={x.deviceId}
+											styles={{
+												justifyContent: "flex-start",
+												backgroundColor: callMicrophoneDevice === x.value ? "var(--background-active)" : "",
 											}}
 											border>
 											<div style={{ width: "100%" }}>

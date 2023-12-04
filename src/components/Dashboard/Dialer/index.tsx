@@ -74,9 +74,10 @@ const Dialer = () => {
 								LineNumber={item.LineNumber}
 								volumeLevel={item.volumeLevel}
 								callSpeakerDevice={item.callSpeakerDevice}
+								callMicrophoneDevice={item.callMicrophoneDevice}
 							/>
 						)}
-						{(item.showConferenceCallsList) ? <ConferenceCallsList LineNumber={item.LineNumber} conferenceCallList={item.conferenceCallList}/> : null}
+						{(item.showConferenceCallsList) ? <ConferenceCallsList LineNumber={item.LineNumber} conferenceCallList={item.conferenceCallList} host2={{startTime:item.startTime, callTimer:item.callTimer, displayNumber:item.DisplayNumber, displayName: (item.DisplayName ? item.DisplayName : item.DisplayNumber)}} /> : null}
 						
 
 						<div
