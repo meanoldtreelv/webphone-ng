@@ -1,0 +1,24 @@
+.button {
+	display: inline-flex;
+	padding: 11px 12px;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
+
+	border-radius: 8px;
+	background: var(--primary-default, #0c6dc7);
+
+	color: var(--text-on-color, #fff);
+
+	/* Body/Bold */
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px; /* 142.857% */
+	letter-spacing: -0.5px;
+
+	span {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}

@@ -1,26 +1,38 @@
 <svg width="97" height="96" viewBox="0 0 97 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="RingPlan Voice Icon" clipPath="url(#clip0_997_86023)">
-<path id="Vector" d="M0.5 20.8C0.5 9.31248 9.81248 0 21.3 0H75.7C87.1875 0 96.5 9.31248 96.5 20.8V75.2C96.5 86.6875 87.1875 96 75.7 96H21.3C9.81248 96 0.5 86.6875 0.5 75.2V20.8Z" fill="#0C6DC7"/>
-<g id="Vector_2" filter="url(#filter0_d_997_86023)">
-<path d="M76.5 26.767C76.5 23.472 73.7902 20.7998 70.4492 20.7998C67.1079 20.7998 64.398 23.472 64.398 26.767C64.398 30.062 67.1079 32.7342 70.4492 32.7342C73.7902 32.7342 76.5 30.062 76.5 26.767Z" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M38.1912 57.5093L47.2444 71.1081C47.6153 71.6652 48.2401 71.9998 48.9093 71.9998H55.6331C57.2389 71.9998 58.19 70.2028 57.2869 68.875L48.4127 55.827C54.1337 53.6939 58.0595 49.1022 58.0595 41.792V41.6618C58.0595 37.3909 56.7117 33.8357 54.2001 31.3122C51.2449 28.3332 46.8058 26.7159 41.08 26.7159H22.5C21.3954 26.7159 20.5 27.6113 20.5 28.7159V69.9998C20.5 71.1044 21.3954 71.9998 22.5 71.9998H28.4059C29.5105 71.9998 30.4059 71.1044 30.4059 69.9998V57.5093H38.1912ZM40.2459 35.7086C45.067 35.7086 48.0265 37.9067 48.0265 42.1777V42.3078C48.0265 46.1233 45.2648 48.7119 40.439 48.7119H30.4059V35.7086H40.2459Z" fill="white"/>
-<path d="M75.713 39.3258C75.713 38.2213 74.8176 37.3258 73.713 37.3258H67.939C66.8344 37.3258 65.939 38.2213 65.939 39.3258V69.9998C65.939 71.1044 66.8344 71.9998 67.939 71.9998H73.713C74.8176 71.9998 75.713 71.1044 75.713 69.9998V39.3258Z" fill="white"/>
-</g>
-<circle id="Vector_3" cx="70.5" cy="26.8002" r="3.6" fill="#81D726"/>
-</g>
-<defs>
-<filter id="filter0_d_997_86023" x="17.5" y="18.7998" width="62" height="57.2002" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="1"/>
-<feGaussianBlur stdDeviation="1.5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.0885416 0 0 0 0 0.366811 0 0 0 0 0.625 0 0 0 1 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_997_86023"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_997_86023" result="shape"/>
-</filter>
-<clipPath id="clip0_997_86023">
-<rect width="96" height="96" fill="white" transform="translate(0.5)"/>
-</clipPath>
-</defs>
+    <g id="RingPlan Voice Icon" clipPath="url(#clip0_997_86023)">
+        <path id="Vector"
+            d="M0.5 20.8C0.5 9.31248 9.81248 0 21.3 0H75.7C87.1875 0 96.5 9.31248 96.5 20.8V75.2C96.5 86.6875 87.1875 96 75.7 96H21.3C9.81248 96 0.5 86.6875 0.5 75.2V20.8Z"
+            fill="#0C6DC7" />
+        <g id="Vector_2" filter="url(#filter0_d_997_86023)">
+            <path
+                d="M76.5 26.767C76.5 23.472 73.7902 20.7998 70.4492 20.7998C67.1079 20.7998 64.398 23.472 64.398 26.767C64.398 30.062 67.1079 32.7342 70.4492 32.7342C73.7902 32.7342 76.5 30.062 76.5 26.767Z"
+                fill="white" />
+            <path fillRule="evenodd" clipRule="evenodd"
+                d="M38.1912 57.5093L47.2444 71.1081C47.6153 71.6652 48.2401 71.9998 48.9093 71.9998H55.6331C57.2389 71.9998 58.19 70.2028 57.2869 68.875L48.4127 55.827C54.1337 53.6939 58.0595 49.1022 58.0595 41.792V41.6618C58.0595 37.3909 56.7117 33.8357 54.2001 31.3122C51.2449 28.3332 46.8058 26.7159 41.08 26.7159H22.5C21.3954 26.7159 20.5 27.6113 20.5 28.7159V69.9998C20.5 71.1044 21.3954 71.9998 22.5 71.9998H28.4059C29.5105 71.9998 30.4059 71.1044 30.4059 69.9998V57.5093H38.1912ZM40.2459 35.7086C45.067 35.7086 48.0265 37.9067 48.0265 42.1777V42.3078C48.0265 46.1233 45.2648 48.7119 40.439 48.7119H30.4059V35.7086H40.2459Z"
+                fill="white" />
+            <path
+                d="M75.713 39.3258C75.713 38.2213 74.8176 37.3258 73.713 37.3258H67.939C66.8344 37.3258 65.939 38.2213 65.939 39.3258V69.9998C65.939 71.1044 66.8344 71.9998 67.939 71.9998H73.713C74.8176 71.9998 75.713 71.1044 75.713 69.9998V39.3258Z"
+                fill="white" />
+        </g>
+        <circle id="Vector_3" cx="70.5" cy="26.8002" r="3.6" fill="#81D726" />
+    </g>
+    <defs>
+        <filter id="filter0_d_997_86023" x="17.5" y="18.7998" width="62" height="57.2002"
+            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feComposite in2="hardAlpha" operator="out" />
+            <feColorMatrix type="matrix"
+                values="0 0 0 0 0.0885416 0 0 0 0 0.366811 0 0 0 0 0.625 0 0 0 1 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_997_86023" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_997_86023"
+                result="shape" />
+        </filter>
+        <clipPath id="clip0_997_86023">
+            <rect width="96" height="96" fill="white" transform="translate(0.5)" />
+        </clipPath>
+    </defs>
 </svg>
