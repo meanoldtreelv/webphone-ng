@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import styles from "./Dialpad.module.scss";
 import Dialpad1Icon from "components/UI/Icons/Dialpad1";
 import Input from "components/UI/Forms/Input";
@@ -13,6 +13,8 @@ import dial_3 from "../../../assets/media/dial-3.wav";
 const Dialpad = ({ LineNumber }: { LineNumber?: number | undefined }) => {
 	const dispatch = useDispatch();
 	const number = useSelector(callNumber);
+	const [allContacts, setAllContacts] = useState<any>([]);
+	const [numberFound, setNumberFound] = useState<any>(null);
 	let longPress = false;
 	let startTime = 0;
 	let endTime = 0;
@@ -39,6 +41,25 @@ const Dialpad = ({ LineNumber }: { LineNumber?: number | undefined }) => {
 		audio.play();
 	};
 
+	useEffect(() => {
+		const contactsJson = localStorage?.getItem("contacts");
+		let contactsParsed: [];
+
+		try {
+			contactsParsed = JSON.parse(String(contactsJson))?.slice(0, 20);
+		} catch (e) {
+			contactsParsed = [];
+		}
+
+		if (contactsParsed && contactsParsed.length) {
+			setAllContacts(contactsParsed);
+		}
+	}, []);
+
+	useEffect(() => {
+		setNumberFound(allContacts?.filter((contact: any) => contact?.phone === number));
+	}, [number]);
+
 	return (
 		<section className={styles.dialpad}>
 			<div className={styles.dialpad_number}>
@@ -51,6 +72,11 @@ const Dialpad = ({ LineNumber }: { LineNumber?: number | undefined }) => {
 					className={styles.numberEntered}
 					value={number}
 				/>
+				<div className={styles.matchNumberWrap}>
+					{numberFound && Object.keys(numberFound)?.length ? (
+						<p className={styles.matchNumber}>{`${numberFound?.length && numberFound[0]?.email}`}</p>
+					) : null}
+				</div>
 			</div>
 			<div className={styles.dialpad_keypad}>
 				{dialpad_arr.map((key_arr) => (

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalState } from "redux/common/commonSelectors";
 import { ClipLoader } from "react-spinners";
 import { closeDeleteContact } from "redux/contact/contactSlice";
+import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
 
 const PromptDialog: React.FC<IPromptDialog> = ({ type, title, actionBtnTxt, children, onClick, loading }) => {
 	const modal = useSelector(modalState);
@@ -25,7 +26,12 @@ const PromptDialog: React.FC<IPromptDialog> = ({ type, title, actionBtnTxt, chil
 				</div>
 
 				<div className={styles.delete_btnCont}>
-					<button className={styles.delete_cancelBtn} onClick={() => dispatch(closeDeleteContact())}>
+					<button
+						className={styles.delete_cancelBtn}
+						onClick={() => {
+							dispatch(closeDeleteContact());
+							dispatch(setIsDeleteConversationDialogueOpen(false));
+						}}>
 						<span>Cancel</span>
 					</button>
 					<button className={styles.delete_deleteBtn} onClick={onClick}>

@@ -1,0 +1,66 @@
+.selectedContact {
+	display: flex;
+	padding: 2px;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+
+	border-radius: 8px;
+	border: 1px solid var(--border-secondary, #c8d3e0);
+	background: var(--background-primary, #fff);
+
+	// width: 44px;
+	height: 44px;
+
+	padding-right: 8px;
+
+	position: relative;
+
+	color: var(--text-primary, #1f2023);
+
+	/* Caption 1/Regular */
+	font-size: 13px;
+	line-height: 18px; /* 138.462% */
+	letter-spacing: -0.2px;
+
+	span {
+		display: flex;
+		width: 14px;
+		height: 14px;
+		padding: 4px;
+		justify-content: center;
+		align-items: center;
+
+		position: absolute;
+		right: -5px;
+		top: -5px;
+
+		border-radius: 23px;
+		background: var(--primary-default, #0c6dc7);
+
+		cursor: pointer;
+	}
+
+	.initials {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
+
+		border-radius: 32px;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50.52%);
+
+		border-radius: 32px;
+		background-color: var(--accent-blue-primary, #3b9ef7);
+
+		color: var(--accent-blue-label, #fff);
+		text-align: center;
+		font-size: 12px;
+		font-weight: 500;
+		line-height: 18px; /* 150% */
+		letter-spacing: -0.5px;
+	}
+}

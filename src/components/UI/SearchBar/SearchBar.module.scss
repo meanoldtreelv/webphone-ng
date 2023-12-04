@@ -1,9 +1,11 @@
 .search {
 	position: relative;
-	margin-bottom: 5px;
+	// margin-bottom: 5px;
 	display: flex;
 	gap: 5px;
 	align-items: center;
+	// background-color: red;
+	width: 100%;
 
 	& input {
 		background: var(--background-tertiary);
@@ -16,10 +18,14 @@
 		font-size: 0.95em;
 	}
 
-	& svg {
+	& span {
 		position: absolute;
 		top: 50%;
 		left: 10px;
 		transform: translateY(-50%);
+		// background-color: red;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 }

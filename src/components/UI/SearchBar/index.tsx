@@ -4,7 +4,6 @@ import SearchIcon from "../Icons/Search";
 import { IInput } from "constants/interfaces";
 
 const SearchBar: React.FC<IInput> = ({ type = "text", placeholder, required, onChange, value, disabled }) => {
-	// Todo :- Logic should be implemented
 	return (
 		<div className={styles.search}>
 			<input
@@ -15,7 +14,9 @@ const SearchBar: React.FC<IInput> = ({ type = "text", placeholder, required, onC
 				value={value}
 				disabled={disabled}
 			/>
-			<SearchIcon />
+			<span>
+				<SearchIcon />
+			</span>
 		</div>
 	);
 };
