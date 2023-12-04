@@ -10,6 +10,7 @@ const initialCommonState = {
 	simpleNotification: "",
 	loader: false,
 	extChange: false,
+	sessionOut: false,
 };
 
 const commonSlice = createSlice({
@@ -34,10 +35,20 @@ const commonSlice = createSlice({
 		setExtChange(state) {
 			state.extChange = !state.extChange;
 		},
+		setSessionOut(state, action) {
+			state.sessionOut = action.payload;
+		},
 	},
 });
 
-export const { toggleModal, togglePlayPause, setNotification, setSimpleNotification, setLoader, setExtChange } =
-	commonSlice.actions;
+export const {
+	toggleModal,
+	togglePlayPause,
+	setNotification,
+	setSimpleNotification,
+	setLoader,
+	setExtChange,
+	setSessionOut,
+} = commonSlice.actions;
 
 export default commonSlice.reducer;

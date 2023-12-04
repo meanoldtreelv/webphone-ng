@@ -8,11 +8,5 @@
 @import "./sass/themes/themes";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 @import "./sass/base/basic";
-
-button {
-	background: none;
-}
-
-input {
-	border: none;
-}
+@import "./styles/colors.css";
+@import "./styles/typography.css";
