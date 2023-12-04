@@ -1,0 +1,40 @@
+.selectedImg {
+	display: flex;
+	padding: 2px;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+
+	border-radius: 8px;
+	border: 1px solid var(--border-secondary, #c8d3e0);
+	background: var(--background-primary, #fff);
+
+	width: 44px;
+	height: 44px;
+
+	position: relative;
+
+	img {
+		width: 100%;
+		height: 100%;
+		border-radius: 6px;
+	}
+
+	span {
+		display: flex;
+		width: 14px;
+		height: 14px;
+		padding: 4px;
+		justify-content: center;
+		align-items: center;
+
+		position: absolute;
+		right: -5px;
+		top: -5px;
+
+		border-radius: 23px;
+		background: var(--primary-default, #0c6dc7);
+
+		cursor: pointer;
+	}
+}
