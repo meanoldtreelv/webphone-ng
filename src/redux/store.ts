@@ -9,6 +9,7 @@ import sidecarReducer from "./sidecar/sidecarSlice";
 import meetReducer from "./meet/meetSlice";
 import { apiService } from "./../services/api";
 import sipReducer from "./sip";
+import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
 
 export const store = configureStore({
 	reducer: {
@@ -23,7 +24,7 @@ export const store = configureStore({
 		meet: meetReducer,
 		[apiService.reducerPath]: apiService.reducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware, jwtTokenRefresher),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
