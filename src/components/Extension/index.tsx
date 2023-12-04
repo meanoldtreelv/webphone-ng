@@ -77,7 +77,7 @@ const EditExtension = () => {
 				</div>
 				<div className={styles.inputBox}>
 					<label htmlFor="">Name:</label>
-					<input type="text" placeholder={editExtension.name} value={name} onChange={(event) => {setName(event.target.value); console.log(name) }} />
+					<input type="text" style={{cursor: "text"}} placeholder={editExtension.name} value={name} onChange={(event) => {setName(event.target.value); console.log(name) }} disabled/>
 				</div>
 				<div className={styles.idInfo}>ID Info</div>
 				<div className={styles.callerId}>
