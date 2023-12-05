@@ -107,11 +107,11 @@ const ConversationsFooter = () => {
 				</div>
 				<div className={styles.bottom}>
 					{/* If img or video selected please dispatch an boolean action for padding bottom to chatBox */}
-					<SelectedImg />
+					{/* <SelectedImg />
 					<SelectedVideo />
 					<SelectedAudio />
 					<SelectedDoc />
-					<SelectedContact />
+					<SelectedContact /> */}
 				</div>
 			</div>
 		</>
