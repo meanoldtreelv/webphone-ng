@@ -52,7 +52,7 @@ const ChatBox = () => {
 
 	return (
 		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>
-			<ReceiveTime />
+			{/* <ReceiveTime />
 			<InfoMessage />
 			<SendTime />
 			<SendMessage />
@@ -77,7 +77,7 @@ const ChatBox = () => {
 			<SendTime />
 			<SendContact />
 			<ReceiveTime />
-			<ReceiveContact />
+			<ReceiveContact /> */}
 			{isFetching1 ? (
 				<div className={styles.loader}>
 					<Loader />

@@ -27,6 +27,8 @@ const initialChatState: IChatState = {
 		sort: "last_activity",
 	}).toString(),
 	conversationData: {},
+	fromContactLists: [],
+	fromNumberSelected: "",
 };
 
 const chatSlice = createSlice({
@@ -74,6 +76,12 @@ const chatSlice = createSlice({
 		setConversationData(state, action) {
 			state.conversationData = action.payload;
 		},
+		setFromContactLists(state, action) {
+			state.fromContactLists = action.payload;
+		},
+		setFromNumberSelected(state, action) {
+			state.fromNumberSelected = action.payload;
+		},
 	},
 });
 
@@ -91,6 +99,8 @@ export const {
 	setIsSortingMessagePopUpOpen,
 	setQueries,
 	setConversationData,
+	setFromContactLists,
+	setFromNumberSelected,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

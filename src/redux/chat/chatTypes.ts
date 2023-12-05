@@ -20,4 +20,6 @@ export interface IChatState {
 	};
 	strQueries: string;
 	conversationData: {};
+	fromContactLists: [];
+	fromNumberSelected: string;
 }

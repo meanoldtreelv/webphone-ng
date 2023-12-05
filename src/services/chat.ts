@@ -9,6 +9,13 @@ export const chatService = apiService.injectEndpoints({
 				url: `/texting/v2/conversations?${queries}`,
 			}),
 		}),
+		createConversationObject: build.query({
+			query: (data) => ({
+				method: "POST",
+				url: `/texting/v2/conversations`,
+				data,
+			}),
+		}),
 		getMessagesLists: build.query({
 			query: ({ id, queries }) => ({
 				method: "GET",
@@ -28,12 +35,36 @@ export const chatService = apiService.injectEndpoints({
 				url: `/texting/conversations/${conversation_id}/messages?${message_id_list}`,
 			}),
 		}),
+		getTextingContactLists: build.query({
+			query: (search) => ({
+				method: "GET",
+				url: `/texting/contacts?search=${search}`,
+			}),
+		}),
+		createTextingContact: build.query({
+			query: (data) => ({
+				method: "POST",
+				url: `/texting/contacts`,
+				data,
+			}),
+		}),
+
+		getTextingNumbers: build.query({
+			query: () => ({
+				method: "GET",
+				url: `/texting/numbers`,
+			}),
+		}),
 	}),
 });
 
 export const {
 	useLazyGetConversationListsQuery,
+	useLazyCreateConversationObjectQuery,
 	useLazyGetMessagesListsQuery,
 	useLazySendOutboundMessageQuery,
 	useLazyDeleteMessagesQuery,
+	useLazyGetTextingContactListsQuery,
+	useLazyCreateTextingContactQuery,
+	useLazyGetTextingNumbersQuery,
 } = chatService;

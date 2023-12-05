@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
 import Group from "./Group";
-import { useDispatch } from "react-redux";
-import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setFromContactLists, setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
+import { useLazyGetFromContactListsQuery, useLazyGetTextingNumbersQuery } from "services/chat";
+import { showToast } from "utils";
+import { fromNumberSelected } from "redux/chat/chatSelectors";
 
 const StartNewConversations = () => {
 	const dispatch = useDispatch();
+
+	// const [getFromContactLists, { data, isLoading, isFetching }] = useLazyGetFromContactListsQuery();
+	const [getTextingNumber, { data, isLoading, isFetching }] = useLazyGetTextingNumbersQuery();
+
 	const [tabActive, setTabActive] = useState("conversations");
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getTextingNumber("");
+
+			if (data) {
+				// console.log("====================================");
+				// console.log(data);
+				// console.log("====================================");
+				dispatch(setFromContactLists(data));
+			}
+
+			if (error) {
+				showToast("There is error in fetching From Contact Lists, please try again later  ", "error");
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	return (
 		<div className={styles.overlay}>
