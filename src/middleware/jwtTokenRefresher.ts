@@ -9,22 +9,22 @@ export const jwtTokenRefresher =
 	(next: any) =>
 	async (action: any) => {
 		if (action && isRejectedWithValue(action)) {
-			if (action?.payload?.response?.status === 401) {
-				await axios
-					.post("https://b2clogin.ringplan.com/refresh-token", {
-						access_token: getCookie("id_token"),
-						refresh_token: getCookie("refresh_token"),
-					})
-					.then((resp) => {
-						setCookie("id_token", resp?.data?.id_token);
-						setCookie("refresh_token", resp?.data?.refresh_token);
-						window.location.reload();
-					})
-					.catch((e) => {
-						console.log("this is your error: ");
-						console.log(e);
-						store.dispatch(setSessionOut(true));
-					});
+			if (getCookie("extAuth") !== "true") {
+				if (action?.payload?.response?.status === 401) {
+					await axios
+						.post("https://b2clogin.ringplan.com/refresh-token", {
+							access_token: getCookie("id_token"),
+							refresh_token: getCookie("refresh_token"),
+						})
+						.then((resp) => {
+							setCookie("id_token", resp?.data?.id_token);
+							setCookie("refresh_token", resp?.data?.refresh_token);
+							window.location.reload();
+						})
+						.catch((e) => {
+							store.dispatch(setSessionOut(true));
+						});
+				}
 			}
 		}
 
