@@ -3,7 +3,6 @@ import styles from "./Keypad.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { progressCall, setCallNumber } from "./../../../redux/call/callSlice";
 import BackspaceIcon from "./../../../components/UI/Icons/Backspace";
-import Button from "./../../../components/UI/Forms/Button";
 import { callNumber } from "./../../../redux/call/callSelectors";
 import sip from "../../../lib/sip";
 import React, { useEffect, useState } from "react";
@@ -57,7 +56,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 						cdr: {
 							id: "",
 							dst: number,
-							starttime: Date.now(),
+							starttime: new Date(Date.now()),
 						},
 						recording: {},
 					},
@@ -72,7 +71,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 						cdr: {
 							id: "",
 							dst: number,
-							starttime: Date.now(),
+							starttime: new Date(Date.now()),
 						},
 						recording: {},
 					},
