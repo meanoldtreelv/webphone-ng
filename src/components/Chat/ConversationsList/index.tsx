@@ -11,11 +11,13 @@ import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SearchBar from "components/UI/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	setConversationData,
 	setConversationLists,
+	setIsConversationSelected,
 	setIsSortingMessagePopUpOpen,
 	setIsStartNewConversationDialogueOpen,
 } from "redux/chat/chatSlice";
-import { conversationLists, isSortingMessagePopUpOpen } from "redux/chat/chatSelectors";
+import { conversationLists, isSortingMessagePopUpOpen, socket } from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
 
@@ -23,6 +25,7 @@ const ConversationsList = () => {
 	const dispatch = useDispatch();
 	const conversationsLists = useSelector(conversationLists);
 	const sortingMessagePopUpOpen = useSelector(isSortingMessagePopUpOpen);
+	const Socket = useSelector(socket);
 
 	const [
 		getConversationLists,
@@ -133,6 +136,22 @@ const ConversationsList = () => {
 			fetchData();
 		}
 	}, [page]);
+
+	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
+		Socket.on("texting.chat.new", (data) => {
+			// console.log("texting.chat.new", data);
+
+			// todo - we need to modify data according to conversation list item
+
+			dispatch(setConversationLists([data, ...conversationsLists]));
+			dispatch(setIsConversationSelected(true));
+			dispatch(setConversationData(data));
+
+			// Do something with the received data, like updating state
+		});
+	}, [Socket]);
 
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
