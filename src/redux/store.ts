@@ -12,6 +12,12 @@ import { apiService } from "./../services/api";
 import sipReducer from "./sip";
 import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
 
+if (process.env.NODE_ENV !== "development") {
+	console.log = () => {};
+	console.error = () => {};
+	console.debug = () => {};
+}
+
 export const store = configureStore({
 	reducer: {
 		contact: contactReducer,
