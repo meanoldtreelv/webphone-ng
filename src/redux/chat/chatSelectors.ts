@@ -16,3 +16,4 @@ export const conversationData = (state: RootState) => state.chat.conversationDat
 export const isSortingMessagePopUpOpen = (state: RootState) => state.chat.isSortingMessagePopUpOpen;
 export const fromContactLists = (state: RootState) => state.chat.fromContactLists;
 export const fromNumberSelected = (state: RootState) => state.chat.fromNumberSelected;
+export const socket = (state: RootState) => state.chat.socket;

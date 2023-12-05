@@ -1,12 +1,12 @@
 import styles from "./ChatBox.module.scss";
+import { useEffect, useState } from "react";
 import ReceiveTime from "./ReceiveTime";
 import ReceiveMessage from "./ReceiveMessage";
-import ReceiveImg from "./ReceiveImg";
 import SendTime from "./SendTime";
 import SendMessage from "./SendMessage";
+import ReceiveImg from "./ReceiveImg";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
-import { useEffect, useState } from "react";
 import SendVideo from "./SendVideo";
 import ReceiveVideo from "./ReceiveVideo";
 import SendAudio from "./SendAudio";
@@ -18,17 +18,24 @@ import ReceiveContact from "./ReceiveContact";
 import { useLazyGetMessagesListsQuery } from "services/chat";
 import { showToast } from "utils";
 import { useSelector } from "react-redux";
-import { conversationData } from "redux/chat/chatSelectors";
+import { conversationData, socket } from "redux/chat/chatSelectors";
 import Loader from "components/UI/Loader";
+
+const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const ChatBox = () => {
 	const conversationDatas = useSelector(conversationData);
+	const Socket = useSelector(socket);
 
 	const [getMessagesLists, { data, isFetching: isFetching1, isLoading: isLoading1 }] = useLazyGetMessagesListsQuery();
 
 	const [imgSelected, setImgSelected] = useState(false);
 	const [perPage, setPerPage] = useState(30);
 	const [messageList, setMessageList] = useState([]);
+
+	function getUnreadMessageIds(messageArray) {
+		return messageArray.filter((item) => item.is_read === false).map((item) => item.id);
+	}
 
 	useEffect(() => {
 		const searchStrQuery = new URLSearchParams({
@@ -41,6 +48,14 @@ const ChatBox = () => {
 
 			if (data) {
 				setMessageList(data);
+
+				const unreadMsgIdLists = getUnreadMessageIds(data);
+
+				Socket.emit("texting.message.markAsRead", {
+					conversation_id: conversationDatas?.id,
+					messagesIds: unreadMsgIdLists,
+					timezone: userTimeZone,
+				});
 			}
 
 			if (error) {
@@ -49,6 +64,16 @@ const ChatBox = () => {
 		};
 		fetchData();
 	}, [conversationDatas]);
+
+	useEffect(() => {
+		Socket.on("texting.message.new", (data) => {
+			// console.log("texting.message.new", data);
+
+			setMessageList((prevList) => [data, ...prevList]);
+
+			// Do something with the received data, like updating state
+		});
+	}, [Socket]);
 
 	return (
 		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`}>

@@ -5,11 +5,11 @@ import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
 import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
+import SharePopUp from "./SharePopUp";
 import SelectedImg from "./SelectedImg";
 import SelectedVideo from "./SelectedVideo";
 import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
-import SharePopUp from "./SharePopUp";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useSelector } from "react-redux";
@@ -93,6 +93,11 @@ const ConversationsFooter = () => {
 							value={text}
 							onChange={(e) => {
 								setText(e.target.value);
+							}}
+							onKeyDownCapture={(e) => {
+								if (e.key === "Enter" && text !== "") {
+									sendMessageHandler();
+								}
 							}}
 						/>
 						<span className={styles.icon}>

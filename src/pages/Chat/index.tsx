@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Chat.module.scss";
 import NoMessages from "components/Chat/NoMessages";
 import ConversationsList from "components/Chat/ConversationsList";
@@ -28,12 +28,16 @@ import {
 	isVideoViewerDialogueOpen,
 	strQueries,
 } from "redux/chat/chatSelectors";
-import { setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import { setConversationLists, setIsDeleteConversationDialogueOpen, setSocket } from "redux/chat/chatSlice";
 import { useLazyDeleteMessagesQuery, useLazyGetConversationListsQuery } from "services/chat";
 import Loader from "components/UI/Loader";
 import { showToast } from "utils";
+import { io } from "socket.io-client";
+import { getCookie } from "typescript-cookie";
 
-const Chat = () => {
+let socket: any = null;
+
+const Chat: React.FC = () => {
 	const dispatch = useDispatch();
 	const conversationsLists = useSelector(conversationLists);
 	const conversationSelected = useSelector(isConversationSelected);
@@ -89,6 +93,41 @@ const Chat = () => {
 	const deleteConversationsHandler = () => {
 		deleteMessage();
 	};
+
+	// socket.io
+	useEffect(() => {
+		const API_KEY = getCookie("id_token");
+
+		if (socket != null) {
+			socket.disconnect();
+			socket.offAny();
+		}
+
+		socket = io("https://ssp-backend.ringplan.com", {
+			path: "/ws",
+			transports: ["websocket"],
+			secure: true,
+			autoConnect: false,
+			reconnectionDelay: 1500,
+		});
+
+		socket.on("connect", () => {
+			socket.emit("authenticate", { token: API_KEY });
+		});
+
+		socket.on("authenticated", (data) => {
+			// console.log("web socket Authentication successful.", data);
+
+			dispatch(setSocket(socket));
+		});
+
+		socket.connect();
+
+		// Clean-up function to disconnect the socket when component unmounts
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
 
 	return (
 		<div className={`pagePopUp`}>

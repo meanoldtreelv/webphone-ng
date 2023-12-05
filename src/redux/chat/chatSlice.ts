@@ -29,6 +29,7 @@ const initialChatState: IChatState = {
 	conversationData: {},
 	fromContactLists: [],
 	fromNumberSelected: "",
+	socket: null,
 };
 
 const chatSlice = createSlice({
@@ -82,6 +83,9 @@ const chatSlice = createSlice({
 		setFromNumberSelected(state, action) {
 			state.fromNumberSelected = action.payload;
 		},
+		setSocket(state, action) {
+			state.socket = action.payload;
+		},
 	},
 });
 
@@ -101,6 +105,7 @@ export const {
 	setConversationData,
 	setFromContactLists,
 	setFromNumberSelected,
+	setSocket,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

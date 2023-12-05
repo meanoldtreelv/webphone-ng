@@ -22,4 +22,5 @@ export interface IChatState {
 	conversationData: {};
 	fromContactLists: [];
 	fromNumberSelected: string;
+	socket: any;
 }
