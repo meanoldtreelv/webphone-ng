@@ -4,8 +4,12 @@ import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
 import Group from "./Group";
 import { useDispatch, useSelector } from "react-redux";
-import { setFromContactLists, setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
-import { useLazyGetFromContactListsQuery, useLazyGetTextingNumbersQuery } from "services/chat";
+import {
+	setFromContactLists,
+	setFromNumberSelected,
+	setIsStartNewConversationDialogueOpen,
+} from "redux/chat/chatSlice";
+import { useLazyGetTextingNumbersQuery } from "services/chat";
 import { showToast } from "utils";
 import { fromNumberSelected } from "redux/chat/chatSelectors";
 
@@ -26,6 +30,9 @@ const StartNewConversations = () => {
 				// console.log(data);
 				// console.log("====================================");
 				dispatch(setFromContactLists(data));
+				// console.log(data, "from data");
+
+				dispatch(setFromNumberSelected(data[0].number));
 			}
 
 			if (error) {

@@ -7,20 +7,21 @@ import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchIcon from "components/UI/Icons/Search";
 import ChatIcon from "components/UI/Icons/Chat";
 import { useDispatch, useSelector } from "react-redux";
-import { fromNumberSelected } from "redux/chat/chatSelectors";
+import { fromNumberSelected, textingContactLists } from "redux/chat/chatSelectors";
 import { useLazyGetContactsQuery } from "services/contact";
 import { setLoader } from "redux/common/commonSlice";
-import { setContactList } from "redux/contact/contactSlice";
-import { contactLists } from "redux/contact/contactSelectors";
+// import { setContactList } from "redux/contact/contactSlice";
+// import { contactLists } from "redux/contact/contactSelectors";
 import StartConversationBox from "../StartConversationBox";
-import { useLazyCreateConversationObjectQuery } from "services/chat";
+import { useLazyCreateConversationObjectQuery, useLazyGetTextingContactListsQuery } from "services/chat";
 import { showToast } from "utils";
-import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
+import { setIsStartNewConversationDialogueOpen, setTextingContactLists } from "redux/chat/chatSlice";
 
 const Conversations = () => {
 	const dispatch = useDispatch();
 	const selectedFromNumber = useSelector(fromNumberSelected);
-	const contactList = useSelector(contactLists);
+	// const contactList = useSelector(contactLists);
+	const textingContactList = useSelector(textingContactLists);
 
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
@@ -33,10 +34,10 @@ const Conversations = () => {
 	const [noSearchResult, setNoSearchResult] = useState(false);
 	const [fakePage, setFakePage] = useState(1);
 	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
-		useLazyGetContactsQuery();
+		useLazyGetTextingContactListsQuery();
 
 	useEffect(() => {
-		const contactsJson = localStorage?.getItem("contacts");
+		const contactsJson = localStorage?.getItem("texting-contacts");
 		let contactsParsed: [];
 
 		try {
@@ -46,13 +47,13 @@ const Conversations = () => {
 		}
 
 		const fetchContacts = async () => {
-			await getContacts(null);
+			await getContacts("");
 			dispatch(setLoader(false));
 		};
 
 		if (contactsParsed && contactsParsed.length) {
-			dispatch(setContactList(contactsParsed));
-			dispatch(setLoader(true));
+			dispatch(setTextingContactLists(contactsParsed));
+			// dispatch(setLoader(true));
 			fetchContacts();
 		} else {
 			fetchContacts();
@@ -61,8 +62,8 @@ const Conversations = () => {
 
 	useEffect(() => {
 		if (!contactsLoading && contactsData) {
-			localStorage.setItem("contacts", JSON.stringify(contactsData));
-			dispatch(setContactList(contactsData?.slice(0, 20)));
+			localStorage.setItem("texting-contacts", JSON.stringify(contactsData));
+			dispatch(setTextingContactLists(contactsData?.slice(0, 20)));
 		}
 	}, [contactsLoading]);
 
@@ -80,7 +81,7 @@ const Conversations = () => {
 
 	useEffect(() => {
 		if (search) {
-			const contactsJson = localStorage?.getItem("contacts");
+			const contactsJson = localStorage?.getItem("texting-contacts");
 			let contactsParsed: [];
 
 			try {
@@ -92,8 +93,7 @@ const Conversations = () => {
 			const filteredRes = contactsParsed?.filter((contact) => {
 				return (
 					(contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase()) ||
-					contact?.phone?.toLowerCase().includes(search.toLowerCase()) ||
-					contact?.email?.toLowerCase().includes(search.toLowerCase())
+					contact?.number?.toLowerCase().includes(search.toLowerCase())
 				);
 			});
 
@@ -101,7 +101,7 @@ const Conversations = () => {
 			// console.log(filteredRes, "filteredRes");
 			// console.log("====================================");
 			setFilteredContactList(filteredRes);
-			dispatch(setContactList(filteredRes?.slice(0, 20)));
+			// dispatch(setContactList(filteredRes?.slice(0, 20)));
 
 			setNoSearchResult(!filteredRes?.length ? true : false);
 		}
@@ -122,9 +122,9 @@ const Conversations = () => {
 		if (search) {
 			contactsPerPage = filteredContactList?.slice(0, fakePage * 20);
 		} else {
-			contactsPerPage = JSON.parse(String(localStorage?.getItem("contacts")))?.slice(0, fakePage * 20);
+			contactsPerPage = JSON.parse(String(localStorage?.getItem("texting-contacts")))?.slice(0, fakePage * 20);
 		}
-		dispatch(setContactList(contactsPerPage));
+		dispatch(setTextingContactLists(contactsPerPage));
 	}, [fakePage]);
 
 	// start conversation handler
@@ -198,7 +198,7 @@ const Conversations = () => {
 						<span>Search results ({filteredContactList.length})</span>
 					</span>
 				) : (
-					<span>Contacts ({contactList?.length}) </span>
+					<span>Contacts ({textingContactList?.length}) </span>
 				)}
 			</div>
 			<div className={styles.contactList} onScroll={handleScroll}>
@@ -211,11 +211,11 @@ const Conversations = () => {
 										id={contact.id}
 										first_name={contact.first_name}
 										last_name={contact.last_name}
-										phone={contact.phone}
-										email={contact.email}
-										fax={contact.fax}
+										phone={contact.number}
+										// email={contact.email}
+										// fax={contact.fax}
 										clicked={() => {
-											setContactClicked(contact.phone);
+											setContactClicked(contact.number);
 										}}
 										key={idx}
 									/>
@@ -242,17 +242,17 @@ const Conversations = () => {
 					)
 				) : (
 					<div>
-						{contactList?.map((contact: any, idx) => {
+						{textingContactList?.map((contact: any, idx) => {
 							return (
 								<ContactCard
 									id={contact.id}
 									first_name={contact.first_name}
 									last_name={contact.last_name}
-									phone={contact.phone}
-									email={contact.email}
-									fax={contact.fax}
+									phone={contact.number}
+									// email={contact.email}
+									// fax={contact.fax}
 									clicked={() => {
-										setContactClicked(contact.phone);
+										setContactClicked(contact.number);
 									}}
 									key={idx}
 								/>

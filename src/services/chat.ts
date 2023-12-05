@@ -36,9 +36,9 @@ export const chatService = apiService.injectEndpoints({
 			}),
 		}),
 		getTextingContactLists: build.query({
-			query: (search) => ({
+			query: (queries) => ({
 				method: "GET",
-				url: `/texting/contacts?search=${search}`,
+				url: `/texting/contacts?${queries}`,
 			}),
 		}),
 		createTextingContact: build.query({

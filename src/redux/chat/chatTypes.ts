@@ -1,5 +1,6 @@
 export interface IChatState {
 	conversationLists: {}[];
+	sortConversationType: "lastActivity" | "unreadTop";
 	isConversationSelected: boolean;
 	isStartNewConversationDialogueOpen: boolean;
 	isAddMemberDialogueOpen: boolean;
@@ -21,6 +22,7 @@ export interface IChatState {
 	strQueries: string;
 	conversationData: {};
 	fromContactLists: [];
+	textingContactLists: [];
 	fromNumberSelected: string;
 	socket: any;
 }
