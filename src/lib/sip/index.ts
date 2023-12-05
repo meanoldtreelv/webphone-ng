@@ -90,7 +90,7 @@ let SpeakerDevices = [];
 
 
 $(window).on("beforeunload", function(event) {
-  var CurrentCalls = countSessions("0");
+  var CurrentCalls = countSessions(0);
   if(CurrentCalls > 0){
       console.warn("Warning, you have current calls open");
       // The best we can do is throw up a system alert question.
@@ -100,7 +100,6 @@ $(window).on("beforeunload", function(event) {
   Unregister(true);
 });
 $(window).on("offline", function(){
-  alert("offline")
   console.warn('Offline!');
   store.dispatch({type:"sip/sipRegistrationStatus", payload:"Disconnected from Web Socket!"})
   // $("#WebRtcFailed").show();
@@ -281,23 +280,25 @@ function onInviteCancel(lineObj, response) {
   teardownSession(lineObj);
 }
 function Register() {
-  if (userAgent === null) return;
-  if (userAgent.registering === true) return;
-  if (userAgent.isRegistered()) return;
+  try {
+    if (userAgent === null) return;
+    if (userAgent.registering === true) return;
+    if (userAgent.isRegistered()) return;
 
-  var RegistererRegisterOptions = {
-    requestDelegate: {
-      onReject: function (sip) {
-        onRegisterFailed(sip.message.reasonPhrase, sip.message.statusCode);
+    var RegistererRegisterOptions = {
+      requestDelegate: {
+        onReject: function (sip) {
+          onRegisterFailed(sip.message.reasonPhrase, sip.message.statusCode);
+        },
       },
-    },
-  };
+    };
 
-  console.log("Sending Registration...");
-  store.dispatch({type:"sip/sipRegistrationStatus", payload:"Sending Registration..."})
-  // document.getElementById("status").innerHTML = "Sending Registration...";
-  userAgent.registering = true;
-  userAgent.registerer.register(RegistererRegisterOptions);
+    console.log("Sending Registration...");
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Sending Registration..."})
+    // document.getElementById("status").innerHTML = "Sending Registration...";
+    userAgent.registering = true;
+    userAgent.registerer.register(RegistererRegisterOptions);
+  } catch (error) {}
 }
 function CreateUserAgent() {
   console.log("Creating User Agent...");
@@ -612,17 +613,18 @@ function ReconnectTransport() {
 function onUnregistered() {
   if (userAgent.registrationCompleted) {
     console.log("Unregistered, bye!");
-    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Not Registered"})
+    store.dispatch({type:"sip/sipRegistrationStatus", payload:"Not Registered"});
     // document.getElementById("status").innerHTML = "Unregistered, bye!";
   } else {
     // Was never really registered, so cant really say unregistered
   }
 
   // We set this flag here so that the re-register attempts are fully completed.
-  userAgent.isReRegister = false;
+  // userAgent.isReRegister = false; // Uncomment to stop Reregistering
+  
 }
 
-function countSessions(id) {
+function countSessions(id:number) {
   var rtn = 0;
   if (userAgent === null) {
     console.warn("userAgent is null");
@@ -637,7 +639,7 @@ function countSessions(id) {
 // Phone Lines
 // ===========
 
-function endSession(lineNum) {
+function endSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null || lineObj.SipSession === null) return;
   console.log("Ending call with: " + lineNum);
@@ -678,7 +680,7 @@ function teardownSession(lineObj) {
   }
 
   // End any child calls
-  if (session.data.childsession) {
+  if (!session.data.confcalls && session.data.childsession) {
     session.data.childsession
       .dispose()
       .then(function () {
@@ -748,7 +750,9 @@ function teardownSession(lineObj) {
 
   // Close up the UI
   window.setTimeout(function () {
-    RemoveLine(lineObj);
+    if(!session.data.confcalls){
+      RemoveLine(lineObj);
+    }
   }, 1000);
 }
 function FindLineByNumber(lineNum) {
@@ -1100,11 +1104,15 @@ function onSessionReceivedBye(lineObj, response) {
   lineObj.SipSession.data.terminateby = "them";
   lineObj.SipSession.data.reasonCode = 16;
   lineObj.SipSession.data.reasonText = "Normal Call clearing";
+  lineObj.SipSession.disposed = true
 
   response.accept(); // Send OK
-  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+  if(!lineObj.SipSession.data.confcalls){
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+  }
   SelectLine(store.getState().sip.activeCallLineNumber)
   teardownSession(lineObj);
+  haveActiveCall(lineObj.LineNumber)
   // onCallEndByOtherSide(lineObj.LineNumber);
 }
 
@@ -2278,8 +2286,9 @@ function onInviteAccepted(lineObj, includeVideo, response) {
       mute(lineObj.LineNumber) 
   }
   SelectLine(lineObj.LineNumber)
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:lineObj.LineNumber, callMicrophoneDevice:lineObj.SipSession.data.AudioSourceDevice  }}});
 }
-function AnswerAudioCall(lineNumber) {
+function AnswerAudioCall(lineNumber: number) {
   // CloseWindow();
 
   var lineObj = FindLineByNumber(lineNumber);
@@ -2329,7 +2338,7 @@ function AnswerAudioCall(lineNumber) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      localDB.setItem("AudioSrcId", "default");
+      setCookie("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -2351,7 +2360,6 @@ function AnswerAudioCall(lineNumber) {
   lineObj.SipSession.data.VideoSourceDevice = null;
   lineObj.SipSession.data.AudioSourceDevice = getAudioSrcID();
   lineObj.SipSession.data.AudioOutputDevice = getAudioOutputID();
-
   // Send Answer
   lineObj.SipSession.accept(spdOptions)
     .then(function () {
@@ -2369,7 +2377,7 @@ function AnswerAudioCall(lineNumber) {
   // document.getElementById("filter-results-wrapper").style.display = "none";
   // document.getElementById("caller-id").style.display = "none";
 }
-function AnswerVideoCall(lineNumber) {
+function AnswerVideoCall(lineNumber:number) {
   // CloseWindow();
 
   var lineObj = FindLineByNumber(lineNumber);
@@ -2419,7 +2427,7 @@ function AnswerVideoCall(lineNumber) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      // localDB.setItem("AudioSrcId", "default");
+      setCookie("microphoneDevice", "default")
     }
   }
   // Add additional Constraints
@@ -2476,7 +2484,6 @@ function AnswerVideoCall(lineNumber) {
   lineObj.SipSession.data.VideoSourceDevice = getVideoSrcID();
   lineObj.SipSession.data.AudioSourceDevice = getAudioSrcID();
   lineObj.SipSession.data.AudioOutputDevice = getAudioOutputID();
-
   if (StartVideoFullScreen) ExpandVideoArea(lineObj.LineNumber);
 
   // Send Answer
@@ -2679,6 +2686,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
+      setCookie("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -2833,10 +2841,13 @@ function BlindTransfer(lineNum:number, dstNo:string) {
         session.bye().catch(function (error) {
           console.warn("Could not BYE after blind transfer:", error);
         });
-        store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+        if(!session.data.confcalls){
+          store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+        }
         teardownSession(lineObj);
         // onCallEndByOtherSide();
         SelectLine(store.getState().sip.activeCallLineNumber)
+        haveActiveCall(lineObj.LineNumber)
       },
       onReject: function (sip) {
         console.warn("REFER rejected:", sip);
@@ -3063,7 +3074,10 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
                 session.bye().catch(function (error) {
                   console.warn("Could not BYE after blind transfer:", error);
                 });
-                store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+                haveActiveCall(lineObj.LineNumber)
+                if(!session.data.confcalls){
+                  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
+                }
                 teardownSession(lineObj);
                 SelectLine(store.getState().sip.activeCallLineNumber)
                 // onCallEndByOtherSide();
@@ -3189,7 +3203,7 @@ function MixAudioStreams(MultiAudioTackStream) {
 
 // Conference Calls
 // ================
-function StartConferenceCall(lineNum) {
+function StartConferenceCall(lineNum:number) {
   if ($("#line-" + lineNum + "-btn-CancelTransfer").is(":visible")) {
     CancelTransferSession(lineNum);
     return;
@@ -3208,7 +3222,7 @@ function CancelConference(lineNum: number) {
       "Child Conference call detected:",
       session.data.childsession.state
     );
-    alert("Child Conference call detected:" + session.data.childsession.state);
+    // alert("Child Conference call detected:" + session.data.childsession.state);
     session.data.childsession
       .dispose()
       .then(function () {
@@ -3335,6 +3349,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
       });
       window.clearInterval(session.data.confcalls[confCallId].callTimer);
       store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Bye"}}})
+      haveActiveCall(lineNum)
       // alert("#line-" + lineNum + "-msg" + "conference_call_terminated");
     },
     onSessionDescriptionHandler: function (sdh, provisional) {
@@ -3749,7 +3764,8 @@ function BackgroundAvailable(val=0, auto=false){
         $("#background-call").addClass("d-none");
     }
 }
-function Unregister(skipUnsubscribe:boolean) {
+function Unregister(skipUnsubscribe?:boolean) {
+  try {
     if (userAgent === null || !userAgent.isRegistered()) return;
     if (skipUnsubscribe === true) {
         console.log("Skipping Unsubscribe");
@@ -3768,7 +3784,8 @@ function Unregister(skipUnsubscribe:boolean) {
 
     userAgent.transport.attemptingReconnection = false;
     userAgent.registering = false;
-    userAgent.isReRegister = false;
+    userAgent.isReRegister = false; 
+  } catch (error) {} 
 }
 function RefreshRegistration() {
     Unregister();
@@ -4237,7 +4254,40 @@ function micChangedRefreshDevice(){
     });
     
 }
-
+function haveActiveCall(LineNumber:number){
+  const lineObj = FindLineByNumber(LineNumber)
+  var session = lineObj.SipSession;
+  console.log("ddddddddddddddddd",session)
+  // alert(session.disposed)
+  if(!session.disposed) return
+  if(!session.data.confcalls){ // If no conf call finish
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}});
+    return;
+  } 
+  let activeConfCall = false;
+  for(const conf of session.data.confcalls){
+    console.log(conf.disposition=="accepted", "....................")
+    if(conf.disposition==="accepted"){
+      activeConfCall = true;
+      break;
+    }
+  }
+  console.log(activeConfCall, "activeConfCallactiveConfCall")
+  console.log(lineObj,"..............................")
+  if(activeConfCall == true) return // If active conf call do nothing
+  console.log(activeConfCall, "activeConfCallactiveConfCall")
+  for(const conf of session.data.confcalls){ // Make sure to hungup all conf call
+    if(conf.session._state !== "Terminated"){
+      conf.session.dispose()
+    }
+  }   
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
+  window.setTimeout(function () {
+    if(!session.data.confcalls){
+      RemoveLine(lineObj); // remove line
+    }
+  }, 1000);
+}
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     if(userAgent){
@@ -4253,6 +4303,13 @@ const sip = {
     SipDomain = domain;
     SipUsername = username;
     SipPassword = password;
+
+
+    // wssServer = "localhost";
+    // WebSocketPort = "8089";
+    // ServerPath = "/ws";
+    // SipDomain = "localhost";
+    // SipPassword = "@300300";
 	
     setCookie("ext_user_id", SipUsername);
     setCookie("ext_password", SipPassword);
@@ -4273,9 +4330,12 @@ const sip = {
     DialByLine("audio", number);
   },
   hungup: (LineNumber: number) =>  {
-    store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}})
+    if(!FindLineByNumber(LineNumber)?.SipSession?.data?.confcalls){
+      store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}})
+    }
     hangup(LineNumber)
     SelectLine(store.getState().sip.activeCallLineNumber)
+    haveActiveCall(LineNumber)
   },
   rejectCall: (LineNumber: number ) =>  {
     store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"remove",data:LineNumber}})
@@ -4318,8 +4378,12 @@ const sip = {
     // CancelConference(LineNumber);
   },
   disposeConference:(LineNumber: number, id: number) =>  {
-    
+    try {
+      FindLineByNumber(LineNumber).SipSession.data.confcalls[id].disposition = "bye";
+    } catch (error) { 
+    }
     FindLineByNumber(LineNumber)?.SipSession?.data?.confcalls[id]?.session.dispose()
+    haveActiveCall(LineNumber)
   },
   transferCall: (LineNumber: number, number: string ) =>  {
     BlindTransfer(LineNumber, number)
@@ -4331,15 +4395,55 @@ const sip = {
     SelectLine(LineNumber)
   },
   callSpeakerDevice: (LineNumber: number, value: string) => {
-    var remoteAudio = $("#line-" + LineNumber + "-remoteAudio").get(0);
-    remoteAudio.setSinkId(value)
-    .then(function () {
-      console.log("sinkId applied: " + value);
-      store.dispatch({type:"sip/answeredCalls", payload:{action:"callSpeakerDevice",data:{lineNum:LineNumber, callSpeakerDevice:value}}});
-    })
-    .catch(function (e) {
-      console.warn("Error using setSinkId: ", e);
-    });
+    try {
+      var remoteAudio = $("#line-" + LineNumber + "-remoteAudio").get(0);
+      remoteAudio.setSinkId(value)
+      .then(function () {
+        console.log("sinkId applied: " + value);
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"callSpeakerDevice",data:{lineNum:LineNumber, callSpeakerDevice:value}}});
+      })
+      .catch(function (e) {
+        console.warn("Error using setSinkId: ", e);
+      });
+    } catch (error) {}
+  },
+  callMicrophoneDevice: (LineNumber: number, value: string) => {
+    try {
+      const lineObj = FindLineByNumber(LineNumber)
+      var session = lineObj.SipSession;
+      // Microphone Device Change
+      if(true){
+        var newid = value;
+        console.log("Call to change Microphone: ", newid);
+        // Save Setting
+        session.data.AudioSourceDevice = newid;
+        var constraints = {
+            audio: {
+                deviceId: (newid != "default")? { exact: newid } : "default"
+            },
+            video: false
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(function(newStream){
+            // Assume that since we are selecting from a dropdown, this is possible
+            var newMediaTrack = newStream.getAudioTracks()[0];
+            var pc = session.sessionDescriptionHandler.peerConnection;
+            pc.getSenders().forEach(function (RTCRtpSender) {
+                if(RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
+                    console.log("Switching Audio Track : "+ RTCRtpSender.track.label + " to "+ newMediaTrack.label);
+                    RTCRtpSender.track.stop(); // Must stop, or this mic will stay in use
+                    RTCRtpSender.replaceTrack(newMediaTrack).then(function(){
+                      console.log("done!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    }).catch(function(e){
+                        console.error("Error replacing track: ", e);
+                    });
+                }
+            });
+            store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:LineNumber, callMicrophoneDevice:value}}});
+        }).catch(function(e){
+            console.error("Error on getUserMedia");
+        });
+      }
+    } catch (error) { }
   },
   ringtone: (LineNumber: number, status: boolean ) =>  {
     const lineObj = FindLineByNumber(LineNumber)
@@ -4384,7 +4488,6 @@ if (true) {
   socket.emit("authenticate", { token: getCookie("id_token") });
 
   socket.on("status.status.updated.v2", (data) => {
-    // alert(data)
     console.log(data)
     try {
       console.log("Received status update:", data);

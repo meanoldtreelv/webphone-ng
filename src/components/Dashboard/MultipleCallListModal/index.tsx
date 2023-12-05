@@ -18,7 +18,7 @@ const MultipleCallListModal = () => {
 					
 					<div style={{ gap: "0.5rem", display: "flex", flexDirection: "column" , overflow: "auto", maxHeight: "18rem", paddingTop: "12px"}}>
 						{[...ringingInboundCalls, ...answeredCalls, ...ringingOutboundCalls].map((call: any) => (
-							<Button onClick={()=>{sip.selectLine(call.LineNumber); store.dispatch({type:"sip/showMultipleCallListModal", payload:false})}} key={call.LineNumber} styles={{ justifyContent: "flex-start",  backgroundColor:activeCallLineNumber===call.LineNumber?"#e3effa":"" }} border>
+							<Button onClick={()=>{sip.selectLine(call.LineNumber); store.dispatch({type:"sip/showMultipleCallListModal", payload:false})}} key={call.LineNumber} styles={{ justifyContent: "flex-start",  backgroundColor:activeCallLineNumber===call.LineNumber?"var(--background-active)":"" }} border>
 								<div style={{width: "100%" }}>
 									<span style={{ paddingLeft: "30px", float: "left" }}>{call.DisplayNumber}</span>
 									<span style={{ paddingLeft: "30px", float: "right" }}>{call.answered ? call.callTimer: "00:00"}</span>

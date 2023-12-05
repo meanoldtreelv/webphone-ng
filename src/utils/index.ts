@@ -44,7 +44,7 @@ export const parseCookies = (req: { headers: { cookie?: string } } | null = null
 export const setCookie = (
 	name: string,
 	value: any,
-	exp: {
+	exp?: {
 		expires: 7;
 	},
 ) =>
