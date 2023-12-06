@@ -1,13 +1,30 @@
 import { useEffect, useState } from "react";
 import styles from "./ModalMessage.module.scss";
 import { useNavigate } from "react-router";
+import sip from "lib/sip";
 
 const ModalMessage = () => {
 	const navigate = useNavigate();
 	const [second, setSecond] = useState(5);
 
 	const redirectToLogin = () => {
-		navigate("/auth/login");
+		localStorage.clear();
+		sessionStorage.clear();
+		document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, (name) =>
+			window.location.hostname
+				.split(".")
+				.reverse()
+				.reduce(
+					(domain) => (
+						(domain = domain.replace(/^\.?[^.]+/, "")),
+						(document.cookie = `${name}=;max-age=0;path=/;domain=${domain}`),
+						domain
+					),
+					window.location.hostname,
+				),
+		);
+		sip.logout();
+		navigate("auth/login");
 	};
 
 	useEffect(() => {
