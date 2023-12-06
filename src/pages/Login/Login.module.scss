@@ -130,6 +130,37 @@
 	}
 }
 
+.loginWithExtension {
+	&_toggle {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: 12px 15px;
+		margin-bottom: 15px;
+		background: var(--background-quaternary);
+		border: 1px solid var(--background-emphasis);
+		border-radius: 5px;
+
+		span {
+			font-size: 0.9em;
+			color: var(--text-primary);
+		}
+	}
+
+	&_chevronDown,
+	&_chevronUp {
+		height: 15px;
+		svg {
+			width: 15px;
+		}
+
+		path {
+			stroke: var(--icon-primary);
+		}
+	}
+}
+
 @media screen and (max-width: 1200px) {
 	.login {
 		min-height: 100vh;

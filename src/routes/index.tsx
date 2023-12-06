@@ -15,6 +15,7 @@ import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
+import { ErrorBoundary } from "react-error-boundary";
 
 const routes: RouteObject[] = [
 	{

@@ -17,7 +17,13 @@ import {
 	setIsSortingMessagePopUpOpen,
 	setIsStartNewConversationDialogueOpen,
 } from "redux/chat/chatSlice";
-import { conversationLists, isSortingMessagePopUpOpen, socket } from "redux/chat/chatSelectors";
+import {
+	conversationLists,
+	isSortingMessagePopUpOpen,
+	queries,
+	socket,
+	sortConversationType,
+} from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
 
@@ -25,6 +31,8 @@ const ConversationsList = () => {
 	const dispatch = useDispatch();
 	const conversationsLists = useSelector(conversationLists);
 	const sortingMessagePopUpOpen = useSelector(isSortingMessagePopUpOpen);
+	const sortConversationTypes = useSelector(sortConversationType);
+	const query = useSelector(queries);
 	const Socket = useSelector(socket);
 
 	const [
@@ -40,6 +48,25 @@ const ConversationsList = () => {
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedConversationLists, setSearchedConversationLists] = useState([]);
+
+	useEffect(() => {
+		setPage(1);
+
+		const strQuery = new URLSearchParams(query).toString();
+
+		const fetchData = async () => {
+			const { error, data } = await getConversationLists(strQuery);
+
+			if (data) {
+				dispatch(setConversationLists(data));
+			}
+
+			if (error) {
+				showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+			}
+		};
+		fetchData();
+	}, [sortConversationTypes]);
 
 	useEffect(() => {
 		setEndOfTheList(false);
@@ -87,9 +114,8 @@ const ConversationsList = () => {
 		if (searchText?.length === 0) {
 			if (page === 1) return;
 			const searchStrQuery = new URLSearchParams({
+				...query,
 				page: page,
-				per_page: perPage,
-				sort: "last_activity",
 			}).toString();
 
 			const fetchData = async () => {
@@ -141,7 +167,7 @@ const ConversationsList = () => {
 		if (!Socket || !Socket.connected) return;
 
 		Socket.on("texting.chat.new", (data) => {
-			// console.log("texting.chat.new", data);
+			console.log("texting.chat.new", data);
 
 			// todo - we need to modify data according to conversation list item
 

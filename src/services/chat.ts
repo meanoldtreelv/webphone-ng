@@ -1,4 +1,3 @@
-import { getCookie } from "typescript-cookie";
 import { apiService } from "./api";
 
 export const chatService = apiService.injectEndpoints({
@@ -36,9 +35,9 @@ export const chatService = apiService.injectEndpoints({
 			}),
 		}),
 		getTextingContactLists: build.query({
-			query: (search) => ({
+			query: (queries) => ({
 				method: "GET",
-				url: `/texting/contacts?search=${search}`,
+				url: `/texting/contacts?${queries}`,
 			}),
 		}),
 		createTextingContact: build.query({

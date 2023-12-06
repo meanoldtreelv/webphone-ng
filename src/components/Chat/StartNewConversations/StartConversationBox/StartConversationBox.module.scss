@@ -49,4 +49,10 @@
 		line-height: 20px; /* 142.857% */
 		letter-spacing: -0.5px;
 	}
+
+	.err {
+		font-size: 13px;
+		margin-top: 5px;
+		color: var(--text-danger, #ee3939);
+	}
 }

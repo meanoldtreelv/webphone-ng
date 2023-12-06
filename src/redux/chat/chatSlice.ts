@@ -3,6 +3,7 @@ import { IChatState } from "./chatTypes";
 
 const initialChatState: IChatState = {
 	conversationLists: [],
+	sortConversationType: "lastActivity",
 	isConversationSelected: false,
 	isStartNewConversationDialogueOpen: false,
 	isAddMemberDialogueOpen: false,
@@ -14,12 +15,12 @@ const initialChatState: IChatState = {
 	isDeleteConversationDialogueOpen: false,
 	isSortingMessagePopUpOpen: false,
 	queries: {
-		contact_id: "",
 		page: 1,
 		per_page: 20,
-		search: "",
 		sort: "last_activity",
-		from_numbers: ["8123772212", "8123772212"],
+		// contact_id: "",
+		// search: "",
+		// from_numbers: ["8123772212", "8123772212"],
 	},
 	strQueries: new URLSearchParams({
 		page: 1,
@@ -28,6 +29,7 @@ const initialChatState: IChatState = {
 	}).toString(),
 	conversationData: {},
 	fromContactLists: [],
+	textingContactLists: [],
 	fromNumberSelected: "",
 	socket: null,
 };
@@ -39,6 +41,9 @@ const chatSlice = createSlice({
 	reducers: {
 		setConversationLists(state, action) {
 			state.conversationLists = action.payload;
+		},
+		setSortConversationType(state, action) {
+			state.sortConversationType = action.payload;
 		},
 		setIsConversationSelected(state, action) {
 			state.isConversationSelected = action.payload;
@@ -80,6 +85,9 @@ const chatSlice = createSlice({
 		setFromContactLists(state, action) {
 			state.fromContactLists = action.payload;
 		},
+		setTextingContactLists(state, action) {
+			state.textingContactLists = action.payload;
+		},
 		setFromNumberSelected(state, action) {
 			state.fromNumberSelected = action.payload;
 		},
@@ -91,6 +99,7 @@ const chatSlice = createSlice({
 
 export const {
 	setConversationLists,
+	setSortConversationType,
 	setIsConversationSelected,
 	setIsStartNewConversationDialogueOpen,
 	setIsAddMemberDialogueOpen,
@@ -104,6 +113,7 @@ export const {
 	setQueries,
 	setConversationData,
 	setFromContactLists,
+	setTextingContactLists,
 	setFromNumberSelected,
 	setSocket,
 } = chatSlice.actions;

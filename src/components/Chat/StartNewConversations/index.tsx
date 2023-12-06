@@ -3,16 +3,18 @@ import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
 import Group from "./Group";
-import { useDispatch, useSelector } from "react-redux";
-import { setFromContactLists, setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
-import { useLazyGetFromContactListsQuery, useLazyGetTextingNumbersQuery } from "services/chat";
+import { useDispatch } from "react-redux";
+import {
+	setFromContactLists,
+	setFromNumberSelected,
+	setIsStartNewConversationDialogueOpen,
+} from "redux/chat/chatSlice";
+import { useLazyGetTextingNumbersQuery } from "services/chat";
 import { showToast } from "utils";
-import { fromNumberSelected } from "redux/chat/chatSelectors";
 
 const StartNewConversations = () => {
 	const dispatch = useDispatch();
 
-	// const [getFromContactLists, { data, isLoading, isFetching }] = useLazyGetFromContactListsQuery();
 	const [getTextingNumber, { data, isLoading, isFetching }] = useLazyGetTextingNumbersQuery();
 
 	const [tabActive, setTabActive] = useState("conversations");
@@ -22,10 +24,8 @@ const StartNewConversations = () => {
 			const { error, data } = await getTextingNumber("");
 
 			if (data) {
-				// console.log("====================================");
-				// console.log(data);
-				// console.log("====================================");
 				dispatch(setFromContactLists(data));
+				dispatch(setFromNumberSelected(data[0].number));
 			}
 
 			if (error) {

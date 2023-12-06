@@ -5,38 +5,45 @@ import ContactCard from "components/Contact/ContactCard";
 import FromNumberPopUp from "../../FromNumberPopUp";
 import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchIcon from "components/UI/Icons/Search";
-import ChatIcon from "components/UI/Icons/Chat";
 import { useDispatch, useSelector } from "react-redux";
-import { fromNumberSelected } from "redux/chat/chatSelectors";
-import { useLazyGetContactsQuery } from "services/contact";
+import { fromNumberSelected, textingContactLists } from "redux/chat/chatSelectors";
 import { setLoader } from "redux/common/commonSlice";
-import { setContactList } from "redux/contact/contactSlice";
-import { contactLists } from "redux/contact/contactSelectors";
 import StartConversationBox from "../StartConversationBox";
-import { useLazyCreateConversationObjectQuery } from "services/chat";
+import {
+	useLazyCreateConversationObjectQuery,
+	useLazyGetConversationListsQuery,
+	useLazyGetTextingContactListsQuery,
+} from "services/chat";
 import { showToast } from "utils";
-import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
+import {
+	setConversationData,
+	setIsConversationSelected,
+	setIsStartNewConversationDialogueOpen,
+	setTextingContactLists,
+} from "redux/chat/chatSlice";
 
 const Conversations = () => {
 	const dispatch = useDispatch();
 	const selectedFromNumber = useSelector(fromNumberSelected);
-	const contactList = useSelector(contactLists);
+	const textingContactList = useSelector(textingContactLists);
 
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
 
-	const [searchedContactLists, setSearchedContactLists] = useState([]);
-
-	// const toContactLists = JSON.parse(localStorage?.getItem("contacts"));
 	const [search, setSearch] = useState("");
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
-	const [noSearchResult, setNoSearchResult] = useState(false);
+	// const [noSearchResult, setNoSearchResult] = useState(false);
 	const [fakePage, setFakePage] = useState(1);
 	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
-		useLazyGetContactsQuery();
+		useLazyGetTextingContactListsQuery();
+
+	const [
+		getConversationLists,
+		{ data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1, isError: isError1 },
+	] = useLazyGetConversationListsQuery();
 
 	useEffect(() => {
-		const contactsJson = localStorage?.getItem("contacts");
+		const contactsJson = localStorage?.getItem("texting-contacts");
 		let contactsParsed: [];
 
 		try {
@@ -46,13 +53,13 @@ const Conversations = () => {
 		}
 
 		const fetchContacts = async () => {
-			await getContacts(null);
+			await getContacts("");
 			dispatch(setLoader(false));
 		};
 
 		if (contactsParsed && contactsParsed.length) {
-			dispatch(setContactList(contactsParsed));
-			dispatch(setLoader(true));
+			dispatch(setTextingContactLists(contactsParsed));
+			// dispatch(setLoader(true));
 			fetchContacts();
 		} else {
 			fetchContacts();
@@ -61,26 +68,19 @@ const Conversations = () => {
 
 	useEffect(() => {
 		if (!contactsLoading && contactsData) {
-			localStorage.setItem("contacts", JSON.stringify(contactsData));
-			dispatch(setContactList(contactsData?.slice(0, 20)));
+			localStorage.setItem("texting-contacts", JSON.stringify(contactsData));
+			dispatch(setTextingContactLists(contactsData?.slice(0, 20)));
 		}
 	}, [contactsLoading]);
 
-	// useEffect(() => {
-	// 	if (!contactLoading && contactData) {
-	// 		dispatch(setSelectedContact(contactData[0]));
-	// 		dispatch(openSelectedContact());
-	// 	}
-	// }, [contactLoading, contactData]);
-
-	const handleContactsSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const filterStr = e.target.value.trim();
-		setSearch(filterStr);
-	};
+	// const handleContactsSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const filterStr = e.target.value.trim();
+	// 	setSearch(filterStr);
+	// };
 
 	useEffect(() => {
 		if (search) {
-			const contactsJson = localStorage?.getItem("contacts");
+			const contactsJson = localStorage?.getItem("texting-contacts");
 			let contactsParsed: [];
 
 			try {
@@ -92,18 +92,13 @@ const Conversations = () => {
 			const filteredRes = contactsParsed?.filter((contact) => {
 				return (
 					(contact?.first_name + " " + contact?.last_name).toLowerCase().includes(search.toLowerCase()) ||
-					contact?.phone?.toLowerCase().includes(search.toLowerCase()) ||
-					contact?.email?.toLowerCase().includes(search.toLowerCase())
+					contact?.number?.toLowerCase().includes(search.toLowerCase())
 				);
 			});
 
-			// console.log("====================================");
-			// console.log(filteredRes, "filteredRes");
-			// console.log("====================================");
 			setFilteredContactList(filteredRes);
-			dispatch(setContactList(filteredRes?.slice(0, 20)));
 
-			setNoSearchResult(!filteredRes?.length ? true : false);
+			// setNoSearchResult(!filteredRes?.length ? true : false);
 		}
 	}, [search]);
 
@@ -122,13 +117,13 @@ const Conversations = () => {
 		if (search) {
 			contactsPerPage = filteredContactList?.slice(0, fakePage * 20);
 		} else {
-			contactsPerPage = JSON.parse(String(localStorage?.getItem("contacts")))?.slice(0, fakePage * 20);
+			contactsPerPage = JSON.parse(String(localStorage?.getItem("texting-contacts")))?.slice(0, fakePage * 20);
 		}
-		dispatch(setContactList(contactsPerPage));
+		dispatch(setTextingContactLists(contactsPerPage));
 	}, [fakePage]);
 
 	// start conversation handler
-	const [contactClicked, setContactClicked] = useState("");
+	const [contactClicked, setContactClicked] = useState(null);
 	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
 
 	useEffect(() => {
@@ -137,11 +132,49 @@ const Conversations = () => {
 			showToast("please select 'From Number'", "info");
 			return;
 		}
+
+		const strQuery = new URLSearchParams({ contact_id: contactClicked.id }).toString();
+
+		// let searchList = [];
+		let filteredList = [];
+
+		const filterList = (list) => {
+			return list?.filter((item) => {
+				return (
+					item?.conversation_type === "direct" &&
+					item?.from_number === selectedFromNumber &&
+					item?.contactsinfo.length > 0 &&
+					item?.contactsinfo[0].number === contactClicked.number
+				);
+			});
+		};
+		const fetchConversationList = async () => {
+			const { error, data } = await getConversationLists(strQuery);
+
+			if (data) {
+				// searchList = data;
+				filteredList = filterList(data);
+
+				if (filteredList?.length > 0) {
+					dispatch(setConversationData(filteredList[0]));
+					dispatch(setIsConversationSelected(true));
+					dispatch(setIsStartNewConversationDialogueOpen(false));
+				} else {
+					fetchData();
+				}
+			}
+
+			if (error) {
+				showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+			}
+		};
+		fetchConversationList();
+
 		const fetchData = async () => {
 			const { error: conversationError, data: conversationData } = await createConversationObject({
 				recipients: [
 					{
-						number: contactClicked,
+						number: contactClicked?.number,
 					},
 				],
 				from_number: selectedFromNumber,
@@ -156,7 +189,6 @@ const Conversations = () => {
 				showToast("Error in creating conversation object", "error");
 			}
 		};
-		fetchData();
 	}, [contactClicked]);
 
 	return (
@@ -198,7 +230,7 @@ const Conversations = () => {
 						<span>Search results ({filteredContactList.length})</span>
 					</span>
 				) : (
-					<span>Contacts ({contactList?.length}) </span>
+					<span>Contacts ({textingContactList?.length}) </span>
 				)}
 			</div>
 			<div className={styles.contactList} onScroll={handleScroll}>
@@ -211,58 +243,36 @@ const Conversations = () => {
 										id={contact.id}
 										first_name={contact.first_name}
 										last_name={contact.last_name}
-										phone={contact.phone}
-										email={contact.email}
-										fax={contact.fax}
+										phone={contact.number}
 										clicked={() => {
-											setContactClicked(contact.phone);
+											setContactClicked({ number: contact.number, id: contact.id });
 										}}
 										key={idx}
 									/>
 								);
 							})}
-							{/* <ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard /> */}
 						</div>
 					) : (
 						<>
-							{/* <div className={styles.startConversation}>
-								<div>Start Conversation with this number?</div>
-								<p>{search}</p>
-								<button>
-									<ChatIcon color="icon-on-color" />
-									<span>Start Conversation</span>
-								</button>
-							</div> */}
 							<StartConversationBox search_no={search} />
 						</>
 					)
 				) : (
 					<div>
-						{contactList?.map((contact: any, idx) => {
+						{textingContactList?.map((contact: any, idx) => {
 							return (
 								<ContactCard
 									id={contact.id}
 									first_name={contact.first_name}
 									last_name={contact.last_name}
-									phone={contact.phone}
-									email={contact.email}
-									fax={contact.fax}
+									phone={contact.number}
 									clicked={() => {
-										setContactClicked(contact.phone);
+										setContactClicked({ number: contact.number, id: contact.id });
 									}}
 									key={idx}
 								/>
 							);
 						})}
-
-						{/* <ContactCard />
-					<ContactCard />
-					<ContactCard />
-					<ContactCard /> */}
 					</div>
 				)}
 			</div>

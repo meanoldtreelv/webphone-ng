@@ -1,6 +1,7 @@
 import { RootState } from "./../../redux/store";
 
 export const conversationLists = (state: RootState) => state.chat.conversationLists;
+export const sortConversationType = (state: RootState) => state.chat.sortConversationType;
 export const isConversationSelected = (state: RootState) => state.chat.isConversationSelected;
 export const isStartNewConversationDialogueOpen = (state: RootState) => state.chat.isStartNewConversationDialogueOpen;
 export const isAddMemberDialogueOpen = (state: RootState) => state.chat.isAddMemberDialogueOpen;
@@ -15,5 +16,6 @@ export const strQueries = (state: RootState) => state.chat.strQueries;
 export const conversationData = (state: RootState) => state.chat.conversationData;
 export const isSortingMessagePopUpOpen = (state: RootState) => state.chat.isSortingMessagePopUpOpen;
 export const fromContactLists = (state: RootState) => state.chat.fromContactLists;
+export const textingContactLists = (state: RootState) => state.chat.textingContactLists;
 export const fromNumberSelected = (state: RootState) => state.chat.fromNumberSelected;
 export const socket = (state: RootState) => state.chat.socket;
