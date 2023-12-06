@@ -1,5 +1,6 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { setSessionOut } from "redux/common/commonSlice";
 import { store } from "redux/store";
 import { getCookie, setCookie } from "utils";
@@ -25,6 +26,8 @@ export const jwtTokenRefresher =
 							store.dispatch(setSessionOut(true));
 						});
 				}
+			} else {
+				store.dispatch(setSessionOut(false));
 			}
 		}
 

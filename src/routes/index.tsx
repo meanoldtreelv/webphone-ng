@@ -16,11 +16,16 @@ import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
 import { ErrorBoundary } from "react-error-boundary";
+import RedirectMsg from "components/shared/RedirectMsg";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
+	},
+	{
+		path: "/redirect",
+		element: <RedirectMsg />,
 	},
 ];
 
