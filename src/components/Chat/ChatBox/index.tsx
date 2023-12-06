@@ -17,27 +17,32 @@ import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
 import { useLazyGetMessagesListsQuery } from "services/chat";
 import { showToast } from "utils";
-import { useSelector } from "react-redux";
-import { conversationData, socket } from "redux/chat/chatSelectors";
+import { useDispatch, useSelector } from "react-redux";
+import { conversationData, msgLists, socket } from "redux/chat/chatSelectors";
 import Loader from "components/UI/Loader";
+import { setMsgLists } from "redux/chat/chatSlice";
 
 const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const ChatBox = () => {
+	const dispatch = useDispatch();
 	const conversationDatas = useSelector(conversationData);
+	const messageLists = useSelector(msgLists);
 	const Socket = useSelector(socket);
 
 	const [getMessagesLists, { data, isFetching: isFetching1, isLoading: isLoading1 }] = useLazyGetMessagesListsQuery();
 
 	const [imgSelected, setImgSelected] = useState(false);
 	const [perPage, setPerPage] = useState(30);
-	const [messageList, setMessageList] = useState([]);
+	// const [messageList, setMessageList] = useState([]);
 
 	function getUnreadMessageIds(messageArray) {
 		return messageArray.filter((item) => item.is_read === false).map((item) => item.id);
 	}
 
 	useEffect(() => {
+		dispatch(setMsgLists([]));
+
 		const searchStrQuery = new URLSearchParams({
 			page: 1,
 			per_page: perPage,
@@ -47,7 +52,7 @@ const ChatBox = () => {
 			const { error, data } = await getMessagesLists({ id: conversationDatas?.id, queries: searchStrQuery });
 
 			if (data) {
-				setMessageList(data);
+				dispatch(setMsgLists(data));
 
 				const unreadMsgIdLists = getUnreadMessageIds(data);
 
@@ -69,7 +74,8 @@ const ChatBox = () => {
 		Socket.on("texting.message.new", (data) => {
 			// console.log("texting.message.new", data);
 
-			setMessageList((prevList) => [data, ...prevList]);
+			// setMessageList((prevList) => [data, ...prevList]);
+			dispatch(setMsgLists([data, ...messageLists]));
 
 			// Do something with the received data, like updating state
 		});
@@ -109,7 +115,7 @@ const ChatBox = () => {
 				</div>
 			) : (
 				<>
-					{messageList
+					{messageLists
 						?.slice()
 						.reverse()
 						.map((item) => {

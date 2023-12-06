@@ -60,7 +60,9 @@ const StartConversationBox = ({ search_no }) => {
 				<ChatIcon color="icon-on-color" />
 				<span>Start Conversation</span>
 			</button>
-			{error && <p className={styles.err}>Contact number should be 10 to 11 digit long</p>}
+			{error && (
+				<p className={styles.err}>Invalid number format. Please enter a phone number in the format 1NPANXXXXXX.</p>
+			)}
 		</div>
 	);
 };

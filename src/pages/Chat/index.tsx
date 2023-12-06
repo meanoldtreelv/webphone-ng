@@ -28,12 +28,18 @@ import {
 	isVideoViewerDialogueOpen,
 	strQueries,
 } from "redux/chat/chatSelectors";
-import { setConversationLists, setIsDeleteConversationDialogueOpen, setSocket } from "redux/chat/chatSlice";
+import {
+	setConversationLists,
+	setIsDeleteConversationDialogueOpen,
+	setMsgLists,
+	setSocket,
+} from "redux/chat/chatSlice";
 import { useLazyDeleteMessagesQuery, useLazyGetConversationListsQuery } from "services/chat";
 import Loader from "components/UI/Loader";
 import { showToast } from "utils";
 import { io } from "socket.io-client";
 import { getCookie } from "typescript-cookie";
+import { getBackendUrl } from "config/env.config";
 
 let socket: any = null;
 
@@ -86,7 +92,10 @@ const Chat: React.FC = () => {
 			showToast("There is error in deleting text msg , please try again later  ", "error");
 		} else {
 			showToast("message deleted successfully", "info");
+			dispatch(setMsgLists([]));
 			dispatch(setIsDeleteConversationDialogueOpen(false));
+		}
+		if (data) {
 		}
 	};
 
@@ -103,7 +112,7 @@ const Chat: React.FC = () => {
 			socket.offAny();
 		}
 
-		socket = io("https://ssp-backend.ringplan.com", {
+		socket = io(getBackendUrl(), {
 			path: "/ws",
 			transports: ["websocket"],
 			secure: true,

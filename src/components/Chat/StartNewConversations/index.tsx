@@ -17,7 +17,7 @@ const StartNewConversations = () => {
 
 	const [getTextingNumber, { data, isLoading, isFetching }] = useLazyGetTextingNumbersQuery();
 
-	const [tabActive, setTabActive] = useState("conversations");
+	const [tabActive, setTabActive] = useState("group");
 
 	useEffect(() => {
 		const fetchData = async () => {

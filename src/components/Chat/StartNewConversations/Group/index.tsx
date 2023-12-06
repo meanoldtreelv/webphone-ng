@@ -1,16 +1,55 @@
 import { useState } from "react";
 import styles from "./Group.module.scss";
-import SearchBar from "components/UI/SearchBar";
 import ContactCard from "components/Contact/ContactCard";
 import FromNumberPopUp from "../../FromNumberPopUp";
 import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
-import SearchIcon from "components/UI/Icons/Search";
 import UsersGroupIcon from "components/UI/Icons/ChatIcons/UsersGroup";
 import PlusIcon from "components/UI/Icons/Plus";
+import { useDispatch, useSelector } from "react-redux";
+import { addedMemberLists, fromNumberSelected } from "redux/chat/chatSelectors";
+import {
+	setAddedMemberLists,
+	setIsAddMemberDialogueOpen,
+	setIsStartNewConversationDialogueOpen,
+} from "redux/chat/chatSlice";
+import { useLazyCreateConversationObjectQuery } from "services/chat";
+import { showToast } from "utils";
 
 const Group = () => {
+	const dispatch = useDispatch();
+	const selectedFromNumber = useSelector(fromNumberSelected);
+	const memberLists = useSelector(addedMemberLists);
+	const fromNumber = useSelector(fromNumberSelected);
+
+	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
+
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
+	const [groupName, setGroupName] = useState("");
+
+	const createGroupHandler = async () => {
+		showToast("clicked", "info");
+		if (groupName.length === 0 && memberLists.length < 2 && memberLists?.length > 10) return;
+
+		const recipients = memberLists.map((item) => {
+			return { number: item.number };
+		});
+
+		const { error, data } = await createConversationObject({
+			recipients: recipients,
+			from_number: fromNumber,
+			conversation_type: "group",
+			name: groupName,
+		});
+
+		if (error) {
+			showToast("something went wrong in creating group", "error");
+		}
+		if (data) {
+			dispatch(setAddedMemberLists([]));
+			dispatch(setIsStartNewConversationDialogueOpen(false));
+		}
+	};
 
 	return (
 		<>
@@ -27,63 +66,70 @@ const Group = () => {
 					onClick={() => {
 						setIsFromNumberPopUpOpen(!isFromNumberPopUpOpen);
 					}}>
-					987654321
+					{selectedFromNumber}
 					<span className={`${isFromNumberPopUpOpen ? styles.active : ""}`}>
 						<ChevronDownIcon color={`${isFromNumberHovered || isFromNumberPopUpOpen ? "text-link" : "text-primary"}`} />
 					</span>
 				</span>
 				{isFromNumberPopUpOpen && <FromNumberPopUp />}
 			</div>
-			<div>
-				<SearchBar placeholder="Type group name here.." />
+			<div className={styles.input}>
+				<input
+					placeholder="Type group name here.."
+					value={groupName}
+					onChange={(e) => {
+						setGroupName(e.target.value);
+					}}
+				/>
 			</div>
 			<div className={styles.contact}>
-				{false ? (
-					<span>
-						<SearchIcon />
-						<span>Search results (8)</span>
-					</span>
-				) : (
-					<span>
-						<UsersGroupIcon />
-						<span>Members (0)</span>
-					</span>
+				<span>
+					<UsersGroupIcon />
+					<span>Members ({memberLists?.length})</span>
+				</span>
+				{memberLists?.length > 0 && (
+					<div
+						style={{ cursor: "pointer" }}
+						onClick={() => {
+							dispatch(setIsAddMemberDialogueOpen(true));
+						}}>
+						<PlusIcon />
+					</div>
 				)}
 			</div>
 			<div className={styles.memberBox}>
-				{false ? (
-					true ? (
-						<div>
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-							<ContactCard />
-						</div>
-					) : (
-						<div className={styles.startConversation}>
-							<div>You don’t have any member here</div>
-							<p>Follow this button to add members</p>
-							<button>
-								<PlusIcon />
-								<span>Add Member</span>
-							</button>
-						</div>
-					)
-				) : (
+				{memberLists?.length > 0 ? (
 					<div>
-						<ContactCard />
-						<ContactCard />
-						<ContactCard />
-						<ContactCard />
-						<ContactCard />
+						{memberLists?.map((contact, idx) => (
+							<ContactCard
+								id={contact.id}
+								first_name={contact.first_name}
+								last_name={contact.last_name}
+								phone={contact.number}
+								key={idx}
+							/>
+						))}
+					</div>
+				) : (
+					<div className={styles.startConversation}>
+						<div>You don’t have any member here</div>
+						<p>Follow this button to add members</p>
+						<button
+							onClick={() => {
+								dispatch(setIsAddMemberDialogueOpen(true));
+							}}>
+							<PlusIcon color="icon-on-color" />
+							<span>Add Member</span>
+						</button>
 					</div>
 				)}
 			</div>
 			<div className={styles.footer}>
-				<button className={`${true && styles.active}`}>Create Group</button>
+				<button
+					className={`${groupName && memberLists?.length >= 2 && memberLists?.length <= 10 && styles.active}`}
+					onClick={createGroupHandler}>
+					Create Group
+				</button>
 			</div>
 		</>
 	);

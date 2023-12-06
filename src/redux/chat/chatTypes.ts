@@ -25,4 +25,6 @@ export interface IChatState {
 	textingContactLists: [];
 	fromNumberSelected: string;
 	socket: any;
+	addedMemberLists: [];
+	msgLists: [];
 }

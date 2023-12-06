@@ -32,6 +32,8 @@ const initialChatState: IChatState = {
 	textingContactLists: [],
 	fromNumberSelected: "",
 	socket: null,
+	addedMemberLists: [],
+	msgLists: [],
 };
 
 const chatSlice = createSlice({
@@ -94,6 +96,12 @@ const chatSlice = createSlice({
 		setSocket(state, action) {
 			state.socket = action.payload;
 		},
+		setAddedMemberLists(state, action) {
+			state.addedMemberLists = action.payload;
+		},
+		setMsgLists(state, action) {
+			state.msgLists = action.payload;
+		},
 	},
 });
 
@@ -116,6 +124,8 @@ export const {
 	setTextingContactLists,
 	setFromNumberSelected,
 	setSocket,
+	setAddedMemberLists,
+	setMsgLists,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
