@@ -17,10 +17,13 @@ import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
+import ChevronDownIcon from "components/UI/Icons/Navigation/ChevronDown";
+import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
 
 const Login = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
+	const [withExt, setWithExt] = useState(false);
 
 	const onContinueWithRingplan = () => {
 		sip.logout(false);
@@ -103,34 +106,54 @@ const Login = () => {
 
 						<p className={styles.login_withExtension}>Or login with extension and secret</p>
 
-						<Input
-							type="text"
-							errorMsg={form?.extensionErrorMsg}
-							value={form?.extension}
-							onChange={(e) => setForm({ ...form, extension: e.target.value })}
-							placeholder="Enter extension here..."
-							required
-							icon={<ExtensionIcon />}
-						/>
-						<Input
-							type="text"
-							errorMsg={form?.serverErrorMsg}
-							value={form?.server}
-							onChange={(e) => setForm({ ...form, server: e.target.value })}
-							placeholder="Enter server address here..."
-							required
-							icon={<EnvelopeIcon />}
-						/>
-						<Input
-							type="password"
-							errorMsg={form?.secretErrorMsg}
-							value={form?.secret}
-							onChange={(e) => setForm({ ...form, secret: e.target.value })}
-							placeholder="Enter secret code here..."
-							required
-							icon={<LockIcon />}
-						/>
-						{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+						<div className={styles.loginWithExtension}>
+							<button className={styles.loginWithExtension_toggle} onClick={() => setWithExt(!withExt)}>
+								<span>Login with Extension</span>
+								{withExt ? (
+									<div className={styles.loginWithExtension_chevronUp}>
+										<ChevronUpIcon />
+									</div>
+								) : (
+									<div className={styles.loginWithExtension_chevronDown}>
+										<ChevronDownIcon />
+									</div>
+								)}
+							</button>
+
+							{withExt ? (
+								<div className={styles.loginWithExtension_inputs}>
+									<Input
+										type="text"
+										errorMsg={form?.extensionErrorMsg}
+										value={form?.extension}
+										onChange={(e) => setForm({ ...form, extension: e.target.value })}
+										placeholder="Enter extension here..."
+										required
+										icon={<ExtensionIcon />}
+									/>
+									<Input
+										type="text"
+										errorMsg={form?.serverErrorMsg}
+										value={form?.server}
+										onChange={(e) => setForm({ ...form, server: e.target.value })}
+										placeholder="Enter server address here..."
+										required
+										icon={<EnvelopeIcon />}
+									/>
+									<Input
+										type="password"
+										errorMsg={form?.secretErrorMsg}
+										value={form?.secret}
+										onChange={(e) => setForm({ ...form, secret: e.target.value })}
+										placeholder="Enter secret code here..."
+										required
+										icon={<LockIcon />}
+									/>
+									{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+								</div>
+							) : null}
+						</div>
+
 						<Button fill onClick={loginWithExtension}>
 							Sign In
 						</Button>

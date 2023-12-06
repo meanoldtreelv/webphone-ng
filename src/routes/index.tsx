@@ -15,6 +15,7 @@ import sip from "lib/sip";
 import { store } from "redux/store";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
+import { ErrorBoundary } from "react-error-boundary";
 
 const routes: RouteObject[] = [
 	{
