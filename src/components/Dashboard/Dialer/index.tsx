@@ -40,20 +40,26 @@ const Dialer = () => {
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	};
-	const showAddConferenceCall = (LineNumber:number, showAddConferenceCall=true) => {
+	const showAddConferenceCall = (LineNumber: number, showAddConferenceCall = true) => {
 		store.dispatch({
 			type: "sip/answeredCalls",
-			payload: { action: "showAddConferenceCall", data: { lineNum: LineNumber, showAddConferenceCall: showAddConferenceCall } },
+			payload: {
+				action: "showAddConferenceCall",
+				data: { lineNum: LineNumber, showAddConferenceCall: showAddConferenceCall },
+			},
 		});
 		dispatch(setCallNumber(""));
-	}
-	const showConferenceCallsList = (LineNumber:number, showConferenceCallsList=true) => {
+	};
+	const showConferenceCallsList = (LineNumber: number, showConferenceCallsList = true) => {
 		store.dispatch({
 			type: "sip/answeredCalls",
-			payload: { action: "showConferenceCallsList", data: { lineNum: LineNumber, showConferenceCallsList: showConferenceCallsList } },
+			payload: {
+				action: "showConferenceCallsList",
+				data: { lineNum: LineNumber, showConferenceCallsList: showConferenceCallsList },
+			},
 		});
 		dispatch(setCallNumber(""));
-	}
+	};
 	const { answeredCalls, answeredCallActive, ringingOutboundCalls, ringingOutboundCallActive, activeCallLineNumber } =
 		useSelector((state: any) => state.sip);
 	// const [volume, setVolumeButtonClicked] = useState(false)
@@ -65,7 +71,13 @@ const Dialer = () => {
 		if (activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber) {
 			return (
 				(item.showDTMF && <DTMF LineNumber={item.LineNumber} />) ||
-				((item.showAddCall || item.showAddConferenceCall ) && <AddCall LineNumber={item.LineNumber} forConferenceCall={item.showAddConferenceCall} conferenceCallList={item.conferenceCallList} />) ||
+				((item.showAddCall || item.showAddConferenceCall) && (
+					<AddCall
+						LineNumber={item.LineNumber}
+						forConferenceCall={item.showAddConferenceCall}
+						conferenceCallList={item.conferenceCallList}
+					/>
+				)) ||
 				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
 				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
@@ -74,15 +86,24 @@ const Dialer = () => {
 								LineNumber={item.LineNumber}
 								volumeLevel={item.volumeLevel}
 								callSpeakerDevice={item.callSpeakerDevice}
+								callMicrophoneDevice={item.callMicrophoneDevice}
 							/>
 						)}
-						{(item.showConferenceCallsList) ? <ConferenceCallsList LineNumber={item.LineNumber} conferenceCallList={item.conferenceCallList}/> : null}
-						
 
-						<div
-							className={styles.dialer_detailsBox}
-							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
-						>
+						{item.showConferenceCallsList ? (
+							<ConferenceCallsList
+								LineNumber={item.LineNumber}
+								conferenceCallList={item.conferenceCallList}
+								host2={{
+									startTime: item.startTime,
+									callTimer: item.callTimer,
+									displayNumber: item.DisplayNumber,
+									displayName: item.DisplayName ? item.DisplayName : item.DisplayNumber,
+								}}
+							/>
+						) : null}
+
+						<div className={styles.dialer_detailsBox}>
 							{false && <img src={dummyProfileImg} alt="" className={styles.backgroundImg} />}
 							{true && (
 								<div
@@ -139,10 +160,18 @@ const Dialer = () => {
 								</div>
 								<div
 									className={styles.dialer_action}
-									onClick={()=>{
-										item.answered ? (item.conferenceCallList ? showConferenceCallsList(item.LineNumber, item.conferenceCallList): showAddConferenceCall(item.LineNumber)) : emptyFunction()
+									onClick={() => {
+										item.answered
+											? item.conferenceCallList
+												? showConferenceCallsList(item.LineNumber, item.conferenceCallList)
+												: showAddConferenceCall(item.LineNumber)
+											: emptyFunction();
 									}}>
-									<span className={styles.dialer_icon}  style={ item.conferenceCallList ? { background: "var(--background-danger, #FFEBEB)" } :  IconDisableStyle } >
+									<span
+										className={styles.dialer_icon}
+										style={
+											item.conferenceCallList ? { background: "var(--background-danger, #FFEBEB)" } : IconDisableStyle
+										}>
 										<CallConference answered={item.answered} fill={""} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>

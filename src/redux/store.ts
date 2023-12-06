@@ -10,6 +10,14 @@ import meetReducer from "./meet/meetSlice";
 import { apiService } from "./../services/api";
 import sipReducer from "./sip";
 import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
+import { isDev, isLocalhost } from "./../config/env.config";
+
+if (!isDev)
+	if (!isLocalhost) {
+		console.log = () => {};
+		console.error = () => {};
+		console.debug = () => {};
+	}
 
 export const store = configureStore({
 	reducer: {
