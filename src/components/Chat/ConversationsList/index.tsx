@@ -52,13 +52,6 @@ const ConversationsList = () => {
 	useEffect(() => {
 		setPage(1);
 
-		// let sort: string;
-		// if (sortConversationTypes === "lastActivity") {
-		// 	sort = "last_activity";
-		// } else if (sortConversationTypes === "unreadTop") {
-		// 	sort = "unread";
-		// }
-
 		const strQuery = new URLSearchParams(query).toString();
 
 		const fetchData = async () => {
@@ -174,7 +167,7 @@ const ConversationsList = () => {
 		if (!Socket || !Socket.connected) return;
 
 		Socket.on("texting.chat.new", (data) => {
-			// console.log("texting.chat.new", data);
+			console.log("texting.chat.new", data);
 
 			// todo - we need to modify data according to conversation list item
 

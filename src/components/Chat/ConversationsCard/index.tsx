@@ -14,6 +14,22 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 	const first_name = conversationData?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationData?.contactsinfo?.[0]?.last_name;
 	const phone = conversationData?.contactsinfo?.[0]?.number;
+
+	let firstName: string;
+	let lastName: string;
+
+	if (first_name === "undefine" || first_name === null) {
+		firstName = "";
+	} else {
+		firstName = first_name;
+	}
+
+	if (last_name === "undefine" || last_name === null) {
+		lastName = "";
+	} else {
+		lastName = last_name;
+	}
+
 	return (
 		<button
 			className={styles.contact}
@@ -41,8 +57,8 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 					<span className={styles.name}>
 						{conversationData?.conversation_type === "group"
 							? conversationData?.campaign_info?.name
-							: first_name + last_name
-							? first_name + " " + last_name
+							: firstName + lastName
+							? firstName + " " + lastName
 							: phone}
 					</span>
 					<span className={styles.dateTime}>{recentDateFormat(conversationData?.last_message_created_at)}</span>
