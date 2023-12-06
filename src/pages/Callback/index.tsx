@@ -21,12 +21,12 @@ const Callback = () => {
 	const theme = useTheme();
 
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
-	
+
 	const loginWithExtensionandSecret = () => {
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		navigate("/auth/login");
 	};
-	
+
 	const loginWithAPI = () => {
 		for (const ext of extAuthList) {
 			if (ext["user"] == loginSelectExtension) {
@@ -36,6 +36,7 @@ const Callback = () => {
 	};
 
 	const { authMessage, authLoading } = useSelector((state: any) => state.sip);
+
 	useEffect(() => {
 		if (authMessage === "continue") {
 			navigate("/dashboard");

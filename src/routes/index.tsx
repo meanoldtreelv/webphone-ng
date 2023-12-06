@@ -16,11 +16,16 @@ import { store } from "redux/store";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
 import { ErrorBoundary } from "react-error-boundary";
+import RedirectMsg from "components/shared/RedirectMsg";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
+	},
+	{
+		path: "/redirect",
+		element: <RedirectMsg />,
 	},
 ];
 

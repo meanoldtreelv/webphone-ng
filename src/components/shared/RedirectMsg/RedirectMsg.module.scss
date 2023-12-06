@@ -1,0 +1,34 @@
+.redirectMsg {
+	background: var(--background-primary);
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	p {
+		color: var(--text-primary);
+		text-align: center;
+	}
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 350px;
+	}
+
+	a {
+		text-decoration: none !important;
+		color: var(--text-link);
+	}
+}
+
+.redirectLogo {
+	margin-bottom: 20px;
+
+	img {
+		width: 50px;
+	}
+}
