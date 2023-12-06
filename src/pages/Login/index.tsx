@@ -78,6 +78,7 @@ const Login = () => {
 		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server);
 		// sip.CreateUserAgent("", "", "")
 	};
+
 	const { authMessage, authLoading, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 
 	useEffect(() => {
@@ -104,59 +105,61 @@ const Login = () => {
 							</Button>
 						</div>
 
-						<p className={styles.login_withExtension}>Or login with extension and secret</p>
+						{/* <button className={styles.login_withExtension}> */}
+						<button className={styles.loginWithExtension_toggle} onClick={() => setWithExt(!withExt)}>
+							Or login with extension and secret
+							{withExt ? (
+								<div className={styles.loginWithExtension_chevronUp}>
+									<ChevronUpIcon />
+								</div>
+							) : (
+								<div className={styles.loginWithExtension_chevronDown}>
+									<ChevronDownIcon />
+								</div>
+							)}
+						</button>
 
 						<div className={styles.loginWithExtension}>
-							<button className={styles.loginWithExtension_toggle} onClick={() => setWithExt(!withExt)}>
-								<span>Login with Extension</span>
-								{withExt ? (
-									<div className={styles.loginWithExtension_chevronUp}>
-										<ChevronUpIcon />
-									</div>
-								) : (
-									<div className={styles.loginWithExtension_chevronDown}>
-										<ChevronDownIcon />
-									</div>
-								)}
-							</button>
-
 							{withExt ? (
-								<div className={styles.loginWithExtension_inputs}>
-									<Input
-										type="text"
-										errorMsg={form?.extensionErrorMsg}
-										value={form?.extension}
-										onChange={(e) => setForm({ ...form, extension: e.target.value })}
-										placeholder="Enter extension here..."
-										required
-										icon={<ExtensionIcon />}
-									/>
-									<Input
-										type="text"
-										errorMsg={form?.serverErrorMsg}
-										value={form?.server}
-										onChange={(e) => setForm({ ...form, server: e.target.value })}
-										placeholder="Enter server address here..."
-										required
-										icon={<EnvelopeIcon />}
-									/>
-									<Input
-										type="password"
-										errorMsg={form?.secretErrorMsg}
-										value={form?.secret}
-										onChange={(e) => setForm({ ...form, secret: e.target.value })}
-										placeholder="Enter secret code here..."
-										required
-										icon={<LockIcon />}
-									/>
-									{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
-								</div>
+								<>
+									<div className={styles.loginWithExtension_inputs}>
+										<Input
+											type="text"
+											errorMsg={form?.extensionErrorMsg}
+											value={form?.extension}
+											onChange={(e) => setForm({ ...form, extension: e.target.value })}
+											placeholder="Enter extension here..."
+											required
+											icon={<ExtensionIcon />}
+										/>
+										<Input
+											type="text"
+											errorMsg={form?.serverErrorMsg}
+											value={form?.server}
+											onChange={(e) => setForm({ ...form, server: e.target.value })}
+											placeholder="Enter server address here..."
+											required
+											icon={<EnvelopeIcon />}
+										/>
+										<Input
+											type="password"
+											errorMsg={form?.secretErrorMsg}
+											value={form?.secret}
+											onChange={(e) => setForm({ ...form, secret: e.target.value })}
+											placeholder="Enter secret code here..."
+											required
+											icon={<LockIcon />}
+										/>
+										{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+									</div>
+
+									<Button fill onClick={loginWithExtension}>
+										Sign In
+									</Button>
+								</>
 							) : null}
 						</div>
 
-						<Button fill onClick={loginWithExtension}>
-							Sign In
-						</Button>
 						{/* 
 						<p className={`caption_1 ${styles.login_forgotPassword}`}>
 							Forgot your password? <span>Click here</span>
