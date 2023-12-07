@@ -37,7 +37,7 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 				dispatch(setIsConversationSelected(true));
 				dispatch(setConversationData(conversationData));
 			}}>
-			{conversationData?.conversation_type === "group" ? (
+			{conversationData?.conversation_type === "group" || conversationData?.conversation_type === "campaign" ? (
 				<span className={styles.groupIcon}>
 					<GroupIcon />
 				</span>
@@ -65,7 +65,8 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 				</div>
 				<div>
 					<span className={styles.msg}>
-						{conversationData?.conversation_type === "group" && (
+						{(conversationData?.conversation_type === "group" ||
+							conversationData?.conversation_type === "campaign") && (
 							<span>
 								<UserIcon /> {conversationData?.contactsinfo.length}
 							</span>

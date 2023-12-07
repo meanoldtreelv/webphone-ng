@@ -4,13 +4,16 @@ import PlusIcon from "components/UI/Icons/Plus";
 import { showToast } from "utils";
 import { useLazyCreateTextingContactQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddedMemberLists, setIsAddMemberDialogueOpen } from "redux/chat/chatSlice";
-import { addedMemberLists } from "redux/chat/chatSelectors";
+import { setAddedMemberLists, setCampaignMemberLists, setIsAddMemberDialogueOpen } from "redux/chat/chatSlice";
+import { addedMemberLists, campaignMemberLists, startConversationType } from "redux/chat/chatSelectors";
 
 const AddMemberBox = ({ search }) => {
 	const dispatch = useDispatch();
 
 	const memberLists = useSelector(addedMemberLists);
+	const campaignMemberList = useSelector(campaignMemberLists);
+	const conversationType = useSelector(startConversationType);
+
 	const [createTextingContact, { data, isLoading, isFetching }] = useLazyCreateTextingContactQuery();
 
 	const [error, setError] = useState(false);
@@ -28,9 +31,16 @@ const AddMemberBox = ({ search }) => {
 
 		if (data) {
 			showToast("Contact saved successfully", "info");
-			const newMemberObject = { ...data, number: `+${search}` };
-			dispatch(setAddedMemberLists([...memberLists, newMemberObject]));
-			dispatch(setIsAddMemberDialogueOpen(false));
+			if (conversationType === "group") {
+				const newMemberObject = { ...data, number: `+${search}` };
+				dispatch(setAddedMemberLists([...memberLists, newMemberObject]));
+				dispatch(setIsAddMemberDialogueOpen(false));
+			}
+			if (conversationType === "campaign") {
+				const newMemberObject = { ...data, number: `+${search}` };
+				dispatch(setCampaignMemberLists([...campaignMemberList, newMemberObject]));
+				dispatch(setIsAddMemberDialogueOpen(false));
+			}
 		}
 		if (error) {
 			showToast("Error in saving contact", "error");

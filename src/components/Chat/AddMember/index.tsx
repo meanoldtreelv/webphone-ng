@@ -4,10 +4,20 @@ import ContactCard from "components/Contact/ContactCard";
 import CloseIcon from "components/UI/Icons/Close";
 import SearchIcon from "components/UI/Icons/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddedMemberLists, setIsAddMemberDialogueOpen, setTextingContactLists } from "redux/chat/chatSlice";
+import {
+	setAddedMemberLists,
+	setCampaignMemberLists,
+	setIsAddMemberDialogueOpen,
+	setTextingContactLists,
+} from "redux/chat/chatSlice";
 import { useEffect, useState } from "react";
 import { useLazyGetTextingContactListsQuery } from "services/chat";
-import { addedMemberLists, textingContactLists } from "redux/chat/chatSelectors";
+import {
+	addedMemberLists,
+	campaignMemberLists,
+	startConversationType,
+	textingContactLists,
+} from "redux/chat/chatSelectors";
 import AddMemberBox from "../StartNewConversations/AddMemberBox";
 
 const AddMember = () => {
@@ -15,6 +25,8 @@ const AddMember = () => {
 
 	const textingContactList = useSelector(textingContactLists);
 	const memberLists = useSelector(addedMemberLists);
+	const campaignMemberList = useSelector(campaignMemberLists);
+	const conversationType = useSelector(startConversationType);
 
 	const [search, setSearch] = useState("");
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
@@ -96,6 +108,17 @@ const AddMember = () => {
 		}
 	};
 
+	const contactClickedHandler = (contact) => {
+		if (conversationType === "group") {
+			dispatch(setAddedMemberLists([...memberLists, contact]));
+			dispatch(setIsAddMemberDialogueOpen(false));
+		}
+		if (conversationType === "campaign") {
+			dispatch(setCampaignMemberLists([...campaignMemberList, contact]));
+			dispatch(setIsAddMemberDialogueOpen(false));
+		}
+	};
+
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
@@ -140,8 +163,7 @@ const AddMember = () => {
 											last_name={contact.last_name}
 											phone={contact.number}
 											clicked={() => {
-												dispatch(setAddedMemberLists([...memberLists, contact]));
-												dispatch(setIsAddMemberDialogueOpen(false));
+												contactClickedHandler(contact);
 											}}
 											key={idx}
 										/>
@@ -163,8 +185,7 @@ const AddMember = () => {
 										last_name={contact.last_name}
 										phone={contact.number}
 										clicked={() => {
-											dispatch(setAddedMemberLists([...memberLists, contact]));
-											dispatch(setIsAddMemberDialogueOpen(false));
+											contactClickedHandler(contact);
 										}}
 										key={idx}
 									/>

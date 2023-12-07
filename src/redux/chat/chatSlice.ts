@@ -32,7 +32,9 @@ const initialChatState: IChatState = {
 	textingContactLists: [],
 	fromNumberSelected: "",
 	socket: null,
+	startConversationType: "conversations",
 	addedMemberLists: [],
+	campaignMemberLists: [],
 	msgLists: [],
 };
 
@@ -96,8 +98,14 @@ const chatSlice = createSlice({
 		setSocket(state, action) {
 			state.socket = action.payload;
 		},
+		setStartConversationType(state, action) {
+			state.startConversationType = action.payload;
+		},
 		setAddedMemberLists(state, action) {
 			state.addedMemberLists = action.payload;
+		},
+		setCampaignMemberLists(state, action) {
+			state.campaignMemberLists = action.payload;
 		},
 		setMsgLists(state, action) {
 			state.msgLists = action.payload;
@@ -124,7 +132,9 @@ export const {
 	setTextingContactLists,
 	setFromNumberSelected,
 	setSocket,
+	setStartConversationType,
 	setAddedMemberLists,
+	setCampaignMemberLists,
 	setMsgLists,
 } = chatSlice.actions;
 

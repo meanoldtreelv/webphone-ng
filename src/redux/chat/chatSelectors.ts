@@ -19,5 +19,7 @@ export const fromContactLists = (state: RootState) => state.chat.fromContactList
 export const textingContactLists = (state: RootState) => state.chat.textingContactLists;
 export const fromNumberSelected = (state: RootState) => state.chat.fromNumberSelected;
 export const socket = (state: RootState) => state.chat.socket;
+export const startConversationType = (state: RootState) => state.chat.startConversationType;
 export const addedMemberLists = (state: RootState) => state.chat.addedMemberLists;
+export const campaignMemberLists = (state: RootState) => state.chat.campaignMemberLists;
 export const msgLists = (state: RootState) => state.chat.msgLists;
