@@ -4288,6 +4288,26 @@ function haveActiveCall(LineNumber:number){
     }
   }, 1000);
 }
+const socket = io("https://ssp-backend.ringplan.com", {
+  path: "/ws",
+  transports: ["websocket"],
+  secure: true,
+  autoConnect: false,
+  reconnectionDelay: 1500,
+});
+socket.on("status.status.updated.v2", (data) => {
+  console.log(data)
+  try {
+    console.log("Received status update:", data);
+    const status = {
+      main_status:data.main_status.status,
+      additional_status:data.additional_status.status
+    }
+    store.dispatch({type:"sip/status", payload:status})
+  } catch (error) {
+    console.log(error)
+  }
+});
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     if(userAgent){
@@ -4316,6 +4336,10 @@ const sip = {
     setCookie("ext_domain", SipDomain);
     // setCookie("ext_connected", "false");
     CreateUserAgent()
+    if(getCookie("extAuth") !== "true"){
+      socket.emit("authenticate", { token: getCookie("id_token") });
+      socket.connect();
+    }
   },
   LoginWithAPI:(ext?:any)=>{
     store.dispatch({type:"sip/extAuth", payload:false});
@@ -4468,36 +4492,5 @@ const sip = {
     changeLocation && (window.location = "/");
   },
   store:() => {return store}
-}
-if (true) {
-  const socket = io("https://ssp-backend.ringplan.com", {
-    path: "/ws",
-    transports: ["websocket"],
-    secure: true,
-    autoConnect: false,
-    reconnectionDelay: 1500,
-  });
-
-  // if (!sessionStorage.getItem("allExtensions")) {
-  //   fetchUnFilteredExtensions();
-  // }
-
-  socket.connect();
-
-  socket.emit("authenticate", { token: getCookie("id_token") });
-
-  socket.on("status.status.updated.v2", (data) => {
-    console.log(data)
-    try {
-      console.log("Received status update:", data);
-      const status = {
-        main_status:data.main_status.status,
-        additional_status:data.additional_status.status
-      }
-      store.dispatch({type:"sip/status", payload:status})
-    } catch (error) {
-      console.log(error)
-    }
-  });
 }
 export default sip
