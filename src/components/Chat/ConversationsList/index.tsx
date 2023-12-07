@@ -174,8 +174,6 @@ const ConversationsList = () => {
 			dispatch(setConversationLists([data, ...conversationsLists]));
 			dispatch(setIsConversationSelected(true));
 			dispatch(setConversationData(data));
-
-			// Do something with the received data, like updating state
 		});
 	}, [Socket]);
 
