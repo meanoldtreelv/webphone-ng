@@ -1,6 +1,6 @@
 import {store} from '../../redux/store'
 import * as SIP from 'sip.js'
-import { setCookie, getCookie } from 'utils';
+import { setCookie, getCookie, deleteAllCookies } from 'utils';
 import $ from "jquery";
 import moment from "moment"
 
@@ -4465,7 +4465,7 @@ const sip = {
     try {Unregister()} catch (error) { }
     localStorage.clear();
     sessionStorage.clear();
-    document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, name => window.location.hostname.split('.').reverse().reduce(domain => (domain=domain.replace(/^\.?[^.]+/, ''),document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`,domain), window.location.hostname));
+    deleteAllCookies();
     changeLocation && (window.location = "/");
   },
   store:() => {return store}
