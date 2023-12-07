@@ -4462,7 +4462,6 @@ const sip = {
     }
   },
   logout: (changeLocation=true)=>{
-    try {Unregister()} catch (error) { }
     localStorage.clear();
     sessionStorage.clear();
     deleteAllCookies();
