@@ -1,12 +1,12 @@
 import { useState } from "react";
-import styles from "./Group.module.scss";
+import styles from "./Campaign.module.scss";
 import ContactCard from "components/Contact/ContactCard";
 import FromNumberPopUp from "../../FromNumberPopUp";
 import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import UsersGroupIcon from "components/UI/Icons/ChatIcons/UsersGroup";
 import PlusIcon from "components/UI/Icons/Plus";
 import { useDispatch, useSelector } from "react-redux";
-import { addedMemberLists, fromNumberSelected } from "redux/chat/chatSelectors";
+import { campaignMemberLists, fromNumberSelected } from "redux/chat/chatSelectors";
 import {
 	setAddedMemberLists,
 	setIsAddMemberDialogueOpen,
@@ -15,34 +15,35 @@ import {
 import { useLazyCreateConversationObjectQuery } from "services/chat";
 import { showToast } from "utils";
 
-const Group = () => {
+const Campaign = () => {
 	const dispatch = useDispatch();
 	const selectedFromNumber = useSelector(fromNumberSelected);
-	const memberLists = useSelector(addedMemberLists);
 	const fromNumber = useSelector(fromNumberSelected);
+	const campaignMemberList = useSelector(campaignMemberLists);
 
 	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
 
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
-	const [groupName, setGroupName] = useState("");
+	const [campaignName, setCampaignName] = useState("");
 
-	const createGroupHandler = async () => {
-		if (groupName.length === 0 && memberLists.length < 2 && memberLists?.length > 10) return;
+	const createCampaignHandler = async () => {
+		showToast("clicked", "info");
+		if (campaignName.length === 0 && campaignMemberList.length < 2 && campaignMemberList?.length > 10) return;
 
-		const recipients = memberLists.map((item) => {
+		const recipients = campaignMemberList.map((item) => {
 			return { number: item.number };
 		});
 
 		const { error, data } = await createConversationObject({
 			recipients: recipients,
 			from_number: fromNumber,
-			conversation_type: "group",
-			name: groupName,
+			conversation_type: "campaign",
+			name: campaignName,
 		});
 
 		if (error) {
-			showToast("something went wrong in creating group", "error");
+			showToast("something went wrong in creating campaign", "error");
 		}
 		if (data) {
 			dispatch(setAddedMemberLists([]));
@@ -74,19 +75,19 @@ const Group = () => {
 			</div>
 			<div className={styles.input}>
 				<input
-					placeholder="Type group name here.."
-					value={groupName}
+					placeholder="Type campaign name here.."
+					value={campaignName}
 					onChange={(e) => {
-						setGroupName(e.target.value);
+						setCampaignName(e.target.value);
 					}}
 				/>
 			</div>
 			<div className={styles.contact}>
 				<span>
 					<UsersGroupIcon />
-					<span>Members ({memberLists?.length})</span>
+					<span>Members ({campaignMemberList?.length})</span>
 				</span>
-				{memberLists?.length > 0 && (
+				{campaignMemberList?.length > 0 && (
 					<div
 						style={{ cursor: "pointer" }}
 						onClick={() => {
@@ -97,9 +98,9 @@ const Group = () => {
 				)}
 			</div>
 			<div className={styles.memberBox}>
-				{memberLists?.length > 0 ? (
+				{campaignMemberList?.length > 0 ? (
 					<div>
-						{memberLists?.map((contact, idx) => (
+						{campaignMemberList?.map((contact, idx) => (
 							<ContactCard
 								id={contact.id}
 								first_name={contact.first_name}
@@ -125,13 +126,15 @@ const Group = () => {
 			</div>
 			<div className={styles.footer}>
 				<button
-					className={`${groupName && memberLists?.length >= 2 && memberLists?.length <= 10 && styles.active}`}
-					onClick={createGroupHandler}>
-					Create Group
+					className={`${
+						campaignName && campaignMemberList?.length >= 2 && campaignMemberList?.length <= 10 && styles.active
+					}`}
+					onClick={createCampaignHandler}>
+					Create Campaign
 				</button>
 			</div>
 		</>
 	);
 };
 
-export default Group;
+export default Campaign;

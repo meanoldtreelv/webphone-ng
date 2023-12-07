@@ -50,7 +50,7 @@ const ConversationsHeader = () => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
-				{conversationDatas?.conversation_type === "group" ? (
+				{conversationDatas?.conversation_type === "group" || conversationDatas?.conversation_type === "campaign" ? (
 					<span className={styles.initials_group}>
 						<UserGroupIcon />
 					</span>
@@ -65,7 +65,7 @@ const ConversationsHeader = () => {
 
 				<div className={styles.contact}>
 					<span className={styles.name}>
-						{conversationDatas?.conversation_type === "group"
+						{conversationDatas?.conversation_type === "group" || conversationDatas?.conversation_type === "campaign"
 							? conversationDatas?.campaign_info?.name
 							: firstName + lastName
 							? firstName + " " + lastName

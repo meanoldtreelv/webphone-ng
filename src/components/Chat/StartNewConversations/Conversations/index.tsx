@@ -7,7 +7,6 @@ import ChevronDownIcon from "components/UI/Icons/ChatIcons/ChevronDown";
 import SearchIcon from "components/UI/Icons/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { fromNumberSelected, textingContactLists } from "redux/chat/chatSelectors";
-import { setLoader } from "redux/common/commonSlice";
 import StartConversationBox from "../StartConversationBox";
 import {
 	useLazyCreateConversationObjectQuery,
@@ -32,7 +31,6 @@ const Conversations = () => {
 
 	const [search, setSearch] = useState("");
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
-	// const [noSearchResult, setNoSearchResult] = useState(false);
 	const [fakePage, setFakePage] = useState(1);
 	const [getContacts, { data: contactsData, isLoading: contactsLoading, isFetching: contactsFetching }] =
 		useLazyGetTextingContactListsQuery();
@@ -54,7 +52,7 @@ const Conversations = () => {
 
 		const fetchContacts = async () => {
 			await getContacts("");
-			dispatch(setLoader(false));
+			// dispatch(setLoader(false));
 		};
 
 		if (contactsParsed && contactsParsed.length) {
@@ -97,8 +95,6 @@ const Conversations = () => {
 			});
 
 			setFilteredContactList(filteredRes);
-
-			// setNoSearchResult(!filteredRes?.length ? true : false);
 		}
 	}, [search]);
 
@@ -135,7 +131,6 @@ const Conversations = () => {
 
 		const strQuery = new URLSearchParams({ contact_id: contactClicked.id }).toString();
 
-		// let searchList = [];
 		let filteredList = [];
 
 		const filterList = (list) => {
@@ -152,7 +147,6 @@ const Conversations = () => {
 			const { error, data } = await getConversationLists(strQuery);
 
 			if (data) {
-				// searchList = data;
 				filteredList = filterList(data);
 
 				if (filteredList?.length > 0) {
