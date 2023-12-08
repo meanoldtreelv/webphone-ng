@@ -1,6 +1,6 @@
 import {store} from '../../redux/store'
 import * as SIP from 'sip.js'
-import { setCookie, getCookie } from 'utils';
+import { setCookie, getCookie, deleteAllCookies } from 'utils';
 import $ from "jquery";
 import moment from "moment"
 
@@ -56,9 +56,9 @@ let AutoAnswerEnabled = false; // Automatically answers the phone when the call 
 let IntercomPolicy = "enabled"; // disabled = feature is disabled | enabled = feature is always on
 let EnableRingtone = true; // Enables a ring tone when an inbound call comes in.  (media/Ringtone_1.mp3)
 let hostingPrefix = ""; // Use if hosting off root directory. eg: "/phone/" or "/static/"
-let AutoGainControl = ()=>{return getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true;} // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
-let EchoCancellation = ()=>{return getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true;} // Attempts to remove echo over the line.
-let NoiseSuppression = ()=>{return getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true;} // Attempts to clear the call quality of noise.
+let AutoGainControl = ()=>{return localStorage.getItem("audioAutoGainControl") ? localStorage.getItem("audioAutoGainControl") == "true" : true;} // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
+let EchoCancellation = ()=>{return localStorage.getItem("audioEchoCancellation") ? localStorage.getItem("audioEchoCancellation") == "true" : true;} // Attempts to remove echo over the line.
+let NoiseSuppression = ()=>{return localStorage.getItem("audioNoiseSuppression") ? localStorage.getItem("audioNoiseSuppression") == "true" : true;} // Attempts to clear the call quality of noise.
 let EnableAlphanumericDial = false; // Allows calling /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g default is /[^\d\*\#\+]/g
 let telNumericRegEx = /[^\d\*\#\+]/g;
 let telAlphanumericRegEx = /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g;
@@ -88,6 +88,34 @@ let AudioinputDevices = [];
 let VideoinputDevices = [];
 let SpeakerDevices = [];
 
+let userInteractionForAudioPlayer = false;
+
+const ringer = new Audio()
+const ringerCallWaiting = new Audio()
+ringer.loop = true;
+ringerCallWaiting.loop = false;
+ringer.preload = "auto";
+ringerCallWaiting.preload = "auto";
+if ( typeof ringer.sinkId !== "undefined" && getRingerOutputID() != "default") {
+  ringer
+    .setSinkId(getRingerOutputID())
+    .then(function () {
+      console.log("Set sinkId to:", getRingerOutputID());
+    })
+    .catch(function (e) {
+      console.warn("Failed not apply setSinkId.", e);
+    });
+}
+if ( typeof ringerCallWaiting.sinkId !== "undefined" && getRingerOutputID() != "default") {
+  ringerCallWaiting
+    .setSinkId(getRingerOutputID())
+    .then(function () {
+      console.log("Set sinkId to:", getRingerOutputID());
+    })
+    .catch(function (e) {
+      console.warn("Failed not apply setSinkId.", e);
+    });
+}
 
 $(window).on("beforeunload", function(event) {
   var CurrentCalls = countSessions(0);
@@ -180,22 +208,36 @@ function PreloadAudioFiles() {
       reader.readAsDataURL(oReq.response);
       reader.onload = function () {
         item.blob = reader.result;
+        if( i == "Ringtone") ringer.src = audioBlobs.Ringtone.blob;
+        if( i == "CallWaiting") ringerCallWaiting.src = audioBlobs.CallWaiting.blob;
       };
     };
     oReq.send();
   });
-  // console.log(audioBlobs);
+  console.log(audioBlobs);
+}
+function ringerLoad(){
+  ringer.oncanplaythrough = function (e) {
+    // If there has been no interaction with the page at all... this page will not work
+  };
+  ringer.load();
+}
+function ringerCallWaitingLoad(){
+  ringerCallWaiting.oncanplaythrough = function (e) {
+    // If there has been no interaction with the page at all... this page will not work
+  };
+  ringerCallWaiting.load();
 }
 PreloadAudioFiles();
 function getRingerOutputID() {
-  if(getCookie("ringerDevice") && getCookie("ringerDevice")!=''){
-    return getCookie("ringerDevice")
+  if(localStorage.getItem("ringerDevice") && localStorage.getItem("ringerDevice")!=''){
+    return localStorage.getItem("ringerDevice")
   }
   return "default";
 }
 function getAudioSrcID() {
-  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!='' && getCookie("microphoneDevice")!="default"){
-    return getCookie("microphoneDevice")
+  if(localStorage.getItem("microphoneDevice") && localStorage.getItem("microphoneDevice")!='' && localStorage.getItem("microphoneDevice")!="default"){
+    return localStorage.getItem("microphoneDevice")
   }
   let device = "default"
   AudioinputDevices.forEach((element, index) => {
@@ -208,8 +250,8 @@ function getAudioSrcID() {
   return device;
 }
 function getAudioOutputID() {
-  if(getCookie("speakerDevice") && getCookie("speakerDevice")!='' ){
-    return getCookie("speakerDevice")
+  if(localStorage.getItem("speakerDevice") && localStorage.getItem("speakerDevice")!='' ){
+    return localStorage.getItem("speakerDevice")
   }
   return "default";
 }
@@ -710,9 +752,10 @@ function teardownSession(lineObj) {
   // Stop any ringing calls
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
 
   // Make sure you have released the microphone
@@ -2126,65 +2169,25 @@ function ReceiveCall(session) {
   if (EnableRingtone == true) {
     if (CurrentCalls >= 1) {
       // Play Alert
-      console.log("Audio:", audioBlobs.CallWaiting.url);
-      var ringer = new Audio(audioBlobs.CallWaiting.blob);
-      ringer.preload = "auto";
-      ringer.loop = false;
-      ringer.oncanplaythrough = function (e) {
-        if (
-          typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() != "default"
-        ) {
-          ringer
-            .setSinkId(getRingerOutputID())
-            .then(function () {
-              console.log("Set sinkId to:", getRingerOutputID());
-            })
-            .catch(function (e) {
-              console.warn("Failed not apply setSinkId.", e);
-            });
-        }
-        // If there has been no interaction with the page at all... this page will not work
-        ringer
-          .play()
-          .then(function () {
-            // Audio Is Playing
-          })
-          .catch(function (e) {
-            console.warn("Unable to play audio file.", e);
-          });
-      };
-      lineObj.SipSession.data.ringerObj = ringer;
+      ringerCallWaiting.play()
+      .then(function () {
+        // Audio Is Playing
+      })
+      .catch(function (e) {
+        // alert(e)
+        console.warn("Unable to play audio file.", e);
+      });
+      lineObj.SipSession.data.ringerObj = ringerCallWaiting
     } else {
       // Play Ring Tone
-      console.log("Audio:", audioBlobs.Ringtone.url);
-      var ringer = new Audio(audioBlobs.Ringtone.blob);
-      ringer.preload = "auto";
-      ringer.loop = true;
-      ringer.oncanplaythrough = function (e) {
-        if (
-          typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() != "default"
-        ) {
-          ringer
-            .setSinkId(getRingerOutputID())
-            .then(function () {
-              console.log("Set sinkId to:", getRingerOutputID());
-            })
-            .catch(function (e) {
-              console.warn("Failed not apply setSinkId.", e);
-            });
-        }
-        // If there has been no interaction with the page at all... this page will not work
-        ringer
-          .play()
-          .then(function () {
-            // Audio Is Playing
-          })
-          .catch(function (e) {
-            console.warn("Unable to play audio file.", e);
-          });
-      };
+      ringer.play()
+      .then(function () {
+        // Audio Is Playing
+      })
+      .catch(function (e) {
+        // alert(e)
+        console.warn("Unable to play audio file.", e);
+      });
       lineObj.SipSession.data.ringerObj = ringer;
     }
   }
@@ -2300,9 +2303,10 @@ function AnswerAudioCall(lineNumber: number) {
   // Stop the ringtone
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
   // Check vitals
   if (HasAudioDevice === false) {
@@ -2338,7 +2342,7 @@ function AnswerAudioCall(lineNumber: number) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default");
+      localStorage.setItem("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -2389,9 +2393,10 @@ function AnswerVideoCall(lineNumber:number) {
   // Stop the ringtone
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
   // Check vitals
   if (HasAudioDevice === false) {
@@ -2427,7 +2432,7 @@ function AnswerVideoCall(lineNumber:number) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default")
+      localStorage.setItem("microphoneDevice", "default")
     }
   }
   // Add additional Constraints
@@ -2686,7 +2691,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default");
+      localStorage.setItem("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -3935,13 +3940,13 @@ function onRegistered() {
         console.log("Registered!");
         userAgent.registering = false;
         // sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
-        // setCookie("ext_user_id", userAgent['options']['authorizationUsername']);
-        // setCookie("ext_password", userAgent['options']['authorizationPassword']);
+        // localStorage.getItem("ext_user_id", userAgent['options']['authorizationUsername']);
+        // localStorage.getItem("ext_password", userAgent['options']['authorizationPassword']);
         // console.log(userAgent['options'])
         // console.log(userAgent)
         // loginSuccessUI();
 
-        setCookie("ext_connected", "true");
+        localStorage.setItem("ext_connected", "true");
         store.dispatch({type:"sip/extNumber", payload:userAgent['options']['authorizationUsername']})
         store.dispatch({type:"sip/authMessage", payload:"continue"})
         store.dispatch({type:"sip/authLoading", payload:false})
@@ -4027,13 +4032,13 @@ function updateVoluemUI(){
     //document.getElementById("volume").value = getVoluemLevel()
 }
 function microphoneDeviceUpdate(value){
-    setCookie("microphoneDevice", value);
-    renderMicrophoneDevice();
+  localStorage.setItem("microphoneDevice", value);
+  renderMicrophoneDevice();
 }  
       
 function speakerDeviceUpdate(value){
-    setCookie("speakerDevice", value);
-    renderSpeakerDevice();
+  localStorage.setItem("speakerDevice", value);
+  renderSpeakerDevice();
 }   
 function removeAllOtionFromSelectInput(selectBox) {
     try {
@@ -4051,7 +4056,7 @@ function renderMicrophoneDevice(){
         let option = document.createElement("option");
         option.text = audioinputDevice.label;
         option.value = audioinputDevice.deviceId;
-        if(getCookie("microphoneDevice") === audioinputDevice.deviceId){
+        if(localStorage.getItem("microphoneDevice") === audioinputDevice.deviceId){
             option.setAttribute("selected","selected")
         }
         microphoneDevice.appendChild(option);
@@ -4069,7 +4074,7 @@ function renderSpeakerDevice(){
         let option = document.createElement("option");
         option.text = speakerDeviceEle.label;
         option.value = speakerDeviceEle.deviceId;
-        if(getCookie("speakerDevice") === speakerDeviceEle.deviceId){
+        if(localStorage.getItem("speakerDevice") === speakerDeviceEle.deviceId){
             option.setAttribute("selected","selected")
         }
         speakerDevice.appendChild(option);
@@ -4288,6 +4293,37 @@ function haveActiveCall(LineNumber:number){
     }
   }, 1000);
 }
+const socket = io("https://ssp-backend.ringplan.com", {
+  path: "/ws",
+  transports: ["websocket"],
+  secure: true,
+  autoConnect: false,
+  reconnectionDelay: 1500,
+});
+socket.on("status.status.updated.v2", (data) => {
+  console.log(data)
+  try {
+    console.log("Received status update:", data);
+    const status = {
+      main_status:data.main_status.status,
+      additional_status:data.additional_status.status
+    }
+    store.dispatch({type:"sip/status", payload:status})
+  } catch (error) {
+    console.log(error)
+  }
+});
+const userInteractionForAudioPlayerStart = (event) => {
+  if(!userInteractionForAudioPlayer && ringer.paused && ringerCallWaiting.paused){
+    ringerLoad()
+    ringerCallWaitingLoad()
+    userInteractionForAudioPlayer = true
+  }
+  document.body.removeEventListener('click', userInteractionForAudioPlayerStart);
+  document.body.removeEventListener('touchstart', userInteractionForAudioPlayerStart);
+}
+document.body.addEventListener('click', userInteractionForAudioPlayerStart);
+document.body.addEventListener('touchstart', userInteractionForAudioPlayerStart);
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     if(userAgent){
@@ -4311,17 +4347,21 @@ const sip = {
     // SipDomain = "localhost";
     // SipPassword = "@300300";
 	
-    setCookie("ext_user_id", SipUsername);
-    setCookie("ext_password", SipPassword);
-    setCookie("ext_domain", SipDomain);
+    localStorage.setItem("ext_user_id", SipUsername);
+    localStorage.setItem("ext_password", SipPassword);
+    localStorage.setItem("ext_domain", SipDomain);
     // setCookie("ext_connected", "false");
     CreateUserAgent()
+    if(localStorage.getItem('extAuth') !== "true"){
+      socket.emit("authenticate", { token: getCookie("id_token") });
+      socket.connect();
+    }
   },
   LoginWithAPI:(ext?:any)=>{
     store.dispatch({type:"sip/extAuth", payload:false});
-    setCookie("extAuth", "false");
+    localStorage.setItem('extAuth', "false");
     store.dispatch({ type: "sip/apiAuth", payload: ext });
-    setCookie("apiAuth", JSON.stringify(ext) );
+    localStorage.setItem("apiAuth", JSON.stringify(ext) );
     sip.CreateUserAgent(ext["user"],ext["password"],ext["server"])
   },
   call: (number: string) => {
@@ -4344,6 +4384,10 @@ const sip = {
   answerAudioCall: (LineNumber: number ) =>  {
     store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"answer",data:LineNumber}})
     AnswerAudioCall(LineNumber)
+    if(!ringer.paused){
+      ringer.pause();
+      ringerCallWaiting.play();
+    }
   },
   mute: (LineNumber: number, isMute: Boolean ) =>  {
     try {
@@ -4395,8 +4439,8 @@ const sip = {
     SelectLine(LineNumber)
   },
   callSpeakerDevice: (LineNumber: number, value: string) => {
-    try {
-      var remoteAudio = $("#line-" + LineNumber + "-remoteAudio").get(0);
+    var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
+    if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
       remoteAudio.setSinkId(value)
       .then(function () {
         console.log("sinkId applied: " + value);
@@ -4405,7 +4449,7 @@ const sip = {
       .catch(function (e) {
         console.warn("Error using setSinkId: ", e);
       });
-    } catch (error) {}
+    }
   },
   callMicrophoneDevice: (LineNumber: number, value: string) => {
     try {
@@ -4453,52 +4497,44 @@ const sip = {
     if (session.data.ringerObj) {
       if(status==true){
         session.data.ringerObj.pause();
+        session.data.ringerObj.currentTime = 0;
         store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOff",data:lineObj.LineNumber}})
       }else{
         session.data.ringerObj.play();
         store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOn",data:lineObj.LineNumber}})
       }
-      
+    }
+  },
+  changeRingerDevice: (deviceID: string) =>{
+    if (deviceID != "default") {
+      if( typeof ringer.sinkId !== "undefined"){
+        ringer
+        .setSinkId(deviceID)
+        .then(function () {
+          console.log("Set sinkId to:", deviceID);
+        })
+        .catch(function (e) {
+          console.warn("Failed not apply setSinkId.", e);
+        });
+      }
+      if( typeof ringerCallWaiting.sinkId !== "undefined"){
+        ringerCallWaiting
+        .setSinkId(deviceID)
+        .then(function () {
+          console.log("Set sinkId to:", deviceID);
+        })
+        .catch(function (e) {
+          console.warn("Failed not apply setSinkId.", e);
+        });
+      }
     }
   },
   logout: (changeLocation=true)=>{
-    try {Unregister()} catch (error) { }
     localStorage.clear();
     sessionStorage.clear();
-    document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, name => window.location.hostname.split('.').reverse().reduce(domain => (domain=domain.replace(/^\.?[^.]+/, ''),document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`,domain), window.location.hostname));
+    deleteAllCookies();
     changeLocation && (window.location = "/");
   },
   store:() => {return store}
-}
-if (true) {
-  const socket = io("https://ssp-backend.ringplan.com", {
-    path: "/ws",
-    transports: ["websocket"],
-    secure: true,
-    autoConnect: false,
-    reconnectionDelay: 1500,
-  });
-
-  // if (!sessionStorage.getItem("allExtensions")) {
-  //   fetchUnFilteredExtensions();
-  // }
-
-  socket.connect();
-
-  socket.emit("authenticate", { token: getCookie("id_token") });
-
-  socket.on("status.status.updated.v2", (data) => {
-    console.log(data)
-    try {
-      console.log("Received status update:", data);
-      const status = {
-        main_status:data.main_status.status,
-        additional_status:data.additional_status.status
-      }
-      store.dispatch({type:"sip/status", payload:status})
-    } catch (error) {
-      console.log(error)
-    }
-  });
 }
 export default sip
