@@ -177,6 +177,37 @@ const ConversationsList = () => {
 		});
 	}, [Socket]);
 
+	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
+		Socket.on("texting.message.new", (data) => {
+			console.log("texting.message.new", data);
+
+			let updatedList = conversationsLists.map((item) => {
+				if (item.id === data.conversation_id) {
+					return {
+						...item,
+						last_msg: { ...item.last_msg, text: data.text },
+						created_at: data?.created_at,
+						unread_msg_count: item.unread_msg_count + 1,
+					};
+				}
+				return item;
+			});
+
+			const updatedItemIndex = updatedList.findIndex((item) => item.id === data.conversation_id);
+			if (updatedItemIndex !== -1) {
+				const updatedItem = updatedList[updatedItemIndex];
+				updatedList = [
+					updatedItem,
+					...updatedList.slice(0, updatedItemIndex),
+					...updatedList.slice(updatedItemIndex + 1),
+				];
+			}
+			dispatch(setConversationLists(updatedList));
+		});
+	}, [Socket, conversationsLists, dispatch]);
+
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
 			<div className={styles.contact_header}>
