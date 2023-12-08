@@ -8,6 +8,8 @@ import OnOffSwitch from "components/UI/OnOffSwitch";
 import { useSelector } from "react-redux";
 import { getCookie, setCookie } from "utils";
 import { store } from "redux/store";
+import sip from "lib/sip";
+
 
 const AudioSetting = () => {
 	const { speakerDevice, microphoneDevice, audioAutoGainControl, audioNoiseSuppression, audioEchoCancellation } =
@@ -170,6 +172,7 @@ const AudioSetting = () => {
 						onChange={(e) => {
 							// console.log(e.target.value);
 							setCookie("ringerDevice", e.target.value);
+							sip.changeRingerDevice( e.target.value )
 						}}
 						defaultValue={getCookie("ringerDevice") || ""}
 					/>

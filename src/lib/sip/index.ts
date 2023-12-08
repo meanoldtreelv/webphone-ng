@@ -88,6 +88,34 @@ let AudioinputDevices = [];
 let VideoinputDevices = [];
 let SpeakerDevices = [];
 
+let userInteractionForAudioPlayer = false;
+
+const ringer = new Audio()
+const ringerCallWaiting = new Audio()
+ringer.loop = true;
+ringerCallWaiting.loop = false;
+ringer.preload = "auto";
+ringerCallWaiting.preload = "auto";
+if ( typeof ringer.sinkId !== "undefined" && getRingerOutputID() != "default") {
+  ringer
+    .setSinkId(getRingerOutputID())
+    .then(function () {
+      console.log("Set sinkId to:", getRingerOutputID());
+    })
+    .catch(function (e) {
+      console.warn("Failed not apply setSinkId.", e);
+    });
+}
+if ( typeof ringerCallWaiting.sinkId !== "undefined" && getRingerOutputID() != "default") {
+  ringerCallWaiting
+    .setSinkId(getRingerOutputID())
+    .then(function () {
+      console.log("Set sinkId to:", getRingerOutputID());
+    })
+    .catch(function (e) {
+      console.warn("Failed not apply setSinkId.", e);
+    });
+}
 
 $(window).on("beforeunload", function(event) {
   var CurrentCalls = countSessions(0);
@@ -180,11 +208,25 @@ function PreloadAudioFiles() {
       reader.readAsDataURL(oReq.response);
       reader.onload = function () {
         item.blob = reader.result;
+        if( i == "Ringtone") ringer.src = audioBlobs.Ringtone.blob;
+        if( i == "CallWaiting") ringerCallWaiting.src = audioBlobs.CallWaiting.blob;
       };
     };
     oReq.send();
   });
-  // console.log(audioBlobs);
+  console.log(audioBlobs);
+}
+function ringerLoad(){
+  ringer.oncanplaythrough = function (e) {
+    // If there has been no interaction with the page at all... this page will not work
+  };
+  ringer.load();
+}
+function ringerCallWaitingLoad(){
+  ringerCallWaiting.oncanplaythrough = function (e) {
+    // If there has been no interaction with the page at all... this page will not work
+  };
+  ringerCallWaiting.load();
 }
 PreloadAudioFiles();
 function getRingerOutputID() {
@@ -710,9 +752,10 @@ function teardownSession(lineObj) {
   // Stop any ringing calls
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
 
   // Make sure you have released the microphone
@@ -2126,65 +2169,25 @@ function ReceiveCall(session) {
   if (EnableRingtone == true) {
     if (CurrentCalls >= 1) {
       // Play Alert
-      console.log("Audio:", audioBlobs.CallWaiting.url);
-      var ringer = new Audio(audioBlobs.CallWaiting.blob);
-      ringer.preload = "auto";
-      ringer.loop = false;
-      ringer.oncanplaythrough = function (e) {
-        if (
-          typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() != "default"
-        ) {
-          ringer
-            .setSinkId(getRingerOutputID())
-            .then(function () {
-              console.log("Set sinkId to:", getRingerOutputID());
-            })
-            .catch(function (e) {
-              console.warn("Failed not apply setSinkId.", e);
-            });
-        }
-        // If there has been no interaction with the page at all... this page will not work
-        ringer
-          .play()
-          .then(function () {
-            // Audio Is Playing
-          })
-          .catch(function (e) {
-            console.warn("Unable to play audio file.", e);
-          });
-      };
-      lineObj.SipSession.data.ringerObj = ringer;
+      ringerCallWaiting.play()
+      .then(function () {
+        // Audio Is Playing
+      })
+      .catch(function (e) {
+        // alert(e)
+        console.warn("Unable to play audio file.", e);
+      });
+      lineObj.SipSession.data.ringerObj = ringerCallWaiting
     } else {
       // Play Ring Tone
-      console.log("Audio:", audioBlobs.Ringtone.url);
-      var ringer = new Audio(audioBlobs.Ringtone.blob);
-      ringer.preload = "auto";
-      ringer.loop = true;
-      ringer.oncanplaythrough = function (e) {
-        if (
-          typeof ringer.sinkId !== "undefined" &&
-          getRingerOutputID() != "default"
-        ) {
-          ringer
-            .setSinkId(getRingerOutputID())
-            .then(function () {
-              console.log("Set sinkId to:", getRingerOutputID());
-            })
-            .catch(function (e) {
-              console.warn("Failed not apply setSinkId.", e);
-            });
-        }
-        // If there has been no interaction with the page at all... this page will not work
-        ringer
-          .play()
-          .then(function () {
-            // Audio Is Playing
-          })
-          .catch(function (e) {
-            console.warn("Unable to play audio file.", e);
-          });
-      };
+      ringer.play()
+      .then(function () {
+        // Audio Is Playing
+      })
+      .catch(function (e) {
+        // alert(e)
+        console.warn("Unable to play audio file.", e);
+      });
       lineObj.SipSession.data.ringerObj = ringer;
     }
   }
@@ -2300,9 +2303,10 @@ function AnswerAudioCall(lineNumber: number) {
   // Stop the ringtone
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
   // Check vitals
   if (HasAudioDevice === false) {
@@ -2389,9 +2393,10 @@ function AnswerVideoCall(lineNumber:number) {
   // Stop the ringtone
   if (session.data.ringerObj) {
     session.data.ringerObj.pause();
-    session.data.ringerObj.removeAttribute("src");
-    session.data.ringerObj.load();
-    session.data.ringerObj = null;
+    session.data.ringerObj.currentTime = 0;
+    // session.data.ringerObj.removeAttribute("src");
+    // session.data.ringerObj.load();
+    // session.data.ringerObj = null;
   }
   // Check vitals
   if (HasAudioDevice === false) {
@@ -4308,6 +4313,17 @@ socket.on("status.status.updated.v2", (data) => {
     console.log(error)
   }
 });
+const userInteractionForAudioPlayerStart = (event) => {
+  if(!userInteractionForAudioPlayer && ringer.paused && ringerCallWaiting.paused){
+    ringerLoad()
+    ringerCallWaitingLoad()
+    userInteractionForAudioPlayer = true
+  }
+  document.body.removeEventListener('click', userInteractionForAudioPlayerStart);
+  document.body.removeEventListener('touchstart', userInteractionForAudioPlayerStart);
+}
+document.body.addEventListener('click', userInteractionForAudioPlayerStart);
+document.body.addEventListener('touchstart', userInteractionForAudioPlayerStart);
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     if(userAgent){
@@ -4368,6 +4384,10 @@ const sip = {
   answerAudioCall: (LineNumber: number ) =>  {
     store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"answer",data:LineNumber}})
     AnswerAudioCall(LineNumber)
+    if(!ringer.paused){
+      ringer.pause();
+      ringerCallWaiting.play();
+    }
   },
   mute: (LineNumber: number, isMute: Boolean ) =>  {
     try {
@@ -4419,8 +4439,8 @@ const sip = {
     SelectLine(LineNumber)
   },
   callSpeakerDevice: (LineNumber: number, value: string) => {
-    try {
-      var remoteAudio = $("#line-" + LineNumber + "-remoteAudio").get(0);
+    var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
+    if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
       remoteAudio.setSinkId(value)
       .then(function () {
         console.log("sinkId applied: " + value);
@@ -4429,7 +4449,7 @@ const sip = {
       .catch(function (e) {
         console.warn("Error using setSinkId: ", e);
       });
-    } catch (error) {}
+    }
   },
   callMicrophoneDevice: (LineNumber: number, value: string) => {
     try {
@@ -4477,12 +4497,36 @@ const sip = {
     if (session.data.ringerObj) {
       if(status==true){
         session.data.ringerObj.pause();
+        session.data.ringerObj.currentTime = 0;
         store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOff",data:lineObj.LineNumber}})
       }else{
         session.data.ringerObj.play();
         store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"ringtoneOn",data:lineObj.LineNumber}})
       }
-      
+    }
+  },
+  changeRingerDevice: (deviceID: string) =>{
+    if (deviceID() != "default") {
+      if( typeof ringer.sinkId !== "undefined"){
+        ringer
+        .setSinkId(deviceID)
+        .then(function () {
+          console.log("Set sinkId to:", deviceID);
+        })
+        .catch(function (e) {
+          console.warn("Failed not apply setSinkId.", e);
+        });
+      }
+      if( typeof ringerCallWaiting.sinkId !== "undefined"){
+        ringerCallWaiting
+        .setSinkId(deviceID)
+        .then(function () {
+          console.log("Set sinkId to:", deviceID);
+        })
+        .catch(function (e) {
+          console.warn("Failed not apply setSinkId.", e);
+        });
+      }
     }
   },
   logout: (changeLocation=true)=>{
