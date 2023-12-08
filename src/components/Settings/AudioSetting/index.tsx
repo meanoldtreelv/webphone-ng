@@ -37,9 +37,9 @@ const AudioSetting = () => {
 						options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}
 						onChange={(e) => {
 							// console.log(e.target.value);
-							setCookie("speakerDevice", e.target.value);
+							localStorage.setItem("speakerDevice", e.target.value);
 						}}
-						defaultValue={getCookie("speakerDevice") || ""}
+						defaultValue={localStorage.getItem("speakerDevice") || ""}
 					/>
 				</div>
 				{/* <div className={`${styles.setting}`}> */}
@@ -87,9 +87,9 @@ const AudioSetting = () => {
 							.map((y: any) => y[0])}
 						onChange={(e) => {
 							// console.log(e.target.value);
-							setCookie("microphoneDevice", e.target.value);
+							localStorage.setItem("microphoneDevice", e.target.value);
 						}}
-						defaultValue={getCookie("microphoneDevice") || ""}
+						defaultValue={localStorage.getItem("microphoneDevice") || ""}
 					/>
 				</div>
 				{/* <div className={`${styles.setting}`}>
@@ -108,7 +108,7 @@ const AudioSetting = () => {
 							checked={audioEchoCancellation}
 							onChange={(e) => {
 								store.dispatch({ type: "sip/audioEchoCancellation", payload: e.target.checked });
-								setCookie("audioEchoCancellation", e.target.checked);
+								localStorage.setItem("audioEchoCancellation", String(e.target.checked));
 							}}
 						/>
 						<span className={`caption_1`}>Enable echo cancellation</span>
@@ -133,7 +133,7 @@ const AudioSetting = () => {
 							checked={audioNoiseSuppression}
 							onChange={(e) => {
 								store.dispatch({ type: "sip/audioNoiseSuppression", payload: e.target.checked });
-								setCookie("audioNoiseSuppression", e.target.checked);
+								localStorage.setItem("audioNoiseSuppression", String(e.target.checked));
 							}}
 						/>
 						<span className={`caption_1`}>Enable noise suppression</span>
@@ -145,7 +145,7 @@ const AudioSetting = () => {
 							checked={audioAutoGainControl}
 							onChange={(e) => {
 								store.dispatch({ type: "sip/audioAutoGainControl", payload: e.target.checked });
-								setCookie("audioAutoGainControl", e.target.checked);
+								localStorage.setItem("audioAutoGainControl", String(e.target.checked));
 							}}
 						/>
 						<span className={`caption_1`}>Enable auto gain control</span>
@@ -171,10 +171,10 @@ const AudioSetting = () => {
 						options={speakerDevice.map((x: any) => [{ name: x["label"], value: x["deviceId"] }]).map((y: any) => y[0])}
 						onChange={(e) => {
 							// console.log(e.target.value);
-							setCookie("ringerDevice", e.target.value);
+							localStorage.setItem("ringerDevice", e.target.value);
 							sip.changeRingerDevice( e.target.value )
 						}}
-						defaultValue={getCookie("ringerDevice") || ""}
+						defaultValue={localStorage.getItem("ringerDevice") || ""}
 					/>
 				</div>
 				{/* <div className={`${styles.setting}`}>

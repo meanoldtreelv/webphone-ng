@@ -10,7 +10,7 @@ export const jwtTokenRefresher =
 	(next: any) =>
 	async (action: any) => {
 		if (action && isRejectedWithValue(action)) {
-			if (getCookie("extAuth") !== "true") {
+			if (localStorage.getItem('extAuth') !== "true") {
 				if (action?.payload?.response?.status === 401) {
 					await axios
 						.post("https://b2clogin.ringplan.com/refresh-token", {

@@ -72,7 +72,7 @@ const RecentsSidebar = () => {
 			</div>
 			<div className={`${styles.list} ${!allCallHistory.length ? styles.list_hidden : null}`}>
 				<div>
-					{!allCallHistory.length && !backLoad && getCookie("extAuth") === "false" ? (
+					{!allCallHistory.length && !backLoad && localStorage.getItem('extAuth') === "false" ? (
 						Array(18)
 							.fill(null)
 							.map((el) => <RecentHistoryCardSkeleton />)

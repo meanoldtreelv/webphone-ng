@@ -56,9 +56,9 @@ let AutoAnswerEnabled = false; // Automatically answers the phone when the call 
 let IntercomPolicy = "enabled"; // disabled = feature is disabled | enabled = feature is always on
 let EnableRingtone = true; // Enables a ring tone when an inbound call comes in.  (media/Ringtone_1.mp3)
 let hostingPrefix = ""; // Use if hosting off root directory. eg: "/phone/" or "/static/"
-let AutoGainControl = ()=>{return getCookie("audioAutoGainControl") ? getCookie("audioAutoGainControl") == "true" : true;} // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
-let EchoCancellation = ()=>{return getCookie("audioEchoCancellation") ? getCookie("audioEchoCancellation") == "true" : true;} // Attempts to remove echo over the line.
-let NoiseSuppression = ()=>{return getCookie("audioNoiseSuppression") ? getCookie("audioNoiseSuppression") == "true" : true;} // Attempts to clear the call quality of noise.
+let AutoGainControl = ()=>{return localStorage.getItem("audioAutoGainControl") ? localStorage.getItem("audioAutoGainControl") == "true" : true;} // Attempts to adjust the microphone volume to a good audio level. (OS may be better at this)
+let EchoCancellation = ()=>{return localStorage.getItem("audioEchoCancellation") ? localStorage.getItem("audioEchoCancellation") == "true" : true;} // Attempts to remove echo over the line.
+let NoiseSuppression = ()=>{return localStorage.getItem("audioNoiseSuppression") ? localStorage.getItem("audioNoiseSuppression") == "true" : true;} // Attempts to clear the call quality of noise.
 let EnableAlphanumericDial = false; // Allows calling /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g default is /[^\d\*\#\+]/g
 let telNumericRegEx = /[^\d\*\#\+]/g;
 let telAlphanumericRegEx = /[^\da-zA-Z\*\#\+\-\_\.\!\~\'\(\)]/g;
@@ -230,14 +230,14 @@ function ringerCallWaitingLoad(){
 }
 PreloadAudioFiles();
 function getRingerOutputID() {
-  if(getCookie("ringerDevice") && getCookie("ringerDevice")!=''){
-    return getCookie("ringerDevice")
+  if(localStorage.getItem("ringerDevice") && localStorage.getItem("ringerDevice")!=''){
+    return localStorage.getItem("ringerDevice")
   }
   return "default";
 }
 function getAudioSrcID() {
-  if(getCookie("microphoneDevice") && getCookie("microphoneDevice")!='' && getCookie("microphoneDevice")!="default"){
-    return getCookie("microphoneDevice")
+  if(localStorage.getItem("microphoneDevice") && localStorage.getItem("microphoneDevice")!='' && localStorage.getItem("microphoneDevice")!="default"){
+    return localStorage.getItem("microphoneDevice")
   }
   let device = "default"
   AudioinputDevices.forEach((element, index) => {
@@ -250,8 +250,8 @@ function getAudioSrcID() {
   return device;
 }
 function getAudioOutputID() {
-  if(getCookie("speakerDevice") && getCookie("speakerDevice")!='' ){
-    return getCookie("speakerDevice")
+  if(localStorage.getItem("speakerDevice") && localStorage.getItem("speakerDevice")!='' ){
+    return localStorage.getItem("speakerDevice")
   }
   return "default";
 }
@@ -2342,7 +2342,7 @@ function AnswerAudioCall(lineNumber: number) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default");
+      localStorage.setItem("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -2432,7 +2432,7 @@ function AnswerVideoCall(lineNumber:number) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default")
+      localStorage.setItem("microphoneDevice", "default")
     }
   }
   // Add additional Constraints
@@ -2691,7 +2691,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
       console.warn(
         "The audio device you used before is no longer available, default settings applied."
       );
-      setCookie("microphoneDevice", "default");
+      localStorage.setItem("microphoneDevice", "default");
     }
   }
   // Add additional Constraints
@@ -3940,13 +3940,13 @@ function onRegistered() {
         console.log("Registered!");
         userAgent.registering = false;
         // sessionStorage.setItem("user", userAgent['options']['authorizationUsername'])
-        // setCookie("ext_user_id", userAgent['options']['authorizationUsername']);
-        // setCookie("ext_password", userAgent['options']['authorizationPassword']);
+        // localStorage.getItem("ext_user_id", userAgent['options']['authorizationUsername']);
+        // localStorage.getItem("ext_password", userAgent['options']['authorizationPassword']);
         // console.log(userAgent['options'])
         // console.log(userAgent)
         // loginSuccessUI();
 
-        setCookie("ext_connected", "true");
+        localStorage.setItem("ext_connected", "true");
         store.dispatch({type:"sip/extNumber", payload:userAgent['options']['authorizationUsername']})
         store.dispatch({type:"sip/authMessage", payload:"continue"})
         store.dispatch({type:"sip/authLoading", payload:false})
@@ -4032,13 +4032,13 @@ function updateVoluemUI(){
     //document.getElementById("volume").value = getVoluemLevel()
 }
 function microphoneDeviceUpdate(value){
-    setCookie("microphoneDevice", value);
-    renderMicrophoneDevice();
+  localStorage.setItem("microphoneDevice", value);
+  renderMicrophoneDevice();
 }  
       
 function speakerDeviceUpdate(value){
-    setCookie("speakerDevice", value);
-    renderSpeakerDevice();
+  localStorage.setItem("speakerDevice", value);
+  renderSpeakerDevice();
 }   
 function removeAllOtionFromSelectInput(selectBox) {
     try {
@@ -4056,7 +4056,7 @@ function renderMicrophoneDevice(){
         let option = document.createElement("option");
         option.text = audioinputDevice.label;
         option.value = audioinputDevice.deviceId;
-        if(getCookie("microphoneDevice") === audioinputDevice.deviceId){
+        if(localStorage.getItem("microphoneDevice") === audioinputDevice.deviceId){
             option.setAttribute("selected","selected")
         }
         microphoneDevice.appendChild(option);
@@ -4074,7 +4074,7 @@ function renderSpeakerDevice(){
         let option = document.createElement("option");
         option.text = speakerDeviceEle.label;
         option.value = speakerDeviceEle.deviceId;
-        if(getCookie("speakerDevice") === speakerDeviceEle.deviceId){
+        if(localStorage.getItem("speakerDevice") === speakerDeviceEle.deviceId){
             option.setAttribute("selected","selected")
         }
         speakerDevice.appendChild(option);
@@ -4347,21 +4347,21 @@ const sip = {
     // SipDomain = "localhost";
     // SipPassword = "@300300";
 	
-    setCookie("ext_user_id", SipUsername);
-    setCookie("ext_password", SipPassword);
-    setCookie("ext_domain", SipDomain);
+    localStorage.setItem("ext_user_id", SipUsername);
+    localStorage.setItem("ext_password", SipPassword);
+    localStorage.setItem("ext_domain", SipDomain);
     // setCookie("ext_connected", "false");
     CreateUserAgent()
-    if(getCookie("extAuth") !== "true"){
+    if(localStorage.getItem('extAuth') !== "true"){
       socket.emit("authenticate", { token: getCookie("id_token") });
       socket.connect();
     }
   },
   LoginWithAPI:(ext?:any)=>{
     store.dispatch({type:"sip/extAuth", payload:false});
-    setCookie("extAuth", "false");
+    localStorage.setItem('extAuth', "false");
     store.dispatch({ type: "sip/apiAuth", payload: ext });
-    setCookie("apiAuth", JSON.stringify(ext) );
+    localStorage.setItem("apiAuth", JSON.stringify(ext) );
     sip.CreateUserAgent(ext["user"],ext["password"],ext["server"])
   },
   call: (number: string) => {
@@ -4506,7 +4506,7 @@ const sip = {
     }
   },
   changeRingerDevice: (deviceID: string) =>{
-    if (deviceID() != "default") {
+    if (deviceID != "default") {
       if( typeof ringer.sinkId !== "undefined"){
         ringer
         .setSinkId(deviceID)

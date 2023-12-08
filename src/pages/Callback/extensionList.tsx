@@ -8,7 +8,7 @@ import { useLazyGetInstancesBulksQuery } from "services/callback";
 import { setCookie } from "utils";
 
 const ExtensionList = ({ instance_id }: { instance_id: string }) => {
-	setCookie("instance_id", instance_id);
+	localStorage.setItem("instance_id", instance_id);
 	store.dispatch({ type: "sip/instance_id", payload: instance_id });
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
 	const [getInstancesBulksQuery] = useLazyGetInstancesBulksQuery();
@@ -22,7 +22,7 @@ const ExtensionList = ({ instance_id }: { instance_id: string }) => {
 				...(instance["outbound_callerid"] ? { outbound_callerid: instance["outbound_callerid"] } : {}),
 			}));
 			console.log(instancesVal);
-			setCookie("instancesVal", JSON.stringify(instancesVal));
+			localStorage.setItem("instancesVal", JSON.stringify(instancesVal));
 			store.dispatch({ type: "sip/extAuthList", payload: instancesVal });
 		});
 	}, []);
