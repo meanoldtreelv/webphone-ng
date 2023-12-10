@@ -18,16 +18,11 @@ export const jwtTokenRefresher =
 							refresh_token: getCookie("refresh_token"),
 						})
 						.then((resp) => {
-							// setCookie("id_token", resp?.data?.id_token);
-							Cookies.set("id_token", resp?.data?.id_token, {
-								expires: 7,
-								path: ".ringplan.com",
-							});
-							Cookies.set("refresh_token", resp?.data?.id_token, {
-								expires: 7,
-								path: ".ringplan.com",
-							});
-							// setCookie("refresh_token", resp?.data?.refresh_token);
+							var currentDate = new Date();
+							var expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+							var formattedExpiryDate = expiryDate.toUTCString();
+							document.cookie = `id_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+							document.cookie = `refresh_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 							window.location.reload();
 						})
 						.catch((e) => {

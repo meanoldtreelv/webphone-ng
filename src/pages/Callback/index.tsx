@@ -59,7 +59,6 @@ const Callback = () => {
 			document.cookie = `id_token=${getCookie(
 				"id_token",
 			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
-			navigate("/dashboard");
 			document.cookie = `refresh_token=${getCookie(
 				"refresh_token",
 			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
