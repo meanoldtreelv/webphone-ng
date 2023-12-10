@@ -12,6 +12,7 @@ const ExtensionList = ({ instance_id }: { instance_id: string }) => {
 	store.dispatch({ type: "sip/instance_id", payload: instance_id });
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
 	const [getInstancesBulksQuery] = useLazyGetInstancesBulksQuery();
+	const [defaultSelected, setDefaultSelected] = useState<Boolean>(true);
 	useEffect(() => {
 		getInstancesBulksQuery(instance_id).then((payload) => {
 			const instancesVal = payload.data.map((instance: any) => ({
@@ -30,8 +31,9 @@ const ExtensionList = ({ instance_id }: { instance_id: string }) => {
 	return (
 		<div style={{ gap: "0.5rem", display: "flex", flexDirection: "column", overflow: "auto", maxHeight: "18rem" }}>
 			{extAuthList.map((extAuth: any, idx: number) => {
-				if (idx === 0) {
+				if (idx === 0 && defaultSelected) {
 					store.dispatch({ type: "sip/loginSelectExtension", payload: extAuth["user"] });
+					setDefaultSelected(false);
 				}
 
 				return (
