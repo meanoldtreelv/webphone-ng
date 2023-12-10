@@ -16,6 +16,7 @@ import { getCookie, setCookie } from "utils";
 import { useTheme } from "hooks/useTheme";
 import { useSearchParams } from "react-router-dom";
 import logo from "./../../assets/images/core/logo-ri.svg";
+import Cookies from "js-cookie";
 
 const Callback = () => {
 	let [searchParams, setSearchParams] = useSearchParams();
@@ -52,6 +53,16 @@ const Callback = () => {
 
 	useEffect(() => {
 		if (authMessage === "continue") {
+			var currentDate = new Date();
+			var expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+			var formattedExpiryDate = expiryDate.toUTCString();
+			document.cookie = `id_token=${getCookie(
+				"id_token",
+			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+			navigate("/dashboard");
+			document.cookie = `refresh_token=${getCookie(
+				"refresh_token",
+			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 			navigate("/dashboard");
 		}
 	}, [authMessage]);
