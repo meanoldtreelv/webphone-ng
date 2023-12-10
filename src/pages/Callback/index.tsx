@@ -26,7 +26,10 @@ const Callback = () => {
 
 	useEffect(() => {
 		if (isExt) {
-			window?.opener?.postMessage({ id_token: getCookie("id_token") }, `chrome-extension://${searchParams.get("ext")}`);
+			window?.opener?.postMessage(
+				{ id_token: getCookie("id_token"), refresh_token: getCookie("refresh_token") },
+				`chrome-extension://${searchParams.get("ext")}`,
+			);
 		}
 	}, []);
 
