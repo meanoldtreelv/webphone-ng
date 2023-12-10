@@ -12,13 +12,23 @@ import Loader from "components/UI/Loader";
 import { useSelector } from "react-redux";
 import { store } from "redux/store";
 import ErrorMessage from "components/UI/ErrorMessage";
-import { setCookie } from "utils";
+import { getCookie, setCookie } from "utils";
 import { useTheme } from "hooks/useTheme";
+import { useSearchParams } from "react-router-dom";
+import logo from "./../../assets/images/core/logo-ri.svg";
 
 const Callback = () => {
+	let [searchParams, setSearchParams] = useSearchParams();
+	const [isExt, setIsExt] = useState<Boolean>(searchParams.get("type") === "ext");
 	const instance_id: string = useGetInstancesQuery(null).data?.[0]["uuid"];
 	const navigate = useNavigate();
 	const theme = useTheme();
+
+	useEffect(() => {
+		if (isExt) {
+			window?.opener?.postMessage({ id_token: getCookie("id_token") }, `chrome-extension://${searchParams.get("ext")}`);
+		}
+	}, []);
 
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
 
@@ -58,7 +68,17 @@ const Callback = () => {
 	// 	</div>
 	// );
 	const callback = () => {
-		return (
+		const callback_val = isExt ? (
+			<div className={styles.redirectMsg}>
+				<div>
+					<div className={styles.redirectLogo}>
+						<img src={logo} alt="" />
+					</div>
+					<p>Authenticating user...</p>
+					<p>Please wait till the authentication is completed.</p>
+				</div>
+			</div>
+		) : (
 			<section className={`${styles.login} ${theme}`}>
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
@@ -93,6 +113,8 @@ const Callback = () => {
 				</div>
 			</section>
 		);
+
+		return callback_val;
 	};
 
 	return authLoading ? <Loader /> : callback();
