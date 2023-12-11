@@ -14,6 +14,10 @@ const initialChatState: IChatState = {
 	isShareContactDialogueOpen: false,
 	isDeleteConversationDialogueOpen: false,
 	isSortingMessagePopUpOpen: false,
+	isAddContactDialogueOpen: false,
+	isEditContactDialogueOpen: false,
+	isSettingDialogueOpen: false,
+	isContactDetailsDialogueOpen: false,
 	queries: {
 		page: 1,
 		per_page: 20,
@@ -79,6 +83,18 @@ const chatSlice = createSlice({
 		setIsSortingMessagePopUpOpen(state, action) {
 			state.isSortingMessagePopUpOpen = action.payload;
 		},
+		setIsAddContactDialogueOpen(state, action) {
+			state.isAddContactDialogueOpen = action.payload;
+		},
+		setIsEditContactDialogueOpen(state, action) {
+			state.isEditContactDialogueOpen = action.payload;
+		},
+		setIsSettingDialogueOpen(state, action) {
+			state.isSettingDialogueOpen = action.payload;
+		},
+		setIsContactDetailsDialogueOpen(state, action) {
+			state.isContactDetailsDialogueOpen = action.payload;
+		},
 		setQueries(state, action) {
 			state.queries = action.payload;
 			state.strQueries = new URLSearchParams(state.queries).toString();
@@ -126,6 +142,10 @@ export const {
 	setIsShareContactDialogueOpen,
 	setIsDeleteConversationDialogueOpen,
 	setIsSortingMessagePopUpOpen,
+	setIsAddContactDialogueOpen,
+	setIsEditContactDialogueOpen,
+	setIsSettingDialogueOpen,
+	setIsContactDetailsDialogueOpen,
 	setQueries,
 	setConversationData,
 	setFromContactLists,

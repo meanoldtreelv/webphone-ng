@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	setConversationData,
 	setConversationLists,
+	setIsAddContactDialogueOpen,
 	setIsConversationSelected,
 	setIsSortingMessagePopUpOpen,
 	setIsStartNewConversationDialogueOpen,
@@ -258,7 +259,7 @@ const ConversationsList = () => {
 					<button
 						className={styles.add_contact}
 						onClick={() => {
-							// dispatch(setIsStartNewConversationDialogueOpen(true));
+							dispatch(setIsAddContactDialogueOpen(true));
 						}}>
 						<AddUserIcon color="icon-on-color" />
 					</button>

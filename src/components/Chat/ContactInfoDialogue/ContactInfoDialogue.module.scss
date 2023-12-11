@@ -50,8 +50,12 @@
 }
 
 .contactCardBox {
-	height: calc(100% - 54px - 36px - 35px - 5px);
+	height: calc(100% - 54px - 20px);
 	overflow: auto;
+	// background-color: red;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 .contact {
@@ -79,4 +83,9 @@
 	&:hover {
 		background: var(--background-hover);
 	}
+}
+
+.edit {
+	cursor: pointer;
+	padding: 8px;
 }

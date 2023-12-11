@@ -17,12 +17,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	conversationData,
 	conversationLists,
+	isAddContactDialogueOpen,
 	isAddMemberDialogueOpen,
 	isAudioViewerDialogueOpen,
+	isContactDetailsDialogueOpen,
 	isConversationSelected,
 	isDeleteConversationDialogueOpen,
 	isDocumentViewerDialogueOpen,
+	isEditContactDialogueOpen,
 	isImgViewerDialogueOpen,
+	isSettingDialogueOpen,
 	isShareContactDialogueOpen,
 	isStartNewConversationDialogueOpen,
 	isVideoViewerDialogueOpen,
@@ -31,6 +35,7 @@ import {
 import {
 	setConversationLists,
 	setIsDeleteConversationDialogueOpen,
+	setIsEditContactDialogueOpen,
 	setMsgLists,
 	setSocket,
 } from "redux/chat/chatSlice";
@@ -61,6 +66,10 @@ const Chat: React.FC = () => {
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
 	const conversationDatas = useSelector(conversationData);
 	const strQuery = useSelector(strQueries);
+	const addContactDialogueOpen = useSelector(isAddContactDialogueOpen);
+	const editContactDialogueOpen = useSelector(isEditContactDialogueOpen);
+	const contactDetailsDialogueOpen = useSelector(isContactDetailsDialogueOpen);
+	const settingDialogueOpen = useSelector(isSettingDialogueOpen);
 
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
@@ -173,10 +182,11 @@ const Chat: React.FC = () => {
 			{audioViewerDialogueOpen && <AudioViewer />}
 			{documentViewerDialogueOpen && <DocumentViewer />}
 			{shareContactDialogueOpen && <ShareContactDialogue />}
-			{/* <AddContactDialogue /> */}
-			{/* <EditContactDialogue /> */}
-			{/* <SettingDialogue /> */}
-			<ContactInfoDialogue />
+			{addContactDialogueOpen && <AddContactDialogue />}
+			{editContactDialogueOpen && <EditContactDialogue />}
+			{settingDialogueOpen && <SettingDialogue />}
+
+			{contactDetailsDialogueOpen && <ContactInfoDialogue />}
 		</div>
 	);
 };

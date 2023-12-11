@@ -2,8 +2,15 @@ import styles from "./AddContactDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import CloseIcon from "components/UI/Icons/Close";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
+import { useDispatch } from "react-redux";
+import { setIsAddContactDialogueOpen } from "redux/chat/chatSlice";
 
 const AddContactDialogue = () => {
+	const dispatch = useDispatch();
+
+	const addContactHandler = () => {
+		dispatch(setIsAddContactDialogueOpen(false));
+	};
 	return (
 		<>
 			<Backdrop />
@@ -14,7 +21,11 @@ const AddContactDialogue = () => {
 						<span>Add New Contact</span>
 					</span>
 
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsAddContactDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -35,7 +46,7 @@ const AddContactDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button>Add</button>
+					<button onClick={addContactHandler}>Add</button>
 				</div>
 			</div>
 		</>

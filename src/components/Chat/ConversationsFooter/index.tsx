@@ -12,14 +12,17 @@ import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { conversationData } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
+import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 // import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 
 const ConversationsFooter = () => {
+	const dispatch = useDispatch();
+
 	const conversationDatas = useSelector(conversationData);
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
@@ -128,7 +131,10 @@ const ConversationsFooter = () => {
 				</div>
 				<div className={styles.settingBar}>
 					<p>7007464887</p>
-					<span>
+					<span
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(true));
+						}}>
 						<SettingsIcon />
 					</span>
 				</div>

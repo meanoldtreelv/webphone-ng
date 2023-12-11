@@ -2,8 +2,16 @@ import styles from "./SettingDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
 import MessageIcon from "components/UI/Icons/Sidecar/Message";
 import CloseIcon from "components/UI/Icons/Close";
+import { useDispatch } from "react-redux";
+import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 
 const SettingDialogue = () => {
+	const dispatch = useDispatch();
+
+	const setNumberHandler = () => {
+		dispatch(setIsSettingDialogueOpen(false));
+	};
+
 	return (
 		<>
 			<Backdrop />
@@ -14,7 +22,11 @@ const SettingDialogue = () => {
 						<span>Choose your number</span>
 					</span>
 
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -29,7 +41,7 @@ const SettingDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button>Set</button>
+					<button onClick={setNumberHandler}>Set</button>
 				</div>
 			</div>
 		</>

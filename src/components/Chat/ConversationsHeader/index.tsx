@@ -91,9 +91,9 @@ const ConversationsHeader = () => {
 				<span className={styles.icon}>
 					<CallIcon />
 				</span>
-				<span className={styles.icon}>
+				{/* <span className={styles.icon}>
 					<InfoIcon />
-				</span>
+				</span> */}
 				<span
 					onMouseOver={() => {
 						setDeleteIconHover(true);

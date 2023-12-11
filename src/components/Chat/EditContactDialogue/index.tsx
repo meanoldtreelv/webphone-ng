@@ -3,8 +3,16 @@ import Backdrop from "components/UI/Backdrop";
 import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import CloseIcon from "components/UI/Icons/Close";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
+import { useDispatch } from "react-redux";
+import { setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
 
 const EditContactDialogue = () => {
+	const dispatch = useDispatch();
+
+	const editContactHandler = () => {
+		dispatch(setIsEditContactDialogueOpen(false));
+	};
+
 	return (
 		<>
 			<Backdrop />
@@ -15,7 +23,11 @@ const EditContactDialogue = () => {
 						<span>Edit Contact Info</span>
 					</span>
 
-					<span className={styles.close}>
+					<span
+						className={styles.close}
+						onClick={() => {
+							dispatch(setIsEditContactDialogueOpen(false));
+						}}>
 						<CloseIcon />
 					</span>
 				</h1>
@@ -36,7 +48,7 @@ const EditContactDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button>Save</button>
+					<button onClick={editContactHandler}>Save</button>
 				</div>
 			</div>
 		</>
