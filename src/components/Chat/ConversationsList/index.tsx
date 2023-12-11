@@ -10,15 +10,32 @@ import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SearchBar from "components/UI/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsSortingMessagePopUpOpen, setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
-import { conData } from "components/Data/conversationListData";
-import { conversationLists, isSortingMessagePopUpOpen } from "redux/chat/chatSelectors";
+import {
+	setConversationData,
+	setConversationLists,
+	setIsAddContactDialogueOpen,
+	setIsConversationSelected,
+	setIsSortingMessagePopUpOpen,
+	setIsStartNewConversationDialogueOpen,
+} from "redux/chat/chatSlice";
+import {
+	conversationLists,
+	isSortingMessagePopUpOpen,
+	queries,
+	socket,
+	sortConversationType,
+} from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
+import { showToast } from "utils";
+import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
 	const conversationsLists = useSelector(conversationLists);
 	const sortingMessagePopUpOpen = useSelector(isSortingMessagePopUpOpen);
+	const sortConversationTypes = useSelector(sortConversationType);
+	const query = useSelector(queries);
+	const Socket = useSelector(socket);
 
 	const [
 		getConversationLists,
@@ -27,20 +44,42 @@ const ConversationsList = () => {
 
 	const [sortingIconHover, setSortingIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
-	// const [searchListData, setSearchListData] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [page, setPage] = useState(1);
+	const [perPage, setPerPage] = useState(20);
+	const [endOfTheList, setEndOfTheList] = useState(false);
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedConversationLists, setSearchedConversationLists] = useState([]);
 
 	useEffect(() => {
+		setPage(1);
+
+		const strQuery = new URLSearchParams(query).toString();
+
+		const fetchData = async () => {
+			const { error, data } = await getConversationLists(strQuery);
+
+			if (data) {
+				dispatch(setConversationLists(data));
+			}
+
+			if (error) {
+				showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+			}
+		};
+		fetchData();
+	}, [sortConversationTypes]);
+
+	useEffect(() => {
+		setEndOfTheList(false);
 		if (!searchText) {
 			return;
 		}
+		setPage(1);
 		setSearchedConversationLists([]);
 		const searchStrQuery = new URLSearchParams({
 			page: 1,
-			per_page: 20,
+			per_page: perPage,
 			search: searchText,
 			sort: "last_activity",
 		}).toString();
@@ -49,21 +88,161 @@ const ConversationsList = () => {
 			const { error, data } = await getConversationLists(searchStrQuery);
 
 			if (data) {
-				console.log(data, "data");
 				setSearchedConversationLists(data);
 			}
 
 			if (error) {
-				console.log("getting error in fetching search conversations list API");
+				showToast("There is an error in searching Conversation Lists, please try again later", "error");
 			}
 		};
 		fetchData();
 	}, [searchText]);
 
-	console.log(isLoading1, "loading");
-	console.log(isFetching1, "isFetching");
-	console.log(searchText?.length, "searchtext");
-	console.log(isError1, "setIsErr1");
+	const handleScroll = (e: any) => {
+		if (endOfTheList) return;
+		if (isFetching1) {
+			return;
+		}
+		const scrollTop = e.target.scrollTop;
+		const scrollHeight = e.target.scrollHeight;
+		const clientHeight = e.target.clientHeight;
+
+		if (scrollTop + clientHeight >= scrollHeight) {
+			setPage(page + 1);
+		}
+	};
+
+	useEffect(() => {
+		if (searchText?.length === 0) {
+			if (page === 1) return;
+			const searchStrQuery = new URLSearchParams({
+				...query,
+				page: page,
+			}).toString();
+
+			const fetchData = async () => {
+				const { error, data } = await getConversationLists(searchStrQuery);
+
+				if (data) {
+					if (data?.length < perPage) {
+						setEndOfTheList(true);
+					}
+					const newLists = [...conversationsLists, ...data];
+
+					dispatch(setConversationLists(newLists));
+				}
+
+				if (error) {
+					showToast("There is an error in fetching Conversation Lists, please try again later", "error");
+				}
+			};
+			fetchData();
+		} else {
+			const searchStrQuery = new URLSearchParams({
+				page: page,
+				per_page: perPage,
+				sort: "last_activity",
+				search: searchText,
+			}).toString();
+
+			const fetchData = async () => {
+				const { error, data } = await getConversationLists(searchStrQuery);
+
+				if (data) {
+					const newLists = [...searchedConversationLists, ...data];
+
+					setSearchedConversationLists(newLists);
+					if (data?.length < perPage) {
+						setEndOfTheList(true);
+					}
+				}
+
+				if (error) {
+					showToast("There is an error in fetching Search Conversation Lists, please try again later", "error");
+				}
+			};
+			fetchData();
+		}
+	}, [page]);
+
+	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
+		Socket.on("texting.chat.new", (data) => {
+			console.log("texting.chat.new", data);
+
+			// todo - we need to modify data according to conversation list item
+
+			dispatch(setConversationLists([data, ...conversationsLists]));
+			dispatch(setIsConversationSelected(true));
+			dispatch(setConversationData(data));
+		});
+	}, [Socket]);
+
+	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
+		Socket.on("texting.message.new", (data) => {
+			console.log("texting.message.new", data);
+
+			const filteredList = conversationsLists?.filter((item) => item.id === data.conversation_id);
+
+			if (filteredList.length > 0) {
+				let updatedList = conversationsLists.map((item) => {
+					if (item.id === data.conversation_id) {
+						return {
+							...item,
+							last_msg: { ...item.last_msg, text: data.text },
+							created_at: data?.created_at,
+							unread_msg_count: item.unread_msg_count + 1,
+						};
+					}
+					return item;
+				});
+
+				const updatedItemIndex = updatedList.findIndex((item) => item.id === data.conversation_id);
+				if (updatedItemIndex !== -1) {
+					const updatedItem = updatedList[updatedItemIndex];
+					updatedList = [
+						updatedItem,
+						...updatedList.slice(0, updatedItemIndex),
+						...updatedList.slice(updatedItemIndex + 1),
+					];
+				}
+				dispatch(setConversationLists(updatedList));
+			} else {
+				const query = { search: data.frm };
+				const strQuery = new URLSearchParams(query).toString();
+
+				const fetchData = async () => {
+					const { error, data: searchData } = await getConversationLists(strQuery);
+
+					if (searchData) {
+						const filteredList = searchData?.filter((item) => item.id === data.conversation_id);
+
+						let updatedList = filteredList.map((item) => {
+							if (item.id === data.conversation_id) {
+								return {
+									...item,
+									last_msg: { ...item.last_msg, text: data.text },
+									created_at: data?.created_at,
+									unread_msg_count: item.unread_msg_count + 1,
+								};
+							}
+							return item;
+						});
+
+						dispatch(setConversationLists([...updatedList, ...conversationsLists]));
+					}
+
+					if (error) {
+						showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+					}
+				};
+				fetchData();
+			}
+		});
+	}, [Socket, conversationsLists, dispatch]);
 
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
@@ -77,7 +256,13 @@ const ConversationsList = () => {
 							setSearchText(e.target.value);
 						}}
 					/>
-
+					<button
+						className={styles.add_contact}
+						onClick={() => {
+							dispatch(setIsAddContactDialogueOpen(true));
+						}}>
+						<AddUserIcon color="icon-on-color" />
+					</button>
 					<button
 						className={styles.add_contact}
 						onClick={() => {
@@ -101,7 +286,6 @@ const ConversationsList = () => {
 								}}>
 								<CloseIcon />
 							</span>
-							{/* {sortingMessagePopUpOpen && <ConversationsSortingPopUp />} */}
 						</p>
 					) : (
 						<p className={styles.contact_favorites}>
@@ -127,18 +311,31 @@ const ConversationsList = () => {
 					)}
 				</div>
 			</div>
-			<div className={styles.contact_lists}>
+			<div className={styles.contact_lists} onScroll={handleScroll}>
 				{searchText.length > 0 &&
-					(isFetching1 ? (
+					(searchedConversationLists?.length > 0 ? (
+						isFetching1 ? (
+							<>
+								{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
+								{Array(2)
+									.fill(null)
+									.map((item, index) => (
+										<ContactCardSkeleton key={index} />
+									))}
+							</>
+						) : (
+							<>
+								{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
+							</>
+						)
+					) : isFetching1 ? (
 						<>
 							{Array(16)
 								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
+								.map((item, index) => (
+									<ContactCardSkeleton key={index} />
 								))}
 						</>
-					) : searchedConversationLists?.length > 0 ? (
-						<>{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
 					) : (
 						<div className={styles.noSearchResult}>
 							<SearchResultIcon />
@@ -148,54 +345,18 @@ const ConversationsList = () => {
 					))}
 
 				{searchText.length === 0 &&
-					(conversationsLists?.length > 0 ? (
-						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : isFetching1 ? (
+					(isFetching1 ? (
 						<>
 							{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}
-							{Array(16)
+							{Array(2)
 								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
+								.map((item, index) => (
+									<ContactCardSkeleton key={index} />
 								))}
 						</>
 					) : (
 						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
 					))}
-				{/* {searchText.length === 0 &&
-					(isFetching1 ? (
-						<>
-							{Array(16)
-								.fill(null)
-								.map(() => (
-									<ContactCardSkeleton />
-								))}
-						</>
-					) : searchedConversationLists?.length > 0 ? (
-						<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : (
-						<></>
-					))} */}
-				{/* {searchText ? (
-					searchedConversationLists?.length > 0 ? (
-						<>{searchedConversationLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-					) : (
-						<div className={styles.noSearchResult}>
-							<SearchResultIcon />
-							<p>No Search Result</p>
-						</div>
-					)
-				) : isLoading ? (
-					<>
-						{Array(16)
-							.fill(null)
-							.map(() => (
-								<ContactCardSkeleton />
-							))}
-					</>
-				) : (
-					<>{conversationsLists?.map((item) => <ConversationsCard key={item.id} conversationData={item} />)}</>
-				)} */}
 			</div>
 		</div>
 	);

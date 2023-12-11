@@ -1,8 +1,10 @@
 export function limitCharacter(sentence: string, maxLength: number): string {
 	if (sentence?.length <= maxLength) {
 		return sentence;
-	} else {
+	} else if (sentence?.length >= maxLength) {
 		return sentence?.slice(0, maxLength) + "...";
+	} else if (sentence === "undefine" || sentence === null) {
+		return "";
 	}
 }
 

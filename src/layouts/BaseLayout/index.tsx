@@ -11,6 +11,7 @@ import BottomNav from "components/shared/BottomNav";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 import InboundCall from "components/shared/InboundCall";
+import { ToastContainer } from "react-toastify";
 import ModalMessage from "components/shared/ModalMessage";
 
 const BaseLayout = ({ children }: any) => {
@@ -31,6 +32,7 @@ const BaseLayout = ({ children }: any) => {
 	const location = useLocation();
 	return (
 		<div className={`${styles.wrapper}`}>
+			<ToastContainer />
 			{sessionValid && <ModalMessage />}
 			{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}

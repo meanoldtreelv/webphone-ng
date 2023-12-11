@@ -1,9 +1,10 @@
+import { recentDateFormat } from "helpers/formatDateTime";
 import styles from "./SendTime.module.scss";
 
-const SendTime = () => {
+const SendTime = ({ time }) => {
 	return (
 		<div className={styles.sendTime}>
-			<span> 02:30AM</span>
+			<span> {recentDateFormat(time)}</span>
 		</div>
 	);
 };
