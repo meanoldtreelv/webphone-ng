@@ -40,6 +40,7 @@ const initialChatState: IChatState = {
 	addedMemberLists: [],
 	campaignMemberLists: [],
 	msgLists: [],
+	editContact: {},
 };
 
 const chatSlice = createSlice({
@@ -126,6 +127,9 @@ const chatSlice = createSlice({
 		setMsgLists(state, action) {
 			state.msgLists = action.payload;
 		},
+		setEditContact(state, action) {
+			state.editContact = action.payload;
+		},
 	},
 });
 
@@ -156,6 +160,7 @@ export const {
 	setAddedMemberLists,
 	setCampaignMemberLists,
 	setMsgLists,
+	setEditContact,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

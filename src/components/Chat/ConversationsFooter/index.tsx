@@ -18,12 +18,12 @@ import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
 import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
-// import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
 
 	const conversationDatas = useSelector(conversationData);
+
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
@@ -130,7 +130,7 @@ const ConversationsFooter = () => {
 				<SelectedContact /> */}
 				</div>
 				<div className={styles.settingBar}>
-					<p>7007464887</p>
+					<p>{conversationDatas?.from_number}</p>
 					<span
 						onClick={() => {
 							dispatch(setIsSettingDialogueOpen(true));

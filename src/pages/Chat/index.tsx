@@ -34,12 +34,17 @@ import {
 } from "redux/chat/chatSelectors";
 import {
 	setConversationLists,
+	setFromContactLists,
+	setFromNumberSelected,
 	setIsDeleteConversationDialogueOpen,
-	setIsEditContactDialogueOpen,
 	setMsgLists,
 	setSocket,
 } from "redux/chat/chatSlice";
-import { useLazyDeleteMessagesQuery, useLazyGetConversationListsQuery } from "services/chat";
+import {
+	useLazyDeleteMessagesQuery,
+	useLazyGetConversationListsQuery,
+	useLazyGetTextingNumbersQuery,
+} from "services/chat";
 import Loader from "components/UI/Loader";
 import { showToast } from "utils";
 import { io } from "socket.io-client";
@@ -74,6 +79,25 @@ const Chat: React.FC = () => {
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
 	const [deleteMessages, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteMessagesQuery();
+
+	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getTextingNumber("");
+
+			if (data) {
+				dispatch(setFromContactLists(data));
+				dispatch(setFromNumberSelected(data[0].number));
+			}
+
+			if (error) {
+				showToast("There is error in fetching 'From texting Contact Lists', please try again later", "error");
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -146,9 +170,9 @@ const Chat: React.FC = () => {
 		socket.connect();
 
 		// Clean-up function to disconnect the socket when component unmounts
-		return () => {
-			socket.disconnect();
-		};
+		// return () => {
+		// 	socket.disconnect();
+		// };
 	}, []);
 
 	return (
@@ -185,7 +209,6 @@ const Chat: React.FC = () => {
 			{addContactDialogueOpen && <AddContactDialogue />}
 			{editContactDialogueOpen && <EditContactDialogue />}
 			{settingDialogueOpen && <SettingDialogue />}
-
 			{contactDetailsDialogueOpen && <ContactInfoDialogue />}
 		</div>
 	);

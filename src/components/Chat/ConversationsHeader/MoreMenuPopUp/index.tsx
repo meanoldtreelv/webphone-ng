@@ -1,29 +1,30 @@
 import EditIcon from "components/UI/Icons/ChatIcons/Edit";
-import DeleteIcon from "components/UI/Icons/Delete";
 import styles from "./MoreMenuPopUp.module.scss";
 import InfoIcon from "components/UI/Icons/ChatIcons/Info";
-import { useDispatch } from "react-redux";
-import { setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditContact, setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
+import { conversationData } from "redux/chat/chatSelectors";
 
 const MoreMenuPopUp = () => {
 	const dispatch = useDispatch();
+
+	const conversationsData = useSelector(conversationData);
+
 	return (
 		<div className={styles.popUp}>
-			<div
-				onClick={() => {
-					dispatch(setIsEditContactDialogueOpen(true));
-				}}>
-				<span>
-					<EditIcon />
-				</span>
-				<span>Edit Contact</span>
-			</div>
-			{/* <div>
-				<span>
-					<DeleteIcon />
-				</span>
-				<span>Delete Chat</span>
-			</div> */}
+			{conversationsData?.conversation_type === "direct" && (
+				<div
+					onClick={() => {
+						dispatch(setIsEditContactDialogueOpen(true));
+						dispatch(setEditContact(conversationsData?.contactsinfo?.[0]));
+					}}>
+					<span>
+						<EditIcon />
+					</span>
+					<span>Edit Contact</span>
+				</div>
+			)}
+
 			<div
 				onClick={() => {
 					dispatch(setIsContactDetailsDialogueOpen(true));

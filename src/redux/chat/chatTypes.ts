@@ -33,4 +33,5 @@ export interface IChatState {
 	addedMemberLists: [];
 	campaignMemberLists: [];
 	msgLists: [];
+	editContact: {};
 }

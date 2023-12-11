@@ -5,7 +5,7 @@
 	transform: translate(-50%, -50%);
 
 	width: 400px;
-	// height: 100%;
+
 	flex-shrink: 0;
 	border-radius: 8px;
 	background: var(--background-secondary, #fff);
@@ -120,7 +120,7 @@ p {
 	display: flex;
 	justify-content: end;
 
-	button {
+	.button {
 		display: flex;
 		padding: 7px 8px;
 		justify-content: center;
@@ -137,5 +137,8 @@ p {
 		font-weight: 500;
 		line-height: 18px; /* 138.462% */
 		letter-spacing: -0.5px;
+	}
+	.buttonActive {
+		background: var(--primary-disabled, #0c6dc7);
 	}
 }

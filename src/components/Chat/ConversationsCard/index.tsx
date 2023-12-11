@@ -55,7 +55,7 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 			<div className={styles.contact_name}>
 				<div>
 					<span className={styles.name}>
-						{conversationData?.conversation_type === "group"
+						{conversationData?.conversation_type === "group" || conversationData?.conversation_type === "campaign"
 							? conversationData?.campaign_info?.name
 							: firstName + lastName
 							? firstName + " " + lastName

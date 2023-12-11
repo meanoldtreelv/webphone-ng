@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./ContactInfoDialogue.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import EditIcon from "components/UI/Icons/ChatIcons/Edit";
-import { useDispatch } from "react-redux";
-import { setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditContact, setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
+import { conversationData } from "redux/chat/chatSelectors";
 
-const ContactBar = () => {
+const ContactBar = ({ contact }) => {
 	const dispatch = useDispatch();
 
 	const [contactHovered, setContactHovered] = useState(false);
@@ -20,13 +21,14 @@ const ContactBar = () => {
 				setContactHovered(false);
 			}}>
 			<div>
-				<span className={styles.name}>Shivam Gupta</span>
-				<span className={styles.number}>987258126885</span>
+				<span className={styles.name}>{contact?.first_name + " " + contact.last_name}</span>
+				<span className={styles.number}>{contact?.number}</span>
 			</div>
 			{contactHovered && (
 				<span
 					className={styles.edit}
 					onClick={() => {
+						dispatch(setEditContact(contact));
 						dispatch(setIsEditContactDialogueOpen(true));
 						dispatch(setIsContactDetailsDialogueOpen(false));
 					}}>
@@ -39,13 +41,20 @@ const ContactBar = () => {
 
 const ContactInfoDialogue = () => {
 	const dispatch = useDispatch();
-	const [contactHovered, setContactHovered] = useState(false);
+
+	const conversationsData = useSelector(conversationData);
 
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
 				<div className={styles.header}>
-					<span>Contact Info </span>
+					<span>
+						{conversationsData?.conversation_type === "group" &&
+							`Group Members (${conversationsData?.contactsinfo.length})`}
+						{conversationsData?.conversation_type === "campaign" &&
+							`Campaign Members (${conversationsData?.contactsinfo.length})`}
+						{conversationsData?.conversation_type === "direct" && `Contact Info`}
+					</span>
 					<span
 						className={styles.close}
 						onClick={() => {
@@ -55,8 +64,7 @@ const ContactInfoDialogue = () => {
 					</span>
 				</div>
 				<div className={styles.contactCardBox}>
-					<ContactBar />
-					<ContactBar />
+					{conversationsData?.contactsinfo?.map((contact) => <ContactBar key={contact.id} contact={contact} />)}
 				</div>
 			</div>
 		</div>

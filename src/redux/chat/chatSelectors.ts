@@ -27,3 +27,4 @@ export const startConversationType = (state: RootState) => state.chat.startConve
 export const addedMemberLists = (state: RootState) => state.chat.addedMemberLists;
 export const campaignMemberLists = (state: RootState) => state.chat.campaignMemberLists;
 export const msgLists = (state: RootState) => state.chat.msgLists;
+export const editContact = (state: RootState) => state.chat.editContact;
