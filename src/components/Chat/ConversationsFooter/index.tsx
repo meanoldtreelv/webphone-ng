@@ -15,6 +15,9 @@ import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useSelector } from "react-redux";
 import { conversationData } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
+import EmojiIcon from "components/UI/Icons/Emoji";
+import SettingsIcon from "components/Voicemail/Settings";
+// import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 
 const ConversationsFooter = () => {
 	const conversationDatas = useSelector(conversationData);
@@ -100,9 +103,14 @@ const ConversationsFooter = () => {
 								}
 							}}
 						/>
-						<span className={styles.icon}>
-							<MicrophoneIcon />
-						</span>
+						<div className={styles.icon}>
+							<span className={styles.icon1}>
+								<EmojiIcon />
+							</span>
+							<span className={styles.icon1}>
+								<MicrophoneIcon />
+							</span>
+						</div>
 					</div>
 					<button
 						className={`${styles.send} ${text.length > 0 ? styles.send_active : ""}`}
@@ -116,7 +124,13 @@ const ConversationsFooter = () => {
 					<SelectedVideo />
 					<SelectedAudio />
 					<SelectedDoc />
-					<SelectedContact /> */}
+				<SelectedContact /> */}
+				</div>
+				<div className={styles.settingBar}>
+					<p>7007464887</p>
+					<span>
+						<SettingsIcon />
+					</span>
 				</div>
 			</div>
 		</>

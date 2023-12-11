@@ -74,6 +74,8 @@ const ChatBox = () => {
 	}, [conversationDatas]);
 
 	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
 		Socket.on("texting.message.new", (data) => {
 			console.log("texting.message.new", data);
 			if (data?.conversation_id === conversationDatas?.id) {

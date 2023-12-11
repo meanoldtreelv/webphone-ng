@@ -40,6 +40,10 @@ import { showToast } from "utils";
 import { io } from "socket.io-client";
 import { getCookie } from "typescript-cookie";
 import { getBackendUrl } from "config/env.config";
+import AddContactDialogue from "components/Chat/AddContactDialogue";
+import EditContactDialogue from "components/Chat/EditContactDialogue";
+import SettingDialogue from "components/Chat/SettingDialogue";
+import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
 
 let socket: any = null;
 
@@ -169,6 +173,10 @@ const Chat: React.FC = () => {
 			{audioViewerDialogueOpen && <AudioViewer />}
 			{documentViewerDialogueOpen && <DocumentViewer />}
 			{shareContactDialogueOpen && <ShareContactDialogue />}
+			{/* <AddContactDialogue /> */}
+			{/* <EditContactDialogue /> */}
+			{/* <SettingDialogue /> */}
+			<ContactInfoDialogue />
 		</div>
 	);
 };

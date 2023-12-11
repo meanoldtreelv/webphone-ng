@@ -26,6 +26,7 @@ import {
 } from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
+import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
@@ -183,28 +184,62 @@ const ConversationsList = () => {
 		Socket.on("texting.message.new", (data) => {
 			console.log("texting.message.new", data);
 
-			let updatedList = conversationsLists.map((item) => {
-				if (item.id === data.conversation_id) {
-					return {
-						...item,
-						last_msg: { ...item.last_msg, text: data.text },
-						created_at: data?.created_at,
-						unread_msg_count: item.unread_msg_count + 1,
-					};
-				}
-				return item;
-			});
+			const filteredList = conversationsLists?.filter((item) => item.id === data.conversation_id);
 
-			const updatedItemIndex = updatedList.findIndex((item) => item.id === data.conversation_id);
-			if (updatedItemIndex !== -1) {
-				const updatedItem = updatedList[updatedItemIndex];
-				updatedList = [
-					updatedItem,
-					...updatedList.slice(0, updatedItemIndex),
-					...updatedList.slice(updatedItemIndex + 1),
-				];
+			if (filteredList.length > 0) {
+				let updatedList = conversationsLists.map((item) => {
+					if (item.id === data.conversation_id) {
+						return {
+							...item,
+							last_msg: { ...item.last_msg, text: data.text },
+							created_at: data?.created_at,
+							unread_msg_count: item.unread_msg_count + 1,
+						};
+					}
+					return item;
+				});
+
+				const updatedItemIndex = updatedList.findIndex((item) => item.id === data.conversation_id);
+				if (updatedItemIndex !== -1) {
+					const updatedItem = updatedList[updatedItemIndex];
+					updatedList = [
+						updatedItem,
+						...updatedList.slice(0, updatedItemIndex),
+						...updatedList.slice(updatedItemIndex + 1),
+					];
+				}
+				dispatch(setConversationLists(updatedList));
+			} else {
+				const query = { search: data.frm };
+				const strQuery = new URLSearchParams(query).toString();
+
+				const fetchData = async () => {
+					const { error, data: searchData } = await getConversationLists(strQuery);
+
+					if (searchData) {
+						const filteredList = searchData?.filter((item) => item.id === data.conversation_id);
+
+						let updatedList = filteredList.map((item) => {
+							if (item.id === data.conversation_id) {
+								return {
+									...item,
+									last_msg: { ...item.last_msg, text: data.text },
+									created_at: data?.created_at,
+									unread_msg_count: item.unread_msg_count + 1,
+								};
+							}
+							return item;
+						});
+
+						dispatch(setConversationLists([...updatedList, ...conversationsLists]));
+					}
+
+					if (error) {
+						showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+					}
+				};
+				fetchData();
 			}
-			dispatch(setConversationLists(updatedList));
 		});
 	}, [Socket, conversationsLists, dispatch]);
 
@@ -220,7 +255,13 @@ const ConversationsList = () => {
 							setSearchText(e.target.value);
 						}}
 					/>
-
+					<button
+						className={styles.add_contact}
+						onClick={() => {
+							// dispatch(setIsStartNewConversationDialogueOpen(true));
+						}}>
+						<AddUserIcon color="icon-on-color" />
+					</button>
 					<button
 						className={styles.add_contact}
 						onClick={() => {
