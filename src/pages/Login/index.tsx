@@ -49,10 +49,7 @@ const Login = () => {
 		sip.logout(false);
 		store.dispatch({ type: "sip/extAuth", payload: true });
 
-		setCookie("extAuth", "true");
-
-		localStorage.clear();
-		sessionStorage.clear();
+		localStorage.setItem('extAuth', "true");
 
 		form?.extension === ""
 			? setForm((prevState) => {
