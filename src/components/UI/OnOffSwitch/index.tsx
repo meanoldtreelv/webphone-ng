@@ -4,14 +4,14 @@ import styles from "./OnOffSwitch.module.scss";
 interface SwitchProps {
 	type?: any;
 	restProps?: any;
-	onClick?: () => void;
-	onChange?: () => void;
+	onClick?: React.MouseEventHandler<HTMLInputElement>;
+	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	name?: string;
 	checked?: boolean;
 }
 
 function OnOffSwitch({
-	onClick = emptyFunction,
+	onClick,
 	onChange,
 	type = "checkbox",
 	name = "",
