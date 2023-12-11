@@ -29,15 +29,15 @@ const routes: RouteObject[] = [
 	},
 ];
 
-const extAuth = getCookie("extAuth");
-const apiAuth = getCookie("apiAuth");
-const status = getCookie("status");
-const ext_user_id = getCookie("ext_user_id");
-const ext_password = getCookie("ext_password");
-const ext_domain = getCookie("ext_domain");
-const ext_connected = getCookie("ext_connected");
-const instancesVal = getCookie("instancesVal");
-const instance_id = getCookie("instance_id");
+const extAuth = localStorage.getItem('extAuth');
+const apiAuth = localStorage.getItem("apiAuth");
+const status = localStorage.getItem("status");
+const ext_user_id = localStorage.getItem("ext_user_id");
+const ext_password = localStorage.getItem("ext_password");
+const ext_domain = localStorage.getItem("ext_domain");
+const ext_connected = localStorage.getItem("ext_connected");
+const instancesVal = localStorage.getItem("instancesVal");
+const instance_id = localStorage.getItem("instance_id");
 
 instance_id && store.dispatch({ type: "sip/instance_id", payload: instance_id });
 instancesVal && store.dispatch({ type: "sip/extAuthList", payload: JSON.parse(instancesVal) });

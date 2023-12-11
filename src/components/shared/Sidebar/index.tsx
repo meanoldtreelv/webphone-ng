@@ -189,7 +189,7 @@ const Sidebar = () => {
 					</div>
 					<div className={styles.sidebar_topTab}>
 						{sidebarBtmLinks.map((link: ISidebarLinks) => {
-							if (getCookie("extAuth") === "true" && link.name === "RingPlan Meet") return null;
+							if (localStorage.getItem('extAuth') === "true" && link.name === "RingPlan Meet") return null;
 
 							return (
 								<NavLink

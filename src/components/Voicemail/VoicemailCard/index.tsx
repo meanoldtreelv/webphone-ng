@@ -5,7 +5,7 @@ import playIcon from "./../../../assets/images/icon/player-play.svg";
 import phoneIcon from "./../../../assets/images/icon/voicemail_phone.svg";
 import TranscriptIcon from "./../../../components/UI/Icons/Voicemail/Transcript";
 import menuIcon from "./../../../assets/images/icon/voicemail_menu.svg";
-import { formatDate, toSecMinAndHr } from "./../../../helpers/formatDateTime";
+import { formatDate, recentDateFormat, toSecMinAndHr } from "./../../../helpers/formatDateTime";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setMoreOptVoicemailId,
@@ -152,7 +152,9 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 						<div className={styles.smlInf}>
 							<span>Ext. {ext}</span>
 							<div className={styles.smlDt}></div>
-							<span>{formatDate(time)}</span>
+							<span>
+								{recentDateFormat(time)} - {formatDate(time)}
+							</span>
 						</div>
 					</div>
 				</div>
@@ -160,7 +162,9 @@ const VoicemailCard: React.FC<IVoicemailCard> = ({
 				<div className={styles.card_cont2}>
 					<p className={styles.card_ext}>Ext. {ext}</p>
 					<p className={styles.card_duration}>{toSecMinAndHr(duration)}</p>
-					<p className={styles.card_time}>{formatDate(time)}</p>
+					<p className={styles.card_time}>
+						{recentDateFormat(time)} - {formatDate(time)}
+					</p>
 					<div className={styles.card_icons}>
 						<button className={styles.card_phone} onClick={handleCall}>
 							<img src={phoneIcon} alt="" />
