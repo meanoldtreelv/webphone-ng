@@ -11,7 +11,7 @@ const ProtectedRoutes: React.FC<IProtectedRoutes> = ({ children }) => {
 
 	const access_token = getCookie("id_token");
 	const refresh_token = getCookie("refresh_token");
-	const extAuth = getCookie("extAuth");
+	const extAuth = localStorage.getItem('extAuth');
 
 	// if (!(access_token && refresh_token) || access_token === "undefined") {
 	// 	if (!extAuth) {

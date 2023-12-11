@@ -12,7 +12,7 @@ const SipAccount = () => {
 				<p className={`caption_1 ${styles.addressHeading}`}>SIP Address:</p>
 				<p className={`body ${styles.address}`}>
 					<span>sip:</span>
-					{getCookie('ext_user_id')}@{getCookie('ext_domain')}
+					{localStorage.getItem('ext_user_id')}@{localStorage.getItem('ext_domain')}
 				</p>
 			</div>
 			{/* <h1 className={`body_bold ${styles.heading}`}>Proxy</h1>

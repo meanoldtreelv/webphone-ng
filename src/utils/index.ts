@@ -101,7 +101,7 @@ export const showToast = (message: string, type: TypeOptions, id = "unique") => 
 		autoClose: 2000,
 		hideProgressBar: false,
 		closeOnClick: true,
-		pauseOnHover: false,
+		pauseOnHover: true,
 		type,
 	});
 };
@@ -133,4 +133,12 @@ export const emptyFunction = () => {};
 export const formatFilterDate = (dateString: string) => {
 	const dateParts = dateString.split("/");
 	return `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`;
+};
+
+export const deleteAllCookies = () => {
+	var cookies = document.cookie.split(";");
+	for (var i = 0; i < cookies.length; i++) {
+		var cookie = cookies[i].split("=")[0];
+		document.cookie = cookie + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+	}
 };

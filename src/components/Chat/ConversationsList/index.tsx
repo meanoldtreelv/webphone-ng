@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	setConversationData,
 	setConversationLists,
+	setIsAddContactDialogueOpen,
 	setIsConversationSelected,
 	setIsSortingMessagePopUpOpen,
 	setIsStartNewConversationDialogueOpen,
@@ -26,6 +27,7 @@ import {
 } from "redux/chat/chatSelectors";
 import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
+import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
@@ -177,6 +179,71 @@ const ConversationsList = () => {
 		});
 	}, [Socket]);
 
+	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
+		Socket.on("texting.message.new", (data) => {
+			console.log("texting.message.new", data);
+
+			const filteredList = conversationsLists?.filter((item) => item.id === data.conversation_id);
+
+			if (filteredList.length > 0) {
+				let updatedList = conversationsLists.map((item) => {
+					if (item.id === data.conversation_id) {
+						return {
+							...item,
+							last_msg: { ...item.last_msg, text: data.text },
+							created_at: data?.created_at,
+							unread_msg_count: item.unread_msg_count + 1,
+						};
+					}
+					return item;
+				});
+
+				const updatedItemIndex = updatedList.findIndex((item) => item.id === data.conversation_id);
+				if (updatedItemIndex !== -1) {
+					const updatedItem = updatedList[updatedItemIndex];
+					updatedList = [
+						updatedItem,
+						...updatedList.slice(0, updatedItemIndex),
+						...updatedList.slice(updatedItemIndex + 1),
+					];
+				}
+				dispatch(setConversationLists(updatedList));
+			} else {
+				const query = { search: data.frm };
+				const strQuery = new URLSearchParams(query).toString();
+
+				const fetchData = async () => {
+					const { error, data: searchData } = await getConversationLists(strQuery);
+
+					if (searchData) {
+						const filteredList = searchData?.filter((item) => item.id === data.conversation_id);
+
+						let updatedList = filteredList.map((item) => {
+							if (item.id === data.conversation_id) {
+								return {
+									...item,
+									last_msg: { ...item.last_msg, text: data.text },
+									created_at: data?.created_at,
+									unread_msg_count: item.unread_msg_count + 1,
+								};
+							}
+							return item;
+						});
+
+						dispatch(setConversationLists([...updatedList, ...conversationsLists]));
+					}
+
+					if (error) {
+						showToast("There is an error in filtering Conversation Lists, please try again later", "error");
+					}
+				};
+				fetchData();
+			}
+		});
+	}, [Socket, conversationsLists, dispatch]);
+
 	return (
 		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
 			<div className={styles.contact_header}>
@@ -189,7 +256,13 @@ const ConversationsList = () => {
 							setSearchText(e.target.value);
 						}}
 					/>
-
+					<button
+						className={styles.add_contact}
+						onClick={() => {
+							dispatch(setIsAddContactDialogueOpen(true));
+						}}>
+						<AddUserIcon color="icon-on-color" />
+					</button>
 					<button
 						className={styles.add_contact}
 						onClick={() => {

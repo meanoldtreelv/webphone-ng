@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
 import { conversationData, isDeleteConversationDialogueOpen, socket } from "redux/chat/chatSelectors";
 import { contactAbbreviation } from "utils";
+import CheckIcon from "components/UI/Icons/ChatIcons/Check";
+import PinIcon from "components/UI/Icons/ChatIcons/Pin";
+import ThreeDots from "components/UI/Icons/meet/ThreeDots";
+import MoreMenuPopUp from "./MoreMenuPopUp";
 
 const ConversationsHeader = () => {
 	const dispatch = useDispatch();
@@ -17,6 +21,7 @@ const ConversationsHeader = () => {
 	const Socket = useSelector(socket);
 
 	const [deleteIconHover, setDeleteIconHover] = useState(false);
+	const [isMoreMenu, setIsMoreMenu] = useState(false);
 
 	const first_name = conversationDatas?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationDatas?.contactsinfo?.[0]?.last_name;
@@ -78,11 +83,17 @@ const ConversationsHeader = () => {
 			</div>
 			<div className={styles.right}>
 				<span className={styles.icon}>
-					<CallIcon />
+					<PinIcon />
 				</span>
 				<span className={styles.icon}>
-					<InfoIcon />
+					<CheckIcon />
 				</span>
+				<span className={styles.icon}>
+					<CallIcon />
+				</span>
+				{/* <span className={styles.icon}>
+					<InfoIcon />
+				</span> */}
 				<span
 					onMouseOver={() => {
 						setDeleteIconHover(true);
@@ -98,6 +109,14 @@ const ConversationsHeader = () => {
 						color={deleteIconHover || deleteConversationDialogueOpen ? "support-danger-default" : "icon-primary"}
 					/>
 				</span>
+				<span
+					className={styles.icon}
+					onClick={() => {
+						setIsMoreMenu(!isMoreMenu);
+					}}>
+					<ThreeDots />
+				</span>
+				{isMoreMenu && <MoreMenuPopUp />}
 			</div>
 		</div>
 	);

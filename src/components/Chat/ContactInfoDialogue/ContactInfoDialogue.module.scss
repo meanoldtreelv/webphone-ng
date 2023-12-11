@@ -1,0 +1,91 @@
+.overlay {
+	width: 100vw;
+	height: 100%;
+	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.box {
+	position: fixed;
+	top: 0px;
+	right: 0;
+
+	width: 600px;
+	height: 100%;
+	flex-shrink: 0;
+
+	background: var(--background-secondary, #fff);
+
+	/* ◻️ Light/action_shadow */
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+	padding: 0 24px;
+}
+
+.header {
+	width: 100%;
+	height: 54px;
+	flex-shrink: 0;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	backdrop-filter: blur(16px);
+
+	padding: 17px 0px;
+	color: var(--text-primary, #1f2023);
+
+	/* Subheadline/Bold */
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 20px; /* 125% */
+	letter-spacing: -0.5px;
+}
+
+.close {
+	cursor: pointer;
+}
+
+.contactCardBox {
+	height: calc(100% - 54px - 20px);
+	overflow: auto;
+	// background-color: red;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.contact {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+	border-radius: 8px;
+	background-color: var(--background-active);
+
+	div {
+		display: flex;
+		flex-direction: column;
+
+		.name {
+			color: var(--text-primary);
+		}
+
+		.number {
+			color: var(--text-secondary);
+		}
+	}
+
+	&:hover {
+		background: var(--background-hover);
+	}
+}
+
+.edit {
+	cursor: pointer;
+	padding: 8px;
+}

@@ -17,12 +17,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	conversationData,
 	conversationLists,
+	isAddContactDialogueOpen,
 	isAddMemberDialogueOpen,
 	isAudioViewerDialogueOpen,
+	isContactDetailsDialogueOpen,
 	isConversationSelected,
 	isDeleteConversationDialogueOpen,
 	isDocumentViewerDialogueOpen,
+	isEditContactDialogueOpen,
 	isImgViewerDialogueOpen,
+	isSettingDialogueOpen,
 	isShareContactDialogueOpen,
 	isStartNewConversationDialogueOpen,
 	isVideoViewerDialogueOpen,
@@ -30,16 +34,26 @@ import {
 } from "redux/chat/chatSelectors";
 import {
 	setConversationLists,
+	setFromContactLists,
+	setFromNumberSelected,
 	setIsDeleteConversationDialogueOpen,
 	setMsgLists,
 	setSocket,
 } from "redux/chat/chatSlice";
-import { useLazyDeleteMessagesQuery, useLazyGetConversationListsQuery } from "services/chat";
+import {
+	useLazyDeleteMessagesQuery,
+	useLazyGetConversationListsQuery,
+	useLazyGetTextingNumbersQuery,
+} from "services/chat";
 import Loader from "components/UI/Loader";
 import { showToast } from "utils";
 import { io } from "socket.io-client";
 import { getCookie } from "typescript-cookie";
 import { getBackendUrl } from "config/env.config";
+import AddContactDialogue from "components/Chat/AddContactDialogue";
+import EditContactDialogue from "components/Chat/EditContactDialogue";
+import SettingDialogue from "components/Chat/SettingDialogue";
+import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
 
 let socket: any = null;
 
@@ -57,10 +71,33 @@ const Chat: React.FC = () => {
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
 	const conversationDatas = useSelector(conversationData);
 	const strQuery = useSelector(strQueries);
+	const addContactDialogueOpen = useSelector(isAddContactDialogueOpen);
+	const editContactDialogueOpen = useSelector(isEditContactDialogueOpen);
+	const contactDetailsDialogueOpen = useSelector(isContactDetailsDialogueOpen);
+	const settingDialogueOpen = useSelector(isSettingDialogueOpen);
 
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
 	const [deleteMessages, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteMessagesQuery();
+
+	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getTextingNumber("");
+
+			if (data) {
+				dispatch(setFromContactLists(data));
+				dispatch(setFromNumberSelected(data[0].number));
+			}
+
+			if (error) {
+				showToast("There is error in fetching 'From texting Contact Lists', please try again later", "error");
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -133,9 +170,9 @@ const Chat: React.FC = () => {
 		socket.connect();
 
 		// Clean-up function to disconnect the socket when component unmounts
-		return () => {
-			socket.disconnect();
-		};
+		// return () => {
+		// 	socket.disconnect();
+		// };
 	}, []);
 
 	return (
@@ -169,6 +206,10 @@ const Chat: React.FC = () => {
 			{audioViewerDialogueOpen && <AudioViewer />}
 			{documentViewerDialogueOpen && <DocumentViewer />}
 			{shareContactDialogueOpen && <ShareContactDialogue />}
+			{addContactDialogueOpen && <AddContactDialogue />}
+			{editContactDialogueOpen && <EditContactDialogue />}
+			{settingDialogueOpen && <SettingDialogue />}
+			{contactDetailsDialogueOpen && <ContactInfoDialogue />}
 		</div>
 	);
 };

@@ -19,8 +19,8 @@ import { useLazyGetMessagesListsQuery } from "services/chat";
 import { showToast } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import { conversationData, msgLists, socket } from "redux/chat/chatSelectors";
-import Loader from "components/UI/Loader";
 import { setMsgLists } from "redux/chat/chatSlice";
+import ChatSkeleton from "../ChatSkeleton";
 
 const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -74,6 +74,8 @@ const ChatBox = () => {
 	}, [conversationDatas]);
 
 	useEffect(() => {
+		if (!Socket || !Socket.connected) return;
+
 		Socket.on("texting.message.new", (data) => {
 			console.log("texting.message.new", data);
 			if (data?.conversation_id === conversationDatas?.id) {
@@ -158,49 +160,51 @@ const ChatBox = () => {
 			<SendContact />
 			<ReceiveTime />
 			<ReceiveContact /> */}
+
 			{isFetching1 && messageLists.length === 0 ? (
 				<div className={styles.loader}>
-					<Loader />
+					{Array(10)
+						.fill(null)
+						.map((item, index) => (
+							<ChatSkeleton key={index} />
+						))}
 				</div>
 			) : (
 				<>
-					{messageLists
-						?.slice()
-
-						.map((item) => {
-							if (item?.direction === "inbound") {
-								if (item?.text) {
-									return (
-										<div>
-											<ReceiveMessage text={item?.text} />
-											<ReceiveTime time={item?.created_at} />
-										</div>
-									);
-								}
+					{messageLists?.slice().map((item) => {
+						if (item?.direction === "inbound") {
+							if (item?.text) {
+								return (
+									<div>
+										<ReceiveMessage text={item?.text} />
+										<ReceiveTime time={item?.created_at} />
+									</div>
+								);
 							}
-							if (item?.direction === "outbound") {
-								if (item?.text) {
-									return (
-										<>
-											<SendMessage text={item?.text} />
-											<SendTime time={item?.created_at} />
-										</>
-									);
-								}
-								// if (item.files.length > 0) {
-								// 	item?.files?.map((data) => {
-								// 		if (data?.mimetype === "image/jpeg") {
-								// 			return (
-								// 				<>
-								// 					<SendTime time={data?.uploaded_at} />
-								// 					<SendImg src={data?.preview?.base64} />
-								// 				</>
-								// 			);
-								// 		}
-								// 	});
-								// }
+						}
+						if (item?.direction === "outbound") {
+							if (item?.text) {
+								return (
+									<>
+										<SendMessage text={item?.text} />
+										<SendTime time={item?.created_at} />
+									</>
+								);
 							}
-						})}
+							// if (item.files.length > 0) {
+							// 	item?.files?.map((data) => {
+							// 		if (data?.mimetype === "image/jpeg") {
+							// 			return (
+							// 				<>
+							// 					<SendTime time={data?.uploaded_at} />
+							// 					<SendImg src={data?.preview?.base64} />
+							// 				</>
+							// 			);
+							// 		}
+							// 	});
+							// }
+						}
+					})}
 				</>
 			)}
 		</div>

@@ -1,0 +1,46 @@
+.msg {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+
+	&_receive {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+
+		div {
+			display: flex;
+			width: 50%;
+			align-items: center;
+
+			span {
+				width: 300px;
+				height: 42px;
+				border-radius: 0px 18px 18px 18px;
+			}
+		}
+	}
+
+	&_send {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		width: 100%;
+
+		div {
+			display: flex;
+			justify-content: flex-end;
+			width: 50%;
+			align-items: center;
+
+			span {
+				width: 300px;
+				height: 42px;
+				border-radius: 18px 0px 18px 18px;
+			}
+		}
+	}
+}

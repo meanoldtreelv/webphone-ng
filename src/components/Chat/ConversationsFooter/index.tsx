@@ -12,12 +12,18 @@ import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { conversationData } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
+import EmojiIcon from "components/UI/Icons/Emoji";
+import SettingsIcon from "components/Voicemail/Settings";
+import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 
 const ConversationsFooter = () => {
+	const dispatch = useDispatch();
+
 	const conversationDatas = useSelector(conversationData);
+
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
@@ -100,9 +106,14 @@ const ConversationsFooter = () => {
 								}
 							}}
 						/>
-						<span className={styles.icon}>
-							<MicrophoneIcon />
-						</span>
+						<div className={styles.icon}>
+							<span className={styles.icon1}>
+								<EmojiIcon />
+							</span>
+							<span className={styles.icon1}>
+								<MicrophoneIcon />
+							</span>
+						</div>
 					</div>
 					<button
 						className={`${styles.send} ${text.length > 0 ? styles.send_active : ""}`}
@@ -116,7 +127,16 @@ const ConversationsFooter = () => {
 					<SelectedVideo />
 					<SelectedAudio />
 					<SelectedDoc />
-					<SelectedContact /> */}
+				<SelectedContact /> */}
+				</div>
+				<div className={styles.settingBar}>
+					<p>{conversationDatas?.from_number}</p>
+					<span
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(true));
+						}}>
+						<SettingsIcon />
+					</span>
 				</div>
 			</div>
 		</>

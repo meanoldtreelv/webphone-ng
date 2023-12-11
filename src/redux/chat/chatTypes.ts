@@ -11,6 +11,10 @@ export interface IChatState {
 	isShareContactDialogueOpen: boolean;
 	isDeleteConversationDialogueOpen: boolean;
 	isSortingMessagePopUpOpen: boolean;
+	isAddContactDialogueOpen: boolean;
+	isEditContactDialogueOpen: boolean;
+	isSettingDialogueOpen: boolean;
+	isContactDetailsDialogueOpen: boolean;
 	queries: {
 		contact_id?: string;
 		page?: number;
@@ -29,4 +33,5 @@ export interface IChatState {
 	addedMemberLists: [];
 	campaignMemberLists: [];
 	msgLists: [];
+	editContact: {};
 }

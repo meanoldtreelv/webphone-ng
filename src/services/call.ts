@@ -6,7 +6,7 @@ export const callService = apiService.injectEndpoints({
 		getCallHistories: build.query({
 			query: (queries) => ({
 				method: "GET",
-				url: `/cdrs/v3/cdrs?${queries}&sort=-starttime&extension=${getCookie("ext_user_id")}`,
+				url: `/cdrs/v3/cdrs?${queries}&sort=-starttime&extension=${localStorage.getItem("ext_user_id")}`,
 			}),
 		}),
 	}),

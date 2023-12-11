@@ -54,6 +54,13 @@ export const chatService = apiService.injectEndpoints({
 				url: `/texting/numbers`,
 			}),
 		}),
+		editTextingContact: build.query({
+			query: ({ id, data }) => ({
+				method: "PUT",
+				url: `/texting/contacts/${id}`,
+				data,
+			}),
+		}),
 	}),
 });
 
@@ -66,4 +73,5 @@ export const {
 	useLazyGetTextingContactListsQuery,
 	useLazyCreateTextingContactQuery,
 	useLazyGetTextingNumbersQuery,
+	useLazyEditTextingContactQuery,
 } = chatService;

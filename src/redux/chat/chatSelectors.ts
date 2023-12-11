@@ -11,6 +11,10 @@ export const isAudioViewerDialogueOpen = (state: RootState) => state.chat.isAudi
 export const isDocumentViewerDialogueOpen = (state: RootState) => state.chat.isDocumentViewerDialogueOpen;
 export const isShareContactDialogueOpen = (state: RootState) => state.chat.isShareContactDialogueOpen;
 export const isDeleteConversationDialogueOpen = (state: RootState) => state.chat.isDeleteConversationDialogueOpen;
+export const isAddContactDialogueOpen = (state: RootState) => state.chat.isAddContactDialogueOpen;
+export const isEditContactDialogueOpen = (state: RootState) => state.chat.isEditContactDialogueOpen;
+export const isSettingDialogueOpen = (state: RootState) => state.chat.isSettingDialogueOpen;
+export const isContactDetailsDialogueOpen = (state: RootState) => state.chat.isContactDetailsDialogueOpen;
 export const queries = (state: RootState) => state.chat.queries;
 export const strQueries = (state: RootState) => state.chat.strQueries;
 export const conversationData = (state: RootState) => state.chat.conversationData;
@@ -23,3 +27,4 @@ export const startConversationType = (state: RootState) => state.chat.startConve
 export const addedMemberLists = (state: RootState) => state.chat.addedMemberLists;
 export const campaignMemberLists = (state: RootState) => state.chat.campaignMemberLists;
 export const msgLists = (state: RootState) => state.chat.msgLists;
+export const editContact = (state: RootState) => state.chat.editContact;
