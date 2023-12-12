@@ -15,6 +15,13 @@ export const chatService = apiService.injectEndpoints({
 				data,
 			}),
 		}),
+		pinUnpinConversation: build.query({
+			query: ({ id, data }) => ({
+				method: "POST",
+				url: `/texting/v2/conversations/${id}/pin`,
+				data,
+			}),
+		}),
 		getMessagesLists: build.query({
 			query: ({ id, queries }) => ({
 				method: "GET",
@@ -47,7 +54,6 @@ export const chatService = apiService.injectEndpoints({
 				data,
 			}),
 		}),
-
 		getTextingNumbers: build.query({
 			query: () => ({
 				method: "GET",
@@ -67,6 +73,7 @@ export const chatService = apiService.injectEndpoints({
 export const {
 	useLazyGetConversationListsQuery,
 	useLazyCreateConversationObjectQuery,
+	useLazyPinUnpinConversationQuery,
 	useLazyGetMessagesListsQuery,
 	useLazySendOutboundMessageQuery,
 	useLazyDeleteMessagesQuery,

@@ -175,10 +175,10 @@ const ChatBox = () => {
 						if (item?.direction === "inbound") {
 							if (item?.text) {
 								return (
-									<div>
+									<>
 										<ReceiveMessage text={item?.text} />
 										<ReceiveTime time={item?.created_at} />
-									</div>
+									</>
 								);
 							}
 						}
