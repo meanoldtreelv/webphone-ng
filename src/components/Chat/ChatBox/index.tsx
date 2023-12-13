@@ -1,9 +1,9 @@
 import styles from "./ChatBox.module.scss";
 import { useEffect, useState } from "react";
-import ReceiveTime from "./ReceiveTime";
 import ReceiveMessage from "./ReceiveMessage";
-import SendTime from "./SendTime";
 import SendMessage from "./SendMessage";
+import SendTime from "./SendTime";
+import ReceiveTime from "./ReceiveTime";
 import ReceiveImg from "./ReceiveImg";
 import SendImg from "./SendImg";
 import InfoMessage from "./InfoMessage";
@@ -34,7 +34,7 @@ const ChatBox = () => {
 
 	const [imgSelected, setImgSelected] = useState(false);
 	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(10);
+	const [perPage, setPerPage] = useState(30);
 	const [endOfTheList, setEndOfTheList] = useState(false);
 
 	function getUnreadMessageIds(messageArray) {
@@ -82,8 +82,22 @@ const ChatBox = () => {
 				dispatch(setMsgLists([data, ...messageLists]));
 			}
 		});
+		// Emitting the event and passing data
+		// Socket.on(
+		// 	"user_status_updated",
+		// 	{
+		// 		user_id: conversationDatas?.conversationDatas?.[0]?.id,
+		// 	},
+		// 	(response) => {
+		// 		// Callback function to handle the server's response
+		// 		console.log("Server response:", response);
+		// 	},
+		// );
 	}, [Socket, messageLists]);
 
+	// console.log("====================================");
+	// console.log(conversationDatas?.conversationDatas?.[0]?.id);
+	// console.log("====================================");
 	const chatScrollHandler = (e: any) => {
 		if (endOfTheList) return;
 		if (isFetching1) {
@@ -176,8 +190,7 @@ const ChatBox = () => {
 							if (item?.text) {
 								return (
 									<>
-										<ReceiveMessage text={item?.text} />
-										<ReceiveTime time={item?.created_at} />
+										<ReceiveMessage id={item?.id} text={item?.text} time={item?.created_at} />
 									</>
 								);
 							}
@@ -186,8 +199,8 @@ const ChatBox = () => {
 							if (item?.text) {
 								return (
 									<>
-										<SendMessage text={item?.text} />
-										<SendTime time={item?.created_at} />
+										{/* <SendTime time={item?.created_at} /> */}
+										<SendMessage id={item?.id} text={item?.text} time={item?.created_at} />
 									</>
 								);
 							}
