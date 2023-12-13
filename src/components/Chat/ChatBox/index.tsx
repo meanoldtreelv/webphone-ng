@@ -82,8 +82,22 @@ const ChatBox = () => {
 				dispatch(setMsgLists([data, ...messageLists]));
 			}
 		});
+		// Emitting the event and passing data
+		// Socket.on(
+		// 	"user_status_updated",
+		// 	{
+		// 		user_id: conversationDatas?.conversationDatas?.[0]?.id,
+		// 	},
+		// 	(response) => {
+		// 		// Callback function to handle the server's response
+		// 		console.log("Server response:", response);
+		// 	},
+		// );
 	}, [Socket, messageLists]);
 
+	// console.log("====================================");
+	// console.log(conversationDatas?.conversationDatas?.[0]?.id);
+	// console.log("====================================");
 	const chatScrollHandler = (e: any) => {
 		if (endOfTheList) return;
 		if (isFetching1) {

@@ -28,9 +28,12 @@ import PinIcon from "components/UI/Icons/Pin";
 import UnpinIcon from "components/UI/Icons/UnPin";
 import { useLazyPinUnpinConversationQuery } from "services/chat";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router";
+import sip from "lib/sip";
 
 const ConversationsHeader = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
 	const conversationDatas = useSelector(conversationData);
@@ -65,11 +68,11 @@ const ConversationsHeader = () => {
 	useEffect(() => {
 		if (!Socket || !Socket.connected) return;
 
-		Socket.on("user_status_updated", (data) => {
-			console.log("user_status_updated", data);
+		// Socket.on("user_status_updated", (data) => {
+		// 	console.log("user_status_updated", data);
 
-			// Do something with the received data, like updating user status
-		});
+		// 	// Do something with the received data, like updating user status
+		// });
 	}, [Socket]);
 
 	const unPinHandler = async () => {
@@ -124,6 +127,15 @@ const ConversationsHeader = () => {
 		}
 	};
 
+	const handleCall = () => {
+		sip.call(String(conversationDatas?.contactsinfo?.[0]?.number));
+		navigate("/dashboard");
+	};
+
+	console.log("====================================");
+	console.log(conversationDatas);
+	console.log("====================================");
+
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
@@ -172,7 +184,7 @@ const ConversationsHeader = () => {
 					}}>
 					<CheckIcon />
 				</span>
-				<span className={styles.icon}>
+				<span className={styles.icon} onClick={handleCall}>
 					<CallIcon />
 				</span>
 
