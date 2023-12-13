@@ -13,16 +13,18 @@ import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData } from "redux/chat/chatSelectors";
+import { conversationData, isDeleteCheck, selectAllMsg } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
 import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
+import SelectedMsgControl from "./SelectedMsgControl";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
 
 	const conversationDatas = useSelector(conversationData);
+	const deleteCheck = useSelector(isDeleteCheck);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
@@ -110,9 +112,9 @@ const ConversationsFooter = () => {
 							<span className={styles.icon1}>
 								<EmojiIcon />
 							</span>
-							<span className={styles.icon1}>
+							{/* <span className={styles.icon1}>
 								<MicrophoneIcon />
-							</span>
+							</span> */}
 						</div>
 					</div>
 					<button
@@ -138,6 +140,7 @@ const ConversationsFooter = () => {
 						<SettingsIcon />
 					</span>
 				</div>
+				{deleteCheck && <SelectedMsgControl />}
 			</div>
 		</>
 	);

@@ -34,4 +34,7 @@ export interface IChatState {
 	campaignMemberLists: [];
 	msgLists: [];
 	editContact: {};
+	selectAllMsg: boolean;
+	selectedMsgLists: ""[];
+	isDeleteCheck: boolean;
 }

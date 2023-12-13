@@ -5,11 +5,19 @@ import DeleteIcon from "components/UI/Icons/Delete";
 import CallIcon from "components/UI/Icons/ChatIcons/Call";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationData, setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
+import {
+	setConversationData,
+	setConversationLists,
+	setIsDeleteCheck,
+	setIsDeleteConversationDialogueOpen,
+	setSelectAllMsg,
+} from "redux/chat/chatSlice";
 import {
 	conversationData,
 	conversationLists,
+	isDeleteCheck,
 	isDeleteConversationDialogueOpen,
+	selectAllMsg,
 	socket,
 } from "redux/chat/chatSelectors";
 import { contactAbbreviation, showToast } from "utils";
@@ -27,6 +35,7 @@ const ConversationsHeader = () => {
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
 	const conversationDatas = useSelector(conversationData);
 	const conversationsList = useSelector(conversationLists);
+	const deleteCheck = useSelector(isDeleteCheck);
 	const Socket = useSelector(socket);
 
 	const [pinUnpinConversation, { isFetching: isFetching1 }] = useLazyPinUnpinConversationQuery();
@@ -156,7 +165,11 @@ const ConversationsHeader = () => {
 						</span>
 					)}
 				</span>
-				<span className={styles.icon}>
+				<span
+					className={styles.icon}
+					onClick={() => {
+						dispatch(setIsDeleteCheck(!deleteCheck));
+					}}>
 					<CheckIcon />
 				</span>
 				<span className={styles.icon}>

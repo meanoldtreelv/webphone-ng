@@ -28,3 +28,6 @@ export const addedMemberLists = (state: RootState) => state.chat.addedMemberList
 export const campaignMemberLists = (state: RootState) => state.chat.campaignMemberLists;
 export const msgLists = (state: RootState) => state.chat.msgLists;
 export const editContact = (state: RootState) => state.chat.editContact;
+export const selectAllMsg = (state: RootState) => state.chat.selectAllMsg;
+export const selectedMsgLists = (state: RootState) => state.chat.selectedMsgLists;
+export const isDeleteCheck = (state: RootState) => state.chat.isDeleteCheck;

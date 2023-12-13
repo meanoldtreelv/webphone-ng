@@ -41,6 +41,9 @@ const initialChatState: IChatState = {
 	campaignMemberLists: [],
 	msgLists: [],
 	editContact: {},
+	selectAllMsg: false,
+	selectedMsgLists: [],
+	isDeleteCheck: false,
 };
 
 const chatSlice = createSlice({
@@ -130,6 +133,22 @@ const chatSlice = createSlice({
 		setEditContact(state, action) {
 			state.editContact = action.payload;
 		},
+		setSelectAllMsg(state, action) {
+			state.selectAllMsg = action.payload;
+		},
+		setSelectedMsgLists(state, action) {
+			state.selectedMsgLists =
+				action.payload.type === "ADD"
+					? [...state.selectedMsgLists, action.payload.id]
+					: action.payload.type === "RESET"
+					? []
+					: action.payload.type === "SELECT_ALL"
+					? action.payload.idLists
+					: state.selectedMsgLists.filter((id) => id !== action.payload.id);
+		},
+		setIsDeleteCheck(state, action) {
+			state.isDeleteCheck = action.payload;
+		},
 	},
 });
 
@@ -161,6 +180,9 @@ export const {
 	setCampaignMemberLists,
 	setMsgLists,
 	setEditContact,
+	setSelectAllMsg,
+	setSelectedMsgLists,
+	setIsDeleteCheck,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
