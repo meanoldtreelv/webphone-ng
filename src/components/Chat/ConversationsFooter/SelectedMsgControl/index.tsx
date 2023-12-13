@@ -36,7 +36,7 @@ const SelectedMsgControl = () => {
 			const idLists = [...selectedMsgList];
 			const filteredMessages = list.filter((item) => !idLists.includes(item.id));
 			dispatch(setMsgLists(filteredMessages));
-
+			dispatch(setIsDeleteCheck(false));
 			showToast("Message deleted successfully", "success");
 		}
 	};

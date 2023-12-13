@@ -57,8 +57,9 @@ import AddContactDialogue from "components/Chat/AddContactDialogue";
 import EditContactDialogue from "components/Chat/EditContactDialogue";
 import SettingDialogue from "components/Chat/SettingDialogue";
 import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
+import TextingMainPageSkeleton from "components/Chat/TextingMainPageSkeleton";
 
-let socket: any = null;
+// let socket: any = null;
 
 const Chat: React.FC = () => {
 	const dispatch = useDispatch();
@@ -119,9 +120,9 @@ const Chat: React.FC = () => {
 		fetchData();
 	}, []);
 
-	const deleteStrQueries = new URLSearchParams({
-		ids: ["abcd", "efg"],
-	}).toString();
+	// const deleteStrQueries = new URLSearchParams({
+	// 	ids: ["abcd", "efg"],
+	// }).toString();
 
 	const deleteConversationsHandler = async () => {
 		const { error, data } = await deleteConversation(conversationDatas?.id);
@@ -148,39 +149,39 @@ const Chat: React.FC = () => {
 	};
 
 	// socket.io
-	useEffect(() => {
-		const API_KEY = getCookie("id_token");
+	// useEffect(() => {
+	// 	const API_KEY = getCookie("id_token");
 
-		if (socket != null) {
-			socket.disconnect();
-			socket.offAny();
-		}
+	// 	if (socket != null) {
+	// 		socket.disconnect();
+	// 		socket.offAny();
+	// 	}
 
-		socket = io(getBackendUrl(), {
-			path: "/ws",
-			transports: ["websocket"],
-			secure: true,
-			autoConnect: false,
-			reconnectionDelay: 1500,
-		});
+	// 	socket = io(getBackendUrl(), {
+	// 		path: "/ws",
+	// 		transports: ["websocket"],
+	// 		secure: true,
+	// 		autoConnect: false,
+	// 		reconnectionDelay: 1500,
+	// 	});
 
-		socket.on("connect", () => {
-			socket.emit("authenticate", { token: API_KEY });
-		});
+	// 	socket.on("connect", () => {
+	// 		socket.emit("authenticate", { token: API_KEY });
+	// 	});
 
-		socket.on("authenticated", (data) => {
-			// console.log("web socket Authentication successful.", data);
+	// 	socket.on("authenticated", (data) => {
+	// 		// console.log("web socket Authentication successful.", data);
 
-			dispatch(setSocket(socket));
-		});
+	// 		dispatch(setSocket(socket));
+	// 	});
 
-		socket.connect();
+	// 	socket.connect();
 
-		// Clean-up function to disconnect the socket when component unmounts
-		// return () => {
-		// 	socket.disconnect();
-		// };
-	}, []);
+	// 	// Clean-up function to disconnect the socket when component unmounts
+	// 	// return () => {
+	// 	// 	socket.disconnect();
+	// 	// };
+	// }, []);
 
 	return (
 		<div className={`pagePopUp`}>
@@ -192,7 +193,7 @@ const Chat: React.FC = () => {
 							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
-						<>{isFetching1 ? <Loader /> : <NoMessages />}</>
+						<>{isFetching1 ? <TextingMainPageSkeleton /> : <NoMessages />}</>
 					)}
 				</div>
 			</BaseLayout>

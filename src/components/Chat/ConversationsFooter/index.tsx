@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ConversationsFooter.module.scss";
 import AttachmentIcon from "components/UI/Icons/ChatIcons/Attachment";
 import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
@@ -13,22 +13,25 @@ import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, isDeleteCheck, selectAllMsg } from "redux/chat/chatSelectors";
+import { conversationData, emoji, isDeleteCheck, selectAllMsg } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
 import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
+import EmojiPickers from "../EmojiPickers";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
 
 	const conversationDatas = useSelector(conversationData);
 	const deleteCheck = useSelector(isDeleteCheck);
+	const emojiSelected = useSelector(emoji);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
+	const [emojiPicker, setEmojiPicker] = useState(false);
 
 	const [text, setText] = useState("");
 
@@ -55,6 +58,11 @@ const ConversationsFooter = () => {
 		sendData();
 	};
 
+	useEffect(() => {
+		if (!emojiSelected) return;
+		setText((prevState) => prevState + emojiSelected);
+	}, [emojiSelected]);
+
 	return (
 		<>
 			<div className={styles.footer}>
@@ -74,6 +82,7 @@ const ConversationsFooter = () => {
 						</div>
 					</div>
 				)}
+				{emojiPicker && <EmojiPickers />}
 
 				<div className={styles.top}>
 					{isAttachmentClicked && <SharePopUp />}
@@ -104,12 +113,17 @@ const ConversationsFooter = () => {
 							}}
 							onKeyDownCapture={(e) => {
 								if (e.key === "Enter" && text !== "") {
+									setEmojiPicker(false);
 									sendMessageHandler();
 								}
 							}}
 						/>
 						<div className={styles.icon}>
-							<span className={styles.icon1}>
+							<span
+								className={styles.icon1}
+								onClick={() => {
+									setEmojiPicker(!emojiPicker);
+								}}>
 								<EmojiIcon />
 							</span>
 							{/* <span className={styles.icon1}>

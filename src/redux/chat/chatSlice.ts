@@ -44,6 +44,7 @@ const initialChatState: IChatState = {
 	selectAllMsg: false,
 	selectedMsgLists: [],
 	isDeleteCheck: false,
+	emoji: null,
 };
 
 const chatSlice = createSlice({
@@ -149,6 +150,9 @@ const chatSlice = createSlice({
 		setIsDeleteCheck(state, action) {
 			state.isDeleteCheck = action.payload;
 		},
+		setEmoji(state, action) {
+			state.emoji = action.payload;
+		},
 	},
 });
 
@@ -183,6 +187,7 @@ export const {
 	setSelectAllMsg,
 	setSelectedMsgLists,
 	setIsDeleteCheck,
+	setEmoji,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

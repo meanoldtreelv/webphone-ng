@@ -37,4 +37,5 @@ export interface IChatState {
 	selectAllMsg: boolean;
 	selectedMsgLists: ""[];
 	isDeleteCheck: boolean;
+	emoji: any;
 }

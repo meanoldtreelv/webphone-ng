@@ -31,3 +31,4 @@ export const editContact = (state: RootState) => state.chat.editContact;
 export const selectAllMsg = (state: RootState) => state.chat.selectAllMsg;
 export const selectedMsgLists = (state: RootState) => state.chat.selectedMsgLists;
 export const isDeleteCheck = (state: RootState) => state.chat.isDeleteCheck;
+export const emoji = (state: RootState) => state.chat.emoji;
