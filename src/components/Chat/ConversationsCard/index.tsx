@@ -7,6 +7,7 @@ import { setConversationData, setIsConversationSelected } from "redux/chat/chatS
 import { limitCharacter } from "helpers";
 import { contactAbbreviation } from "utils";
 import { recentDateFormat } from "helpers/formatDateTime";
+import PinIcon from "components/UI/Icons/Pin";
 
 const ConversationsCard: React.FC = ({ conversationData }) => {
 	const dispatch = useDispatch();
@@ -74,9 +75,12 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 
 						{limitCharacter(conversationData?.last_msg?.text, 50)}
 					</span>
-					{conversationData?.unread_msg_count > 0 && (
-						<span className={styles.unread}>{conversationData?.unread_msg_count}</span>
-					)}
+					<span className={styles.pin_unread}>
+						{conversationData?.unread_msg_count > 0 && (
+							<span className={styles.unread}>{conversationData?.unread_msg_count}</span>
+						)}
+						{conversationData?.pinned_at && <PinIcon />}
+					</span>
 				</div>
 			</div>
 		</button>

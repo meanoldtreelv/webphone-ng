@@ -33,14 +33,17 @@ import {
 	strQueries,
 } from "redux/chat/chatSelectors";
 import {
+	setConversationData,
 	setConversationLists,
 	setFromContactLists,
 	setFromNumberSelected,
+	setIsConversationSelected,
 	setIsDeleteConversationDialogueOpen,
 	setMsgLists,
 	setSocket,
 } from "redux/chat/chatSlice";
 import {
+	useLazyDeleteConversationObjectQuery,
 	useLazyDeleteMessagesQuery,
 	useLazyGetConversationListsQuery,
 	useLazyGetTextingNumbersQuery,
@@ -54,8 +57,9 @@ import AddContactDialogue from "components/Chat/AddContactDialogue";
 import EditContactDialogue from "components/Chat/EditContactDialogue";
 import SettingDialogue from "components/Chat/SettingDialogue";
 import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
+import TextingMainPageSkeleton from "components/Chat/TextingMainPageSkeleton";
 
-let socket: any = null;
+// let socket: any = null;
 
 const Chat: React.FC = () => {
 	const dispatch = useDispatch();
@@ -78,7 +82,8 @@ const Chat: React.FC = () => {
 
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
-	const [deleteMessages, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteMessagesQuery();
+	const [deleteMessages, {}] = useLazyDeleteMessagesQuery();
+	const [deleteConversation, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteConversationObjectQuery();
 
 	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
 
@@ -115,65 +120,68 @@ const Chat: React.FC = () => {
 		fetchData();
 	}, []);
 
-	const deleteStrQueries = new URLSearchParams({
-		ids: ["abcd", "efg"],
-	}).toString();
+	// const deleteStrQueries = new URLSearchParams({
+	// 	ids: ["abcd", "efg"],
+	// }).toString();
 
-	const deleteMessage = async () => {
-		const { error, data } = await deleteMessages({
-			conversation_id: conversationDatas?.id,
-			message_id_list: "",
-		});
+	const deleteConversationsHandler = async () => {
+		const { error, data } = await deleteConversation(conversationDatas?.id);
 
 		if (error) {
-			showToast("There is error in deleting text msg , please try again later  ", "error");
+			showToast("There is error in deleting conversation msg, please try again later", "error");
 		} else {
-			showToast("message deleted successfully", "info");
+			const list = [...conversationsLists];
+
+			// Delete an item from list where item.id === conversationDatas?.id
+			const updatedList = list.filter((item) => item.id !== conversationDatas?.id);
+
+			dispatch(setConversationLists(updatedList));
+
+			dispatch(setConversationData({}));
+			dispatch(setIsConversationSelected(false));
+
 			dispatch(setMsgLists([]));
 			dispatch(setIsDeleteConversationDialogueOpen(false));
+			showToast("message deleted successfully", "info");
 		}
 		if (data) {
 		}
 	};
 
-	const deleteConversationsHandler = () => {
-		deleteMessage();
-	};
-
 	// socket.io
-	useEffect(() => {
-		const API_KEY = getCookie("id_token");
+	// useEffect(() => {
+	// 	const API_KEY = getCookie("id_token");
 
-		if (socket != null) {
-			socket.disconnect();
-			socket.offAny();
-		}
+	// 	if (socket != null) {
+	// 		socket.disconnect();
+	// 		socket.offAny();
+	// 	}
 
-		socket = io(getBackendUrl(), {
-			path: "/ws",
-			transports: ["websocket"],
-			secure: true,
-			autoConnect: false,
-			reconnectionDelay: 1500,
-		});
+	// 	socket = io(getBackendUrl(), {
+	// 		path: "/ws",
+	// 		transports: ["websocket"],
+	// 		secure: true,
+	// 		autoConnect: false,
+	// 		reconnectionDelay: 1500,
+	// 	});
 
-		socket.on("connect", () => {
-			socket.emit("authenticate", { token: API_KEY });
-		});
+	// 	socket.on("connect", () => {
+	// 		socket.emit("authenticate", { token: API_KEY });
+	// 	});
 
-		socket.on("authenticated", (data) => {
-			// console.log("web socket Authentication successful.", data);
+	// 	socket.on("authenticated", (data) => {
+	// 		// console.log("web socket Authentication successful.", data);
 
-			dispatch(setSocket(socket));
-		});
+	// 		dispatch(setSocket(socket));
+	// 	});
 
-		socket.connect();
+	// 	socket.connect();
 
-		// Clean-up function to disconnect the socket when component unmounts
-		// return () => {
-		// 	socket.disconnect();
-		// };
-	}, []);
+	// 	// Clean-up function to disconnect the socket when component unmounts
+	// 	// return () => {
+	// 	// 	socket.disconnect();
+	// 	// };
+	// }, []);
 
 	return (
 		<div className={`pagePopUp`}>
@@ -185,7 +193,7 @@ const Chat: React.FC = () => {
 							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
-						<>{isFetching1 ? <Loader /> : <NoMessages />}</>
+						<>{isFetching1 ? <TextingMainPageSkeleton /> : <NoMessages />}</>
 					)}
 				</div>
 			</BaseLayout>
@@ -196,7 +204,8 @@ const Chat: React.FC = () => {
 					actionBtnTxt="Delete"
 					onClick={deleteConversationsHandler}
 					loading={isLoading2}>
-					Are you sure that you want to delete conversation ?
+					Are you sure that you want to delete conversation? All messages and files will be lost. This operation cannot
+					be undone!
 				</PromptDialog>
 			)}
 			{startNewConversationDialogueOpen && <StartNewConversations />}
