@@ -13,13 +13,14 @@ import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, emoji, isDeleteCheck, selectAllMsg } from "redux/chat/chatSelectors";
+import { conversationData, emoji, isDeleteCheck, selectAllMsg, selectedFiles } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
 import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
+import { useLazyPostFilesQuery, useLazyUploadFilesQuery } from "services/storage";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -27,42 +28,111 @@ const ConversationsFooter = () => {
 	const conversationDatas = useSelector(conversationData);
 	const deleteCheck = useSelector(isDeleteCheck);
 	const emojiSelected = useSelector(emoji);
+	const selectedFile = useSelector(selectedFiles);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
+	const [postFiles] = useLazyPostFilesQuery();
+	const [uploadFiles] = useLazyUploadFilesQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
 	const [emojiPicker, setEmojiPicker] = useState(false);
 
 	const [text, setText] = useState("");
+	const [imagePreviews, setImagePreviews] = useState([]);
+	const [fileResponse, setFileResponse] = useState<{}[]>([]);
 
-	const sendData = async () => {
-		const { error, data } = await sendOutboundMessage({
-			id: conversationDatas?.id,
-			data: {
-				text: text,
-				with_warning: false,
-			},
-		});
+	const sendMessageHandler = async () => {
+		if (selectedFile?.length > 0) {
+			for (const item of selectedFile || []) {
+				const { error: filesError, data: filesData } = await postFiles({
+					company_id: conversationDatas?.company_id,
+					name: item?.name,
+				});
 
-		if (data) {
-			setText("");
-			showToast("message send successfully", "info");
+				if (filesData) {
+					console.log("====================================");
+					console.log(filesData, "file dtaa response");
+					console.log("====================================");
+					// setFileResponse((prevState) => [...prevState, filesData]);
+				}
+				if (filesError) {
+					showToast("something went wrong ", "error");
+					return;
+				}
+			}
+			// console.log("====================================");
+			// console.log(fileResponse, "fileResponse");
+			// console.log("====================================");
+			// const selectedFiles = selectedFile || [];
+			// for (let i = 0; i < selectedFiles.length; i++) {
+			// 	const item = selectedFiles[i];
+			// 	const { error: filesError, data: filesData } = await uploadFiles({
+			// 		id: fileResponse[i]?.id,
+			// 		data: {
+			// 			upfile: selectedFiles[i],
+			// 		},
+			// 	});
+
+			// 	if (filesError) {
+			// 		showToast("something went wrong ", "error");
+			// 		return;
+			// 	}
+			// }
 		}
 
-		if (error) {
-			showToast("There is error in sending text msg , please try again later  ", "error");
-		}
+		// const { error, data } = await sendOutboundMessage({
+		// 	id: conversationDatas?.id,
+		// 	data: {
+		// 		text: text,
+		// 		with_warning: false,
+		// 	},
+		// });
+
+		// if (data) {
+		// 	setText("");
+		// 	showToast("message send successfully", "info");
+		// }
+
+		// if (error) {
+		// 	showToast("There is error in sending text msg , please try again later  ", "error");
+		// }
 	};
 
-	const sendMessageHandler = () => {
-		sendData();
-	};
+	// console.log(fileResponse, "fileResponse");
+	// console.log("====================================");
+	// console.log(conversationDatas);
+	// console.log("====================================");
 
 	useEffect(() => {
 		if (!emojiSelected) return;
 		setText((prevState) => prevState + emojiSelected);
 	}, [emojiSelected]);
 
+	useEffect(() => {
+		const previews = [];
+		for (let i = 0; i < selectedFile?.length; i++) {
+			const reader = new FileReader();
+
+			reader.onload = (e) => {
+				previews.push({ target: e.target.result, name: selectedFile?.[i]?.name, type: selectedFile?.[i]?.type });
+				// console.log("====================================");
+				// console.log(e.target.result, "target");
+				// console.log("====================================");
+				if (previews?.length === selectedFile?.length) {
+					setImagePreviews([...previews]);
+				}
+			};
+
+			reader.readAsDataURL(selectedFile[i]);
+		}
+	}, [selectedFile]);
+
+	// console.log("====================================");
+	// console.log(selectedFile, "selected file");
+	// console.log("====================================");
+	// console.log(imagePreviews);
+	// console.log("====================================");
+	// console.log("====================================");
 	return (
 		<>
 			<div className={styles.footer}>
@@ -132,7 +202,7 @@ const ConversationsFooter = () => {
 						</div>
 					</div>
 					<button
-						className={`${styles.send} ${text.length > 0 ? styles.send_active : ""}`}
+						className={`${styles.send} ${text?.length > 0 ? styles.send_active : ""}`}
 						onClick={sendMessageHandler}>
 						<AirplaneIcon color="icon-on-color" />
 					</button>
@@ -144,6 +214,7 @@ const ConversationsFooter = () => {
 					<SelectedAudio />
 					<SelectedDoc />
 				<SelectedContact /> */}
+					{imagePreviews?.map((item) => <SelectedImg src={item.target} name={item?.name} />)}
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>

@@ -63,4 +63,19 @@ const getServerUrl = () => {
 	return url;
 };
 
-export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl };
+const getStorageServicesUrl = () => {
+	let url = "";
+
+	// if (isDev) {
+	//   url = "https://ssp-backend.dev.ringplan.com";
+	// }
+
+	// use production url on localhost because extension is not working on dev
+	if (isProd || isLocalhost || isDev) {
+		url = "https://storage-service.ringplan.com";
+	}
+	url = "https://storage-service.ringplan.com";
+	return url;
+};
+
+export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl, getStorageServicesUrl };

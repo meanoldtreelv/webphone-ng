@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { conversationData, msgLists, socket } from "redux/chat/chatSelectors";
 import { setMsgLists } from "redux/chat/chatSlice";
 import ChatSkeleton from "../ChatSkeleton";
+import ReceiveFiles from "./ReceiveFiles";
+import SendFiles from "./SendFiles";
 
 const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -58,6 +60,8 @@ const ChatBox = () => {
 				dispatch(setMsgLists(data));
 
 				const unreadMsgIdLists = getUnreadMessageIds(data);
+
+				if (!Socket || !Socket.connected) return;
 
 				Socket.emit("texting.message.markAsRead", {
 					conversation_id: conversationDatas?.id,
@@ -185,18 +189,48 @@ const ChatBox = () => {
 				</div>
 			) : (
 				<>
+					{/* <ReceiveFiles />
+					<SendFiles /> */}
 					{messageLists?.slice().map((item) => {
 						if (item?.direction === "inbound") {
-							if (item?.text) {
+							if (item?.text && item?.files?.length === 0) {
 								return (
 									<>
 										<ReceiveMessage id={item?.id} text={item?.text} time={item?.created_at} />
 									</>
 								);
 							}
+							if (!item?.text && item?.files?.length === 1) {
+								return (
+									<div>
+										{item?.files?.map((data, index) => {
+											if (data?.mimetype === "image/png") {
+												return (
+													<>
+														<ReceiveImg
+															id={item?.id}
+															src={data?.preview?.base64}
+															time={data?.uploaded_at}
+															files={item.files}
+														/>
+													</>
+												);
+											}
+											return null; // Or handle non-PNG files if needed
+										})}
+									</div>
+								);
+							} else {
+								// return null; // Or display a message when there are no files
+							}
+							if ((item.text && item?.files?.length > 0) || (!item.text && item?.files?.length > 1)) {
+								return <ReceiveFiles id={item?.id} time={item?.created_at} text={item?.text} files={item?.files} />;
+							} else {
+								return null;
+							}
 						}
 						if (item?.direction === "outbound") {
-							if (item?.text) {
+							if (item?.text && item?.files?.length === 0) {
 								return (
 									<>
 										{/* <SendTime time={item?.created_at} /> */}
@@ -204,18 +238,32 @@ const ChatBox = () => {
 									</>
 								);
 							}
-							// if (item.files.length > 0) {
-							// 	item?.files?.map((data) => {
-							// 		if (data?.mimetype === "image/jpeg") {
-							// 			return (
-							// 				<>
-							// 					<SendTime time={data?.uploaded_at} />
-							// 					<SendImg src={data?.preview?.base64} />
-							// 				</>
-							// 			);
-							// 		}
-							// 	});
-							// }
+							if (!item?.text && item?.files?.length === 1) {
+								return (
+									<div>
+										{item?.files?.map((data, index) => {
+											if (data?.mimetype === "image/png") {
+												return (
+													<>
+														<SendImg
+															id={item?.id}
+															src={data?.preview?.base64}
+															time={data?.uploaded_at}
+															files={item.files}
+														/>
+													</>
+												);
+											}
+											return null; // Or handle non-PNG files if needed
+										})}
+									</div>
+								);
+							}
+							if ((item.text && item?.files?.length > 0) || (!item.text && item?.files?.length > 1)) {
+								return <SendFiles id={item?.id} time={item?.created_at} text={item?.text} files={item?.files} />;
+							} else {
+								return null;
+							}
 						}
 					})}
 				</>

@@ -45,6 +45,8 @@ const initialChatState: IChatState = {
 	selectedMsgLists: [],
 	isDeleteCheck: false,
 	emoji: null,
+	imageFiles: [],
+	selectedFiles: null,
 };
 
 const chatSlice = createSlice({
@@ -153,6 +155,12 @@ const chatSlice = createSlice({
 		setEmoji(state, action) {
 			state.emoji = action.payload;
 		},
+		setImageFiles(state, action) {
+			state.imageFiles = action.payload;
+		},
+		setSelectedFiles(state, action) {
+			state.selectedFiles = action.payload;
+		},
 	},
 });
 
@@ -188,6 +196,8 @@ export const {
 	setSelectedMsgLists,
 	setIsDeleteCheck,
 	setEmoji,
+	setImageFiles,
+	setSelectedFiles,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -1,4 +1,3 @@
-import { getCookie } from "typescript-cookie";
 import { apiService } from "./api";
 
 export const callService = apiService.injectEndpoints({
