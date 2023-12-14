@@ -18,6 +18,9 @@ if (!isDev)
 		console.log = () => {};
 		console.error = () => {};
 		console.debug = () => {};
+		window.onerror = function (message, source, lineno, colno, error) {
+			return true;
+		};
 	}
 
 export const store = configureStore({

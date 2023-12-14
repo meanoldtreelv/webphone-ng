@@ -74,7 +74,10 @@ const Dialpad = ({ LineNumber }: { LineNumber?: number | undefined }) => {
 				/>
 				<div className={styles.matchNumberWrap}>
 					{numberFound && Object.keys(numberFound)?.length ? (
-						<p className={styles.matchNumber}>{`${numberFound?.length && numberFound[0]?.email}`}</p>
+						<p className={styles.matchNumber}>{`${
+							numberFound?.length &&
+							(`${numberFound[0]?.first_name} ${numberFound[0]?.last_name}` || numberFound[0]?.email)
+						}`}</p>
 					) : null}
 				</div>
 			</div>

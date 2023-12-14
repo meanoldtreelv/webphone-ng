@@ -15,16 +15,21 @@ import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
 import RedirectMsg from "components/shared/RedirectMsg";
+import GlobalErrorBoundary from "components/shared/ErrorBoundary";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
 	},
-	{
-		path: "/redirect",
-		element: <RedirectMsg />,
-	},
+	// {
+	// 	path: "/redirect",
+	// 	element: (
+	// 		<GlobalErrorBoundary>
+	// 			<RedirectMsg />
+	// 		</GlobalErrorBoundary>
+	// 	),
+	// },
 ];
 
 const extAuth = localStorage.getItem("extAuth");
