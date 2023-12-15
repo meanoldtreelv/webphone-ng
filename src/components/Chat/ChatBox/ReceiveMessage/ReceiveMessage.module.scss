@@ -1,5 +1,4 @@
 .msgDiv {
-	// background-color: red;
 	margin-bottom: 5px;
 	display: flex;
 	justify-content: space-between;
@@ -11,7 +10,6 @@
 }
 
 .left {
-	// background-color: green;
 	width: calc(100%);
 }
 
@@ -42,9 +40,7 @@
 		line-height: 18px; /* 138.462% */
 		letter-spacing: -0.2px;
 
-		// width: fit-content;
 		max-width: 80%;
-		// white-space: normal;
 		word-break: normal;
 	}
 }

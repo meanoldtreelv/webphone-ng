@@ -14,6 +14,7 @@ const ReceiveImg = ({ id, time, src, files }) => {
 			? dispatch(setSelectedMsgLists({ type: "ADD", id }))
 			: dispatch(setSelectedMsgLists({ id }));
 	};
+
 	return (
 		<div className={`${styles.msgDiv} ${deleteCheck && styles.msgDiv_active}`}>
 			<div className={styles.left}>
@@ -29,14 +30,7 @@ const ReceiveImg = ({ id, time, src, files }) => {
 				</div>
 			</div>
 			{deleteCheck && (
-				<input
-					type="checkbox"
-					name=""
-					id={id}
-					checked={selectedMsgList.includes(id)}
-					// value={value}
-					onChange={handleSelectInput}
-				/>
+				<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
 			)}
 		</div>
 	);

@@ -66,11 +66,6 @@ const getServerUrl = () => {
 const getStorageServicesUrl = () => {
 	let url = "";
 
-	// if (isDev) {
-	//   url = "https://ssp-backend.dev.ringplan.com";
-	// }
-
-	// use production url on localhost because extension is not working on dev
 	if (isProd || isLocalhost || isDev) {
 		url = "https://storage-service.ringplan.com";
 	}

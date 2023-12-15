@@ -2,19 +2,19 @@ import styles from "./ChatBox.module.scss";
 import { useEffect, useState } from "react";
 import ReceiveMessage from "./ReceiveMessage";
 import SendMessage from "./SendMessage";
-import SendTime from "./SendTime";
-import ReceiveTime from "./ReceiveTime";
 import ReceiveImg from "./ReceiveImg";
 import SendImg from "./SendImg";
-import InfoMessage from "./InfoMessage";
 import SendVideo from "./SendVideo";
 import ReceiveVideo from "./ReceiveVideo";
+import SendTime from "./SendTime";
+import ReceiveTime from "./ReceiveTime";
+import InfoMessage from "./InfoMessage";
 import SendAudio from "./SendAudio";
 import ReceiveAudio from "./ReceiveAudio";
-import SendDoc from "./SendDoc";
-import ReceiveDoc from "./ReceiveDoc";
 import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
+import SendDoc from "./SendDoc";
+import ReceiveDoc from "./ReceiveDoc";
 import { useLazyGetMessagesListsQuery } from "services/chat";
 import { showToast } from "utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +32,7 @@ const ChatBox = () => {
 	const messageLists = useSelector(msgLists);
 	const Socket = useSelector(socket);
 
-	const [getMessagesLists, { data, isFetching: isFetching1, isLoading: isLoading1 }] = useLazyGetMessagesListsQuery();
+	const [getMessagesLists, { isFetching: isFetching1 }] = useLazyGetMessagesListsQuery();
 
 	const [imgSelected, setImgSelected] = useState(false);
 	const [page, setPage] = useState(1);
@@ -99,9 +99,6 @@ const ChatBox = () => {
 		// );
 	}, [Socket, messageLists]);
 
-	// console.log("====================================");
-	// console.log(conversationDatas?.conversationDatas?.[0]?.id);
-	// console.log("====================================");
 	const chatScrollHandler = (e: any) => {
 		if (endOfTheList) return;
 		if (isFetching1) {
@@ -188,16 +185,10 @@ const ChatBox = () => {
 				</div>
 			) : (
 				<>
-					{/* <ReceiveFiles />
-					<SendFiles /> */}
 					{messageLists?.slice().map((item) => {
 						if (item?.direction === "inbound") {
 							if (item?.text && item?.files?.length === 0) {
-								return (
-									<>
-										<ReceiveMessage id={item?.id} text={item?.text} time={item?.created_at} />
-									</>
-								);
+								return <ReceiveMessage id={item?.id} text={item?.text} time={item?.created_at} />;
 							}
 							if (!item?.text && item?.files?.length === 1) {
 								return (
@@ -205,14 +196,35 @@ const ChatBox = () => {
 										{item?.files?.map((data, index) => {
 											if (data?.mimetype === "image/png") {
 												return (
-													<>
-														<ReceiveImg
-															id={item?.id}
-															src={data?.preview?.base64}
-															time={data?.uploaded_at}
-															files={item.files}
-														/>
-													</>
+													<ReceiveImg
+														id={item?.id}
+														src={data?.preview?.base64}
+														time={data?.uploaded_at}
+														files={item.files}
+													/>
+												);
+											}
+											if (data?.mimetype === "video/mp4") {
+												return (
+													<ReceiveVideo
+														id={item?.id}
+														files={item.files}
+														src={data?.preview?.base64}
+														time={data?.uploaded_at}
+														duration={data?.duration}
+													/>
+												);
+											}
+
+											if (data?.mimetype === "application/pdf") {
+												return (
+													<ReceiveDoc
+														id={item?.id}
+														files={item.files}
+														name={data?.name}
+														time={data?.uploaded_at}
+														size={data.size}
+													/>
 												);
 											}
 											return null; // Or handle non-PNG files if needed
@@ -230,12 +242,7 @@ const ChatBox = () => {
 						}
 						if (item?.direction === "outbound") {
 							if (item?.text && item?.files?.length === 0) {
-								return (
-									<>
-										{/* <SendTime time={item?.created_at} /> */}
-										<SendMessage id={item?.id} text={item?.text} time={item?.created_at} />
-									</>
-								);
+								return <SendMessage id={item?.id} text={item?.text} time={item?.created_at} />;
 							}
 							if (!item?.text && item?.files?.length === 1) {
 								return (
@@ -243,14 +250,34 @@ const ChatBox = () => {
 										{item?.files?.map((data, index) => {
 											if (data?.mimetype === "image/png") {
 												return (
-													<>
-														<SendImg
-															id={item?.id}
-															src={data?.preview?.base64}
-															time={data?.uploaded_at}
-															files={item.files}
-														/>
-													</>
+													<SendImg
+														id={item?.id}
+														files={item.files}
+														src={data?.preview?.base64}
+														time={data?.uploaded_at}
+													/>
+												);
+											}
+											if (data?.mimetype === "video/mp4") {
+												return (
+													<SendVideo
+														id={item?.id}
+														files={item.files}
+														src={data?.preview?.base64}
+														time={data?.uploaded_at}
+														duration={data?.duration}
+													/>
+												);
+											}
+											if (data?.mimetype === "application/pdf") {
+												return (
+													<SendDoc
+														id={item?.id}
+														files={item.files}
+														name={data?.name}
+														time={data?.uploaded_at}
+														size={data.size}
+													/>
 												);
 											}
 											return null; // Or handle non-PNG files if needed

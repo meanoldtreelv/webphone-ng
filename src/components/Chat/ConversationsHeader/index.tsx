@@ -10,14 +10,12 @@ import {
 	setConversationLists,
 	setIsDeleteCheck,
 	setIsDeleteConversationDialogueOpen,
-	setSelectAllMsg,
 } from "redux/chat/chatSlice";
 import {
 	conversationData,
 	conversationLists,
 	isDeleteCheck,
 	isDeleteConversationDialogueOpen,
-	selectAllMsg,
 	socket,
 } from "redux/chat/chatSelectors";
 import { contactAbbreviation, showToast } from "utils";
@@ -131,10 +129,6 @@ const ConversationsHeader = () => {
 		sip.call(String(conversationDatas?.contactsinfo?.[0]?.number));
 		navigate("/dashboard");
 	};
-
-	// console.log("====================================");
-	// console.log(conversationDatas);
-	// console.log("====================================");
 
 	return (
 		<div className={styles.header}>

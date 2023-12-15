@@ -1,8 +1,7 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { BASE_URL, STORAGE_BASE_URL } from "./app.config";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query/react";
-import { getCookie, setCookie } from "./../utils";
-import { getStorageServicesUrl } from "./env.config";
+import { getCookie } from "./../utils";
 
 const axiosInstance = axios.create({
 	baseURL: BASE_URL,
@@ -32,12 +31,13 @@ export const axiosStorageBaseQuery =
 				data,
 				params,
 			});
-			// console.log("====================================");
+
 			console.log(result);
-			// console.log("====================================");
+
 			return { data: result.data };
 		} catch (axiosError) {
 			const error = axiosError as AxiosError;
+			debugger;
 
 			return { error };
 		}

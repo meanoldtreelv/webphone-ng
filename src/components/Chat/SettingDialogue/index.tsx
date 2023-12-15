@@ -114,37 +114,6 @@ const SettingDialogue = () => {
 				if (conversationError) {
 					showToast("Error in creating conversation object", "error");
 				}
-
-				// const filteredList = data?.filter((item) => {
-				// 	return item.conversation_type === "campaign";
-				// });
-
-				// if (filteredList.length === 0) {
-				// 	//create a conversation object
-				// 	const { error: conversationError, data: conversationData } = await createConversationObject({
-				// 		recipients: [
-				// 			// todo - create all the number array here
-				// 			{
-				// 				number: conversationDatas?.contactsinfo?.[0]?.number,
-				// 			},
-				// 		],
-				// 		from_number: fromNumber,
-				// 		conversation_type: "campaign",
-				// 	});
-
-				// 	if (conversationData) {
-				// 		showToast("Conversation object is created successfully", "info");
-				// 		dispatch(setIsSettingDialogueOpen(false));
-				// 		// dispatch(setIsStartNewConversationDialogueOpen(false));
-				// 	}
-				// 	if (conversationError) {
-				// 		showToast("Error in creating conversation object", "error");
-				// 	}
-				// } else {
-				// 	// const contactArray = conversationDatas?.contactsinfo.map((item) => {
-				// 	// 	return { number: item.number };
-				// 	// });
-				// }
 			}
 			if (conversationDatas?.conversation_type === "group") {
 				const contactArray = conversationDatas?.contactsinfo.map((item) => {

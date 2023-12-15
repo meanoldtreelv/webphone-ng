@@ -50,19 +50,11 @@ const SelectedMsgControl = () => {
 			const updatedList = list.map((item) => {
 				return item.id;
 			});
-			// console.log("====================================");
-			// console.log(updatedList);
-			// console.log("====================================");
+
 			dispatch(setSelectedMsgLists({ type: "SELECT_ALL", idLists: updatedList }));
 		}
-
-		// console.log("====================================");
-		// console.log(updatedList);
-		// console.log("====================================");
 	};
-	// console.log("====================================");
-	// console.log(messageLists, "msg list");
-	// console.log("====================================");
+
 	return (
 		<div className={styles.controlBar}>
 			<div>

@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import styles from "./ConversationsFooter.module.scss";
 import AttachmentIcon from "components/UI/Icons/ChatIcons/Attachment";
 import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
-import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SharePopUp from "./SharePopUp";
 import SelectedImg from "./SelectedImg";
+import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import SelectedVideo from "./SelectedVideo";
 import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, emoji, isDeleteCheck, selectAllMsg, selectedFiles } from "redux/chat/chatSelectors";
+import { conversationData, emoji, isDeleteCheck, selectedFiles } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
@@ -49,10 +49,11 @@ const ConversationsFooter = () => {
 					name: item?.name,
 				});
 
+				debugger;
+
 				if (data) {
-					// console.log("====================================");
-					// console.log(data, "file dtaa response");
-					// console.log("====================================");
+					console.log(data, "file dtaa response");
+
 					// setFileResponse((prevState) => [...prevState, filesData]);
 				}
 				if (error) {
@@ -60,9 +61,7 @@ const ConversationsFooter = () => {
 					return;
 				}
 			}
-			// console.log("====================================");
-			// console.log(fileResponse, "fileResponse");
-			// console.log("====================================");
+
 			// const selectedFiles = selectedFile || [];
 			// for (let i = 0; i < selectedFiles.length; i++) {
 			// 	const item = selectedFiles[i];
@@ -80,36 +79,23 @@ const ConversationsFooter = () => {
 			// }
 		}
 
-		// const { error, data } = await sendOutboundMessage({
-		// 	id: conversationDatas?.id,
-		// 	data: {
-		// 		text: text,
-		// 		with_warning: false,
-		// 	},
-		// });
+		const { error, data } = await sendOutboundMessage({
+			id: conversationDatas?.id,
+			data: {
+				text: text,
+				with_warning: false,
+			},
+		});
 
-		// if (data) {
-		// 	setText("");
-		// 	showToast("message send successfully", "info");
-		// }
+		if (data) {
+			setText("");
+			showToast("message send successfully", "info");
+		}
 
-		// if (error) {
-		// 	showToast("There is error in sending text msg , please try again later  ", "error");
-		// }
+		if (error) {
+			showToast("There is error in sending text msg , please try again later  ", "error");
+		}
 	};
-
-	// console.log(fileResponse, "fileResponse");
-	// console.log("====================================");
-	// console.log(conversationDatas);
-	// console.log("====================================");
-
-	// console.log("====================================");
-	// console.log(data2);
-	// console.log("====================================");
-
-	useEffect(() => {
-		// console.log(data2);
-	}, [data2]);
 
 	useEffect(() => {
 		if (!emojiSelected) return;
@@ -123,9 +109,7 @@ const ConversationsFooter = () => {
 
 			reader.onload = (e) => {
 				previews.push({ target: e.target.result, name: selectedFile?.[i]?.name, type: selectedFile?.[i]?.type });
-				// console.log("====================================");
-				// console.log(e.target.result, "target");
-				// console.log("====================================");
+
 				if (previews?.length === selectedFile?.length) {
 					setImagePreviews([...previews]);
 				}
@@ -135,12 +119,6 @@ const ConversationsFooter = () => {
 		}
 	}, [selectedFile]);
 
-	// console.log("====================================");
-	// console.log(selectedFile, "selected file");
-	// console.log("====================================");
-	// console.log(imagePreviews);
-	// console.log("====================================");
-	// console.log("====================================");
 	return (
 		<>
 			<div className={styles.footer}>

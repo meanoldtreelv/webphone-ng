@@ -7,7 +7,6 @@ import { setSelectedMsgLists } from "redux/chat/chatSlice";
 const ReceiveMessage = ({ id, text, time }) => {
 	const dispatch = useDispatch();
 	const deleteCheck = useSelector(isDeleteCheck);
-	const selectAllMsgs = useSelector(selectAllMsg);
 	const selectedMsgList = useSelector(selectedMsgLists);
 
 	const handleSelectInput = () => {
@@ -25,14 +24,7 @@ const ReceiveMessage = ({ id, text, time }) => {
 				</div>
 			</div>
 			{deleteCheck && (
-				<input
-					type="checkbox"
-					name=""
-					id={id}
-					checked={selectedMsgList.includes(id)}
-					// value={value}
-					onChange={handleSelectInput}
-				/>
+				<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
 			)}
 		</div>
 	);

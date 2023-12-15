@@ -1,17 +1,21 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SendFiles.module.scss";
-import { setImageFiles, setIsImgViewerDialogueOpen, setSelectedMsgLists } from "redux/chat/chatSlice";
-import ReceiveTime from "../ReceiveTime";
+import {
+	setImageFiles,
+	setIsDocumentViewerDialogueOpen,
+	setIsImgViewerDialogueOpen,
+	setIsVideoViewerDialogueOpen,
+	setSelectedMsgLists,
+} from "redux/chat/chatSlice";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import SendTime from "../SendTime";
+import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
+import DocImg from "../../../../assets/images/img/doc.svg";
 
 const SendFiles = ({ id, time, text, files }) => {
 	const dispatch = useDispatch();
 	const deleteCheck = useSelector(isDeleteCheck);
 	const selectedMsgList = useSelector(selectedMsgLists);
-
-	// const id = "hhi";
 
 	const handleSelectInput = () => {
 		!selectedMsgList.includes(id)
@@ -42,28 +46,52 @@ const SendFiles = ({ id, time, text, files }) => {
 								</>
 							);
 						}
+						if (data?.mimetype === "video/mp4") {
+							return (
+								<>
+									<div className={styles.sendVideo}>
+										<span
+											onClick={() => {
+												dispatch(setIsVideoViewerDialogueOpen(true));
+												// dispatch(setImageFiles(files));
+											}}>
+											<img src={data?.preview?.base64} alt="" />
+											<span className={styles.btnPlay}>
+												<BtnPlay />
+											</span>
+											<span className={styles.duration}>{data?.duration}</span>
+										</span>
+									</div>
+								</>
+							);
+						}
+						if (data?.mimetype === "application/pdf") {
+							return (
+								<>
+									<div className={styles.sendDoc}>
+										<div
+											onClick={() => {
+												dispatch(setIsDocumentViewerDialogueOpen(true));
+												// dispatch(setImageFiles(files));
+											}}>
+											<span>
+												<img src={DocImg} alt="" />
+											</span>
+											<span className={styles.details}>
+												<span>{data?.name}</span>
+												<b>{data?.size} b</b>
+											</span>
+										</div>
+									</div>
+								</>
+							);
+						}
 						return null; // Or handle non-PNG files if needed
 					})}
-
-					{/* <div className={styles.sendImg}>
-						<span
-							onClick={() => {
-								dispatch(setIsImgViewerDialogueOpen(true));
-							}}>
-							<img src={"/img/dummy/video_call.jpeg"} alt="" />
-						</span>
-					</div> */}
 				</div>
 			</div>
 			{deleteCheck && (
-				<input
-					type="checkbox"
-					name=""
-					id={id}
-					checked={selectedMsgList.includes(id)}
-					// value={value}
-					onChange={handleSelectInput}
-				/>
+				<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
 			)}
 		</div>
 	);

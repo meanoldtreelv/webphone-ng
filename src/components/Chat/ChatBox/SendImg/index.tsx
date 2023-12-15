@@ -30,15 +30,7 @@ const SendImg = ({ id, time, src, files }) => {
 				</div>
 			</div>
 			{deleteCheck && (
-				<input
-					type="checkbox"
-					name=""
-					id={id}
-					checked={selectedMsgList.includes(id)}
-					// checked={seletAllMsgs}
-					// value={value}
-					onChange={handleSelectInput}
-				/>
+				<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
 			)}
 		</div>
 	);

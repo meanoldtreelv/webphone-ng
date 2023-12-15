@@ -1,7 +1,7 @@
 import styles from "./ConversationsSortingPopUp.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setQueries, setSortConversationType } from "redux/chat/chatSlice";
-import { conversationLists, sortConversationType } from "redux/chat/chatSelectors";
+import { sortConversationType } from "redux/chat/chatSelectors";
 
 const ConversationsSortingPopUp = () => {
 	const dispatch = useDispatch();

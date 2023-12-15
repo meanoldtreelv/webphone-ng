@@ -9,6 +9,7 @@ import { conversationData, imageFiles } from "redux/chat/chatSelectors";
 import { contactAbbreviation, showToast } from "utils";
 import { useEffect, useState } from "react";
 import { useLazyRepresentationFilesQuery } from "services/storage";
+import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 
 const ImgViewer = () => {
 	const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const ImgViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
+				// const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
 
 				if (error) {
 					console.log(error);
@@ -61,27 +62,26 @@ const ImgViewer = () => {
 		fetchData();
 	}, [imageFile, counter]);
 
-	// console.log(data, "data");
-	// console.log(isFetching, "isFetching");
-	// console.log(isLoading, "isLoading");
-
-	// console.log("====================================");
-	// console.log(imageFile, "imageFile");
-	// console.log(imageData, "imageData");
-
-	// console.log(imageData?.original?.preview?.base64, "imf src ");
-
-	// console.log("====================================");
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
 				<div className={styles.header}>
 					<div className={styles.nameBox}>
-						{/* //todo - manage undefine and group name too, there should be group icon there is group or campaign  */}
-						<span className={styles.initials}>{contactAbbreviation(first_name, last_name, phone, "")}</span>
+						{conversationDatas?.conversation_type === "group" || conversationDatas?.conversation_type === "campaign" ? (
+							<span className={styles.initials_group}>
+								<UserGroupIcon />
+							</span>
+						) : (
+							<span className={styles.initials}>{contactAbbreviation(first_name, last_name, phone, "")}</span>
+						)}
 						<div>
-							{/* //todo - manage undefine and group name too */}
-							<p className={styles.name}>{firstName + " " + lastName}</p>
+							<p className={styles.name}>
+								{conversationDatas?.conversation_type === "group" || conversationDatas?.conversation_type === "campaign"
+									? conversationDatas?.campaign_info?.name
+									: firstName + lastName
+									? firstName + " " + lastName
+									: ""}
+							</p>
 							<p>{imageFile[counter]?.name}</p>
 						</div>
 					</div>
@@ -107,9 +107,9 @@ const ImgViewer = () => {
 					<div className={styles.counter}>
 						{counter + 1}/{imageFile.length}
 					</div>
-					<div className={styles.download}>
-						<DownloadIcon />
-					</div>
+					<a href={imageData?.url} className={styles.download}>
+						<DownloadIcon color="icon-primary" />
+					</a>
 				</div>
 			</div>
 		</div>
