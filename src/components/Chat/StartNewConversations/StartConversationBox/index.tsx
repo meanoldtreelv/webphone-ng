@@ -6,6 +6,8 @@ import { showToast } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import { fromNumberSelected } from "redux/chat/chatSelectors";
 import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
+import BtnMedium from "components/UI/BtnMedium";
+import BtnLarge from "components/UI/BtnLarge";
 
 const StartConversationBox = ({ search_no }) => {
 	const dispatch = useDispatch();
@@ -56,10 +58,19 @@ const StartConversationBox = ({ search_no }) => {
 		<div className={styles.startConversation}>
 			<div>Start Conversation with this number?</div>
 			<p>{search_no}</p>
-			<button onClick={startConversationHandler}>
+			<BtnLarge
+				btnType={"primary"}
+				isDanger={false}
+				isDisabled={false}
+				type="button"
+				btnText="Start Conversation"
+				icon={<ChatIcon color="icon-on-color" />}
+				onClick={startConversationHandler}
+			/>
+			{/* <button onClick={startConversationHandler}>
 				<ChatIcon color="icon-on-color" />
 				<span>Start Conversation</span>
-			</button>
+			</button> */}
 			{error && (
 				<p className={styles.err}>Invalid number format. Please enter a phone number in the format 1NPANXXXXXX.</p>
 			)}

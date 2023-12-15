@@ -28,6 +28,7 @@ import {
 import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
+import BtnMedium from "components/UI/BtnMedium";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
@@ -256,20 +257,42 @@ const ConversationsList = () => {
 							setSearchText(e.target.value);
 						}}
 					/>
-					<button
+					<BtnMedium
+						btnType={"primary"}
+						isDanger={false}
+						isDisabled={false}
+						type="button"
+						btnText=""
+						icon={<AddUserIcon color="icon-on-color" />}
+						onClick={() => {
+							dispatch(setIsAddContactDialogueOpen(true));
+						}}
+					/>
+					{/* <button
 						className={styles.add_contact}
 						onClick={() => {
 							dispatch(setIsAddContactDialogueOpen(true));
 						}}>
 						<AddUserIcon color="icon-on-color" />
-					</button>
-					<button
+					</button> */}
+					<BtnMedium
+						btnType={"primary"}
+						isDanger={false}
+						isDisabled={false}
+						type="button"
+						btnText=""
+						icon={<EditIcon color="icon-on-color" />}
+						onClick={() => {
+							dispatch(setIsStartNewConversationDialogueOpen(true));
+						}}
+					/>
+					{/* <button
 						className={styles.add_contact}
 						onClick={() => {
 							dispatch(setIsStartNewConversationDialogueOpen(true));
 						}}>
 						<EditIcon color="icon-on-color" />
-					</button>
+					</button> */}
 				</div>
 				<div>
 					{searchText.length > 0 ? (

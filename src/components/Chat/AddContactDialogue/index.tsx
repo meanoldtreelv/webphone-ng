@@ -1,13 +1,15 @@
 import styles from "./AddContactDialogue.module.scss";
 import Backdrop from "components/UI/Backdrop";
+import BtnMedium from "components/UI/BtnMedium";
 import CloseIcon from "components/UI/Icons/Close";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ClipLoader } from "react-spinners";
 import { setIsAddContactDialogueOpen } from "redux/chat/chatSlice";
 import { useLazyCreateTextingContactQuery } from "services/chat";
 import { showToast } from "utils";
+import { ClipLoader } from "react-spinners";
+import BtnLarge from "components/UI/BtnLarge";
 
 const AddContactDialogue = () => {
 	const dispatch = useDispatch();
@@ -101,10 +103,20 @@ const AddContactDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button type="submit">
+					<BtnMedium
+						btnType={"primary"}
+						isDanger={false}
+						isDisabled={false}
+						type="submit"
+						btnText="Add"
+						icon={""}
+						isLoading={isFetching1}
+						// onClick={}
+					/>
+					{/* <button type="submit">
 						Add
 						{isFetching1 && <ClipLoader color="var(--text-on-color)" size={"14px"} />}
-					</button>
+					</button> */}
 				</div>
 				<p>{error}</p>
 			</form>
