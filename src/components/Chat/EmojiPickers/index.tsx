@@ -10,9 +10,9 @@ const EmojiPickers = () => {
 
 	const handleEmojiClick = (emojiObject) => {
 		setSelectedEmoji(emojiObject.target); // Update state with selected emoji
-		console.log("====================================");
-		console.log(emojiObject?.emoji, "emi=oji");
-		console.log("====================================");
+		// console.log("====================================");
+		// console.log(emojiObject?.emoji, "emi=oji");
+		// console.log("====================================");
 		dispatch(setEmoji(emojiObject?.emoji));
 	};
 

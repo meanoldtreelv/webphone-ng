@@ -6,15 +6,20 @@ import DownloadIcon from "components/UI/Icons/meet/Download";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsImgViewerDialogueOpen } from "redux/chat/chatSlice";
 import { conversationData, imageFiles } from "redux/chat/chatSelectors";
-import { contactAbbreviation } from "utils";
-import { useState } from "react";
+import { contactAbbreviation, showToast } from "utils";
+import { useEffect, useState } from "react";
+import { useLazyRepresentationFilesQuery } from "services/storage";
 
 const ImgViewer = () => {
 	const dispatch = useDispatch();
+
 	const imageFile = useSelector(imageFiles);
 	const conversationDatas = useSelector(conversationData);
 
+	const [representationFiles, { data, isFetching, isLoading }] = useLazyRepresentationFilesQuery();
+
 	const [counter, setCounter] = useState(0);
+	const [imageData, setImageData] = useState({});
 
 	const first_name = conversationDatas?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationDatas?.contactsinfo?.[0]?.last_name;
@@ -34,13 +39,48 @@ const ImgViewer = () => {
 	} else {
 		lastName = last_name;
 	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
+
+				if (error) {
+					console.log(error);
+					showToast("There is some error in representation of the file", "error");
+				}
+
+				if (data) {
+					console.log("Fetched data:", data); // Log data here
+					setImageData(data);
+				}
+			} catch (err) {
+				console.error("Error in fetchData:", err); // Log any caught errors
+			}
+		};
+		fetchData();
+	}, [imageFile, counter]);
+
+	// console.log(data, "data");
+	// console.log(isFetching, "isFetching");
+	// console.log(isLoading, "isLoading");
+
+	// console.log("====================================");
+	// console.log(imageFile, "imageFile");
+	// console.log(imageData, "imageData");
+
+	// console.log(imageData?.original?.preview?.base64, "imf src ");
+
+	// console.log("====================================");
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.box}>
 				<div className={styles.header}>
 					<div className={styles.nameBox}>
+						{/* //todo - manage undefine and group name too, there should be group icon there is group or campaign  */}
 						<span className={styles.initials}>{contactAbbreviation(first_name, last_name, phone, "")}</span>
 						<div>
+							{/* //todo - manage undefine and group name too */}
 							<p className={styles.name}>{firstName + " " + lastName}</p>
 							<p>{imageFile[counter]?.name}</p>
 						</div>
@@ -54,7 +94,7 @@ const ImgViewer = () => {
 					</span>
 				</div>
 
-				<img src={imageFile[counter]?.preview?.base64} alt="" />
+				<img src={imageData?.original?.preview?.base64} alt="" />
 				<div className={styles.footer}>
 					<div className={styles.zoomBox}>
 						<span>
@@ -64,7 +104,9 @@ const ImgViewer = () => {
 							<PlusIcon />
 						</span>
 					</div>
-					<div className={styles.counter}>1/{imageFile.length}</div>
+					<div className={styles.counter}>
+						{counter + 1}/{imageFile.length}
+					</div>
 					<div className={styles.download}>
 						<DownloadIcon />
 					</div>

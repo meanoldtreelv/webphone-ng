@@ -16,7 +16,14 @@ export const storageService = apiStorageService.injectEndpoints({
 				data,
 			}),
 		}),
+		representationFiles: build.query({
+			query: ({ id, data }) => ({
+				method: "POST",
+				url: `/conversion/files/${id}/representation`,
+				data,
+			}),
+		}),
 	}),
 });
 
-export const { useLazyPostFilesQuery, useLazyUploadFilesQuery } = storageService;
+export const { useLazyPostFilesQuery, useLazyUploadFilesQuery, useLazyRepresentationFilesQuery } = storageService;

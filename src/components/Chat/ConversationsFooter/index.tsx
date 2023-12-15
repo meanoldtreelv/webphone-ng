@@ -31,7 +31,7 @@ const ConversationsFooter = () => {
 	const selectedFile = useSelector(selectedFiles);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
-	const [postFiles] = useLazyPostFilesQuery();
+	const [postFiles, { data: data2 }] = useLazyPostFilesQuery();
 	const [uploadFiles] = useLazyUploadFilesQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
@@ -44,18 +44,18 @@ const ConversationsFooter = () => {
 	const sendMessageHandler = async () => {
 		if (selectedFile?.length > 0) {
 			for (const item of selectedFile || []) {
-				const { error: filesError, data: filesData } = await postFiles({
+				const { data, error } = await postFiles({
 					company_id: conversationDatas?.company_id,
 					name: item?.name,
 				});
 
-				if (filesData) {
-					console.log("====================================");
-					console.log(filesData, "file dtaa response");
-					console.log("====================================");
+				if (data) {
+					// console.log("====================================");
+					// console.log(data, "file dtaa response");
+					// console.log("====================================");
 					// setFileResponse((prevState) => [...prevState, filesData]);
 				}
-				if (filesError) {
+				if (error) {
 					showToast("something went wrong ", "error");
 					return;
 				}
@@ -102,6 +102,14 @@ const ConversationsFooter = () => {
 	// console.log("====================================");
 	// console.log(conversationDatas);
 	// console.log("====================================");
+
+	// console.log("====================================");
+	// console.log(data2);
+	// console.log("====================================");
+
+	useEffect(() => {
+		// console.log(data2);
+	}, [data2]);
 
 	useEffect(() => {
 		if (!emojiSelected) return;

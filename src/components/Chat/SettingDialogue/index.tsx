@@ -70,7 +70,7 @@ const SettingDialogue = () => {
 					// Search the conversation object in the conversation list
 					const conversationId = filteredList[0].id;
 					const conversationIndex = conversationsList.findIndex((item) => item.id === conversationId);
-					console.log(conversationIndex);
+					// console.log(conversationIndex);
 
 					if (conversationIndex !== -1) {
 						// If conversation found, remove it from its current position and push it to the top

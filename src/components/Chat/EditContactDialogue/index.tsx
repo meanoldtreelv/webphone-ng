@@ -35,7 +35,7 @@ const EditContactDialogue = () => {
 		}
 
 		if (error) {
-			console.log(error?.response.data.detail);
+			// console.log(error?.response.data.detail);
 
 			showToast(error?.response.data.detail, "error");
 		} else {

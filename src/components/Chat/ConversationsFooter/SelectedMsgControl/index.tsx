@@ -60,9 +60,9 @@ const SelectedMsgControl = () => {
 		// console.log(updatedList);
 		// console.log("====================================");
 	};
-	console.log("====================================");
-	console.log(messageLists, "msg list");
-	console.log("====================================");
+	// console.log("====================================");
+	// console.log(messageLists, "msg list");
+	// console.log("====================================");
 	return (
 		<div className={styles.controlBar}>
 			<div>

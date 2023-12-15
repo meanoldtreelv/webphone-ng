@@ -141,8 +141,7 @@ const ChatBox = () => {
 			}
 
 			if (error) {
-				console.log("There is an error in fetching message Lists, please try again later");
-
+				// console.log("There is an error in fetching message Lists, please try again later");
 				// showToast("There is an error in fetching message Lists, please try again later", "error");
 				// setPage(page - 1);
 			}

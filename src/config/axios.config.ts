@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BASE_URL } from "./app.config";
+import { BASE_URL, STORAGE_BASE_URL } from "./app.config";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query/react";
 import { getCookie, setCookie } from "./../utils";
 import { getStorageServicesUrl } from "./env.config";
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 });
 
 export const axiosStorageInstance = axios.create({
-	baseURL: getStorageServicesUrl(),
+	baseURL: STORAGE_BASE_URL,
 	headers: {
 		Authorization: getCookie("id_token"),
 		"Content-Type": "application/json",
