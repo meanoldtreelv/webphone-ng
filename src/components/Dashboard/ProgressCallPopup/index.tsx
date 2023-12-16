@@ -19,7 +19,7 @@ const ProgressCallPopUpBar = () => {
 
 							<span>Call in progress...</span>
 						</div>
-						<div className={styles.callName}>{call.DisplayName? call.DisplayName : call.DisplayNumber} </div>
+						<div className={styles.callName}>{call.conferenceCallList? "Conference" : (call.DisplayName? call.DisplayName : call.DisplayNumber)} </div>
 						<div className={styles.callDuration}>{call.answered ? call.callTimer : "00:00"}</div>
 					</div>
 				)))

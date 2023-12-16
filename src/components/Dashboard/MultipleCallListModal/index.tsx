@@ -49,8 +49,8 @@ const MultipleCallListModal = () => {
 								}}
 								border>
 								<div style={{ width: "100%" }}>
-									<span style={{ paddingLeft: "30px", float: "left" }}>{call.DisplayNumber}</span>
-									<span style={{ paddingLeft: "30px", float: "right" }}>
+									<span style={{ float: "left" }}>{call.conferenceCallList? "Conference" : call.DisplayNumber}</span>
+									<span style={{ float: "right" }}>
 										{call.answered ? call.callTimer : "00:00"}
 									</span>
 								</div>
