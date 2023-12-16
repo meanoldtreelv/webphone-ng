@@ -18,7 +18,6 @@ import Tone_EarlyMedia_Japan from "../../assets/media/Tone_EarlyMedia-Japan.mp3"
 import Tone_EarlyMedia_UK from "../../assets/media/Tone_EarlyMedia-UK.mp3";
 import Tone_EarlyMedia_US from "../../assets/media/Tone_EarlyMedia-US.mp3";
 import io from "socket.io-client"
-import { getAllByPlaceholderText } from '@testing-library/react';
 // Create User Agent
 // =================
 let userAgent:any = null;

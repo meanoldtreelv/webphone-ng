@@ -1,6 +1,6 @@
 import { IIcon } from "constants/interfaces";
 
-const ThreeDots = ({ color }: IIcon) => {
+const ThreeDotsIcon = ({ color }: IIcon) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -13,4 +13,4 @@ const ThreeDots = ({ color }: IIcon) => {
 	);
 };
 
-export default ThreeDots;
+export default ThreeDotsIcon;

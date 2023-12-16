@@ -97,6 +97,12 @@ const Sidebar = () => {
 					name: "Contacts",
 					unread: 3,
 				},
+				{
+					path: routePaths.CHAT.ROUTE,
+					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					name: "Texting",
+					unread: 0,
+				},
 				// {
 				// 	path: routePaths.CONFERENCE.GROUPS.ROUTE,
 				// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -189,7 +195,7 @@ const Sidebar = () => {
 					</div>
 					<div className={styles.sidebar_topTab}>
 						{sidebarBtmLinks.map((link: ISidebarLinks) => {
-							if (localStorage.getItem('extAuth') === "true" && link.name === "RingPlan Meet") return null;
+							if (localStorage.getItem("extAuth") === "true" && link.name === "RingPlan Meet") return null;
 
 							return (
 								<NavLink

@@ -1,28 +1,27 @@
-import { useState } from "react";
 import styles from "./FromNumberPopUp.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { fromContactLists, fromNumberSelected } from "redux/chat/chatSelectors";
+import { setFromNumberSelected } from "redux/chat/chatSlice";
 
 const FromNumberPopUp = () => {
-	const [sortType, setSortType] = useState("unreadTop");
+	const dispatch = useDispatch();
+	const fromContactList = useSelector(fromContactLists);
+	const selectedNumber = useSelector(fromNumberSelected);
 
 	return (
 		<div className={styles.sortingBox}>
 			<div className={styles.sorting}>Your Numbers</div>
-			<div
-				className={styles.radioBox}
-				onClick={() => {
-					setSortType("987654321");
-				}}>
-				<input type="radio" name="sorting" id="987654321" checked={sortType === "987654321"} />
-				<label htmlFor="987654321">987654321</label>
-			</div>
-			<div
-				className={styles.radioBox}
-				onClick={() => {
-					setSortType("123456897");
-				}}>
-				<input type="radio" name="sorting" id="123456897" checked={sortType === "123456897"} />
-				<label htmlFor="123456897">123456897</label>
-			</div>
+			{fromContactList?.map((item) => (
+				<div
+					key={item?.id}
+					className={styles.radioBox}
+					onClick={() => {
+						dispatch(setFromNumberSelected(item?.number));
+					}}>
+					<input type="radio" name="sorting" id={item?.number} checked={selectedNumber === item?.number} />
+					<label htmlFor={item?.number}>{item?.number}</label>
+				</div>
+			))}
 		</div>
 	);
 };

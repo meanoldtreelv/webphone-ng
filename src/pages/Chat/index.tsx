@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Chat.module.scss";
 import NoMessages from "components/Chat/NoMessages";
 import ConversationsList from "components/Chat/ConversationsList";
@@ -15,26 +15,53 @@ import DocumentViewer from "components/Chat/Viewer/DocumentViewer";
 import ShareContactDialogue from "components/Chat/ShareContactDialogue";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	conversationData,
 	conversationLists,
+	isAddContactDialogueOpen,
 	isAddMemberDialogueOpen,
 	isAudioViewerDialogueOpen,
+	isContactDetailsDialogueOpen,
 	isConversationSelected,
 	isDeleteConversationDialogueOpen,
 	isDocumentViewerDialogueOpen,
+	isEditContactDialogueOpen,
 	isImgViewerDialogueOpen,
+	isSettingDialogueOpen,
 	isShareContactDialogueOpen,
 	isStartNewConversationDialogueOpen,
 	isVideoViewerDialogueOpen,
 	strQueries,
 } from "redux/chat/chatSelectors";
-import { setConversationData, setConversationLists, setIsDeleteConversationDialogueOpen } from "redux/chat/chatSlice";
-import { useLazyGetConversationListsQuery } from "services/chat";
+import {
+	setConversationData,
+	setConversationLists,
+	setFromContactLists,
+	setFromNumberSelected,
+	setIsConversationSelected,
+	setIsDeleteConversationDialogueOpen,
+	setMsgLists,
+	setSocket,
+} from "redux/chat/chatSlice";
+import {
+	useLazyDeleteConversationObjectQuery,
+	useLazyDeleteMessagesQuery,
+	useLazyGetConversationListsQuery,
+	useLazyGetTextingNumbersQuery,
+} from "services/chat";
 import Loader from "components/UI/Loader";
-// import { useLazyGetConversationListsQuery } from "services/meet";
-// import { useGetConversationListsQuery } from "services/chat";
-// import { useGetConversationListsQuery } from "services/texting";
+import { showToast } from "utils";
+import { io } from "socket.io-client";
+import { getCookie } from "typescript-cookie";
+import { getBackendUrl } from "config/env.config";
+import AddContactDialogue from "components/Chat/AddContactDialogue";
+import EditContactDialogue from "components/Chat/EditContactDialogue";
+import SettingDialogue from "components/Chat/SettingDialogue";
+import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
+import TextingMainPageSkeleton from "components/Chat/TextingMainPageSkeleton";
 
-const Chat = () => {
+// let socket: any = null;
+
+const Chat: React.FC = () => {
 	const dispatch = useDispatch();
 	const conversationsLists = useSelector(conversationLists);
 	const conversationSelected = useSelector(isConversationSelected);
@@ -46,57 +73,116 @@ const Chat = () => {
 	const documentViewerDialogueOpen = useSelector(isDocumentViewerDialogueOpen);
 	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
 	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+	const conversationDatas = useSelector(conversationData);
 	const strQuery = useSelector(strQueries);
+	const addContactDialogueOpen = useSelector(isAddContactDialogueOpen);
+	const editContactDialogueOpen = useSelector(isEditContactDialogueOpen);
+	const contactDetailsDialogueOpen = useSelector(isContactDetailsDialogueOpen);
+	const settingDialogueOpen = useSelector(isSettingDialogueOpen);
 
 	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
 		useLazyGetConversationListsQuery();
-	// const [getCallHistories, { data: historyData, isLoading, isFetching }] = useLazyGetCallHistoriesQuery();
+	const [deleteMessages, {}] = useLazyDeleteMessagesQuery();
+	const [deleteConversation, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteConversationObjectQuery();
 
-	const [isDeleteChatLoading, setIsDeleteChatLoading] = useState(false);
+	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getTextingNumber("");
+
+			if (data) {
+				dispatch(setFromContactLists(data));
+				dispatch(setFromNumberSelected(data[0].number));
+			}
+
+			if (error) {
+				showToast("There is error in fetching 'From texting Contact Lists', please try again later", "error");
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			const { error, data } = await getConversationLists(strQuery);
 
 			if (data) {
-				console.log(data, "data");
-
 				dispatch(setConversationLists(data));
 			}
 
 			if (error) {
-				console.log("getting error in fetching conversations list API");
-			} else {
-				console.log("====================================");
-				console.log("succes in fetching conversation api");
-				console.log("====================================");
-				// dispatch(setConversationData(conversationListsData));
+				showToast("There is error in fetching Conversation Lists, please try again later  ", "error");
 			}
 		};
+
 		fetchData();
 	}, []);
 
-	// useEffect(() => {
-	// 	dispatch(setConversationData(conversationListsData));
-	// }, [conversationListsData !== undefined]);
+	// const deleteStrQueries = new URLSearchParams({
+	// 	ids: ["abcd", "efg"],
+	// }).toString();
 
-	// if (conversationListsData !== undefined) {
-	// 	dispatch(setConversationData(conversationListsData));
-	// }
+	const deleteConversationsHandler = async () => {
+		const { error, data } = await deleteConversation(conversationDatas?.id);
 
-	const deleteConversationsHandler = () => {
-		setIsDeleteChatLoading(true);
-		dispatch(setIsDeleteConversationDialogueOpen(false));
+		if (error) {
+			showToast("There is error in deleting conversation msg, please try again later", "error");
+		} else {
+			const list = [...conversationsLists];
+
+			// Delete an item from list where item.id === conversationDatas?.id
+			const updatedList = list.filter((item) => item.id !== conversationDatas?.id);
+
+			dispatch(setConversationLists(updatedList));
+
+			dispatch(setConversationData({}));
+			dispatch(setIsConversationSelected(false));
+
+			dispatch(setMsgLists([]));
+			dispatch(setIsDeleteConversationDialogueOpen(false));
+			showToast("message deleted successfully", "info");
+		}
+		if (data) {
+		}
 	};
 
-	// console.log(strQuery, "strQuery");
-	// console.log(conversationListsData);
+	// socket.io
+	// useEffect(() => {
+	// 	const API_KEY = getCookie("id_token");
 
-	console.log("====================================");
-	console.log(conversationListsData);
-	console.log(conversationsLists, "from redux");
+	// 	if (socket != null) {
+	// 		socket.disconnect();
+	// 		socket.offAny();
+	// 	}
 
-	console.log("====================================");
+	// 	socket = io(getBackendUrl(), {
+	// 		path: "/ws",
+	// 		transports: ["websocket"],
+	// 		secure: true,
+	// 		autoConnect: false,
+	// 		reconnectionDelay: 1500,
+	// 	});
+
+	// 	socket.on("connect", () => {
+	// 		socket.emit("authenticate", { token: API_KEY });
+	// 	});
+
+	// 	socket.on("authenticated", (data) => {
+	// 		// console.log("web socket Authentication successful.", data);
+
+	// 		dispatch(setSocket(socket));
+	// 	});
+
+	// 	socket.connect();
+
+	// 	// Clean-up function to disconnect the socket when component unmounts
+	// 	// return () => {
+	// 	// 	socket.disconnect();
+	// 	// };
+	// }, []);
+
 	return (
 		<div className={`pagePopUp`}>
 			<BaseLayout>
@@ -107,7 +193,7 @@ const Chat = () => {
 							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
-						<>{isFetching1 ? <Loader /> : <NoMessages />}</>
+						<>{isFetching1 ? <TextingMainPageSkeleton /> : <NoMessages />}</>
 					)}
 				</div>
 			</BaseLayout>
@@ -117,8 +203,9 @@ const Chat = () => {
 					title="Delete Conversations"
 					actionBtnTxt="Delete"
 					onClick={deleteConversationsHandler}
-					loading={isDeleteChatLoading}>
-					Are you sure that you want to delete conversation ?
+					loading={isLoading2}>
+					Are you sure that you want to delete conversation? All messages and files will be lost. This operation cannot
+					be undone!
 				</PromptDialog>
 			)}
 			{startNewConversationDialogueOpen && <StartNewConversations />}
@@ -128,6 +215,10 @@ const Chat = () => {
 			{audioViewerDialogueOpen && <AudioViewer />}
 			{documentViewerDialogueOpen && <DocumentViewer />}
 			{shareContactDialogueOpen && <ShareContactDialogue />}
+			{addContactDialogueOpen && <AddContactDialogue />}
+			{editContactDialogueOpen && <EditContactDialogue />}
+			{settingDialogueOpen && <SettingDialogue />}
+			{contactDetailsDialogueOpen && <ContactInfoDialogue />}
 		</div>
 	);
 };

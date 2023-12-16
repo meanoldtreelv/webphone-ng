@@ -139,6 +139,42 @@
 	}
 }
 
+.redirectMsg {
+	background: var(--background-primary);
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	p {
+		color: var(--text-primary);
+		text-align: center;
+	}
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 320px;
+	}
+
+	button {
+		text-decoration: none !important;
+		color: var(--text-link);
+		margin-left: 5px;
+	}
+}
+
+.redirectLogo {
+	margin-bottom: 20px;
+
+	img {
+		width: 50px;
+	}
+}
+
 @media screen and (max-width: 1200px) {
 	.login {
 		min-height: 100vh;
