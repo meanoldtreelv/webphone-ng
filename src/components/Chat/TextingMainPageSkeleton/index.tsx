@@ -1,5 +1,4 @@
 import ContactCardSkeleton from "components/Contact/ContactCardSkeleton";
-import React from "react";
 import styles from "./TextingMainPageSkeleton.module.scss";
 
 const TextingMainPageSkeleton = () => {

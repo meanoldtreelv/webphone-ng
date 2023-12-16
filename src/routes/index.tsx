@@ -10,26 +10,29 @@ import { sidecarRoutes } from "./sidecar/routes";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
 import { meetRoutes } from "./meet/routes";
-import { getCookie } from "utils";
 import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
-import { ErrorBoundary } from "react-error-boundary";
 import RedirectMsg from "components/shared/RedirectMsg";
+import GlobalErrorBoundary from "components/shared/ErrorBoundary";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
 	},
-	{
-		path: "/redirect",
-		element: <RedirectMsg />,
-	},
+	// {
+	// 	path: "/redirect",
+	// 	element: (
+	// 		<GlobalErrorBoundary>
+	// 			<RedirectMsg />
+	// 		</GlobalErrorBoundary>
+	// 	),
+	// },
 ];
 
-const extAuth = localStorage.getItem('extAuth');
+const extAuth = localStorage.getItem("extAuth");
 const apiAuth = localStorage.getItem("apiAuth");
 const status = localStorage.getItem("status");
 const ext_user_id = localStorage.getItem("ext_user_id");

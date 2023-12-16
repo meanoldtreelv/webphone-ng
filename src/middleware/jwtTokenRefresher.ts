@@ -1,9 +1,8 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { setSessionOut } from "redux/common/commonSlice";
 import { store } from "redux/store";
-import { getCookie, setCookie } from "utils";
+import { getCookie } from "utils";
 
 export const jwtTokenRefresher =
 	({ dispatch }: Record<any, any>) =>
@@ -21,8 +20,15 @@ export const jwtTokenRefresher =
 							var currentDate = new Date();
 							var expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 							var formattedExpiryDate = expiryDate.toUTCString();
-							document.cookie = `id_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
-							document.cookie = `refresh_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+
+							if (process.env.NODE_ENV === "development") {
+								document.cookie = `id_token=${resp?.data?.id_token}; domain=localhost; path=/; expires=${formattedExpiryDate}`;
+								document.cookie = `refresh_token=${resp?.data?.id_token}; domain=localhost; path=/; expires=${formattedExpiryDate}`;
+							} else if (process.env.NODE_ENV === "production") {
+								document.cookie = `id_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+								document.cookie = `refresh_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+							}
+
 							window.location.reload();
 						})
 						.catch((e) => {

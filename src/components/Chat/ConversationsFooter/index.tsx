@@ -2,24 +2,25 @@ import { useEffect, useState } from "react";
 import styles from "./ConversationsFooter.module.scss";
 import AttachmentIcon from "components/UI/Icons/ChatIcons/Attachment";
 import AirplaneIcon from "components/UI/Icons/ChatIcons/Airplane";
-import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import CloseIcon from "components/UI/Icons/ChatIcons/Close";
 import SharePopUp from "./SharePopUp";
 import SelectedImg from "./SelectedImg";
+import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import SelectedVideo from "./SelectedVideo";
 import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, emoji, isDeleteCheck, selectAllMsg } from "redux/chat/chatSelectors";
+import { conversationData, emoji, isDeleteCheck, selectedFiles } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
 import { setIsSettingDialogueOpen } from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
+import { useLazyPostFilesQuery, useLazyUploadFilesQuery } from "services/storage";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -27,15 +28,57 @@ const ConversationsFooter = () => {
 	const conversationDatas = useSelector(conversationData);
 	const deleteCheck = useSelector(isDeleteCheck);
 	const emojiSelected = useSelector(emoji);
+	const selectedFile = useSelector(selectedFiles);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
+	const [postFiles, { data: data2 }] = useLazyPostFilesQuery();
+	const [uploadFiles] = useLazyUploadFilesQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
 	const [emojiPicker, setEmojiPicker] = useState(false);
 
 	const [text, setText] = useState("");
+	const [imagePreviews, setImagePreviews] = useState([]);
+	const [fileResponse, setFileResponse] = useState<{}[]>([]);
 
-	const sendData = async () => {
+	const sendMessageHandler = async () => {
+		if (selectedFile?.length > 0) {
+			for (const item of selectedFile || []) {
+				const { data, error } = await postFiles({
+					company_id: conversationDatas?.company_id,
+					name: item?.name,
+				});
+
+				// debugger;
+
+				if (data) {
+					console.log(data, "file dtaa response");
+
+					// setFileResponse((prevState) => [...prevState, filesData]);
+				}
+				if (error) {
+					showToast("something went wrong ", "error");
+					return;
+				}
+			}
+
+			// const selectedFiles = selectedFile || [];
+			// for (let i = 0; i < selectedFiles.length; i++) {
+			// 	const item = selectedFiles[i];
+			// 	const { error: filesError, data: filesData } = await uploadFiles({
+			// 		id: fileResponse[i]?.id,
+			// 		data: {
+			// 			upfile: selectedFiles[i],
+			// 		},
+			// 	});
+
+			// 	if (filesError) {
+			// 		showToast("something went wrong ", "error");
+			// 		return;
+			// 	}
+			// }
+		}
+
 		const { error, data } = await sendOutboundMessage({
 			id: conversationDatas?.id,
 			data: {
@@ -54,14 +97,27 @@ const ConversationsFooter = () => {
 		}
 	};
 
-	const sendMessageHandler = () => {
-		sendData();
-	};
-
 	useEffect(() => {
 		if (!emojiSelected) return;
 		setText((prevState) => prevState + emojiSelected);
 	}, [emojiSelected]);
+
+	useEffect(() => {
+		const previews = [];
+		for (let i = 0; i < selectedFile?.length; i++) {
+			const reader = new FileReader();
+
+			reader.onload = (e) => {
+				previews.push({ target: e.target.result, name: selectedFile?.[i]?.name, type: selectedFile?.[i]?.type });
+
+				if (previews?.length === selectedFile?.length) {
+					setImagePreviews([...previews]);
+				}
+			};
+
+			reader.readAsDataURL(selectedFile[i]);
+		}
+	}, [selectedFile]);
 
 	return (
 		<>
@@ -132,7 +188,7 @@ const ConversationsFooter = () => {
 						</div>
 					</div>
 					<button
-						className={`${styles.send} ${text.length > 0 ? styles.send_active : ""}`}
+						className={`${styles.send} ${text?.length > 0 ? styles.send_active : ""}`}
 						onClick={sendMessageHandler}>
 						<AirplaneIcon color="icon-on-color" />
 					</button>
@@ -144,6 +200,7 @@ const ConversationsFooter = () => {
 					<SelectedAudio />
 					<SelectedDoc />
 				<SelectedContact /> */}
+					{imagePreviews?.map((item) => <SelectedImg src={item.target} name={item?.name} />)}
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>

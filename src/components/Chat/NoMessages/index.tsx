@@ -4,6 +4,7 @@ import PlusIcon from "components/UI/Icons/Plus";
 import { useDispatch } from "react-redux";
 import { setIsStartNewConversationDialogueOpen } from "redux/chat/chatSlice";
 import Button from "components/UI/Button";
+import BtnLarge from "components/UI/BtnLarge";
 
 const NoMessages = () => {
 	const dispatch = useDispatch();
@@ -15,13 +16,24 @@ const NoMessages = () => {
 			</span>
 			<div className={styles.noMessages_boldText}>No Messages</div>
 			<div className={styles.noMessages_text}>When you have messages you'll see them here</div>
-			<Button
-				btnText={"Start new conversations"}
+			<BtnLarge
+				btnType={"primary"}
+				isDanger={false}
+				isDisabled={false}
+				type="button"
+				btnText="Start new conversations"
 				icon={<PlusIcon color="icon-on-color" />}
 				onClick={() => {
 					dispatch(setIsStartNewConversationDialogueOpen(true));
 				}}
 			/>
+			{/* <Button
+				btnText={"Start new conversations"}
+				icon={<PlusIcon color="icon-on-color" />}
+				onClick={() => {
+					dispatch(setIsStartNewConversationDialogueOpen(true));
+				}}
+			/> */}
 		</section>
 	);
 };

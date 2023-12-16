@@ -63,4 +63,14 @@ const getServerUrl = () => {
 	return url;
 };
 
-export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl };
+const getStorageServicesUrl = () => {
+	let url = "";
+
+	if (isProd || isLocalhost || isDev) {
+		url = "https://storage-service.ringplan.com";
+	}
+	url = "https://storage-service.ringplan.com";
+	return url;
+};
+
+export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl, getStorageServicesUrl };

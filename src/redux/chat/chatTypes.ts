@@ -38,4 +38,6 @@ export interface IChatState {
 	selectedMsgLists: ""[];
 	isDeleteCheck: boolean;
 	emoji: any;
+	imageFiles: [];
+	selectedFiles: any;
 }
