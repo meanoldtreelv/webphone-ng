@@ -4,7 +4,7 @@ import ConferenceCallListMember from "../ConferenceCallListMember";
 import { store } from "redux/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-const ConferenceCallsList = ({LineNumber, conferenceCallList=[], host2}:{LineNumber:number, conferenceCallList:{id:number, startTime:string, callTimer:string, disposition:string, dispositionTime:string, to:string}[], host2:{startTime:string, callTimer:string, displayNumber:string, displayName:string}}) => {
+const ConferenceCallsList = ({LineNumber, conferenceCallList=[], host2}:{LineNumber:number, conferenceCallList:{id:number, startTime:string, callTimer:string, disposition:string, dispositionTime:string, to:string}[], host2:{startTime:string, callTimer:string, callTimerConf:string, displayNumber:string, displayName:string, disposition:string }}) => {
 	const close = ()=>{
 		store.dispatch({
 			type: "sip/answeredCalls",
@@ -35,7 +35,7 @@ const ConferenceCallsList = ({LineNumber, conferenceCallList=[], host2}:{LineNum
 							<span>Host</span>
 						</div>
 						<div>
-							<ConferenceCallListMember host={true} hoverOn={hoverOn} setHoverOn={setHoverOn} lineNumber={LineNumber} details={{id:-2, callTimer:"", billsec:"", name:extNumber , number:extNumber ,startTime:"", disposition:""}}/>
+							<ConferenceCallListMember host={true} hoverOn={hoverOn} setHoverOn={setHoverOn} lineNumber={LineNumber} details={{id:-2, callTimer:host2.callTimer, billsec:"", name:extNumber , number:extNumber ,startTime:"", disposition:"Host"}}/>
 						</div>
 					</div>
 					<div>
@@ -49,7 +49,7 @@ const ConferenceCallsList = ({LineNumber, conferenceCallList=[], host2}:{LineNum
 						</div>
 						<div style={{overflowY: "auto"}}>
 							{
-								<ConferenceCallListMember host={true} hoverOn={hoverOn} setHoverOn={setHoverOn} lineNumber={LineNumber} details={{id:-3, callTimer:host2.callTimer, billsec:host2.startTime, name:host2.displayName, number:host2.displayNumber,startTime:host2.startTime, disposition:""}}/>}
+								<ConferenceCallListMember host={true} hoverOn={hoverOn} setHoverOn={setHoverOn} lineNumber={LineNumber} details={{id:-3, callTimer:host2.callTimerConf, billsec:host2.startTime, name:host2.displayName, number:host2.displayNumber,startTime:host2.startTime, disposition:host2.disposition}}/>}
 							{
 								conferenceCallList?.map((item)=>(<ConferenceCallListMember hoverOn={hoverOn} setHoverOn={setHoverOn} lineNumber={LineNumber} details={{id:item.id, callTimer:item.callTimer, billsec:item.startTime,name:item.to,number:item.to,startTime:item.startTime, disposition:item.disposition}}/>))
 							}

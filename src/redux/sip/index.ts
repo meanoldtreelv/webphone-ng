@@ -34,6 +34,8 @@ interface answeredCallIn {
   volumeLevel?: Number,
   showDTMF?: Boolean,
   showAddCall?: Boolean,
+  disposition?: string,
+  callTimerConf?: string,
   showAddConferenceCall?: Boolean,
   showTransferCall?: Boolean,
   showTransferCallAtt?: Boolean,
@@ -324,6 +326,7 @@ const sipSlice = createSlice({
               const answered: answeredCallIn = state.ringingInboundCalls[index]
               answered.answered = true
               answered.callTimer = "00:00"
+              answered.callTimerConf = "00:00"
               state.answeredCalls = [...state.answeredCalls, answered];
               state.ringingInboundCalls = [
                 ...state.ringingInboundCalls.slice(0, index),
@@ -387,6 +390,7 @@ const sipSlice = createSlice({
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].callTimer = callTimer
+              if(state.answeredCalls[index].disposition !== "Bye") state.answeredCalls[index].callTimerConf = callTimer
               break;
             }
           }
@@ -452,6 +456,19 @@ const sipSlice = createSlice({
           for (let index = 0; index < state.answeredCalls.length; index++) {
             if (state.answeredCalls[index].LineNumber === lineNum) {
               state.answeredCalls[index].showAddCall = showAddCall
+              break;
+            }
+          }
+          break
+        }
+        case "disposition": {
+          console.log("disposition:")
+          console.log(action.payload.data)
+          const lineNum = action.payload.data.lineNum
+          const disposition = action.payload.data.disposition
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === lineNum) {
+              state.answeredCalls[index].disposition = disposition
               break;
             }
           }
