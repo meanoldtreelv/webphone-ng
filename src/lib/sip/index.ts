@@ -902,10 +902,56 @@ function holdSession(lineNum:number) {
       },
     },
   };
-  session.invite(options).catch(function (error) {
-    session.isOnHold = false;
-    console.warn("Error attempting to put the call on hold:", error);
-  });
+  //uncomment this when hold started working
+  // session.invite(options).catch(function (error) {
+  //   session.isOnHold = false;
+  //   console.warn("Error attempting to put the call on hold:", error);
+  // });
+  {//Remove this when hold started working
+    if (
+      session &&
+      session.sessionDescriptionHandler &&
+      session.sessionDescriptionHandler.peerConnection
+    ) {
+      var pc = session.sessionDescriptionHandler.peerConnection;
+      // Stop all the inbound streams
+      pc.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+      });
+      // Stop all the outbound streams (especially useful for Conference Calls!!)
+      pc.getSenders().forEach(function (RTCRtpSender) {
+        // Mute Audio
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          if (RTCRtpSender.track.IsMixedTrack === true) {
+            if (
+              session.data.AudioSourceTrack &&
+              session.data.AudioSourceTrack.kind === "audio"
+            ) {
+              console.log(
+                "Muting Mixed Audio Track : " +
+                  session.data.AudioSourceTrack.label
+              );
+              session.data.AudioSourceTrack.enabled = false;
+            }
+          }
+          console.log("Muting Audio Track : " + RTCRtpSender.track.label);
+          RTCRtpSender.track.enabled = false;
+        }
+        // Stop Video
+        else if (RTCRtpSender.track && RTCRtpSender.track.kind === "video") {
+          RTCRtpSender.track.enabled = false;
+        }
+      });
+    }
+    session.isOnHold = true;
+    console.log("Call is is on hold:", lineNum);
+
+    // Log Hold
+    if (!session.data.hold) session.data.hold = [];
+    session.data.hold.push({ event: "hold", eventTime: utcDateNow() });
+
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:true}}})
+  }
 }
 function unholdSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
@@ -979,10 +1025,58 @@ function unholdSession(lineNum:number) {
       },
     },
   };
-  session.invite(options).catch(function (error) {
-    session.isOnHold = true;
-    console.warn("Error attempting to take to call off hold", error);
-  });
+  //Uncomment this when hold started working
+  // session.invite(options).catch(function (error) {
+  //   session.isOnHold = true;
+  //   console.warn("Error attempting to take to call off hold", error);
+  // });
+  {//Remove this when hold started working
+    if (
+      session &&
+      session.sessionDescriptionHandler &&
+      session.sessionDescriptionHandler.peerConnection
+    ) {
+      var pc = session.sessionDescriptionHandler.peerConnection;
+      // Restore all the inbound streams
+      pc.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
+      });
+      // Restore all the outbound streams
+      pc.getSenders().forEach(function (RTCRtpSender) {
+        // Unmute Audio
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          if (RTCRtpSender.track.IsMixedTrack === true) {
+            if (
+              session.data.AudioSourceTrack &&
+              session.data.AudioSourceTrack.kind === "audio"
+            ) {
+              console.log(
+                "Unmuting Mixed Audio Track : " +
+                  session.data.AudioSourceTrack.label
+              );
+              session.data.AudioSourceTrack.enabled = true;
+            }
+          }
+          console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
+          RTCRtpSender.track.enabled = true;
+        } else if (
+          RTCRtpSender.track &&
+          RTCRtpSender.track.kind === "video"
+        ) {
+          RTCRtpSender.track.enabled = true;
+        }
+      });
+    }
+    session.isOnHold = false;
+    console.log("Call is off hold:", lineNum);
+
+    // Log Hold
+    if (!session.data.hold) session.data.hold = [];
+    session.data.hold.push({ event: "unhold", eventTime: utcDateNow() });
+
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:false}}})
+    session.data.ismute && MuteSession(lineNum) 
+  } 
 }
 function MuteSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
@@ -1364,12 +1458,13 @@ function AddLineHtml(lineObj:{LineNumber:number}) {
 function SwitchLines(lineNum:number) {
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
-    if (session.state === SIP.SessionState.Established) {
-      if(session.data.line !== lineNum){
-        MuteSession(session.data.line) //remove this when hold started working
-      }
-      if (session.isOnHold === false && session.data.line !== lineNum) {
-        // holdSession(session.data.line); // uncomment this when hold started working
+    if(!session.data.line) return;
+    if (session.state === SIP.SessionState.Established && session.data.line !== lineNum) {
+      if(session.data.confcalls){
+        sip.muteConference(session.data.line, false)
+        sip.volumeLevel(session.data.line, "0")
+      }else if (session.isOnHold === false) {
+        holdSession(session.data.line);
       }
     }
     session.data.IsCurrentCall = false;
@@ -1379,9 +1474,11 @@ function SwitchLines(lineNum:number) {
   if (lineObj !== null && lineObj.SipSession !== null) {
     var session = lineObj.SipSession;
     if (session.state === SIP.SessionState.Established) {
-      UnmuteSession(lineNum) //remove this when hold started working
-      if (session.isOnHold === true) {
-        // unholdSession(lineNum); // uncomment this when hold started working
+      if(session.data.confcalls){
+        sip.muteConference(lineNum, true)
+        sip.volumeLevel(lineNum, "100")
+      }else if (session.isOnHold === true) {
+        unholdSession(lineNum);
       }
     }
     session.data.IsCurrentCall = true;
@@ -4524,9 +4621,6 @@ const sip = {
     try {
       isHold ? unholdSession(LineNumber) : holdSession(LineNumber) 
     } catch (error) {console.log(error)}
-  },
-  selectLine: (LineNumber: number ) =>  {
-    SelectLine(newLineNumber)
   },
   volumeLevel: (LineNumber: number, volumeLevel: string ) =>  {
     const amount:number = volumeLevel / 100
