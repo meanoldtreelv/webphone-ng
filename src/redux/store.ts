@@ -8,7 +8,7 @@ import callHistoryReducer from "./call-history/callHistorySlice";
 import sidecarReducer from "./sidecar/sidecarSlice";
 import meetReducer from "./meet/meetSlice";
 import chatReducer from "./chat/chatSlice";
-import { apiService } from "./../services/api";
+import { apiService, apiStorageService } from "./../services/api";
 import sipReducer from "./sip";
 import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
 import { isDev, isLocalhost } from "./../config/env.config";
@@ -36,8 +36,10 @@ export const store = configureStore({
 		meet: meetReducer,
 		chat: chatReducer,
 		[apiService.reducerPath]: apiService.reducer,
+		[apiStorageService.reducerPath]: apiStorageService.reducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware, jwtTokenRefresher),
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(apiService.middleware, apiStorageService.middleware, jwtTokenRefresher),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

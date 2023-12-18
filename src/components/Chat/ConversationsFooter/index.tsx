@@ -31,7 +31,7 @@ const ConversationsFooter = () => {
 	const selectedFile = useSelector(selectedFiles);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
-	const [postFiles, { data: data2 }] = useLazyPostFilesQuery();
+	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
 	const [uploadFiles] = useLazyUploadFilesQuery();
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
@@ -40,6 +40,15 @@ const ConversationsFooter = () => {
 	const [text, setText] = useState("");
 	const [imagePreviews, setImagePreviews] = useState([]);
 	const [fileResponse, setFileResponse] = useState<{}[]>([]);
+
+	useEffect(() => {
+		console.log("------------------------------------------");
+		console.log("------------------------------------------");
+		console.log("fileData: ", fileData);
+		console.log("isError: ", isError);
+		console.log("------------------------------------------");
+		console.log("------------------------------------------");
+	}, [fileData, isError]);
 
 	const sendMessageHandler = async () => {
 		if (selectedFile?.length > 0) {
