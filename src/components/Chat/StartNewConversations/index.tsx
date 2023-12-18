@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";

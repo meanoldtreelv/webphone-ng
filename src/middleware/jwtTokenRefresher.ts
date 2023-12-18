@@ -1,9 +1,8 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { setSessionOut } from "redux/common/commonSlice";
 import { store } from "redux/store";
-import { getCookie, setCookie } from "utils";
+import { getCookie } from "utils";
 
 export const jwtTokenRefresher =
 	({ dispatch }: Record<any, any>) =>
