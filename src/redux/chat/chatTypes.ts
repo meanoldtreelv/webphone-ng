@@ -40,4 +40,6 @@ export interface IChatState {
 	emoji: any;
 	imageFiles: [];
 	selectedFiles: any;
+	selectedAudioFiles: {};
+	selectedVideoFiles: {};
 }

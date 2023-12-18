@@ -34,3 +34,5 @@ export const isDeleteCheck = (state: RootState) => state.chat.isDeleteCheck;
 export const emoji = (state: RootState) => state.chat.emoji;
 export const imageFiles = (state: RootState) => state.chat.imageFiles;
 export const selectedFiles = (state: RootState) => state.chat.selectedFiles;
+export const selectedAudioFiles = (state: RootState) => state.chat.selectedAudioFiles;
+export const selectedVideoFiles = (state: RootState) => state.chat.selectedVideoFiles;

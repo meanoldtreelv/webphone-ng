@@ -5,7 +5,7 @@ import MinusIcon from "components/UI/Icons/ChatIcons/Minus";
 import DownloadIcon from "components/UI/Icons/meet/Download";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsImgViewerDialogueOpen } from "redux/chat/chatSlice";
-import { conversationData, imageFiles } from "redux/chat/chatSelectors";
+import { conversationData, selectedFiles } from "redux/chat/chatSelectors";
 import { contactAbbreviation, showToast } from "utils";
 import { useEffect, useState } from "react";
 import { useLazyRepresentationFilesQuery } from "services/storage";
@@ -14,7 +14,7 @@ import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 const ImgViewer = () => {
 	const dispatch = useDispatch();
 
-	const imageFile = useSelector(imageFiles);
+	const selectedFile = useSelector(selectedFiles);
 	const conversationDatas = useSelector(conversationData);
 
 	const [representationFiles, { data, isFetching, isLoading }] = useLazyRepresentationFilesQuery();
@@ -44,15 +44,15 @@ const ImgViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
+				const { data, error } = await representationFiles({ id: selectedFile.id, data: {} });
 
 				if (error) {
-					console.log(error);
+					// console.log(error);
 					showToast("There is some error in representation of the file", "error");
 				}
 
 				if (data) {
-					console.log("Fetched data:", data); // Log data here
+					// console.log("Fetched data:", data); // Log data here
 					setImageData(data);
 				}
 			} catch (err) {
@@ -60,7 +60,7 @@ const ImgViewer = () => {
 			}
 		};
 		fetchData();
-	}, [imageFile, counter]);
+	}, [selectedFile, counter]);
 
 	return (
 		<div className={styles.overlay}>
@@ -82,7 +82,7 @@ const ImgViewer = () => {
 									? firstName + " " + lastName
 									: ""}
 							</p>
-							<p>{imageFile[counter]?.name}</p>
+							<p>{selectedFile?.name}</p>
 						</div>
 					</div>
 					<span
@@ -94,7 +94,8 @@ const ImgViewer = () => {
 					</span>
 				</div>
 
-				<img src={imageData?.original?.preview?.base64} alt="" />
+				<img src={imageData?.url} alt="" />
+
 				<div className={styles.footer}>
 					<div className={styles.zoomBox}>
 						<span>
@@ -105,9 +106,10 @@ const ImgViewer = () => {
 						</span>
 					</div>
 					<div className={styles.counter}>
-						{counter + 1}/{imageFile.length}
+						1/1
+						{/* {counter + 1}/{imageFile.length} */}
 					</div>
-					<a href={imageData?.url} className={styles.download}>
+					<a href={imageData?.url} className={styles.download} target="_blank" rel="noreferrer">
 						<DownloadIcon color="icon-primary" />
 					</a>
 				</div>
