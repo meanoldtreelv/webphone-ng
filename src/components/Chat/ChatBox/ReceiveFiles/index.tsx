@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./ReceiveFiles.module.scss";
 import {
 	setImageFiles,
+	setIsAudioViewerDialogueOpen,
 	setIsDocumentViewerDialogueOpen,
 	setIsImgViewerDialogueOpen,
 	setIsVideoViewerDialogueOpen,
@@ -12,6 +13,8 @@ import ReceiveTime from "../ReceiveTime";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
 import DocImg from "../../../../assets/images/img/doc.svg";
+import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
+import SoundWaves1 from "../../../../assets/images/img/sound_wave_receive.svg";
 
 const ReceiveFiles = ({ id, time, text, files }) => {
 	const dispatch = useDispatch();
@@ -83,6 +86,28 @@ const ReceiveFiles = ({ id, time, text, files }) => {
 												<span>{data?.name}</span>
 												<b>{data?.size} b</b>
 											</span>
+										</div>
+									</div>
+								</>
+							);
+						}
+						if (data?.mimetype === "audio/mpeg") {
+							return (
+								<>
+									<div className={styles.receiveAudio}>
+										<div
+											className={styles.audio}
+											onClick={() => {
+												dispatch(setIsAudioViewerDialogueOpen(true));
+											}}>
+											<PlayerPlay color="primary-default" />
+											<div>
+												<img src={SoundWaves1} alt="" />
+												<span className={styles.soundDetails}>
+													<span>{data?.name}</span>
+													<span className={styles.duration}>{data?.duration} s</span>
+												</span>
+											</div>
 										</div>
 									</div>
 								</>

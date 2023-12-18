@@ -47,6 +47,7 @@ const initialChatState: IChatState = {
 	emoji: null,
 	imageFiles: [],
 	selectedFiles: null,
+	selectedAudioFiles: {},
 };
 
 const chatSlice = createSlice({
@@ -161,6 +162,9 @@ const chatSlice = createSlice({
 		setSelectedFiles(state, action) {
 			state.selectedFiles = action.payload;
 		},
+		setSelectedAudioFiles(state, action) {
+			state.selectedAudioFiles = action.payload;
+		},
 	},
 });
 
@@ -198,6 +202,7 @@ export const {
 	setEmoji,
 	setImageFiles,
 	setSelectedFiles,
+	setSelectedAudioFiles,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

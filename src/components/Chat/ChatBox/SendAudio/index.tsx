@@ -1,28 +1,50 @@
 import styles from "./SendAudio.module.scss";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import SoundWaves2 from "../../../../assets/images/img/sound_wave_send.svg";
-import { useDispatch } from "react-redux";
-import { setIsAudioViewerDialogueOpen } from "redux/chat/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsAudioViewerDialogueOpen, setSelectedAudioFiles, setSelectedMsgLists } from "redux/chat/chatSlice";
+import SendTime from "../SendTime";
+import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 
-const SendAudio = () => {
+const SendAudio = ({ id, time, name, files, duration }) => {
 	const dispatch = useDispatch();
+	const deleteCheck = useSelector(isDeleteCheck);
+	const selectedMsgList = useSelector(selectedMsgLists);
+
+	const handleSelectInput = () => {
+		!selectedMsgList.includes(id)
+			? dispatch(setSelectedMsgLists({ type: "ADD", id }))
+			: dispatch(setSelectedMsgLists({ id }));
+	};
 	return (
-		<div className={styles.sendAudio}>
-			<div
-				className={styles.audio}
-				onClick={() => {
-					dispatch(setIsAudioViewerDialogueOpen(true));
-				}}>
-				<PlayerPlay color="icon-on-color" />
-				<div>
-					<img src={SoundWaves2} alt="" />
-					<span className={styles.soundDetails}>
-						<span>Call record 2402.wav</span>
-						<span className={styles.duration}>01:30</span>
-					</span>
+		<>
+			<div className={`${styles.msgDiv} ${deleteCheck && styles.msgDiv_active}`}>
+				<div className={styles.left}>
+					<SendTime time={time} />
+
+					<div className={styles.sendAudio}>
+						<div
+							className={styles.audio}
+							onClick={() => {
+								dispatch(setIsAudioViewerDialogueOpen(true));
+								dispatch(setSelectedAudioFiles(files));
+							}}>
+							<PlayerPlay color="icon-on-color" />
+							<div>
+								<img src={SoundWaves2} alt="" />
+								<span className={styles.soundDetails}>
+									<span>{name}</span>
+									<span className={styles.duration}>{duration}</span>
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
+				{deleteCheck && (
+					<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
+				)}
 			</div>
-		</div>
+		</>
 	);
 };
 

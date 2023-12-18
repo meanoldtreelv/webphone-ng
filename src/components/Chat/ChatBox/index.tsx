@@ -227,6 +227,18 @@ const ChatBox = () => {
 													/>
 												);
 											}
+											if (data?.mimetype === "audio/mpeg") {
+												return (
+													<ReceiveAudio
+														id={item?.id}
+														files={item.files}
+														time={data?.uploaded_at}
+														name={data?.name}
+														duration={data?.duration}
+														// size={data.size}
+													/>
+												);
+											}
 											return null; // Or handle non-PNG files if needed
 										})}
 									</div>
@@ -277,6 +289,19 @@ const ChatBox = () => {
 														name={data?.name}
 														time={data?.uploaded_at}
 														size={data.size}
+													/>
+												);
+											}
+
+											if (data?.mimetype === "audio/mpeg") {
+												return (
+													<SendAudio
+														id={item?.id}
+														files={data}
+														time={data?.uploaded_at}
+														name={data?.name}
+														duration={data?.duration}
+														// size={data.size}
 													/>
 												);
 											}

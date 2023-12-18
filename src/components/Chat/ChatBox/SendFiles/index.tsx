@@ -1,16 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SendFiles.module.scss";
+import SoundWaves2 from "../../../../assets/images/img/sound_wave_send.svg";
 import {
 	setImageFiles,
+	setIsAudioViewerDialogueOpen,
 	setIsDocumentViewerDialogueOpen,
 	setIsImgViewerDialogueOpen,
 	setIsVideoViewerDialogueOpen,
+	setSelectedAudioFiles,
 	setSelectedMsgLists,
 } from "redux/chat/chatSlice";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import SendTime from "../SendTime";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
 import DocImg from "../../../../assets/images/img/doc.svg";
+import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
+import SendAudio from "../SendAudio";
 
 const SendFiles = ({ id, time, text, files }) => {
 	const dispatch = useDispatch();
@@ -86,6 +91,30 @@ const SendFiles = ({ id, time, text, files }) => {
 								</>
 							);
 						}
+						if (data?.mimetype === "audio/mpeg") {
+							return (
+								<>
+									<div className={styles.sendAudio}>
+										<div
+											className={styles.audio}
+											onClick={() => {
+												dispatch(setIsAudioViewerDialogueOpen(true));
+												dispatch(setSelectedAudioFiles());
+											}}>
+											<PlayerPlay color="icon-on-color" />
+											<div>
+												<img src={SoundWaves2} alt="" />
+												<span className={styles.soundDetails}>
+													<span>{data?.name}</span>
+													<span className={styles.duration}>{data?.duration} s</span>
+												</span>
+											</div>
+										</div>
+									</div>
+								</>
+							);
+						}
+
 						return null; // Or handle non-PNG files if needed
 					})}
 				</div>

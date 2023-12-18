@@ -23,6 +23,13 @@ export const storageService = apiStorageService.injectEndpoints({
 				data,
 			}),
 		}),
+		generateUrl: build.query({
+			query: ({ id, data }) => ({
+				method: "POST",
+				url: `/files/${id}/generate_url`,
+				data,
+			}),
+		}),
 	}),
 });
 

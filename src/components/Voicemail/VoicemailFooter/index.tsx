@@ -189,7 +189,8 @@ const VoicemailFooter = () => {
 									ref={audioRef}
 									autoPlay
 									onLoadedMetadata={onLoadedMetadata}
-									onTimeUpdate={handleAudioTimeUpdate}></audio>
+									onTimeUpdate={handleAudioTimeUpdate}
+									style={{ backgroundColor: "red" }}></audio>
 								<p className={styles.footer_name}>{voicemail.title}</p>
 								<div className={styles.footer_dat}>
 									<p className={styles.footer_month}>{convertDateFormat(voicemail.time)}</p>
