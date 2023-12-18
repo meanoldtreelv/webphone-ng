@@ -4627,7 +4627,7 @@ const sip = {
     // console.log("Volume level", amount)
     store.dispatch({type:"sip/answeredCalls", payload:{action:"volumeLevel",data:{lineNum:LineNumber, volumeLevel:volumeLevel}}})
     var audioobject = document.getElementById("line-" + LineNumber + "-remoteAudio");
-    audioobject.volume = amount;
+    if(audioobject) audioobject.volume = amount;
     sip.volumeLevelConference(LineNumber, volumeLevel)
   },
   volumeLevelConference: (LineNumber: number, volumeLevel: string ) =>  {
@@ -4638,7 +4638,7 @@ const sip = {
     const amount:number = volumeLevel / 100
     for(let x=0; x < (session.data.confcalls.length|0); x ++){
       var audioobject = document.getElementById("line-" + LineNumber + "-conference-remoteAudio-" + x);
-      audioobject.volume = amount;
+      if(audioobject) audioobject.volume = amount;
       // console.log("Volume level", amount, ",Conf",x)
     }
   },
@@ -4670,6 +4670,10 @@ const sip = {
   },
   selectLine: (LineNumber: number) =>{
     SelectLine(LineNumber)
+  },
+  isConferenceCall: (LineNumber: number) =>{
+    var lineObj = FindLineByNumber(LineNumber);
+    return (lineObj?.SipSession?.data?.confcalls? true : false)
   },
   callSpeakerDevice: (LineNumber: number, value: string) => {
     var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
@@ -4781,6 +4785,30 @@ const sip = {
         });
       }
     }
+  },
+  merge:(FromLineNumber: number, ToLineNumber: string ) =>  {
+    var FromCall = FindLineByNumber(FromLineNumber);
+    if (FromCall === null || FromCall.SipSession === null) return;
+
+    var ToCall = FindLineByNumber(ToLineNumber);
+    if (ToCall === null || ToCall.SipSession === null) return;
+
+    var sessionFrom = FromCall.SipSession
+    var sessionTo = ToCall.SipSession
+
+    if(sessionFrom.data.mergedCalls) return;
+
+    if (!sessionTo.data.mergedCalls) { //New merge
+      sessionTo.data.mergedCalls = [];
+      sessionTo.data.mergedCalls.push(ToLineNumber)
+      sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
+    } 
+      for(let x = 0; x < sessionFrom.data.mergedCalls?.length|0; x++){
+        //append from mic to this call
+      }
+      sessionTo.data.mergedCalls.push(FromLineNumber)
+    // start merge
+    store.dispatch({type:"sip/mergedCallGroups", payload:{action:"add",data:{FromLineNumber:FromLineNumber, ToLineNumber:ToLineNumber}}});
   },
   logout: (changeLocation=true)=>{
     localStorage.clear();
