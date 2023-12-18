@@ -46,7 +46,7 @@ const initialChatState: IChatState = {
 	isDeleteCheck: false,
 	emoji: null,
 	imageFiles: [],
-	selectedFiles: null,
+	selectedFiles: {},
 	selectedAudioFiles: {},
 	selectedVideoFiles: {},
 };

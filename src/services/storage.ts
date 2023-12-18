@@ -33,4 +33,9 @@ export const storageService = apiStorageService.injectEndpoints({
 	}),
 });
 
-export const { useLazyPostFilesQuery, useLazyUploadFilesQuery, useLazyRepresentationFilesQuery } = storageService;
+export const {
+	useLazyPostFilesQuery,
+	useLazyUploadFilesQuery,
+	useLazyRepresentationFilesQuery,
+	useLazyGenerateUrlQuery,
+} = storageService;

@@ -8,19 +8,19 @@ import { setIsDocumentViewerDialogueOpen } from "redux/chat/chatSlice";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 import { contactAbbreviation, showToast } from "utils";
 import { useEffect, useState } from "react";
-import { useLazyRepresentationFilesQuery } from "services/storage";
-import { conversationData } from "redux/chat/chatSelectors";
+import { useLazyGenerateUrlQuery } from "services/storage";
+import { conversationData, selectedFiles } from "redux/chat/chatSelectors";
 
 const DocumentViewer = () => {
 	const dispatch = useDispatch();
 
-	// const imageFile = useSelector(imageFiles);
+	const selectedFile = useSelector(selectedFiles);
 	const conversationDatas = useSelector(conversationData);
 
-	const [representationFiles, { data, isFetching, isLoading }] = useLazyRepresentationFilesQuery();
+	const [generateUrl] = useLazyGenerateUrlQuery();
 
 	const [counter, setCounter] = useState(0);
-	const [docData, setDocData] = useState({});
+	const [docData, setDocData] = useState("");
 
 	const first_name = conversationDatas?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationDatas?.contactsinfo?.[0]?.last_name;
@@ -44,21 +44,21 @@ const DocumentViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
-				// if (error) {
-				// 	console.log(error);
-				// 	showToast("There is some error in representation of the file", "error");
-				// }
-				// if (data) {
-				// 	console.log("Fetched data:", data); // Log data here
-				// 	setDocData(data);
-				// }
+				const { data, error } = await generateUrl({ id: selectedFile?.id, data: { expire: 120 } });
+				if (error) {
+					console.log(error);
+					showToast("There is some error in representation of the file", "error");
+				}
+				if (data) {
+					// console.log("Fetched data:", data); // Log data here
+					setDocData(data);
+				}
 			} catch (err) {
 				console.error("Error in fetchData:", err); // Log any caught errors
 			}
 		};
 		fetchData();
-	}, [counter]);
+	}, [selectedFile, counter]);
 
 	return (
 		<div className={styles.overlay}>
@@ -80,7 +80,7 @@ const DocumentViewer = () => {
 									? firstName + " " + lastName
 									: ""}
 							</p>
-							<p>{"March 8, 2023 11:49 AM - blake-verdoorn-cssvEZacHvQ-unsplash.jpg - 256Kb"}</p>
+							<p>{selectedFile?.name}</p>
 						</div>
 					</div>
 					<span
@@ -92,7 +92,7 @@ const DocumentViewer = () => {
 					</span>
 				</div>
 
-				<img src={docData?.original?.preview?.base64} alt="" />
+				{/* <img src={docData?.original?.preview?.base64} alt="" /> */}
 				<div className={styles.footer}>
 					<div className={styles.zoomBox}>
 						<span>
@@ -103,10 +103,10 @@ const DocumentViewer = () => {
 						</span>
 					</div>
 					<div className={styles.counter}>
-						{counter + 1}/{"3"}
+						{counter + 1}/{"1"}
 					</div>
 
-					<a href={docData?.url} className={styles.download}>
+					<a href={docData} className={styles.download} target="_blank" rel="noreferrer">
 						<DownloadIcon color="icon-primary" />
 					</a>
 				</div>

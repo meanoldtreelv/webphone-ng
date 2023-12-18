@@ -2,9 +2,10 @@ import styles from "./SendAudio.module.scss";
 import PlayerPlay from "components/UI/Icons/ChatIcons/PlayerPlay";
 import SoundWaves2 from "../../../../assets/images/img/sound_wave_send.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAudioViewerDialogueOpen, setSelectedAudioFiles, setSelectedMsgLists } from "redux/chat/chatSlice";
+import { setIsAudioViewerDialogueOpen, setSelectedFiles, setSelectedMsgLists } from "redux/chat/chatSlice";
 import SendTime from "../SendTime";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
+import { formatTime } from "helpers/formatDateTime";
 
 const SendAudio = ({ id, time, name, files, duration }) => {
 	const dispatch = useDispatch();
@@ -27,14 +28,14 @@ const SendAudio = ({ id, time, name, files, duration }) => {
 							className={styles.audio}
 							onClick={() => {
 								dispatch(setIsAudioViewerDialogueOpen(true));
-								dispatch(setSelectedAudioFiles(files));
+								dispatch(setSelectedFiles(files));
 							}}>
 							<PlayerPlay color="icon-on-color" />
 							<div>
 								<img src={SoundWaves2} alt="" />
 								<span className={styles.soundDetails}>
 									<span>{name}</span>
-									<span className={styles.duration}>{duration}</span>
+									<span className={styles.duration}>{formatTime(duration)}</span>
 								</span>
 							</div>
 						</div>

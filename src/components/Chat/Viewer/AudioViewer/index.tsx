@@ -10,8 +10,8 @@ import PlayPrevIcon from "components/UI/Icons/ChatIcons/PlayPrev";
 import PlayNextIcon from "components/UI/Icons/ChatIcons/PlayNext";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAudioViewerDialogueOpen } from "redux/chat/chatSlice";
-import { conversationData, selectedAudioFiles } from "redux/chat/chatSelectors";
-import { useLazyRepresentationFilesQuery } from "services/storage";
+import { conversationData, selectedFiles } from "redux/chat/chatSelectors";
+import { useLazyGenerateUrlQuery } from "services/storage";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 import { contactAbbreviation, showToast } from "utils";
 import { formatTime } from "helpers/formatDateTime";
@@ -19,16 +19,13 @@ import { formatTime } from "helpers/formatDateTime";
 const AudioViewer = () => {
 	const dispatch = useDispatch();
 
-	const selectedAudioFile = useSelector(selectedAudioFiles);
+	const selectedFile = useSelector(selectedFiles);
 	const conversationDatas = useSelector(conversationData);
 
-	const [representationFiles, { data, isFetching, isLoading }] = useLazyRepresentationFilesQuery();
+	const [generateUrl] = useLazyGenerateUrlQuery();
 
 	const [isPlayBtnTrue, setIsPlayBtnTrue] = useState(false);
-	const [counter, setCounter] = useState(0);
-	const [audioData, setAudioData] = useState(
-		"https://zt-storage-service.s3.amazonaws.com/1702870303.7155414_sample-12s.mp3?AWSAccessKeyId=AKIAXFKAH3YXFR4HJNM2&Signature=7pEItU0AUJAnR7jSP%2Fkef5xIcGo%3D&Expires=1702881802",
-	);
+	const [audioData, setAudioData] = useState("");
 
 	const first_name = conversationDatas?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationDatas?.contactsinfo?.[0]?.last_name;
@@ -52,13 +49,13 @@ const AudioViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: { expire: 120 } });
+				const { data, error } = await generateUrl({ id: selectedFile?.id, data: { expire: 120 } });
 				if (error) {
-					console.log(error);
+					// console.log(error);
 					showToast("There is some error in representation of the file", "error");
 				}
 				if (data) {
-					console.log("Fetched data:", data); // Log data here
+					// console.log("Fetched data:", data); // Log data here
 					setAudioData(data);
 				}
 			} catch (err) {
@@ -66,7 +63,7 @@ const AudioViewer = () => {
 			}
 		};
 		fetchData();
-	}, [counter]);
+	}, [selectedFile]);
 
 	return (
 		<div className={styles.overlay}>
@@ -88,7 +85,7 @@ const AudioViewer = () => {
 									? firstName + " " + lastName
 									: ""}
 							</p>
-							<p>{selectedAudioFile?.name}</p>
+							<p>{selectedFile?.name}</p>
 						</div>
 					</div>
 					<span
@@ -103,7 +100,7 @@ const AudioViewer = () => {
 					<span>
 						<MusicIcon />
 					</span>
-					<div>{selectedAudioFile?.name}</div>
+					<div>{selectedFile?.name}</div>
 					<p>Now playing...</p>
 				</div>
 
@@ -112,13 +109,13 @@ const AudioViewer = () => {
 						<span className={styles.progress}></span>
 					</div>
 					<div className={styles.duration}>
-						<span>01:20</span>
-						<span>{formatTime(selectedAudioFile?.duration)}</span>
+						<span>00:00</span>
+						<span>{formatTime(selectedFile?.duration)}</span>
 					</div>
 					<div>
 						<audio controls>
 							{/* <source src={audioData} type="audio/ogg" /> */}
-							<source src={audioData} type="audio/mpeg" />
+							<source src={audioData} type="audio/mp3" />
 						</audio>
 					</div>
 					<div className={styles.bottom}>
@@ -135,14 +132,14 @@ const AudioViewer = () => {
 								onClick={() => {
 									setIsPlayBtnTrue(!isPlayBtnTrue);
 								}}>
-								{isPlayBtnTrue ? <PlayerPlay color="primary-default" /> : <PlayerPause color="primary-default" />}
+								{isPlayBtnTrue ? <PlayerPause color="primary-default" /> : <PlayerPlay color="primary-default" />}
 							</span>
 							<span className={styles.nextPrev}>
 								<PlayNextIcon />
 							</span>
 						</div>
 
-						<a href={audioData} className={styles.icon}>
+						<a href={audioData} className={styles.icon} target="_blank" rel="noreferrer">
 							<DownloadIcon color="icon-primary" />
 						</a>
 					</div>

@@ -1,9 +1,10 @@
 import styles from "./SendDoc.module.scss";
 import DocImg from "../../../../assets/images/img/doc.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsDocumentViewerDialogueOpen, setSelectedMsgLists } from "redux/chat/chatSlice";
+import { setIsDocumentViewerDialogueOpen, setSelectedFiles, setSelectedMsgLists } from "redux/chat/chatSlice";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import SendTime from "../SendTime";
+import { convertByteIntoKbMb } from "helpers";
 
 const SendDoc = ({ id, time, name, files, size }) => {
 	const dispatch = useDispatch();
@@ -25,13 +26,14 @@ const SendDoc = ({ id, time, name, files, size }) => {
 						<div
 							onClick={() => {
 								dispatch(setIsDocumentViewerDialogueOpen(true));
+								dispatch(setSelectedFiles(files));
 							}}>
 							<span>
 								<img src={DocImg} alt="" />
 							</span>
 							<span className={styles.details}>
 								<span>{name}</span>
-								<b>{size} kb</b>
+								<b>{convertByteIntoKbMb(size)}</b>
 							</span>
 						</div>
 					</div>
