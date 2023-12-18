@@ -8,7 +8,7 @@ import PlayerPause from "components/UI/Icons/ChatIcons/PlayerPause";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsVideoViewerDialogueOpen } from "redux/chat/chatSlice";
-import { conversationData } from "redux/chat/chatSelectors";
+import { conversationData, selectedVideoFiles } from "redux/chat/chatSelectors";
 import { useLazyRepresentationFilesQuery } from "services/storage";
 import { contactAbbreviation, showToast } from "utils";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
@@ -16,7 +16,7 @@ import UserGroupIcon from "components/UI/Icons/User/UserGroup";
 const VideoViewer = () => {
 	const dispatch = useDispatch();
 
-	// const imageFile = useSelector(imageFiles);
+	const videoFile = useSelector(selectedVideoFiles);
 	const conversationDatas = useSelector(conversationData);
 
 	const [representationFiles, { data, isFetching, isLoading }] = useLazyRepresentationFilesQuery();
@@ -47,7 +47,7 @@ const VideoViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
+				const { data, error } = await representationFiles({ id: videoFile?.[counter]?.id, data: {} });
 
 				if (error) {
 					console.log(error);

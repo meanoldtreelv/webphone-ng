@@ -25,7 +25,7 @@ const SendImg = ({ id, time, src, files }) => {
 							dispatch(setIsImgViewerDialogueOpen(true));
 							dispatch(setImageFiles(files));
 						}}>
-						<img src={src} alt=""></img>
+						<img src={src} alt="" />
 					</span>
 				</div>
 			</div>

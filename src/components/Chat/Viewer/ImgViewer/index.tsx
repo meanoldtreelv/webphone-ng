@@ -44,7 +44,7 @@ const ImgViewer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
+				const { data, error } = await representationFiles({ id: imageFile?.[counter]?.id, data: {} });
 
 				if (error) {
 					console.log(error);
@@ -94,7 +94,9 @@ const ImgViewer = () => {
 					</span>
 				</div>
 
-				<img src={imageData?.original?.preview?.base64} alt="" />
+				{/* <img src={imageData?.original?.preview?.base64} alt="" /> */}
+				<img src={imageData?.url} alt="" />
+
 				<div className={styles.footer}>
 					<div className={styles.zoomBox}>
 						<span>

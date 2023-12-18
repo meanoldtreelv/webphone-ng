@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SendVideo.module.scss";
 import BtnPlay from "components/UI/Icons/ChatIcons/BtnPlay";
-import { setIsVideoViewerDialogueOpen, setSelectedMsgLists } from "redux/chat/chatSlice";
+import { setIsVideoViewerDialogueOpen, setSelectedMsgLists, setSelectedVideoFiles } from "redux/chat/chatSlice";
 import SendTime from "../SendTime";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 
@@ -24,7 +24,7 @@ const SendVideo = ({ id, time, src, duration, files }) => {
 						<span
 							onClick={() => {
 								dispatch(setIsVideoViewerDialogueOpen(true));
-								// dispatch(setImageFiles(files));
+								dispatch(setSelectedVideoFiles(files));
 							}}>
 							<img src={src} alt="" />
 							<span className={styles.btnPlay}>

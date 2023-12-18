@@ -41,4 +41,5 @@ export interface IChatState {
 	imageFiles: [];
 	selectedFiles: any;
 	selectedAudioFiles: {};
+	selectedVideoFiles: {};
 }
