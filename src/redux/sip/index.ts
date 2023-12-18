@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getCookie, setCookie } from "utils";
 
 interface inboundCallIn {
 	LineNumber?: number;
@@ -33,6 +34,8 @@ interface answeredCallIn {
 	volumeLevel?: Number;
 	showDTMF?: Boolean;
 	showAddCall?: Boolean;
+	disposition?: string;
+	callTimerConf?: string;
 	showAddConferenceCall?: Boolean;
 	showTransferCall?: Boolean;
 	showTransferCallAtt?: Boolean;
@@ -41,6 +44,7 @@ interface answeredCallIn {
 	callMicrophoneDevice?: string;
 	conferenceCallList?: Array<conferenceCallListIn>;
 	showConferenceCallsList?: boolean;
+	mergedOnGroup?: number;
 }
 interface callEndingIn {
 	name?: string;
@@ -79,6 +83,10 @@ interface extAuthIn {
 		value?: string;
 	};
 	location?: string;
+}
+interface mergedCallListIn {
+	id: number;
+	calls: Array<number>;
 }
 const sipSlice = createSlice({
 	name: "sip",
@@ -128,6 +136,7 @@ const sipSlice = createSlice({
 		accountId: "",
 		suggestPortraitOnMobileModalShow: false,
 		instance_id: "",
+		mergedCallGroups: [] as mergedCallListIn[],
 	},
 	reducers: {
 		audioAutoGainControl: (state, action) => {
@@ -332,6 +341,7 @@ const sipSlice = createSlice({
 							const answered: answeredCallIn = state.ringingInboundCalls[index];
 							answered.answered = true;
 							answered.callTimer = "00:00";
+							answered.callTimerConf = "00:00";
 							state.answeredCalls = [...state.answeredCalls, answered];
 							state.ringingInboundCalls = [
 								...state.ringingInboundCalls.slice(0, index),
@@ -349,6 +359,52 @@ const sipSlice = createSlice({
 						state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber;
 					}
 					console.log(state.answeredCalls);
+					break;
+				}
+			}
+		},
+		mergedCallGroups: (state, action) => {
+			switch (action.payload.action) {
+				case "add": {
+					//usefull for ui
+					const findMergedOnGroup = (lineNumber: number): [boolean, number] => {
+						for (let index = 0; index < state.answeredCalls.length; index++) {
+							if (state.answeredCalls[index].LineNumber === lineNumber) {
+								const mergedOnGroup = state.answeredCalls[index].mergedOnGroup;
+								if (mergedOnGroup) {
+									return [false, mergedOnGroup];
+								}
+								state.answeredCalls[index].mergedOnGroup = lineNumber;
+								return [true, lineNumber];
+							}
+						}
+						return [true, lineNumber];
+					};
+					const FromLineNumber = action.payload.data.FromLineNumber;
+					const ToLineNumber = action.payload.data.ToLineNumber;
+					const [mergedOnNewGroup, mergedOnGroup] = findMergedOnGroup(ToLineNumber);
+					for (let index = 0; index < state.answeredCalls.length; index++) {
+						if (state.answeredCalls[index].LineNumber === FromLineNumber) {
+							state.answeredCalls[index].mergedOnGroup = mergedOnGroup;
+							break;
+						}
+					}
+					if (mergedOnNewGroup) {
+						const newMergeGroup = {
+							id: mergedOnGroup,
+							calls: [mergedOnGroup, FromLineNumber],
+						};
+						state.mergedCallGroups = [...state.mergedCallGroups, newMergeGroup];
+					} else {
+						for (let index = 0; index < state.mergedCallGroups.length; index++) {
+							if (state.mergedCallGroups[index].id === mergedOnGroup) {
+								state.mergedCallGroups[index].calls = [...state.mergedCallGroups[index].calls, FromLineNumber];
+								break;
+							}
+						}
+					}
+					console.log("Merge:", state.mergedCallGroups);
+					// alert("merged")
 					break;
 				}
 			}
@@ -404,6 +460,8 @@ const sipSlice = createSlice({
 					for (let index = 0; index < state.answeredCalls.length; index++) {
 						if (state.answeredCalls[index].LineNumber === lineNum) {
 							state.answeredCalls[index].callTimer = callTimer;
+							if (state.answeredCalls[index].disposition !== "Bye")
+								state.answeredCalls[index].callTimerConf = callTimer;
 							break;
 						}
 					}
@@ -469,6 +527,19 @@ const sipSlice = createSlice({
 					for (let index = 0; index < state.answeredCalls.length; index++) {
 						if (state.answeredCalls[index].LineNumber === lineNum) {
 							state.answeredCalls[index].showAddCall = showAddCall;
+							break;
+						}
+					}
+					break;
+				}
+				case "disposition": {
+					console.log("disposition:");
+					console.log(action.payload.data);
+					const lineNum = action.payload.data.lineNum;
+					const disposition = action.payload.data.disposition;
+					for (let index = 0; index < state.answeredCalls.length; index++) {
+						if (state.answeredCalls[index].LineNumber === lineNum) {
+							state.answeredCalls[index].disposition = disposition;
 							break;
 						}
 					}

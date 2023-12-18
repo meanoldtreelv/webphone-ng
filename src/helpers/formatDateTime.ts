@@ -145,3 +145,30 @@ export const recentDateFormat = (dateStr: any) => {
 			  });
 	}
 };
+
+export const formatDateAdvanced = (dateString: string) => {
+	const date = new Date(dateString);
+	const today = new Date();
+	const yesterday = new Date(today);
+	yesterday.setDate(yesterday.getDate() - 1);
+
+	if (date.toDateString() === today.toDateString()) {
+		return "Today";
+	} else if (date.toDateString() === yesterday.toDateString()) {
+		return "Yesterday";
+	} else {
+		const weekStart = new Date(today);
+		weekStart.setDate(today.getDate() - today.getDay());
+
+		if (date >= weekStart) {
+			const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			return days[date.getDay()];
+		} else {
+			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			const year = date.getFullYear() === today.getFullYear() ? "" : ` ${date.getFullYear()}`;
+			const dateMonth = `${monthNames[date.getMonth()]}${year}`;
+			return `${date.getDate()} ${dateMonth}`;
+		}
+	}
+};
