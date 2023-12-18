@@ -80,7 +80,7 @@ const ConferenceCallsList = ({
 							<button onClick={addMember}>
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path
-										fillRule="evenodd"
+										fill-rule="evenodd"
 										d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
 									/>
 								</svg>
@@ -104,22 +104,6 @@ const ConferenceCallsList = ({
 									}}
 								/>
 							}
-							{conferenceCallList?.map((item) => (
-								<ConferenceCallListMember
-									hoverOn={hoverOn}
-									setHoverOn={setHoverOn}
-									lineNumber={LineNumber}
-									details={{
-										id: item.id,
-										callTimer: item.callTimer,
-										billsec: item.startTime,
-										name: item.to,
-										number: item.to,
-										startTime: item.startTime,
-										disposition: item.disposition,
-									}}
-								/>
-							))}
 							{conferenceCallList?.map((item) => (
 								<ConferenceCallListMember
 									hoverOn={hoverOn}
