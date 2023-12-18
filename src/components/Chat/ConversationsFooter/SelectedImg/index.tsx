@@ -1,20 +1,20 @@
 import CrossIcon from "components/UI/Icons/ChatIcons/Cross";
 import styles from "./SelectedImg.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedFiles } from "redux/chat/chatSelectors";
-import { setSelectedFiles } from "redux/chat/chatSlice";
+import { selectedAttachment, selectedFiles } from "redux/chat/chatSelectors";
+import { setSelectedAttachment, setSelectedFiles } from "redux/chat/chatSlice";
 
 const SelectedImg = ({ src, name }) => {
 	const dispatch = useDispatch();
 
-	const selectedFile = useSelector(selectedFiles);
+	const selectedFile = useSelector(selectedAttachment);
 
 	const cancelHandler = () => {
 		const files = [...selectedFile];
 		const filteredFiles = files?.filter((item) => {
 			return item.name !== name;
 		});
-		dispatch(setSelectedFiles(filteredFiles));
+		dispatch(setSelectedAttachment(filteredFiles));
 	};
 
 	return (

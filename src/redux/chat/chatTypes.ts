@@ -42,4 +42,5 @@ export interface IChatState {
 	selectedFiles: any;
 	selectedAudioFiles: {};
 	selectedVideoFiles: {};
+	selectedAttachment: [];
 }

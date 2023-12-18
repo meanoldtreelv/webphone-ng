@@ -13,7 +13,7 @@ import SelectedDoc from "./SelectedDoc";
 import SelectedContact from "./SelectedContact";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, emoji, isDeleteCheck, selectedFiles } from "redux/chat/chatSelectors";
+import { conversationData, emoji, isDeleteCheck, selectedAttachment, selectedFiles } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
@@ -28,7 +28,7 @@ const ConversationsFooter = () => {
 	const conversationDatas = useSelector(conversationData);
 	const deleteCheck = useSelector(isDeleteCheck);
 	const emojiSelected = useSelector(emoji);
-	const selectedFile = useSelector(selectedFiles);
+	const selectedAttachments = useSelector(selectedAttachment);
 
 	const [sendOutboundMessage, { data, isLoading }] = useLazySendOutboundMessageQuery();
 	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
@@ -38,7 +38,8 @@ const ConversationsFooter = () => {
 	const [emojiPicker, setEmojiPicker] = useState(false);
 
 	const [text, setText] = useState("");
-	const [imagePreviews, setImagePreviews] = useState([]);
+	// const [imagePreviews, setImagePreviews] = useState([]);
+	const [filePreviews, setFilePreviews] = useState([]);
 	const [fileResponse, setFileResponse] = useState<{}[]>([]);
 
 	useEffect(() => {
@@ -51,8 +52,8 @@ const ConversationsFooter = () => {
 	}, [fileData, isError]);
 
 	const sendMessageHandler = async () => {
-		if (selectedFile?.length > 0) {
-			for (const item of selectedFile || []) {
+		if (selectedAttachments?.length > 0) {
+			for (const item of selectedAttachments || []) {
 				const { data, error } = await postFiles({
 					company_id: conversationDatas?.company_id,
 					name: item?.name,
@@ -113,20 +114,27 @@ const ConversationsFooter = () => {
 
 	useEffect(() => {
 		const previews = [];
-		for (let i = 0; i < selectedFile?.length; i++) {
+		for (let i = 0; i < selectedAttachments?.length; i++) {
 			const reader = new FileReader();
 
 			reader.onload = (e) => {
-				previews.push({ target: e.target.result, name: selectedFile?.[i]?.name, type: selectedFile?.[i]?.type });
+				previews.push({
+					target: e.target.result,
+					name: selectedAttachments?.[i]?.name,
+					type: selectedAttachments?.[i]?.type,
+				});
 
-				if (previews?.length === selectedFile?.length) {
-					setImagePreviews([...previews]);
+				if (previews?.length === selectedAttachments?.length) {
+					setFilePreviews([...previews]);
 				}
 			};
 
-			reader.readAsDataURL(selectedFile[i]);
+			reader.readAsDataURL(selectedAttachments[i]);
 		}
-	}, [selectedFile]);
+	}, [selectedAttachments]);
+
+	console.log(selectedAttachments, "selectedAttachments");
+	console.log(filePreviews, "imagePreviews");
 
 	return (
 		<>
@@ -209,7 +217,21 @@ const ConversationsFooter = () => {
 					<SelectedAudio />
 					<SelectedDoc />
 				<SelectedContact /> */}
-					{imagePreviews?.map((item) => <SelectedImg src={item.target} name={item?.name} />)}
+					{filePreviews?.map((item) => {
+						// todo- need to add more checks
+						if (item.type === "image/jpeg") {
+							return <SelectedImg src={item.target} name={item?.name} />;
+						}
+						if (item.type === "video/mp4") {
+							return <SelectedVideo src={item.target} name={item?.name} />;
+						}
+						if (item.type === "application/pdf") {
+							return <SelectedDoc name={item?.name} />;
+						}
+						if (item.type === "audio/mpeg") {
+							return <SelectedAudio name={item?.name} />;
+						}
+					})}
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>

@@ -36,3 +36,4 @@ export const imageFiles = (state: RootState) => state.chat.imageFiles;
 export const selectedFiles = (state: RootState) => state.chat.selectedFiles;
 export const selectedAudioFiles = (state: RootState) => state.chat.selectedAudioFiles;
 export const selectedVideoFiles = (state: RootState) => state.chat.selectedVideoFiles;
+export const selectedAttachment = (state: RootState) => state.chat.selectedAttachment;

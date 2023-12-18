@@ -49,6 +49,7 @@ const initialChatState: IChatState = {
 	selectedFiles: {},
 	selectedAudioFiles: {},
 	selectedVideoFiles: {},
+	selectedAttachment: [],
 };
 
 const chatSlice = createSlice({
@@ -169,6 +170,9 @@ const chatSlice = createSlice({
 		setSelectedVideoFiles(state, action) {
 			state.selectedVideoFiles = action.payload;
 		},
+		setSelectedAttachment(state, action) {
+			state.selectedAttachment = action.payload;
+		},
 	},
 });
 
@@ -208,6 +212,7 @@ export const {
 	setSelectedFiles,
 	setSelectedAudioFiles,
 	setSelectedVideoFiles,
+	setSelectedAttachment,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
