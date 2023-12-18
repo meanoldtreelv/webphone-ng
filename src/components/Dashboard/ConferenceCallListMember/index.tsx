@@ -26,16 +26,16 @@ const ConferenceCallListMember = ({ lineNumber, details, hoverOn, setHoverOn, ho
 				</div>
 			</div>
 			{
-				((!(hoverOn === details.id) || details.disposition === "Bye")||host) &&
+				((!(hoverOn === details.id) || details.disposition === "Bye")|| details.disposition==="Host") &&
 				(<div className={styles.cardRight}>
 					<p>{details.startTime}</p>
 					<p>{details.callTimer === "00:00" ? details.disposition : details.disposition === "Bye" ? "End " + details.callTimer : details.callTimer}</p>
 				</div>)
 			}
 			{
-				!host && hoverOn === details.id && details.disposition !== "Bye" && (
-					<div className={`${styles.control} ${styles.endButton}`} onClick={hungup}>
-						<CallEndIcon fill="#c8c9cb" height="30" />
+				details.disposition!=="Host" && hoverOn === details.id && details.disposition !== "Bye" && (
+					<div className={`${styles.control} ${styles.endButton}`} onClick={host? ()=>{sip.hungup(lineNumber)} : hungup}>
+						<CallEndIcon fill="#6c7a8b" height="30" />
 					</div>
 				)
 			}

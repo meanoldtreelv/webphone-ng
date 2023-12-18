@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import ReceiveTime from "../ReceiveTime";
 import styles from "./ReceiveMessage.module.scss";
-import { isDeleteCheck, selectAllMsg, selectedMsgLists } from "redux/chat/chatSelectors";
+import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import { setSelectedMsgLists } from "redux/chat/chatSlice";
 
 const ReceiveMessage = ({ id, text, time }) => {

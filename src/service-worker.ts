@@ -77,4 +77,11 @@ self.addEventListener("message", (event) => {
 	}
 });
 
+self.addEventListener("push", (event) => {
+	const options = {
+		body: event.data.text(),
+	};
+	event.waitUntil(self.registration.showNotification("Title", options));
+});
+
 // Any other custom service worker logic can go here.

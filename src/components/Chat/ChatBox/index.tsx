@@ -6,11 +6,11 @@ import ReceiveImg from "./ReceiveImg";
 import SendImg from "./SendImg";
 import SendVideo from "./SendVideo";
 import ReceiveVideo from "./ReceiveVideo";
+import SendAudio from "./SendAudio";
+import ReceiveAudio from "./ReceiveAudio";
 import SendTime from "./SendTime";
 import ReceiveTime from "./ReceiveTime";
 import InfoMessage from "./InfoMessage";
-import SendAudio from "./SendAudio";
-import ReceiveAudio from "./ReceiveAudio";
 import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
 import SendDoc from "./SendDoc";
@@ -36,7 +36,7 @@ const ChatBox = () => {
 
 	const [imgSelected, setImgSelected] = useState(false);
 	const [page, setPage] = useState(1);
-	const [perPage, setPerPage] = useState(30);
+	const [perPage, setPerPage] = useState(20);
 	const [endOfTheList, setEndOfTheList] = useState(false);
 
 	function getUnreadMessageIds(messageArray) {
@@ -196,19 +196,14 @@ const ChatBox = () => {
 										{item?.files?.map((data, index) => {
 											if (data?.mimetype === "image/png") {
 												return (
-													<ReceiveImg
-														id={item?.id}
-														src={data?.preview?.base64}
-														time={data?.uploaded_at}
-														files={item.files}
-													/>
+													<ReceiveImg id={item?.id} src={data?.preview?.base64} time={data?.uploaded_at} files={data} />
 												);
 											}
 											if (data?.mimetype === "video/mp4") {
 												return (
 													<ReceiveVideo
 														id={item?.id}
-														files={item.files}
+														files={data}
 														src={data?.preview?.base64}
 														time={data?.uploaded_at}
 														duration={data?.duration}
@@ -220,10 +215,21 @@ const ChatBox = () => {
 												return (
 													<ReceiveDoc
 														id={item?.id}
-														files={item.files}
+														files={data}
 														name={data?.name}
 														time={data?.uploaded_at}
 														size={data.size}
+													/>
+												);
+											}
+											if (data?.mimetype === "audio/mpeg") {
+												return (
+													<ReceiveAudio
+														id={item?.id}
+														files={data}
+														time={data?.uploaded_at}
+														name={data?.name}
+														duration={data?.duration}
 													/>
 												);
 											}
@@ -250,19 +256,14 @@ const ChatBox = () => {
 										{item?.files?.map((data, index) => {
 											if (data?.mimetype === "image/png") {
 												return (
-													<SendImg
-														id={item?.id}
-														files={item.files}
-														src={data?.preview?.base64}
-														time={data?.uploaded_at}
-													/>
+													<SendImg id={item?.id} files={data} src={data?.preview?.base64} time={data?.uploaded_at} />
 												);
 											}
 											if (data?.mimetype === "video/mp4") {
 												return (
 													<SendVideo
 														id={item?.id}
-														files={item.files}
+														files={data}
 														src={data?.preview?.base64}
 														time={data?.uploaded_at}
 														duration={data?.duration}
@@ -273,10 +274,22 @@ const ChatBox = () => {
 												return (
 													<SendDoc
 														id={item?.id}
-														files={item.files}
+														files={data}
 														name={data?.name}
 														time={data?.uploaded_at}
 														size={data.size}
+													/>
+												);
+											}
+
+											if (data?.mimetype === "audio/mpeg") {
+												return (
+													<SendAudio
+														id={item?.id}
+														files={data}
+														time={data?.uploaded_at}
+														name={data?.name}
+														duration={data?.duration}
 													/>
 												);
 											}

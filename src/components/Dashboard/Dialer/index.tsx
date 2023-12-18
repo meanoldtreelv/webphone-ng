@@ -27,6 +27,8 @@ import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
 import { emptyFunction, nameIcon } from "utils";
 import CallConference from "components/UI/Icons/Call/CallConference";
 import ConferenceCallsList from "../ConferenceCallsList";
+import Button from "components/UI/Forms/Button";
+import { Slide, toast } from "react-toastify";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -97,8 +99,10 @@ const Dialer = () => {
 								host2={{
 									startTime: item.startTime,
 									callTimer: item.callTimer,
+									callTimerConf: item.callTimerConf,
 									displayNumber: item.DisplayNumber,
 									displayName: item.DisplayName ? item.DisplayName : item.DisplayNumber,
+									disposition:  item.disposition
 								}}
 							/>
 						) : null}
@@ -116,15 +120,24 @@ const Dialer = () => {
 									{false ? (
 										<img src="/img/dummy/profile96.png" alt=""></img>
 									) : (
-										<span>{item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber)}</span>
+										<span>{ !item.conferenceCallList && (item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber))}</span>
 									)}
 								</div>
-								<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
-									{item.DisplayName}
-								</p>
-								<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-									{item.DisplayNumber}
-								</p>
+								{item.conferenceCallList ?
+								(
+									 <p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
+										Conference
+									</p>
+								):(
+									<>
+										<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											{item.DisplayName}
+										</p>
+										<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+											{item.DisplayNumber}
+										</p>
+									</>
+								)}
 
 								{/* add the condition here for dialing  */}
 
@@ -137,6 +150,13 @@ const Dialer = () => {
 										{item.callTimer}
 									</div>
 								)}
+								{item.conferenceCallList && <div className={styles.Members}>
+									<Button onClick={()=>{showConferenceCallsList(item.LineNumber, item.conferenceCallList)}} border styles={{padding: "5px", borderColor:"var(--text-link)"}}>
+										<>
+											Members: {item.conferenceCallList.length + 1}
+										</>
+									</Button>
+								</div>}
 							</div>
 						</div>
 						<div className={styles.dialer_box}>
@@ -187,7 +207,7 @@ const Dialer = () => {
 										Merge Call
 									</p>
 								</div> */}
-								<div
+								{!item.conferenceCallList && <div
 									className={styles.dialer_action}
 									style={{ position: "relative" }}
 									// onClick={() => {
@@ -209,7 +229,7 @@ const Dialer = () => {
 									{isTransferButtonClicked && item.answered && (
 										<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
 									)}
-								</div>
+								</div>}
 								{/* check if this icon works or not */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
@@ -222,7 +242,12 @@ const Dialer = () => {
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
-										sip.mute(item.LineNumber, item.isMute);
+										if(item.conferenceCallList){
+											sip.muteConference(item.LineNumber, item.isMute);
+										
+										}else{
+											sip.mute(item.LineNumber, item.isMute);
+										}
 									}}>
 									<span
 										className={styles.dialer_icon}
@@ -233,7 +258,7 @@ const Dialer = () => {
 										{item.isMute ? "Unmute" : "Mute"}
 									</p>
 								</div>
-								<div
+								{!item.conferenceCallList && <div
 									className={styles.dialer_action}
 									onClick={() => {
 										item.answered && sip.hold(item.LineNumber, item.isHold);
@@ -250,7 +275,7 @@ const Dialer = () => {
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{item.isHold ? "Resume" : "Hold"}
 									</p>
-								</div>
+								</div>}
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
@@ -295,7 +320,22 @@ const Dialer = () => {
 								<div
 									className={`${styles.dialer_control} ${styles.dialer_endButton}`}
 									onClick={() => {
-										sip.hungup(item.LineNumber);
+										if(item.conferenceCallList){
+											toast("Conference Ended by Host", {
+												position: "top-right",
+												autoClose: 3000,
+												hideProgressBar: true,
+												closeOnClick: true,
+												pauseOnHover: true,
+												draggable: true,
+												progress: undefined,
+												transition:Slide,
+												theme: "light"//"light","dark"
+												});
+											sip.hungupConference(item.LineNumber);
+										}else{
+											sip.hungup(item.LineNumber);
+										}
 									}}>
 									<CallEndIcon />
 								</div>

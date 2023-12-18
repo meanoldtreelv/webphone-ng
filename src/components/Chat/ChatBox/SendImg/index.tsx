@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SendImg.module.scss";
-import { setImageFiles, setIsImgViewerDialogueOpen, setSelectedMsgLists } from "redux/chat/chatSlice";
+import { setIsImgViewerDialogueOpen, setSelectedFiles, setSelectedMsgLists } from "redux/chat/chatSlice";
 import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
 import SendTime from "../SendTime";
 
@@ -23,9 +23,9 @@ const SendImg = ({ id, time, src, files }) => {
 					<span
 						onClick={() => {
 							dispatch(setIsImgViewerDialogueOpen(true));
-							dispatch(setImageFiles(files));
+							dispatch(setSelectedFiles(files));
 						}}>
-						<img src={src} alt=""></img>
+						<img src={src} alt="" />
 					</span>
 				</div>
 			</div>

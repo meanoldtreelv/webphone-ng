@@ -37,7 +37,7 @@ export const axiosStorageBaseQuery =
 			return { data: result.data };
 		} catch (axiosError) {
 			const error = axiosError as AxiosError;
-			debugger;
+			// debugger;
 
 			return { error };
 		}

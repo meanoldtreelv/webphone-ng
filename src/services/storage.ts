@@ -23,7 +23,19 @@ export const storageService = apiStorageService.injectEndpoints({
 				data,
 			}),
 		}),
+		generateUrl: build.query({
+			query: ({ id, data }) => ({
+				method: "POST",
+				url: `/files/${id}/generate_url`,
+				data,
+			}),
+		}),
 	}),
 });
 
-export const { useLazyPostFilesQuery, useLazyUploadFilesQuery, useLazyRepresentationFilesQuery } = storageService;
+export const {
+	useLazyPostFilesQuery,
+	useLazyUploadFilesQuery,
+	useLazyRepresentationFilesQuery,
+	useLazyGenerateUrlQuery,
+} = storageService;
