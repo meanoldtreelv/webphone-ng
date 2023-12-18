@@ -64,8 +64,8 @@ const MultipleCallListModal = () => {
 										<span style={{ float: "right", display:"flex", }}>
 											<span>
 												<Button onClick={()=>{
-													console.log("merge call "+ call.LineNumber+" with " + activeCallLineNumber)
-													
+													console.log("merge call " + call.LineNumber + " with " + activeCallLineNumber)
+													sip.merge(call.LineNumber, activeCallLineNumber)
 													}} styles={{padding: "6px"}}><MergeCallIcon /></Button>
 											</span>
 										</span>

@@ -44,6 +44,7 @@ interface answeredCallIn {
   callMicrophoneDevice?: string,
   conferenceCallList?: Array<conferenceCallListIn>,
   showConferenceCallsList?:boolean,
+  mergedOnGroup?:number,
 }
 interface callEndingIn {
   name?: string,
@@ -82,6 +83,10 @@ interface extAuthIn {
     value?: string,
   },
   location?: string,
+}
+interface mergedCallListIn{
+  id:number
+  calls: Array<number> 
 }
 const sipSlice = createSlice({
   name: 'sip',
@@ -125,6 +130,7 @@ const sipSlice = createSlice({
     accountId: "",
     suggestPortraitOnMobileModalShow: false,
     instance_id: "",
+    mergedCallGroups:[] as mergedCallListIn[],
   },
   reducers: {
     audioAutoGainControl: (state, action) => {
@@ -340,6 +346,51 @@ const sipSlice = createSlice({
             state.activeCallLineNumber = state.ringingInboundCalls[0].LineNumber
           }
           console.log(state.answeredCalls)
+          break
+        }
+      }
+    },
+    mergedCallGroups: (state, action) => {
+      switch (action.payload.action) {
+        case "add": {//usefull for ui
+          const findMergedOnGroup = (lineNumber:number):[boolean, number] =>{
+            for (let index = 0; index < state.answeredCalls.length; index++) {
+              if (state.answeredCalls[index].LineNumber === lineNumber) {
+                const mergedOnGroup = state.answeredCalls[index].mergedOnGroup;
+                if(mergedOnGroup){
+                  return [false,mergedOnGroup]
+                }
+                state.answeredCalls[index].mergedOnGroup = lineNumber
+                return [true,lineNumber];
+              }
+            }
+            return [true,lineNumber];
+          }
+          const FromLineNumber = action.payload.data.FromLineNumber
+          const ToLineNumber = action.payload.data.ToLineNumber
+          const [mergedOnNewGroup, mergedOnGroup] = findMergedOnGroup(ToLineNumber)
+          for (let index = 0; index < state.answeredCalls.length; index++) {
+            if (state.answeredCalls[index].LineNumber === FromLineNumber) {
+              state.answeredCalls[index].mergedOnGroup = mergedOnGroup
+              break
+            }
+          }
+          if(mergedOnNewGroup){
+            const newMergeGroup = {
+              id:mergedOnGroup,
+              calls: [mergedOnGroup,FromLineNumber]
+            }
+            state.mergedCallGroups = [...state.mergedCallGroups, newMergeGroup]
+          }else{
+            for (let index = 0; index < state.mergedCallGroups.length; index++) {
+              if (state.mergedCallGroups[index].id === mergedOnGroup) {
+                state.mergedCallGroups[index].calls = [...state.mergedCallGroups[index].calls, FromLineNumber]
+                break;
+              }
+            }
+          }
+          console.log("Merge:", state.mergedCallGroups)
+          // alert("merged")
           break
         }
       }
