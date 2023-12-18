@@ -8,7 +8,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { store } from "redux/store";
 import BottomNav from "components/shared/BottomNav";
-import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 import InboundCall from "components/shared/InboundCall";
 import { ToastContainer } from "react-toastify";
@@ -24,8 +23,7 @@ const BaseLayout = ({ children }: any) => {
 	const dispatch = useDispatch();
 	const dispNotification = useSelector(notification);
 	const { navigatePush, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
-	const theme = useTheme();
-	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip);
+	const { answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip);
 	const sessionValid = useSelector(sessionOut);
 
 	useEffect(() => {

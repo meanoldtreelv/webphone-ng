@@ -1,3 +1,18 @@
+.msgDiv {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: space-between;
+
+	&_active {
+		background-color: var(--background-hover);
+		padding-right: 5px;
+	}
+}
+
+.left {
+	width: calc(100%);
+}
+
 .receiveDoc {
 	display: flex;
 	flex-direction: column;

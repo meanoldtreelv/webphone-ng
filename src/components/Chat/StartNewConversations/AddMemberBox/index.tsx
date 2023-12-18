@@ -6,6 +6,7 @@ import { useLazyCreateTextingContactQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddedMemberLists, setCampaignMemberLists, setIsAddMemberDialogueOpen } from "redux/chat/chatSlice";
 import { addedMemberLists, campaignMemberLists, startConversationType } from "redux/chat/chatSelectors";
+import BtnLarge from "components/UI/BtnLarge";
 
 const AddMemberBox = ({ search }) => {
 	const dispatch = useDispatch();
@@ -52,10 +53,19 @@ const AddMemberBox = ({ search }) => {
 		<div className={styles.startConversation}>
 			<div>Add this number to members list?</div>
 			<p>{search}</p>
-			<button onClick={addMemberHandler}>
+			<BtnLarge
+				btnType={"primary"}
+				isDanger={false}
+				isDisabled={false}
+				type="button"
+				btnText="Add Member"
+				icon={<PlusIcon color="icon-on-color" />}
+				onClick={addMemberHandler}
+			/>
+			{/* <button onClick={addMemberHandler}>
 				<PlusIcon color="icon-on-color" />
 				<span>Add Member</span>
-			</button>
+			</button> */}
 			{error && (
 				<p className={styles.err}>Invalid number format. Please enter a phone number in the format 1NPANXXXXXX.</p>
 			)}

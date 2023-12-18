@@ -14,6 +14,7 @@ import {
 } from "redux/chat/chatSlice";
 import { useLazyCreateConversationObjectQuery } from "services/chat";
 import { showToast } from "utils";
+import BtnLarge from "components/UI/BtnLarge";
 
 const Group = () => {
 	const dispatch = useDispatch();
@@ -113,13 +114,24 @@ const Group = () => {
 					<div className={styles.startConversation}>
 						<div>You don’t have any member here</div>
 						<p>Follow this button to add members</p>
-						<button
+						<BtnLarge
+							btnType={"primary"}
+							isDanger={false}
+							isDisabled={false}
+							type="button"
+							btnText="Add Member"
+							icon={<PlusIcon color="icon-on-color" />}
+							onClick={() => {
+								dispatch(setIsAddMemberDialogueOpen(true));
+							}}
+						/>
+						{/* <button
 							onClick={() => {
 								dispatch(setIsAddMemberDialogueOpen(true));
 							}}>
 							<PlusIcon color="icon-on-color" />
 							<span>Add Member</span>
-						</button>
+						</button> */}
 					</div>
 				)}
 			</div>

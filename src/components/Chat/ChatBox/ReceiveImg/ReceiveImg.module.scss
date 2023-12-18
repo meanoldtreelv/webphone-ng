@@ -1,3 +1,18 @@
+.msgDiv {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: space-between;
+
+	&_active {
+		background-color: var(--background-hover);
+		padding-right: 5px;
+	}
+}
+
+.left {
+	width: calc(100%);
+}
+
 .receiveImg {
 	display: flex;
 	flex-direction: column;
@@ -14,7 +29,7 @@
 		border-radius: 0px 18px 18px 18px;
 
 		overflow: hidden;
-		width: 50%;
+		width: 250px;
 
 		img {
 			width: 100%;

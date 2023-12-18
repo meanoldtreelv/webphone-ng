@@ -10,12 +10,10 @@ import { sidecarRoutes } from "./sidecar/routes";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
 import { meetRoutes } from "./meet/routes";
-import { getCookie } from "utils";
 import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
-import { ErrorBoundary } from "react-error-boundary";
 import RedirectMsg from "components/shared/RedirectMsg";
 import GlobalErrorBoundary from "components/shared/ErrorBoundary";
 

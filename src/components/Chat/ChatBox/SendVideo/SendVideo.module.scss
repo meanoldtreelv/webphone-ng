@@ -1,3 +1,20 @@
+.msgDiv {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: space-between;
+
+	gap: 15px;
+
+	&_active {
+		background-color: var(--background-hover);
+		padding-right: 5px;
+	}
+}
+
+.left {
+	width: calc(100%);
+}
+
 .sendVideo {
 	display: flex;
 	flex-direction: column;
@@ -13,7 +30,7 @@
 
 		border-radius: 18px 0px 18px 18px;
 		overflow: hidden;
-		width: 50%;
+		width: 250px;
 
 		position: relative;
 
