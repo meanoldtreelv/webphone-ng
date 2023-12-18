@@ -48,6 +48,7 @@ const ContactDetails = () => {
 								<p className={styles.cardLabel}>Date</p>
 								<p className={styles.cardValue}>
 									{longDateTimeFormat(callHistoryDetails?.cdr?.starttime)}
+									{" at "}
 									{formatDate(callHistoryDetails?.cdr?.starttime)}
 								</p>
 							</div>

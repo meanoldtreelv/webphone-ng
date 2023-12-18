@@ -29,8 +29,6 @@ export const jwtTokenRefresher =
 								document.cookie = `id_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 								document.cookie = `refresh_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 							}
-
-							window.location.reload();
 						})
 						.catch((e) => {
 							store.dispatch(setSessionOut(true));
