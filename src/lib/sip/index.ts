@@ -667,6 +667,7 @@ function onUnregistered() {
 }
 
 function countSessions(id:number) {
+  // console.log("ssssssssssssssssssssssssssssss",userAgent.sessions)
   var rtn = 0;
   if (userAgent === null) {
     console.warn("userAgent is null");
@@ -774,7 +775,7 @@ function teardownSession(lineObj) {
 
   // End timers
   window.clearInterval(session.data.videoResampleInterval);
-  window.clearInterval(session.data.callTimer);
+  if(!session.data.confcalls) window.clearInterval(session.data.callTimer);
 
   // Check if this call was missed
   if (session.data.calldirection === "inbound") {
@@ -901,10 +902,56 @@ function holdSession(lineNum:number) {
       },
     },
   };
-  session.invite(options).catch(function (error) {
-    session.isOnHold = false;
-    console.warn("Error attempting to put the call on hold:", error);
-  });
+  //uncomment this when hold started working
+  // session.invite(options).catch(function (error) {
+  //   session.isOnHold = false;
+  //   console.warn("Error attempting to put the call on hold:", error);
+  // });
+  {//Remove this when hold started working
+    if (
+      session &&
+      session.sessionDescriptionHandler &&
+      session.sessionDescriptionHandler.peerConnection
+    ) {
+      var pc = session.sessionDescriptionHandler.peerConnection;
+      // Stop all the inbound streams
+      pc.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+      });
+      // Stop all the outbound streams (especially useful for Conference Calls!!)
+      pc.getSenders().forEach(function (RTCRtpSender) {
+        // Mute Audio
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          if (RTCRtpSender.track.IsMixedTrack === true) {
+            if (
+              session.data.AudioSourceTrack &&
+              session.data.AudioSourceTrack.kind === "audio"
+            ) {
+              console.log(
+                "Muting Mixed Audio Track : " +
+                  session.data.AudioSourceTrack.label
+              );
+              session.data.AudioSourceTrack.enabled = false;
+            }
+          }
+          console.log("Muting Audio Track : " + RTCRtpSender.track.label);
+          RTCRtpSender.track.enabled = false;
+        }
+        // Stop Video
+        else if (RTCRtpSender.track && RTCRtpSender.track.kind === "video") {
+          RTCRtpSender.track.enabled = false;
+        }
+      });
+    }
+    session.isOnHold = true;
+    console.log("Call is is on hold:", lineNum);
+
+    // Log Hold
+    if (!session.data.hold) session.data.hold = [];
+    session.data.hold.push({ event: "hold", eventTime: utcDateNow() });
+
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:true}}})
+  }
 }
 function unholdSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
@@ -978,10 +1025,58 @@ function unholdSession(lineNum:number) {
       },
     },
   };
-  session.invite(options).catch(function (error) {
-    session.isOnHold = true;
-    console.warn("Error attempting to take to call off hold", error);
-  });
+  //Uncomment this when hold started working
+  // session.invite(options).catch(function (error) {
+  //   session.isOnHold = true;
+  //   console.warn("Error attempting to take to call off hold", error);
+  // });
+  {//Remove this when hold started working
+    if (
+      session &&
+      session.sessionDescriptionHandler &&
+      session.sessionDescriptionHandler.peerConnection
+    ) {
+      var pc = session.sessionDescriptionHandler.peerConnection;
+      // Restore all the inbound streams
+      pc.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
+      });
+      // Restore all the outbound streams
+      pc.getSenders().forEach(function (RTCRtpSender) {
+        // Unmute Audio
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          if (RTCRtpSender.track.IsMixedTrack === true) {
+            if (
+              session.data.AudioSourceTrack &&
+              session.data.AudioSourceTrack.kind === "audio"
+            ) {
+              console.log(
+                "Unmuting Mixed Audio Track : " +
+                  session.data.AudioSourceTrack.label
+              );
+              session.data.AudioSourceTrack.enabled = true;
+            }
+          }
+          console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
+          RTCRtpSender.track.enabled = true;
+        } else if (
+          RTCRtpSender.track &&
+          RTCRtpSender.track.kind === "video"
+        ) {
+          RTCRtpSender.track.enabled = true;
+        }
+      });
+    }
+    session.isOnHold = false;
+    console.log("Call is off hold:", lineNum);
+
+    // Log Hold
+    if (!session.data.hold) session.data.hold = [];
+    session.data.hold.push({ event: "unhold", eventTime: utcDateNow() });
+
+    store.dispatch({type:"sip/answeredCalls", payload:{action:"isHold",data:{lineNum:lineNum, isHold:false}}})
+    session.data.ismute && MuteSession(lineNum) 
+  } 
 }
 function MuteSession(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
@@ -991,19 +1086,23 @@ function MuteSession(lineNum:number) {
   var pc = session.sessionDescriptionHandler.peerConnection;
   pc.getSenders().forEach(function (RTCRtpSender) {
     if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
-      if (RTCRtpSender.track.IsMixedTrack === true) {
-        if (
-          session.data.AudioSourceTrack &&
-          session.data.AudioSourceTrack.kind === "audio"
-        ) {
-          console.log(
-            "Muting Mixed Audio Track : " + session.data.AudioSourceTrack.label
-          );
-          session.data.AudioSourceTrack.enabled = false;
-        }
+      // if (RTCRtpSender.track.IsMixedTrack === true) {
+      //   if (
+      //     session.data.AudioSourceTrack &&
+      //     session.data.AudioSourceTrack.kind === "audio"
+      //   ) {
+      //     console.log(
+      //       "Muting Mixed Audio Track : " + session.data.AudioSourceTrack.label
+      //     );
+      //     session.data.AudioSourceTrack.enabled = false;
+      //   }
+      // }
+      if(RTCRtpSender.track.IsMixedTrack === true){
+        session.data.AudioSourceTrack.enabled = false;    
+      }else{
+        console.log("Muting Audio Track : " + RTCRtpSender.track.label);
+        RTCRtpSender.track.enabled = false;    
       }
-      console.log("Muting Audio Track : " + RTCRtpSender.track.label);
-      RTCRtpSender.track.enabled = false;
     }
   });
 
@@ -1024,20 +1123,24 @@ function UnmuteSession(lineNum:number) {
   var pc = session.sessionDescriptionHandler.peerConnection;
   pc.getSenders().forEach(function (RTCRtpSender) {
     if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
-      if (RTCRtpSender.track.IsMixedTrack === true) {
-        if (
-          session.data.AudioSourceTrack &&
-          session.data.AudioSourceTrack.kind === "audio"
-        ) {
-          console.log(
-            "Unmuting Mixed Audio Track : " +
-              session.data.AudioSourceTrack.label
-          );
-          session.data.AudioSourceTrack.enabled = true;
-        }
+      // if (RTCRtpSender.track.IsMixedTrack === true) {
+      //   if (
+      //     session.data.AudioSourceTrack &&
+      //     session.data.AudioSourceTrack.kind === "audio"
+      //   ) {
+      //     console.log(
+      //       "Unmuting Mixed Audio Track : " +
+      //         session.data.AudioSourceTrack.label
+      //     );
+      //     session.data.AudioSourceTrack.enabled = true;
+      //   }
+      // }
+      if(RTCRtpSender.track.IsMixedTrack === true){
+        session.data.AudioSourceTrack.enabled = true;
+      }else{
+        console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
+        RTCRtpSender.track.enabled = true;
       }
-      console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
-      RTCRtpSender.track.enabled = true;
     }
   });
 
@@ -1147,10 +1250,12 @@ function onSessionReceivedBye(lineObj, response) {
   lineObj.SipSession.data.terminateby = "them";
   lineObj.SipSession.data.reasonCode = 16;
   lineObj.SipSession.data.reasonText = "Normal Call clearing";
-  lineObj.SipSession.disposed = true
+
 
   response.accept(); // Send OK
-  if(!lineObj.SipSession.data.confcalls){
+  if(lineObj.SipSession.data.confcalls){
+    lineObj.SipSession.data.disposed = true
+  }else{
     store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:lineObj.LineNumber}})
   }
   SelectLine(store.getState().sip.activeCallLineNumber)
@@ -1346,10 +1451,6 @@ function AddLineHtml(lineObj:{LineNumber:number}) {
     '<audio id="line-' +
     lineObj.LineNumber +
     '-transfer-remoteAudio" style="display:none"></audio>';
-  html +=
-    '<audio id="line-' +
-    lineObj.LineNumber +
-    '-conference-remoteAudio" style="display:none"></audio>';
   html += "</div>";
   $("#softphone").append(html);
   // alert(lineObj.LineNumber)
@@ -1357,12 +1458,13 @@ function AddLineHtml(lineObj:{LineNumber:number}) {
 function SwitchLines(lineNum:number) {
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
-    if (session.state === SIP.SessionState.Established) {
-      if(session.data.line !== lineNum){
-        MuteSession(session.data.line) //remove this when hold started working
-      }
-      if (session.isOnHold === false && session.data.line !== lineNum) {
-        // holdSession(session.data.line); // uncomment this when hold started working
+    if(!session.data.line) return;
+    if (session.state === SIP.SessionState.Established && session.data.line !== lineNum) {
+      if(session.data.confcalls){
+        sip.muteConference(session.data.line, false)
+        sip.volumeLevel(session.data.line, "0")
+      }else if (session.isOnHold === false) {
+        holdSession(session.data.line);
       }
     }
     session.data.IsCurrentCall = false;
@@ -1372,9 +1474,11 @@ function SwitchLines(lineNum:number) {
   if (lineObj !== null && lineObj.SipSession !== null) {
     var session = lineObj.SipSession;
     if (session.state === SIP.SessionState.Established) {
-      UnmuteSession(lineNum) //remove this when hold started working
-      if (session.isOnHold === true) {
-        // unholdSession(lineNum); // uncomment this when hold started working
+      if(session.data.confcalls){
+        sip.muteConference(lineNum, true)
+        sip.volumeLevel(lineNum, "100")
+      }else if (session.isOnHold === true) {
+        unholdSession(lineNum);
       }
     }
     session.data.IsCurrentCall = true;
@@ -3244,6 +3348,27 @@ function CancelConference(lineNum: number) {
   });
   unholdSession(lineNum);
 }
+function ConferenceMixAudioStreams(MultiAudioTackStream:any, mixedAudioStream:MediaStreamAudioDestinationNode|undefined, audioContext:AudioContext|undefined) {
+  // Takes in a MediaStream with any number of audio tracks and mixes them together
+
+  try {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = audioContext ? audioContext : new AudioContext();
+  } catch (e) {
+    console.warn("AudioContext() not available, cannot record");
+    return MultiAudioTackStream;
+  }
+  var mixedAudioStream:MediaStreamAudioDestinationNode|undefined = mixedAudioStream ? mixedAudioStream : audioContext.createMediaStreamDestination();// 
+  MultiAudioTackStream.getAudioTracks().forEach(function (audioTrack) {
+    var srcStream = new MediaStream();
+    srcStream.addTrack(audioTrack);
+    if(!audioContext) return
+    var streamSourceNode = audioContext.createMediaStreamSource(srcStream);
+    streamSourceNode.connect(mixedAudioStream);
+  });
+  return [mixedAudioStream, audioContext];
+}
+
 function ConferenceDial(lineNum:number, phoneNo:string) {
   var dstNo = phoneNo;
   if (EnableAlphanumericDial) {
@@ -3263,7 +3388,12 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
   }
   var session = lineObj.SipSession;
 
-  if (!session.data.confcalls) session.data.confcalls = [];
+  if (!session.data.confcalls){
+    session.data.confcalls = [];
+    session.data.disposed = false;
+    unholdSession(lineNum);
+    UnmuteSession(lineNum);
+  } 
   session.data.confcalls.push({
     to: dstNo,
     startTime: utcDateNow(),
@@ -3370,8 +3500,14 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
                 remoteStream.addTrack(receiver.track);
               }
             });
+            var html = "";
+            // Remote Audio Object
+            html += '<div style="display:none;">';
+            html += '<audio id="line-' + lineNum + '-conference-remoteAudio-' + confCallId + '"></audio>';
+            html += "</div>";
+            $("#softphone").append(html);
             var remoteAudio = $(
-              "#line-" + lineNum + "-conference-remoteAudio"
+              "#line-" + lineNum + "-conference-remoteAudio-" + confCallId
             ).get(0);
             remoteAudio.srcObject = remoteStream;
             remoteAudio.onloadedmetadata = function (e) {
@@ -3407,10 +3543,11 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
     if (newState === SIP.SessionState.Terminated) {
       // Ends the mixed audio, and releases the mic
       if (
-        session.data.childsession.data.AudioSourceTrack &&
-        session.data.childsession.data.AudioSourceTrack.kind === "audio"
+        session.data.confcalls[confCallId].session.data.AudioSourceTrack &&
+        session.data.confcalls[confCallId].session.data.AudioSourceTrack.kind === "audio"
       ) {
-        session.data.childsession.data.AudioSourceTrack.stop();
+        session.data.confcalls[confCallId].session.data.AudioSourceTrack.stop();
+        session.data.confcalls[confCallId].session.audioReceivers = undefined; 
       }
       // Restore Audio Stream as it was changed
       if (
@@ -3418,28 +3555,28 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
         session.data.AudioSourceTrack.kind === "audio"
       ) {
         var pc = session.sessionDescriptionHandler.peerConnection;
-        pc.getSenders().forEach(function (RTCRtpSender) {
-          if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
-            RTCRtpSender.replaceTrack(session.data.AudioSourceTrack)
-              .then(function () {
-                if (session.data.ismute) {
-                  RTCRtpSender.track.enabled = false;
-                } else {
-                  RTCRtpSender.track.enabled = true;
-                }
-              })
-              .catch(function () {
-                console.error(e);
-              });
-            session.data.AudioSourceTrack = null;
-          }
-        });
+        // pc.getSenders().forEach(function (RTCRtpSender) {
+        //   if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+        //     RTCRtpSender.replaceTrack(session.data.AudioSourceTrack)
+        //       .then(function () {
+        //         if (session.data.ismute) {
+        //           RTCRtpSender.track.enabled = false;
+        //         } else {
+        //           RTCRtpSender.track.enabled = true;
+        //         }
+        //       })
+        //       .catch(function () {
+        //         console.error(e);
+        //       });
+        //     session.data.AudioSourceTrack = null;
+        //   }
+        // });
       }
       window.clearInterval(session.data.confcalls[confCallId].callTimer);
       store.dispatch({type:"sip/answeredCalls", payload:{action:"conferenceCallDisposition",data:{confCallId:confCallId, lineNum:lineNum, disposition:"Bye"}}})
     }
   });
-  session.data.childsession = newSession;
+  session.data.confcalls[confCallId].session = newSession;
   var inviterOptions = {
     requestDelegate: {
       onTrying: function (sip) {
@@ -3488,35 +3625,85 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
         session.data.confcalls[confCallId].dispositionTime = utcDateNow();
 
         // Join Call
-        {
+
+        {//mix all
           // Merge Call Audio
-          if (!session.data.childsession) {
+          if (!session.data.confcalls[confCallId].session) {
             console.warn("Conference session lost");
             // alert("conf session lost")
             return;
           }
-
-          var outputStreamForSession = new MediaStream();
+          var outputStreamForFirstCallSession = new MediaStream();
           var outputStreamForConfSession = new MediaStream();
 
-          var pc = session.sessionDescriptionHandler.peerConnection;
-          var confPc =
-            session.data.childsession.sessionDescriptionHandler.peerConnection;
+          var firstCallPeerConnection = session.sessionDescriptionHandler.peerConnection;
+          var confCallPeerConnection = session.data.confcalls[confCallId].session.sessionDescriptionHandler.peerConnection;
 
           // Get conf call input channel
-          confPc.getReceivers().forEach(function (RTCRtpReceiver) {
+          // console.log(firstCallPeerConnection?.getReceivers(),"ggggggggggggggggggggggggggggggggggggggggggggggggggggggggg")
+          confCallPeerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+            // alert("// Get conf call input channel")
+            if(session.data.confcalls[confCallId].session.audioReceivers) return
             if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+              session.data.confcalls[confCallId].session.audioReceivers = []; 
+              session.data.confcalls[confCallId].session.audioReceivers.push(RTCRtpReceiver.track)
               console.log(
                 "Adding conference session:",
                 RTCRtpReceiver.track.label
               );
-              outputStreamForSession.addTrack(RTCRtpReceiver.track);
+              outputStreamForFirstCallSession.addTrack(RTCRtpReceiver.track);
+              for(let x=0; x<(session.data.confcalls.length|0);  x++){
+                if(x===confCallId) continue
+                // alert("add this to privious conf " + x);
+                // if( session.data.confcalls[x].disposition !== "accepted") alert("Not active skipping"+ x)
+                if( session.data.confcalls[x].disposition !== "accepted") continue
+                var confCallPeerConnectionPrivious = session.data.confcalls[x].session.sessionDescriptionHandler.peerConnection;
+                confCallPeerConnectionPrivious?.getSenders().forEach(function (RTCRtpSenderPrivious) {
+                    var confSession = session.data.confcalls[x].session
+                    var outputStreamForPriviousConfSession = new MediaStream()
+                    outputStreamForPriviousConfSession.addTrack(RTCRtpReceiver.track)
+                    confSession.data.mixedAudioTrack = ConferenceMixAudioStreams(
+                      outputStreamForPriviousConfSession, 
+                    RTCRtpSenderPrivious.track.IsMixedTrack? confSession.data.mixedAudioTrack[0] : undefined,
+                    RTCRtpSenderPrivious.track.IsMixedTrack? confSession.data.mixedAudioTrack[1] : undefined,
+                  )
+                  var mixedAudioTrackForConf = confSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+                  mixedAudioTrackForConf.IsMixedTrack = true;
+                  RTCRtpSenderPrivious.replaceTrack(mixedAudioTrackForConf);
+                })
+              }
             }
           });
-
+          if (session.audioReceivers) {
+            outputStreamForConfSession.addTrack(session.audioReceivers[0]);
+            for(let x=0; x < (session.data.confcalls.length|0); x ++){
+              if(x===confCallId) continue
+              // alert("add old conf to this conf " + x);
+              // if( session.data.confcalls[x].disposition !== "accepted") alert("Not active skipping"+ x)
+              if( session.data.confcalls[x].disposition !== "accepted") continue
+              var priviousConfTracList = session.data.confcalls[x].session.audioReceivers
+              for(let y=0; y < (priviousConfTracList?.length | 0); y++ ) {
+                outputStreamForConfSession.addTrack(priviousConfTracList[y]);
+              }
+            }
+          }
           // Get session input channel
-          pc.getReceivers().forEach(function (RTCRtpReceiver) {
+          firstCallPeerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+            // alert("// Get session input channel")
+            if (session.audioReceivers) {
+              // outputStreamForConfSession.addTrack(session.audioReceivers[0]);
+              // for(let x=0; x < confCallId; x ++){
+              //   alert("add old conf to this conf " + x);
+              //   var priviousConfTracList = session.data.confcalls[x].session.audioReceivers
+              //   for(let y=0; y < (priviousConfTracList?.length | 0); y++ ) {
+              //     outputStreamForConfSession.addTrack(priviousConfTracList[y]);
+              //   }
+              // }
+              return
+            }
             if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+              session.audioReceivers = []; 
+              session.audioReceivers.push(RTCRtpReceiver.track)
               console.log(
                 "Adding conference session:",
                 RTCRtpReceiver.track.label
@@ -3526,31 +3713,39 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
           });
 
           // Replace tracks of Parent Call
-          pc.getSenders().forEach(function (RTCRtpSender) {
+          firstCallPeerConnection?.getSenders().forEach(function (RTCRtpSender) {
+            // alert("// Replace tracks of Parent Call")
             if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
               console.log("Switching to mixed Audio track on session");
 
-              session.data.AudioSourceTrack = RTCRtpSender.track;
-              outputStreamForSession.addTrack(RTCRtpSender.track);
-              var mixedAudioTrack = MixAudioStreams(
-                outputStreamForSession
-              ).getAudioTracks()[0];
+              session.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? session.data.AudioSourceTrack : RTCRtpSender.track;
+              
+              if(!RTCRtpSender.track.IsMixedTrack) outputStreamForFirstCallSession.addTrack(RTCRtpSender.track);
+              session.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+                outputStreamForFirstCallSession, 
+                RTCRtpSender.track.IsMixedTrack? session.data.mixedAudioTrack[0] : undefined,
+                RTCRtpSender.track.IsMixedTrack? session.data.mixedAudioTrack[1] : undefined,
+              )
+              var mixedAudioTrack = session.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
               mixedAudioTrack.IsMixedTrack = true;
 
               RTCRtpSender.replaceTrack(mixedAudioTrack);
             }
           });
           // Replace tracks of Child Call
-          confPc.getSenders().forEach(function (RTCRtpSender) {
+          confCallPeerConnection.getSenders().forEach(function (RTCRtpSender) {
+            // alert("// Replace tracks of Child Call") 
             if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
               console.log("Switching to mixed Audio track on conf call");
-
-              session.data.childsession.data.AudioSourceTrack =
-                RTCRtpSender.track;
+              var confSession = session.data.confcalls[confCallId].session
+              confSession.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? confSession.data.AudioSourceTrack : RTCRtpSender.track;
               outputStreamForConfSession.addTrack(RTCRtpSender.track);
-              var mixedAudioTrackForConf = MixAudioStreams(
-                outputStreamForConfSession
-              ).getAudioTracks()[0];
+              confSession.data.mixedAudioTrack = ConferenceMixAudioStreams(
+                outputStreamForConfSession,
+                RTCRtpSender.track.IsMixedTrack? confSession.data.mixedAudioTrack[0] : undefined,
+                RTCRtpSender.track.IsMixedTrack? confSession.data.mixedAudioTrack[1] : undefined,
+              )
+              var mixedAudioTrackForConf = confSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
               mixedAudioTrackForConf.IsMixedTrack = true;
 
               RTCRtpSender.replaceTrack(mixedAudioTrackForConf);
@@ -3616,7 +3811,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
   newSession.invite(inviterOptions).catch(function (e) {
     console.warn("Failed to send INVITE:", e);
   });
-  session.data.confcalls[confCallId].session = newSession;
+  // session.data.confcalls[confCallId].session = newSession;
   store.dispatch({
     type: "sip/answeredCalls",
     payload: {
@@ -3633,6 +3828,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
       }
     },
   });
+  // console.log(session, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 
 // addEventListener("beforeunload", (event) => {
@@ -3876,39 +4072,6 @@ function muteAfterAnswer(id = getCurrentActiveCallId()){
     var lineObj = FindLineByNumber(id);
     lineObj.muteAfterAnswer ^= 1;
     mute(0,lineObj.muteAfterAnswer);
-}
-function dtmf(key) {
-    if(getCurrentActiveCallId()){
-        sendDTMF(getCurrentActiveCallId(), key);
-    }
-}
-function keyPressed(key, isTriggerOff){
-    var cur_digits = $(".webphone-digits").val().replace(/\s/g, "");
-
-    var randomSoundIndex = Math.floor(Math.random() * dialpadSounds.length);
-
-    var audio = new Audio();
-
-    audio.src = "/av/" + dialpadSounds[randomSoundIndex];
-    audio.play();
-
-    $(".webphone-digits").val(cur_digits + key);
-
-    if (key !== "+" && key !== "#" && key !== "*") {
-      const inputEvent = new CustomEvent("input", { detail: { isTriggerOff } });
-
-      document.querySelector(".webphone-digits").dispatchEvent(inputEvent);
-    }
-
-    if ($(".webphone-digits").val().length > 0) {
-      document
-        .querySelector("#webphone-backspace-btn")
-        .classList.remove("hidden");
-    }
-    // if we are inside a call we must send the digit too
-    if(keypadSwitchOn_sendDTMF){
-        sendDTMF(getCurrentActiveCallId(), key);
-    }
 }
 function transferBlind() {
     if(getCurrentActiveCallId() && document.querySelector(".webphone-digits").value.length >0 ){
@@ -4263,9 +4426,11 @@ function haveActiveCall(LineNumber:number){
   const lineObj = FindLineByNumber(LineNumber)
   var session = lineObj.SipSession;
   console.log("ddddddddddddddddd",session)
-  // alert(session.disposed)
-  if(!session.disposed) return
-  if(!session.data.confcalls){ // If no conf call finish
+  // alert( !(session.data.disposed || session.disposed) )
+  if( !(session.data.disposed || session.disposed) ) return
+  // alert("in")
+  // alert(session.data.disposed + "" + session.disposed)
+  if(!session.data.confcalls ){ // If no conf call finish
     store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}});
     return;
   } 
@@ -4279,18 +4444,36 @@ function haveActiveCall(LineNumber:number){
   }
   console.log(activeConfCall, "activeConfCallactiveConfCall")
   console.log(lineObj,"..............................")
-  if(activeConfCall == true) return // If active conf call do nothing
+  // alert("activeConfCall")
+  if(activeConfCall == true) {
+    store.dispatch({type: "sip/answeredCalls",payload: { action: "disposition", data: { lineNum: LineNumber, disposition:"Bye" } },});
+    return // If active conf call do nothing
+  }
   console.log(activeConfCall, "activeConfCallactiveConfCall")
   for(const conf of session.data.confcalls){ // Make sure to hungup all conf call
-    if(conf.session._state !== "Terminated"){
+    if(conf.session?._state !== "Terminated" && conf.disposition !=="bye"){
       conf.session.dispose()
     }
-  }   
-  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
-  window.setTimeout(function () {
-    if(!session.data.confcalls){
-      RemoveLine(lineObj); // remove line
+  }
+  if(session.data.confcalls) {
+    if(session.data.disposed){
+      const id = session._id
+      // console.log("nnnnnnnnnnnnnnn",id)
+      // window.setTimeout(function () {
+      //   if(userAgent.sessions[id]){
+      //     alert("userAgent.sessions[id]")
+      //     alert(userAgent.sessions[id]._state)
+      //     userAgent.sessions[id].disposed = false;
+      //     userAgent.sessions[id].dispose()
+      //   }
+      // }, 1000);
     }
+    // alert("End conf")
+  }
+  store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
+  window.clearInterval(session.data.callTimer);
+  window.setTimeout(function () {
+      RemoveLine(lineObj); // remove line
   }, 1000);
 }
 const socket = io("https://ssp-backend.ringplan.com", {
@@ -4324,6 +4507,29 @@ const userInteractionForAudioPlayerStart = (event) => {
 }
 document.body.addEventListener('click', userInteractionForAudioPlayerStart);
 document.body.addEventListener('touchstart', userInteractionForAudioPlayerStart);
+function  UnmuteConference(LineNumber){
+  UnmuteSession(LineNumber)
+  var lineObj = FindLineByNumber(LineNumber);
+  if (lineObj === null || lineObj.SipSession === null) return;
+
+  var session = lineObj.SipSession;
+  if(!session.data.confcalls) return;
+  for(let x=0; x < (session.data.confcalls.length|0); x ++){
+    session.data.confcalls[x].session.data.AudioSourceTrack.enabled = true
+  }
+
+}
+function MuteConference(LineNumber){
+  MuteSession(LineNumber) 
+  var lineObj = FindLineByNumber(LineNumber);
+  if (lineObj === null || lineObj.SipSession === null) return;
+
+  var session = lineObj.SipSession;
+  if(!session.data.confcalls) return;
+  for(let x=0; x < (session.data.confcalls.length|0); x ++){
+    session.data.confcalls[x].session.data.AudioSourceTrack.enabled = false
+  }
+}
 const sip = {
   CreateUserAgent: (username:string, password:string, domain:string) => {
     if(userAgent){
@@ -4377,6 +4583,18 @@ const sip = {
     SelectLine(store.getState().sip.activeCallLineNumber)
     haveActiveCall(LineNumber)
   },
+  hungupConference: (LineNumber: number) =>  {
+    const lineObj = FindLineByNumber(LineNumber)
+    var session = lineObj.SipSession;
+    hangup(LineNumber)
+    for(const conf of session.data.confcalls){ // Make sure to hungup all conf call
+      if(conf.session?._state !== "Terminated" && conf.disposition !=="bye"){
+        conf.disposition = "bye";
+        conf.session.dispose()
+      }
+    }
+    haveActiveCall(LineNumber)
+  },
   rejectCall: (LineNumber: number ) =>  {
     store.dispatch({type:"sip/ringingInboundCalls", payload:{action:"remove",data:LineNumber}})
     RejectCall(LineNumber)
@@ -4394,20 +4612,35 @@ const sip = {
       isMute ? UnmuteSession(LineNumber) : MuteSession(LineNumber) 
     } catch (error) {console.log(error)}
   },
+  muteConference: (LineNumber: number, isMute: Boolean ) =>  {
+    try {
+      isMute ? UnmuteConference(LineNumber) : MuteConference(LineNumber) 
+    } catch (error) {console.log(error)}
+  },
   hold: (LineNumber: number, isHold: Boolean ) =>  {
     try {
       isHold ? unholdSession(LineNumber) : holdSession(LineNumber) 
     } catch (error) {console.log(error)}
   },
-  selectLine: (LineNumber: number ) =>  {
-    SelectLine(newLineNumber)
-  },
   volumeLevel: (LineNumber: number, volumeLevel: string ) =>  {
     const amount:number = volumeLevel / 100
-    console.log("Volume level", amount)
+    // console.log("Volume level", amount)
     store.dispatch({type:"sip/answeredCalls", payload:{action:"volumeLevel",data:{lineNum:LineNumber, volumeLevel:volumeLevel}}})
     var audioobject = document.getElementById("line-" + LineNumber + "-remoteAudio");
-    audioobject.volume = amount;
+    if(audioobject) audioobject.volume = amount;
+    sip.volumeLevelConference(LineNumber, volumeLevel)
+  },
+  volumeLevelConference: (LineNumber: number, volumeLevel: string ) =>  {
+    var lineObj = FindLineByNumber(LineNumber);
+    if (lineObj === null || lineObj.SipSession === null) return;
+    var session = lineObj.SipSession;
+    if(!session.data.confcalls) return;
+    const amount:number = volumeLevel / 100
+    for(let x=0; x < (session.data.confcalls.length|0); x ++){
+      var audioobject = document.getElementById("line-" + LineNumber + "-conference-remoteAudio-" + x);
+      if(audioobject) audioobject.volume = amount;
+      // console.log("Volume level", amount, ",Conf",x)
+    }
   },
   sendDTMF: (LineNumber: number, value: string ) =>  {
     sendDTMF(LineNumber, value)
@@ -4438,6 +4671,10 @@ const sip = {
   selectLine: (LineNumber: number) =>{
     SelectLine(LineNumber)
   },
+  isConferenceCall: (LineNumber: number) =>{
+    var lineObj = FindLineByNumber(LineNumber);
+    return (lineObj?.SipSession?.data?.confcalls? true : false)
+  },
   callSpeakerDevice: (LineNumber: number, value: string) => {
     var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
     if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
@@ -4449,6 +4686,26 @@ const sip = {
       .catch(function (e) {
         console.warn("Error using setSinkId: ", e);
       });
+    }
+    sip.callSpeakerDeviceConference(LineNumber, value)
+  },
+  callSpeakerDeviceConference: (LineNumber: number, value: string) => {
+    var lineObj = FindLineByNumber(LineNumber);
+    if (lineObj === null || lineObj.SipSession === null) return;
+    var session = lineObj.SipSession;
+    if(!session.data.confcalls) return;
+
+    for(let x=0; x < (session.data.confcalls.length|0); x ++){
+      let remoteAudio = $("#line-" + LineNumber + "-conference-remoteAudio-" + x)?.get(0);
+      if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
+        remoteAudio.setSinkId(value)
+        .then(function () {
+          console.log("sinkId applied: " , value , ", conf:", x);
+        })
+        .catch(function (e) {
+          console.warn("Error using setSinkId: ", ", conf:", x, "", e);
+        });
+      }
     }
   },
   callMicrophoneDevice: (LineNumber: number, value: string) => {
@@ -4528,6 +4785,30 @@ const sip = {
         });
       }
     }
+  },
+  merge:(FromLineNumber: number, ToLineNumber: string ) =>  {
+    var FromCall = FindLineByNumber(FromLineNumber);
+    if (FromCall === null || FromCall.SipSession === null) return;
+
+    var ToCall = FindLineByNumber(ToLineNumber);
+    if (ToCall === null || ToCall.SipSession === null) return;
+
+    var sessionFrom = FromCall.SipSession
+    var sessionTo = ToCall.SipSession
+
+    if(sessionFrom.data.mergedCalls) return;
+
+    if (!sessionTo.data.mergedCalls) { //New merge
+      sessionTo.data.mergedCalls = [];
+      sessionTo.data.mergedCalls.push(ToLineNumber)
+      sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
+    } 
+      for(let x = 0; x < sessionFrom.data.mergedCalls?.length|0; x++){
+        //append from mic to this call
+      }
+      sessionTo.data.mergedCalls.push(FromLineNumber)
+    // start merge
+    store.dispatch({type:"sip/mergedCallGroups", payload:{action:"add",data:{FromLineNumber:FromLineNumber, ToLineNumber:ToLineNumber}}});
   },
   logout: (changeLocation=true)=>{
     localStorage.clear();

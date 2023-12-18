@@ -1,10 +1,16 @@
+import { useDispatch } from "react-redux";
 import styles from "./SendImg.module.scss";
+import { setIsImgViewerDialogueOpen } from "redux/chat/chatSlice";
 
-const SendImg = () => {
+const SendImg = ({ src }) => {
+	const dispatch = useDispatch();
 	return (
 		<div className={styles.sendImg}>
-			<span>
-				<img src="/img/dummy/video_call.jpeg" alt=""></img>
+			<span
+				onClick={() => {
+					dispatch(setIsImgViewerDialogueOpen(true));
+				}}>
+				<img src={src} alt=""></img>
 			</span>
 		</div>
 	);
