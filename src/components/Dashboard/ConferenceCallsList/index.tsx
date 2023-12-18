@@ -18,7 +18,14 @@ const ConferenceCallsList = ({
 		dispositionTime: string;
 		to: string;
 	}[];
-	host2: { startTime: string; callTimer: string; displayNumber: string; displayName: string };
+	host2: {
+		startTime: string;
+		callTimer: string;
+		callTimerConf: string;
+		displayNumber: string;
+		displayName: string;
+		disposition: string;
+	};
 }) => {
 	const close = () => {
 		store.dispatch({
@@ -57,12 +64,12 @@ const ConferenceCallsList = ({
 								lineNumber={LineNumber}
 								details={{
 									id: -2,
-									callTimer: "",
+									callTimer: host2.callTimer,
 									billsec: "",
 									name: extNumber,
 									number: extNumber,
 									startTime: "",
-									disposition: "",
+									disposition: "Host",
 								}}
 							/>
 						</div>
@@ -88,15 +95,31 @@ const ConferenceCallsList = ({
 									lineNumber={LineNumber}
 									details={{
 										id: -3,
-										callTimer: host2.callTimer,
+										callTimer: host2.callTimerConf,
 										billsec: host2.startTime,
 										name: host2.displayName,
 										number: host2.displayNumber,
 										startTime: host2.startTime,
-										disposition: "",
+										disposition: host2.disposition,
 									}}
 								/>
 							}
+							{conferenceCallList?.map((item) => (
+								<ConferenceCallListMember
+									hoverOn={hoverOn}
+									setHoverOn={setHoverOn}
+									lineNumber={LineNumber}
+									details={{
+										id: item.id,
+										callTimer: item.callTimer,
+										billsec: item.startTime,
+										name: item.to,
+										number: item.to,
+										startTime: item.startTime,
+										disposition: item.disposition,
+									}}
+								/>
+							))}
 							{conferenceCallList?.map((item) => (
 								<ConferenceCallListMember
 									hoverOn={hoverOn}
