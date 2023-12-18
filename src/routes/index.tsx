@@ -4,32 +4,37 @@ import { voicemailRoutes } from "./voicemail/routes";
 import { authRoutes } from "./auth/routes";
 import { conferenceRoutes } from "./conference/routes";
 import { callHistoryRoutes } from "./callHistory/routes";
-import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
-import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import { settingsRoutes } from "./settings/routes";
 import { sidecarRoutes } from "./sidecar/routes";
-import { meetRoutes } from "./meet/routes";
-import { getCookie } from "utils";
-import sip from "lib/sip";
-import { store } from "redux/store";
 import { callbackRoutes } from "./Callback/routes";
 import { chatRoutes } from "./chat/routes";
+import { meetRoutes } from "./meet/routes";
+import { getCookie } from "utils";
+import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
+import Home from "./../pages/Home";
+import sip from "lib/sip";
+import { store } from "redux/store";
 import { ErrorBoundary } from "react-error-boundary";
 import RedirectMsg from "components/shared/RedirectMsg";
+import GlobalErrorBoundary from "components/shared/ErrorBoundary";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
 	},
-	{
-		path: "/redirect",
-		element: <RedirectMsg />,
-	},
+	// {
+	// 	path: "/redirect",
+	// 	element: (
+	// 		<GlobalErrorBoundary>
+	// 			<RedirectMsg />
+	// 		</GlobalErrorBoundary>
+	// 	),
+	// },
 ];
 
-const extAuth = localStorage.getItem('extAuth');
+const extAuth = localStorage.getItem("extAuth");
 const apiAuth = localStorage.getItem("apiAuth");
 const status = localStorage.getItem("status");
 const ext_user_id = localStorage.getItem("ext_user_id");
@@ -49,7 +54,7 @@ ext_connected === "true" &&
 	ext_domain &&
 	store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) &&
 	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain);
-console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
+// console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
 const isMobile = () =>
 	window?.navigator?.userAgentData?.mobile ||
 	/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

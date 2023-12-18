@@ -7,6 +7,7 @@ import voicemailReducer from "./voicemail/voicemailSlice";
 import callHistoryReducer from "./call-history/callHistorySlice";
 import sidecarReducer from "./sidecar/sidecarSlice";
 import meetReducer from "./meet/meetSlice";
+import chatReducer from "./chat/chatSlice";
 import { apiService } from "./../services/api";
 import sipReducer from "./sip";
 import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
@@ -17,6 +18,9 @@ if (!isDev)
 		console.log = () => {};
 		console.error = () => {};
 		console.debug = () => {};
+		window.onerror = function (message, source, lineno, colno, error) {
+			return true;
+		};
 	}
 
 export const store = configureStore({
@@ -30,6 +34,7 @@ export const store = configureStore({
 		voicemail: voicemailReducer,
 		sidecar: sidecarReducer,
 		meet: meetReducer,
+		chat: chatReducer,
 		[apiService.reducerPath]: apiService.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware, jwtTokenRefresher),

@@ -7,42 +7,218 @@ import NoConversationsSelected from "components/Chat/NoConversationsSelected";
 import ConversationsBox from "components/Chat/ConversationsBox";
 import PromptDialog from "components/Modal/PromptDialog";
 import StartNewConversations from "components/Chat/StartNewConversations";
+import AddMember from "components/Chat/AddMember";
+import ImgViewer from "components/Chat/Viewer/ImgViewer";
+import VideoViewer from "components/Chat/Viewer/VideoViewer";
+import AudioViewer from "components/Chat/Viewer/AudioViewer";
+import DocumentViewer from "components/Chat/Viewer/DocumentViewer";
+import ShareContactDialogue from "components/Chat/ShareContactDialogue";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	conversationData,
+	conversationLists,
+	isAddContactDialogueOpen,
+	isAddMemberDialogueOpen,
+	isAudioViewerDialogueOpen,
+	isContactDetailsDialogueOpen,
+	isConversationSelected,
+	isDeleteConversationDialogueOpen,
+	isDocumentViewerDialogueOpen,
+	isEditContactDialogueOpen,
+	isImgViewerDialogueOpen,
+	isSettingDialogueOpen,
+	isShareContactDialogueOpen,
+	isStartNewConversationDialogueOpen,
+	isVideoViewerDialogueOpen,
+	strQueries,
+} from "redux/chat/chatSelectors";
+import {
+	setConversationData,
+	setConversationLists,
+	setFromContactLists,
+	setFromNumberSelected,
+	setIsConversationSelected,
+	setIsDeleteConversationDialogueOpen,
+	setMsgLists,
+	setSocket,
+} from "redux/chat/chatSlice";
+import {
+	useLazyDeleteConversationObjectQuery,
+	useLazyDeleteMessagesQuery,
+	useLazyGetConversationListsQuery,
+	useLazyGetTextingNumbersQuery,
+} from "services/chat";
+import Loader from "components/UI/Loader";
+import { showToast } from "utils";
+import { io } from "socket.io-client";
+import { getCookie } from "typescript-cookie";
+import { getBackendUrl } from "config/env.config";
+import AddContactDialogue from "components/Chat/AddContactDialogue";
+import EditContactDialogue from "components/Chat/EditContactDialogue";
+import SettingDialogue from "components/Chat/SettingDialogue";
+import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
+import TextingMainPageSkeleton from "components/Chat/TextingMainPageSkeleton";
 
-const Chat = () => {
+// let socket: any = null;
+
+const Chat: React.FC = () => {
+	const dispatch = useDispatch();
+	const conversationsLists = useSelector(conversationLists);
+	const conversationSelected = useSelector(isConversationSelected);
+	const startNewConversationDialogueOpen = useSelector(isStartNewConversationDialogueOpen);
+	const addMemberDialogueOpen = useSelector(isAddMemberDialogueOpen);
+	const imgViewerDialogueOpen = useSelector(isImgViewerDialogueOpen);
+	const videoViewerDialogueOpen = useSelector(isVideoViewerDialogueOpen);
+	const audioViewerDialogueOpen = useSelector(isAudioViewerDialogueOpen);
+	const documentViewerDialogueOpen = useSelector(isDocumentViewerDialogueOpen);
+	const shareContactDialogueOpen = useSelector(isShareContactDialogueOpen);
+	const deleteConversationDialogueOpen = useSelector(isDeleteConversationDialogueOpen);
+	const conversationDatas = useSelector(conversationData);
+	const strQuery = useSelector(strQueries);
+	const addContactDialogueOpen = useSelector(isAddContactDialogueOpen);
+	const editContactDialogueOpen = useSelector(isEditContactDialogueOpen);
+	const contactDetailsDialogueOpen = useSelector(isContactDetailsDialogueOpen);
+	const settingDialogueOpen = useSelector(isSettingDialogueOpen);
+
+	const [getConversationLists, { data: conversationListsData, isLoading: isLoading1, isFetching: isFetching1 }] =
+		useLazyGetConversationListsQuery();
+	const [deleteMessages, {}] = useLazyDeleteMessagesQuery();
+	const [deleteConversation, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteConversationObjectQuery();
+
+	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
+
 	useEffect(() => {
-		const fetchData = async () => {};
+		const fetchData = async () => {
+			const { error, data } = await getTextingNumber("");
+
+			if (data) {
+				dispatch(setFromContactLists(data));
+				dispatch(setFromNumberSelected(data[0].number));
+			}
+
+			if (error) {
+				showToast("There is error in fetching 'From texting Contact Lists', please try again later", "error");
+			}
+		};
 
 		fetchData();
 	}, []);
 
-	const deleteConversationsHandler = () => {};
+	useEffect(() => {
+		const fetchData = async () => {
+			const { error, data } = await getConversationLists(strQuery);
+
+			if (data) {
+				dispatch(setConversationLists(data));
+			}
+
+			if (error) {
+				showToast("There is error in fetching Conversation Lists, please try again later  ", "error");
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	// const deleteStrQueries = new URLSearchParams({
+	// 	ids: ["abcd", "efg"],
+	// }).toString();
+
+	const deleteConversationsHandler = async () => {
+		const { error, data } = await deleteConversation(conversationDatas?.id);
+
+		if (error) {
+			showToast("There is error in deleting conversation msg, please try again later", "error");
+		} else {
+			const list = [...conversationsLists];
+
+			// Delete an item from list where item.id === conversationDatas?.id
+			const updatedList = list.filter((item) => item.id !== conversationDatas?.id);
+
+			dispatch(setConversationLists(updatedList));
+
+			dispatch(setConversationData({}));
+			dispatch(setIsConversationSelected(false));
+
+			dispatch(setMsgLists([]));
+			dispatch(setIsDeleteConversationDialogueOpen(false));
+			showToast("message deleted successfully", "info");
+		}
+		if (data) {
+		}
+	};
+
+	// socket.io
+	// useEffect(() => {
+	// 	const API_KEY = getCookie("id_token");
+
+	// 	if (socket != null) {
+	// 		socket.disconnect();
+	// 		socket.offAny();
+	// 	}
+
+	// 	socket = io(getBackendUrl(), {
+	// 		path: "/ws",
+	// 		transports: ["websocket"],
+	// 		secure: true,
+	// 		autoConnect: false,
+	// 		reconnectionDelay: 1500,
+	// 	});
+
+	// 	socket.on("connect", () => {
+	// 		socket.emit("authenticate", { token: API_KEY });
+	// 	});
+
+	// 	socket.on("authenticated", (data) => {
+	// 		// console.log("web socket Authentication successful.", data);
+
+	// 		dispatch(setSocket(socket));
+	// 	});
+
+	// 	socket.connect();
+
+	// 	// Clean-up function to disconnect the socket when component unmounts
+	// 	// return () => {
+	// 	// 	socket.disconnect();
+	// 	// };
+	// }, []);
 
 	return (
-		<div className={styles.chat}>
+		<div className={`pagePopUp`}>
 			<BaseLayout>
 				<div className={styles.noMessageBox}>
-					{true ? (
+					{conversationsLists?.length > 0 ? (
 						<section className={styles.contact_container}>
 							<ConversationsList />
-							{true ? <ConversationsBox /> : <NoConversationsSelected />}
+							{conversationSelected ? <ConversationsBox /> : <NoConversationsSelected />}
 						</section>
 					) : (
-						<NoMessages />
+						<>{isFetching1 ? <TextingMainPageSkeleton /> : <NoMessages />}</>
 					)}
 				</div>
 			</BaseLayout>
-			{false && (
+			{deleteConversationDialogueOpen && (
 				<PromptDialog
 					type="warning"
 					title="Delete Conversations"
 					actionBtnTxt="Delete"
 					onClick={deleteConversationsHandler}
-					// loading={isLoading}
-				>
-					Are you sure that you want to delete conversation ?
+					loading={isLoading2}>
+					Are you sure that you want to delete conversation? All messages and files will be lost. This operation cannot
+					be undone!
 				</PromptDialog>
 			)}
-			{true && <StartNewConversations />}
+			{startNewConversationDialogueOpen && <StartNewConversations />}
+			{addMemberDialogueOpen && <AddMember />}
+			{imgViewerDialogueOpen && <ImgViewer />}
+			{videoViewerDialogueOpen && <VideoViewer />}
+			{audioViewerDialogueOpen && <AudioViewer />}
+			{documentViewerDialogueOpen && <DocumentViewer />}
+			{shareContactDialogueOpen && <ShareContactDialogue />}
+			{addContactDialogueOpen && <AddContactDialogue />}
+			{editContactDialogueOpen && <EditContactDialogue />}
+			{settingDialogueOpen && <SettingDialogue />}
+			{contactDetailsDialogueOpen && <ContactInfoDialogue />}
 		</div>
 	);
 };

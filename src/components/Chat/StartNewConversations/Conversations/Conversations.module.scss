@@ -57,53 +57,8 @@
 	}
 }
 
-.startConversation {
-	height: calc(100% - 54px - 36px - 52px - 36px - 35px);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-
-	div {
-		color: var(--text-primary, #1f2023);
-		text-align: center;
-
-		/* Body/Bold */
-		font-size: 14px;
-		font-weight: 500;
-		line-height: 20px; /* 142.857% */
-		letter-spacing: -0.5px;
-
-		margin-bottom: 8px;
-	}
-
-	p {
-		color: var(--text-secondary, #5c6168);
-		text-align: center;
-
-		/* Body/Regular */
-		font-size: 14px;
-		line-height: 20px; /* 142.857% */
-		letter-spacing: -0.5px;
-		margin-bottom: 15px;
-	}
-
-	button {
-		display: flex;
-		padding: 11px 12px;
-		justify-content: center;
-		align-items: center;
-		gap: 4px;
-
-		border-radius: 8px;
-		background: var(--primary-default, #0c6dc7);
-
-		color: var(--text-on-color, #fff);
-
-		/* Body/Bold */
-		font-size: 14px;
-		font-weight: 500;
-		line-height: 20px; /* 142.857% */
-		letter-spacing: -0.5px;
-	}
+.contactList {
+	height: calc(100% - 230px);
+	// background-color: red;
+	overflow-y: auto;
 }

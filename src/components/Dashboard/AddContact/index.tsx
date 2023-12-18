@@ -157,7 +157,7 @@ const AddContact: React.FC<IAddContact> = ({ close }) => {
 						<p
 							className={`body_bold flex justify-between ${styles.box_header}`}
 							style={{ color: "var(--text-primary, #1F2023)" }}>
-							<span>Numbers</span>{" "}
+							<span>Numbers</span>
 						</p>
 
 						<div className={`${styles.inputBox}`}>

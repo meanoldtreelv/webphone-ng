@@ -73,7 +73,6 @@ const ContactList = () => {
 			} else {
 				throw new Error();
 			}
-			console.log("here is your contact :", contact);
 		} catch (e) {
 			const fetchContact = async () => {
 				await getContact(id);

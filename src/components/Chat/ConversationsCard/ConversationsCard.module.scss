@@ -73,6 +73,16 @@
 				letter-spacing: -0.2px;
 			}
 
+			.pin_unread {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+
+				svg {
+					width: 18px;
+					height: 18px;
+				}
+			}
 			.unread {
 				display: inline-flex;
 				padding: 1px 6px;
@@ -106,6 +116,7 @@
 	height: 38px;
 	flex-shrink: 0;
 	font-size: 16px;
+
 	display: inline-block;
 	display: flex;
 	justify-content: center;

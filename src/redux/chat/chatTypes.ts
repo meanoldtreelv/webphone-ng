@@ -1,5 +1,6 @@
 export interface IChatState {
 	conversationLists: {}[];
+	sortConversationType: "lastActivity" | "unreadTop";
 	isConversationSelected: boolean;
 	isStartNewConversationDialogueOpen: boolean;
 	isAddMemberDialogueOpen: boolean;
@@ -10,6 +11,10 @@ export interface IChatState {
 	isShareContactDialogueOpen: boolean;
 	isDeleteConversationDialogueOpen: boolean;
 	isSortingMessagePopUpOpen: boolean;
+	isAddContactDialogueOpen: boolean;
+	isEditContactDialogueOpen: boolean;
+	isSettingDialogueOpen: boolean;
+	isContactDetailsDialogueOpen: boolean;
 	queries: {
 		contact_id?: string;
 		page?: number;
@@ -20,4 +25,17 @@ export interface IChatState {
 	};
 	strQueries: string;
 	conversationData: {};
+	fromContactLists: [];
+	textingContactLists: [];
+	fromNumberSelected: string;
+	socket: any;
+	startConversationType: "campaign" | "group" | "conversations";
+	addedMemberLists: [];
+	campaignMemberLists: [];
+	msgLists: [];
+	editContact: {};
+	selectAllMsg: boolean;
+	selectedMsgLists: ""[];
+	isDeleteCheck: boolean;
+	emoji: any;
 }

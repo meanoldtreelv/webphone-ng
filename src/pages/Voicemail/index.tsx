@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	moreOptVoicemail,
+	selectedVoicemails,
 	voicemailNewFilter,
 	voicemailPage,
 	voicemailQueries,
@@ -60,6 +61,10 @@ const Voicemail = () => {
 		from_date: "",
 		to_date: "",
 	});
+	const selectedVoicemail = useSelector(selectedVoicemails);
+	console.log("====================================");
+	console.log(selectedVoicemail, "voicemail list selected ");
+	console.log("====================================");
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
 	// const btmMore = [
