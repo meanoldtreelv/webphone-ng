@@ -56,7 +56,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 						cdr: {
 							id: "",
 							dst: number,
-							starttime: new Date(Date.now()),
+							starttime: new Date(Date.now()).toISOString(),
 						},
 						recording: {},
 					},
@@ -71,7 +71,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 						cdr: {
 							id: "",
 							dst: number,
-							starttime: new Date(Date.now()),
+							starttime: new Date(Date.now()).toISOString(),
 						},
 						recording: {},
 					},
