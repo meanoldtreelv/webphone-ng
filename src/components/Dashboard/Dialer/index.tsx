@@ -24,7 +24,12 @@ import AddCall from "../AddCall";
 import TransferCall from "../TransferCall";
 import Setting from "components/UI/Icons/Call/Setting";
 import AudioSettingOnCallModal from "../AudioSettingOnCallModal";
-import { nameIcon } from "utils";
+import { emptyFunction, nameIcon } from "utils";
+import CallConference from "components/UI/Icons/Call/CallConference";
+import ConferenceCallsList from "../ConferenceCallsList";
+import Button from "components/UI/Forms/Button";
+import { Slide, toast } from "react-toastify";
+import { useTheme } from "hooks/useTheme";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -34,9 +39,30 @@ const Dialer = () => {
 		border: "1px solid var(--border-disabled, #c8d3e0)",
 	};
 	const dispatch = useDispatch();
-	dispatch(setCallNumber(""));
+	// dispatch(setCallNumber(""));
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
+	};
+	const theme = useTheme();
+	const showAddConferenceCall = (LineNumber: number, showAddConferenceCall = true) => {
+		store.dispatch({
+			type: "sip/answeredCalls",
+			payload: {
+				action: "showAddConferenceCall",
+				data: { lineNum: LineNumber, showAddConferenceCall: showAddConferenceCall },
+			},
+		});
+		dispatch(setCallNumber(""));
+	};
+	const showConferenceCallsList = (LineNumber: number, showConferenceCallsList = true) => {
+		store.dispatch({
+			type: "sip/answeredCalls",
+			payload: {
+				action: "showConferenceCallsList",
+				data: { lineNum: LineNumber, showConferenceCallsList: showConferenceCallsList },
+			},
+		});
+		dispatch(setCallNumber(""));
 	};
 	const { answeredCalls, answeredCallActive, ringingOutboundCalls, ringingOutboundCallActive, activeCallLineNumber } =
 		useSelector((state: any) => state.sip);
@@ -49,7 +75,13 @@ const Dialer = () => {
 		if (activeCallLineNumber === item.LineNumber || activeCallLineNumber === item.LineNumber) {
 			return (
 				(item.showDTMF && <DTMF LineNumber={item.LineNumber} />) ||
-				(item.showAddCall && <AddCall LineNumber={item.LineNumber} />) ||
+				((item.showAddCall || item.showAddConferenceCall) && (
+					<AddCall
+						LineNumber={item.LineNumber}
+						forConferenceCall={item.showAddConferenceCall}
+						conferenceCallList={item.conferenceCallList}
+					/>
+				)) ||
 				(item.showTransferCall && <TransferCall LineNumber={item.LineNumber} attTransfer={false} />) ||
 				(item.showTransferCallAtt && <TransferCall LineNumber={item.LineNumber} attTransfer={true} />) || (
 					<section className={styles.dialer}>
@@ -58,12 +90,26 @@ const Dialer = () => {
 								LineNumber={item.LineNumber}
 								volumeLevel={item.volumeLevel}
 								callSpeakerDevice={item.callSpeakerDevice}
+								callMicrophoneDevice={item.callMicrophoneDevice}
 							/>
 						)}
-						<div
-							className={styles.dialer_detailsBox}
-							// style={{ backgroundColor: "var(--accent-yellow-tertiary, #fffaeb)" }}
-						>
+
+						{item.showConferenceCallsList ? (
+							<ConferenceCallsList
+								LineNumber={item.LineNumber}
+								conferenceCallList={item.conferenceCallList}
+								host2={{
+									startTime: item.startTime,
+									callTimer: item.callTimer,
+									callTimerConf: item.callTimerConf,
+									displayNumber: item.DisplayNumber,
+									displayName: item.DisplayName ? item.DisplayName : item.DisplayNumber,
+									disposition: item.disposition,
+								}}
+							/>
+						) : null}
+
+						<div className={styles.dialer_detailsBox}>
 							{false && <img src={dummyProfileImg} alt="" className={styles.backgroundImg} />}
 							{true && (
 								<div
@@ -76,15 +122,26 @@ const Dialer = () => {
 									{false ? (
 										<img src="/img/dummy/profile96.png" alt=""></img>
 									) : (
-										<span>{item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber)}</span>
+										<span>
+											{!item.conferenceCallList &&
+												(item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber))}
+										</span>
 									)}
 								</div>
-								<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
-									{item.DisplayName}
-								</p>
-								<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
-									{item.DisplayNumber}
-								</p>
+								{item.conferenceCallList ? (
+									<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
+										Conference
+									</p>
+								) : (
+									<>
+										<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											{item.DisplayName}
+										</p>
+										<p className={`title_3`} style={{ color: "var(--text-secondary, #5C6168)" }}>
+											{item.DisplayNumber}
+										</p>
+									</>
+								)}
 
 								{/* add the condition here for dialing  */}
 
@@ -95,6 +152,18 @@ const Dialer = () => {
 								) : (
 									<div className={`bold ${styles.dialer_timer}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										{item.callTimer}
+									</div>
+								)}
+								{item.conferenceCallList && (
+									<div className={styles.Members}>
+										<Button
+											onClick={() => {
+												showConferenceCallsList(item.LineNumber, item.conferenceCallList);
+											}}
+											border
+											styles={{ padding: "5px", borderColor: "var(--text-link)" }}>
+											<>Members: {item.conferenceCallList.length + 1}</>
+										</Button>
 									</div>
 								)}
 							</div>
@@ -118,6 +187,26 @@ const Dialer = () => {
 										Add Call
 									</p>
 								</div>
+								<div
+									className={styles.dialer_action}
+									onClick={() => {
+										item.answered
+											? item.conferenceCallList
+												? showConferenceCallsList(item.LineNumber, item.conferenceCallList)
+												: showAddConferenceCall(item.LineNumber)
+											: emptyFunction();
+									}}>
+									<span
+										className={styles.dialer_icon}
+										style={
+											item.conferenceCallList ? { background: "var(--background-danger, #FFEBEB)" } : IconDisableStyle
+										}>
+										<CallConference answered={item.answered} />
+									</span>
+									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+										Conference
+									</p>
+								</div>
 								{/* check if this icon works too */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
@@ -127,29 +216,31 @@ const Dialer = () => {
 										Merge Call
 									</p>
 								</div> */}
-								<div
-									className={styles.dialer_action}
-									style={{ position: "relative" }}
-									// onClick={() => {
-									// 	setIsTransferButtonClicked(!isTransferButtonClicked);
-									// }}
-								>
-									<span
-										className={styles.dialer_icon}
-										style={false ? IconActiveStyle : IconDisableStyle}
-										onClick={() => {
-											item.answered && transferCallHandler();
-										}}>
-										{/* check if this icon works */}
-										<CallTransferIcon answered={item.answered} />
-									</span>
-									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										Transfer
-									</p>
-									{isTransferButtonClicked && item.answered && (
-										<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
-									)}
-								</div>
+								{!item.conferenceCallList && (
+									<div
+										className={styles.dialer_action}
+										style={{ position: "relative" }}
+										// onClick={() => {
+										// 	setIsTransferButtonClicked(!isTransferButtonClicked);
+										// }}
+									>
+										<span
+											className={styles.dialer_icon}
+											style={false ? IconActiveStyle : IconDisableStyle}
+											onClick={() => {
+												item.answered && transferCallHandler();
+											}}>
+											{/* check if this icon works */}
+											<CallTransferIcon answered={item.answered} />
+										</span>
+										<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											Transfer
+										</p>
+										{isTransferButtonClicked && item.answered && (
+											<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
+										)}
+									</div>
+								)}
 								{/* check if this icon works or not */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
@@ -162,7 +253,11 @@ const Dialer = () => {
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
-										sip.mute(item.LineNumber, item.isMute);
+										if (item.conferenceCallList) {
+											sip.muteConference(item.LineNumber, item.isMute);
+										} else {
+											sip.mute(item.LineNumber, item.isMute);
+										}
 									}}>
 									<span
 										className={styles.dialer_icon}
@@ -173,24 +268,26 @@ const Dialer = () => {
 										{item.isMute ? "Unmute" : "Mute"}
 									</p>
 								</div>
-								<div
-									className={styles.dialer_action}
-									onClick={() => {
-										item.answered && sip.hold(item.LineNumber, item.isHold);
-									}}>
-									<span
-										className={styles.dialer_icon}
-										style={
-											item.isHold
-												? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
-												: IconDisableStyle
-										}>
-										<CallHoldIcon isHold={item.isHold} answered={item.answered} />
-									</span>
-									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{item.isHold ? "Resume" : "Hold"}
-									</p>
-								</div>
+								{!item.conferenceCallList && (
+									<div
+										className={styles.dialer_action}
+										onClick={() => {
+											item.answered && sip.hold(item.LineNumber, item.isHold);
+										}}>
+										<span
+											className={styles.dialer_icon}
+											style={
+												item.isHold
+													? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
+													: IconDisableStyle
+											}>
+											<CallHoldIcon isHold={item.isHold} answered={item.answered} />
+										</span>
+										<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											{item.isHold ? "Resume" : "Hold"}
+										</p>
+									</div>
+								)}
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
@@ -235,7 +332,22 @@ const Dialer = () => {
 								<div
 									className={`${styles.dialer_control} ${styles.dialer_endButton}`}
 									onClick={() => {
-										sip.hungup(item.LineNumber);
+										if (true) {
+											toast("Conference Ended by Host", {
+												position: "top-right",
+												autoClose: 3000,
+												hideProgressBar: true,
+												closeOnClick: true,
+												pauseOnHover: true,
+												draggable: true,
+												progress: undefined,
+												transition: Slide,
+												theme: theme ? "dark" : "light", //"light","dark"
+											});
+											sip.hungupConference(item.LineNumber);
+										} else {
+											sip.hungup(item.LineNumber);
+										}
 									}}>
 									<CallEndIcon />
 								</div>

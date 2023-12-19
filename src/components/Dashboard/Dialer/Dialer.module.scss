@@ -36,12 +36,11 @@
 		svg,
 		svg {
 			width: 25px;
-			stroke: var(--icon-primary) !important;
+			stroke: var(--icon-primary);
 		}
 	}
 
 	&_details {
-		// background: map-get($color, linear-bg-2);
 		background: var(--background-quaternary);
 		display: flex;
 		flex-direction: column;
@@ -153,7 +152,9 @@
 		border-radius: 50%;
 	}
 }
-
+.Members {
+	color: var(--text-link);
+}
 @media only screen and (max-width: 660px) {
 	.dialer {
 		position: fixed !important;

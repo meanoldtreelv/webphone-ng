@@ -12,21 +12,35 @@ import Loader from "components/UI/Loader";
 import { useSelector } from "react-redux";
 import { store } from "redux/store";
 import ErrorMessage from "components/UI/ErrorMessage";
-import { setCookie } from "utils";
+import { getCookie, setCookie } from "utils";
 import { useTheme } from "hooks/useTheme";
+import { useSearchParams } from "react-router-dom";
+import logo from "./../../assets/images/core/logo-ri.svg";
+import Cookies from "js-cookie";
 
 const Callback = () => {
+	let [searchParams, setSearchParams] = useSearchParams();
+	const [isExt, setIsExt] = useState<Boolean>(searchParams.get("type") === "ext");
 	const instance_id: string = useGetInstancesQuery(null).data?.[0]["uuid"];
 	const navigate = useNavigate();
 	const theme = useTheme();
 
+	useEffect(() => {
+		if (isExt) {
+			window?.opener?.postMessage(
+				{ id_token: getCookie("id_token"), refresh_token: getCookie("refresh_token") },
+				`chrome-extension://${searchParams.get("ext")}`,
+			);
+		}
+	}, []);
+
 	const { extAuthList, loginSelectExtension } = useSelector((state: any) => state.sip);
-	
+
 	const loginWithExtensionandSecret = () => {
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		navigate("/auth/login");
 	};
-	
+
 	const loginWithAPI = () => {
 		for (const ext of extAuthList) {
 			if (ext["user"] == loginSelectExtension) {
@@ -36,8 +50,18 @@ const Callback = () => {
 	};
 
 	const { authMessage, authLoading } = useSelector((state: any) => state.sip);
+
 	useEffect(() => {
 		if (authMessage === "continue") {
+			var currentDate = new Date();
+			var expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+			var formattedExpiryDate = expiryDate.toUTCString();
+			document.cookie = `id_token=${getCookie(
+				"id_token",
+			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+			document.cookie = `refresh_token=${getCookie(
+				"refresh_token",
+			)}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 			navigate("/dashboard");
 		}
 	}, [authMessage]);
@@ -57,7 +81,17 @@ const Callback = () => {
 	// 	</div>
 	// );
 	const callback = () => {
-		return (
+		const callback_val = isExt ? (
+			<div className={styles.redirectMsg}>
+				<div>
+					<div className={styles.redirectLogo}>
+						<img src={logo} alt="" />
+					</div>
+					<p>Authenticating user...</p>
+					<p>Please wait till the authentication is completed.</p>
+				</div>
+			</div>
+		) : (
 			<section className={`${styles.login} ${theme}`}>
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
@@ -92,6 +126,8 @@ const Callback = () => {
 				</div>
 			</section>
 		);
+
+		return callback_val;
 	};
 
 	return authLoading ? <Loader /> : callback();

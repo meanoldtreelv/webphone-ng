@@ -1,7 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { IContactList, IContactState } from "./contactTypes";
-import { useLazyUpdateContactQuery } from "services/contact";
-import { callHistory } from "redux/call-history/callHistorySelectors";
 
 const initialContactState: IContactState = {
 	addContactPopUpOpen: false,

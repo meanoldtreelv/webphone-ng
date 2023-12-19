@@ -57,13 +57,6 @@
 		}
 	}
 
-	&_withExtension {
-		color: var(--text-tertiary);
-		text-align: center;
-		margin-bottom: 20px;
-		font-size: 13px;
-	}
-
 	&_inputBox {
 		margin-bottom: 12px;
 		position: relative;
@@ -105,10 +98,8 @@
 		justify-content: center;
 		align-items: center;
 		// gap: 4px;
-
 		border-radius: 8px;
 		background: var(--primary-default);
-
 		color: var(--text-on-color);
 		cursor: pointer;
 		margin-top: 30px;
@@ -127,6 +118,37 @@
 		width: 100%;
 		text-align: center;
 		color: var(--text-primary);
+	}
+}
+
+.loginWithExtension {
+	&_toggle {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		color: var(--text-secondary);
+		margin-bottom: 20px;
+		font-size: 13px;
+	}
+
+	&_chevronDown,
+	&_chevronUp {
+		background: var(--background-quaternary);
+		height: 22px;
+		width: 22px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 0 !important;
+		border-radius: 100%;
+		svg {
+			width: 13px;
+		}
+
+		path {
+			stroke: var(--icon-primary);
+		}
 	}
 }
 

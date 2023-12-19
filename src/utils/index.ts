@@ -16,8 +16,9 @@ import { cookieType } from "../types";
 // 	return formData;
 // };
 
-export const nameIcon = (displayname: string) => {
-	return displayname[0] + (displayname.split(" ") && displayname.split(" ")[1] ? displayname.split(" ")[1][0] : "");
+export const nameIcon = (displayname: string|number) => {
+	if(typeof displayname === "number") displayname = displayname.toString()
+	return displayname[0] + (displayname?.split && displayname.split(" ") && displayname.split(" ")[1] ? displayname.split(" ")[1][0] : "");
 };
 
 export const generateFormData = (obj: Record<string, any>): FormData => {
@@ -41,7 +42,16 @@ export const parseCookies = (req: { headers: { cookie?: string } } | null = null
 };
 
 // export const setCookie = (name, value) => Cookies.set(name, value);
-export const setCookie = (name: string, value: any) => Cookies.set(name, value);
+export const setCookie = (
+	name: string,
+	value: any,
+	exp?: {
+		expires: 7;
+	},
+) =>
+	Cookies.set(name, value, {
+		expires: 7,
+	});
 
 export const resetUserCookie = () => Cookies.remove("user");
 
@@ -92,7 +102,7 @@ export const showToast = (message: string, type: TypeOptions, id = "unique") => 
 		autoClose: 2000,
 		hideProgressBar: false,
 		closeOnClick: true,
-		pauseOnHover: false,
+		pauseOnHover: true,
 		type,
 	});
 };
@@ -124,4 +134,12 @@ export const emptyFunction = () => {};
 export const formatFilterDate = (dateString: string) => {
 	const dateParts = dateString.split("/");
 	return `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`;
+};
+
+export const deleteAllCookies = () => {
+	var cookies = document.cookie.split(";");
+	for (var i = 0; i < cookies.length; i++) {
+		var cookie = cookies[i].split("=")[0];
+		document.cookie = cookie + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+	}
 };

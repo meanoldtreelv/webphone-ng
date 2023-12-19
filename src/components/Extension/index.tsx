@@ -29,7 +29,7 @@ const EditExtension = () => {
 					const payload = await getInstancesBulksQuery(instance_id);
 					const instancesVal = payload.data.map((instance: any) => ({...instance["qr-config"] , ...instance["data"], extension_id:instance["_id"], location:instance["location"]?.id, ...(instance["outbound_callerid"]? {outbound_callerid : instance["outbound_callerid"]}: {} ) })  );
 					console.log(instancesVal)
-					setCookie("instancesVal", JSON.stringify(instancesVal));
+					localStorage.setItem("instancesVal", JSON.stringify(instancesVal));
 					store.dispatch({ type: "sip/extAuthList", payload: instancesVal });
 					store.dispatch({type:"sip/isEditBoxOpen", payload:false})
 				} catch (error) {
@@ -77,7 +77,7 @@ const EditExtension = () => {
 				</div>
 				<div className={styles.inputBox}>
 					<label htmlFor="">Name:</label>
-					<input type="text" placeholder={editExtension.name} value={name} onChange={(event) => {setName(event.target.value); console.log(name) }} />
+					<input type="text" style={{cursor: "text"}} placeholder={editExtension.name} value={name} onChange={(event) => {setName(event.target.value); console.log(name) }} disabled/>
 				</div>
 				<div className={styles.idInfo}>ID Info</div>
 				<div className={styles.callerId}>

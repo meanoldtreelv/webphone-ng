@@ -15,3 +15,10 @@ export const CLIO_BASE_URL =
 		: process.env.REACT_APP_IS_STAGING === "true"
 		? "https://app.clio.com"
 		: "https://app.clio.com";
+
+export const STORAGE_BASE_URL =
+	process.env.REACT_APP_IS_PROD === "true"
+		? "https://storage-service.ringplan.com"
+		: process.env.REACT_APP_IS_STAGING === "true"
+		? "https://storage-service.ringplan.com"
+		: "https://storage-service.ringplan.com";

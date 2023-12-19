@@ -8,6 +8,7 @@ const StatusMenu = () => {
 	const [updateStatus] = useLazySetStatusQuery();
 	const { status } = useSelector((state: any) => state.sip);
 	const update = (status: string, additional_status: string | null = "") => {
+		if (status == "") return
 		if (additional_status == "" || additional_status == null || additional_status == undefined) {
 			let userStatusMainStatus = status;
 			store.dispatch({

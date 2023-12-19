@@ -1,0 +1,106 @@
+.overlay {
+	width: 100vw;
+	height: 100%;
+	background: var(--overlay-primary, rgba(36, 40, 46, 0.1));
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.box {
+	position: fixed;
+	top: 0px;
+	right: 0;
+
+	width: 33%;
+	height: 100%;
+	flex-shrink: 0;
+
+	background: var(--background-secondary, #fff);
+
+	/* ◻️ Light/action_shadow */
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+	padding: 0 24px;
+}
+
+.header {
+	width: 100%;
+	height: 54px;
+	flex-shrink: 0;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	backdrop-filter: blur(16px);
+
+	padding: 17px 0px;
+	color: var(--text-primary, #1f2023);
+
+	/* Subheadline/Bold */
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 20px; /* 125% */
+	letter-spacing: -0.5px;
+}
+
+.close {
+	cursor: pointer;
+}
+
+.tabBar {
+	display: flex;
+	width: 100%;
+	padding: 2px;
+	align-items: flex-start;
+
+	border-radius: 8px;
+	border: 1px solid var(--border-tertiary, #e3eaf2);
+	background: var(--background-tertiary, #f7f9fc);
+
+	span {
+		display: flex;
+		padding: 5px 10px;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		flex: 1 0 0;
+
+		color: var(--text-secondary, #5c6168);
+
+		/* Caption 1/Regular */
+		font-size: 13px;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+		cursor: pointer;
+	}
+
+	.active {
+		border-radius: 6px;
+		background: var(--primary-default, #0c6dc7);
+
+		/* Blue Button Shadow */
+		box-shadow: 0px 4px 4px 0px rgba(12, 109, 199, 0.15);
+
+		color: var(--text-on-color, #fff);
+
+		/* Caption 1/Bold */
+		font-size: 13px;
+		font-weight: 500;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.box {
+		width: 50%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.box {
+		width: 100%;
+	}
+}

@@ -1,5 +1,6 @@
-const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-const isDev = window.location.hostname === "webphone.dev.ringplan.com";
+export const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+export const isDev = window.location.hostname === "webphone.dev.ringplan.com";
+const isTesting = window.location.hostname === "webphone.testing.ringplan.com";
 const isProd = window.location.hostname === "webphone.ringplan.com";
 const isFromSSO = window.localStorage.getItem("fromSSO");
 const getLoginUrl = () => {
@@ -78,4 +79,14 @@ const getClioCallBackUrl = () => {
 	return url;
 };
 
-export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl, getClioCallBackUrl };
+const getStorageServicesUrl = () => {
+	let url = "";
+
+	if (isProd || isLocalhost || isDev) {
+		url = "https://storage-service.ringplan.com";
+	}
+	url = "https://storage-service.ringplan.com";
+	return url;
+};
+
+export { getServerUrl, getBackendUrl, getGoBackUrl, getLoginUrl, getStorageServicesUrl, getClioCallBackUrl };

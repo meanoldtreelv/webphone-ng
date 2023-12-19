@@ -14,6 +14,10 @@ export default {
 		__PATH: "voicemail",
 		ROUTE: "/voicemail",
 	},
+	CHAT: {
+		__PATH: "texting",
+		ROUTE: "/texting",
+	},
 	CONFERENCE: {
 		__PATH: "conference",
 		ROUTE: "/conference",

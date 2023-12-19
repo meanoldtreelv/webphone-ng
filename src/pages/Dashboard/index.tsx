@@ -27,10 +27,18 @@ import RecentsSidebar from "components/Dashboard/RecentsSidebar";
 import AddContact from "components/Dashboard/AddContact";
 import Clio from "components/Dashboard/Clio";
 import { isClioActivated, isClioLoggedIn } from "redux/clio/clioSelectors";
-import { getCookie, setCookie } from "utils";
+import { getCookie, setCookie, showToast } from "utils";
+import { setCallNumber } from "redux/call/callSlice";
+import { setLoader } from "redux/common/commonSlice";
+import { setContactList } from "redux/contact/contactSlice";
+import { useLazyGetContactsQuery } from "services/contact";
+import { extChange } from "redux/common/commonSelectors";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
+	const [getContacts, { data: contactsData, isLoading: contactsLoading }] = useLazyGetContactsQuery();
 
 	const clioLoggedIn = useSelector(isClioLoggedIn);
 
@@ -40,6 +48,7 @@ const Dashboard = () => {
 	const isCallAdded = useSelector(addCall);
 	// const isCallEnded = useSelector(callEnding);
 	const clioActivated = useSelector(isClioActivated);
+	const extChanged = useSelector(extChange);
 	const {
 		ringingInboundCalls,
 		answeredCalls,
@@ -51,6 +60,38 @@ const Dashboard = () => {
 		statusMenu,
 	} = useSelector((state: any) => state.sip);
 	const [addContact, setAddContact] = useState(false);
+
+	useEffect(() => {
+		const contactsJson = localStorage?.getItem("contacts");
+		let contactsParsed: [];
+
+		try {
+			contactsParsed = JSON.parse(String(contactsJson))?.slice(0, 20);
+		} catch (e) {
+			contactsParsed = [];
+		}
+
+		const fetchContacts = async () => {
+			await getContacts(null);
+			dispatch(setLoader(false));
+		};
+
+		if (contactsParsed && contactsParsed.length) {
+			dispatch(setContactList(contactsParsed));
+			dispatch(setLoader(true));
+			fetchContacts();
+		} else {
+			dispatch(setLoader(true));
+			fetchContacts();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!contactsLoading && contactsData) {
+			localStorage.setItem("contacts", JSON.stringify(contactsData));
+			dispatch(setContactList(contactsData?.slice(0, 20)));
+		}
+	}, [contactsLoading]);
 
 	// useEffect(() => {
 	// 	dispatch(setContactList(data));
@@ -124,9 +165,11 @@ const Dashboard = () => {
 	// 	},
 	// );
 	// }, []);
+
 	return (
 		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
+				<ToastContainer />
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
@@ -153,7 +196,7 @@ const Dashboard = () => {
 					{/* {isCallTransfer && <TransferCall />} */}
 
 					{/* after clicking on end button this screen will be shown  */}
-					{callEnding.length > 0 && (
+					{callEnding.length > 0 && dispatch(setCallNumber("")) && (
 						<EndCall name={callEnding[0].name} callTimer={callEnding[0].callTimer} number={callEnding[0].number} />
 					)}
 

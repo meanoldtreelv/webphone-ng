@@ -4,34 +4,45 @@ import { voicemailRoutes } from "./voicemail/routes";
 import { authRoutes } from "./auth/routes";
 import { conferenceRoutes } from "./conference/routes";
 import { callHistoryRoutes } from "./callHistory/routes";
-import Home from "./../pages/Home";
 import { dashboardRoutes } from "./dashboard/routes";
-import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
 import { settingsRoutes } from "./settings/routes";
 import { sidecarRoutes } from "./sidecar/routes";
+import { callbackRoutes } from "./Callback/routes";
+import { chatRoutes } from "./chat/routes";
 import { meetRoutes } from "./meet/routes";
 import { clioRoutes } from "./clio/routes";
 import { getCookie } from "utils";
+import ErrorBoundaryLayout from "./../layouts/ErrorBoundaryLayout";
+import Home from "./../pages/Home";
 import sip from "lib/sip";
 import { store } from "redux/store";
-import { callbackRoutes } from "./Callback/routes";
+import RedirectMsg from "components/shared/RedirectMsg";
+import GlobalErrorBoundary from "components/shared/ErrorBoundary";
 
 const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <Home />,
 	},
+	// {
+	// 	path: "/redirect",
+	// 	element: (
+	// 		<GlobalErrorBoundary>
+	// 			<RedirectMsg />
+	// 		</GlobalErrorBoundary>
+	// 	),
+	// },
 ];
 
-const extAuth = getCookie("extAuth");
-const apiAuth = getCookie("apiAuth");
-const status = getCookie("status");
-const ext_user_id = getCookie("ext_user_id");
-const ext_password = getCookie("ext_password");
-const ext_domain = getCookie("ext_domain");
-const ext_connected = getCookie("ext_connected");
-const instancesVal = getCookie("instancesVal");
-const instance_id = getCookie("instance_id");
+const extAuth = localStorage.getItem("extAuth");
+const apiAuth = localStorage.getItem("apiAuth");
+const status = localStorage.getItem("status");
+const ext_user_id = localStorage.getItem("ext_user_id");
+const ext_password = localStorage.getItem("ext_password");
+const ext_domain = localStorage.getItem("ext_domain");
+const ext_connected = localStorage.getItem("ext_connected");
+const instancesVal = localStorage.getItem("instancesVal");
+const instance_id = localStorage.getItem("instance_id");
 
 instance_id && store.dispatch({ type: "sip/instance_id", payload: instance_id });
 instancesVal && store.dispatch({ type: "sip/extAuthList", payload: JSON.parse(instancesVal) });
@@ -43,7 +54,7 @@ ext_connected === "true" &&
 	ext_domain &&
 	store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) &&
 	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain);
-	console.log('this is the output: ', window?.navigator?.userAgentData?.mobile);
+// console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
 const isMobile = () =>
 	window?.navigator?.userAgentData?.mobile ||
 	/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -86,6 +97,7 @@ export default createBrowserRouter([
 			...callbackRoutes,
 			...meetRoutes,
 			...clioRoutes,
+			...chatRoutes,
 		],
 	},
 ]);

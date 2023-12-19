@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	moreOptVoicemail,
+	selectedVoicemails,
 	voicemailNewFilter,
 	voicemailPage,
 	voicemailQueries,
@@ -44,7 +45,6 @@ const Voicemail = () => {
 	const [deleteVoicemailModal, setDeleteVoicemailModal] = useState(false);
 	const [filterDate, setFilterDate] = useState(false);
 	const voicemailId = useSelector(moreOptVoicemail);
-	const page = useSelector(voicemailPage);
 	const [audioSlide, setAudioSlide] = useState(false);
 	const strQueries = useSelector(voicemailStrQueries);
 	const queries = useSelector(voicemailQueries);
@@ -55,28 +55,33 @@ const Voicemail = () => {
 	const [filterAnim, setFilterAnim] = useState(false);
 	const [search, setSearch] = useState("");
 	const [pageSize, setPageSize] = useState(20);
+	const [page, setPage] = useState(1);
 	const [filterAppliedV, setFilterAppliedV] = useState<any>();
 	const [date, setDate] = useState({
 		from_date: "",
 		to_date: "",
 	});
+	const selectedVoicemail = useSelector(selectedVoicemails);
+	console.log("====================================");
+	console.log(selectedVoicemail, "voicemail list selected ");
+	console.log("====================================");
 	// to be removed when auth cookies are implemented
 	const { data: extListData } = useGetExtensionsQuery("5ed668cd38d0350104cb8789");
-	const btmMore = [
-		{
-			icon: <LinkIcon />,
-			text: "Copy Link",
-		},
-		{
-			icon: <CopyIcon />,
-			text: "Copy Text",
-		},
+	// const btmMore = [
+	// 	{
+	// 		icon: <LinkIcon />,
+	// 		text: "Copy Link",
+	// 	},
+	// 	{
+	// 		icon: <CopyIcon />,
+	// 		text: "Copy Text",
+	// 	},
 
-		{
-			icon: <EnvelopIcon />,
-			text: "Share via Email",
-		},
-	];
+	// 	{
+	// 		icon: <EnvelopIcon />,
+	// 		text: "Share via Email",
+	// 	},
+	// ];
 
 	useEffect(() => {
 		const voicemailsJson = localStorage?.getItem("voicemails");
@@ -90,13 +95,19 @@ const Voicemail = () => {
 
 		const fetchVoicemails = async () => {
 			await getVoicemails(strQueries);
-			dispatch(setLoader(false))
+			dispatch(setLoader(false));
 		};
 
 		if (voicemailsParsed && voicemailsParsed?.length) {
 			dispatch(setVoicemailResults(voicemailsParsed?.slice(0, 20)));
-			dispatch(setLoader(true))
-			fetchVoicemails()
+			dispatch(setLoader(true));
+			dispatch(
+				setVoicemailQueries({
+					page: Math.ceil(voicemailsParsed?.length / 80),
+					page_size: 80,
+				}),
+			);
+			fetchVoicemails();
 		} else {
 			fetchVoicemails();
 		}
@@ -120,7 +131,7 @@ const Voicemail = () => {
 				dispatch(setVoicemailResults(data?.slice(0, 20)));
 			}
 		}
-	}, [isLoading, isFetching]);
+	}, [data]);
 
 	useEffect(() => {
 		const voicemailsJson = localStorage?.getItem("voicemails");
@@ -136,13 +147,18 @@ const Voicemail = () => {
 			await getVoicemails(strQueries);
 		};
 
-		if (voicemailsParsed && voicemailsParsed?.length !== pageSize && Object.keys(queries).length <= 2) {
+		if (
+			voicemailsParsed &&
+			voicemailsParsed?.length !== pageSize &&
+			voicemailsParsed?.length !== Number(queries?.page) * 20 &&
+			Object.keys(queries).length === 2
+		) {
 			dispatch(setVoicemailResults(voicemailsParsed?.slice(0, pageSize + 20)));
 			setPageSize((prevState) => prevState + 20);
 		} else {
 			fetchVoicemails();
 		}
-	}, [strQueries]);
+	}, [strQueries, page]);
 
 	useEffect(() => {
 		if (voicemailId === "") setDeleteVoicemailModal(false);
@@ -171,16 +187,26 @@ const Voicemail = () => {
 		const clientHeight = e.target.clientHeight;
 
 		if (scrollTop + clientHeight >= scrollHeight) {
-			console.log('scroll inside');
-			if (Number(queries?.per_page) >= 10000 && !isLoading) {
+			const voicemailsJson = localStorage?.getItem("voicemails");
+			let voicemailsParsed: [];
+
+			try {
+				voicemailsParsed = JSON.parse(String(voicemailsJson));
+			} catch (e) {
+				voicemailsParsed = [];
+			}
+
+			if (voicemailsParsed?.length === page * 20) {
 				dispatch(
 					setVoicemailQueries({
-						page: Number(queries?.page) + 1,
-						page_size: Number(queries?.per_page) + 80,
+						page: Math.ceil(voicemailsParsed?.length / 80 + 1),
+						page_size: 80,
 					}),
 				);
 			} else {
-				dispatch(setVoicemailQueries({ page: Number(queries?.page) + 1, page_size: Number(queries?.per_page) }));
+				if (voicemailsParsed?.length > page * 20) {
+					setPage(page + 1);
+				}
 			}
 		}
 	};
@@ -218,7 +244,9 @@ const Voicemail = () => {
 						/>
 					</div>
 
-					<div className={`${styles.body} ${isLoading ? styles.body_NoOverflow : ""}`} onScroll={handleScroll}>
+					<div
+						className={`${styles.body} ${!voicemailResultsList?.length ? styles.body_NoOverflow : ""}`}
+						onScroll={handleScroll}>
 						{!voicemailResultsList?.length && !isLoading && !search && (
 							<div className={styles.noVoiceBox}>
 								<NoVoicemail />
@@ -226,7 +254,7 @@ const Voicemail = () => {
 						)}
 
 						<div className={`${styles.body_box} ${!search ? styles.body_boxPadding : ""} `}>
-							{isLoading ? (
+							{!voicemailResultsList?.length ? (
 								<div className={styles.skeletonVLoading}>
 									{Array(15)
 										.fill(null)

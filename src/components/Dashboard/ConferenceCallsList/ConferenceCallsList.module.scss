@@ -1,0 +1,56 @@
+@import "./../../../sass/abstracts/variables";
+@import "./../../../sass/abstracts/colors";
+
+.overlay {
+	width: 100vw;
+	height: 100%;
+	background: $overlay-primary;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 3000;
+}
+.ConferenceCallsList {
+	padding: 25px;
+	position: fixed;
+	top: 0px;
+	right: 0;
+	width: 560px;
+	height: 100vh;
+	flex-shrink: 0;
+	background: var(--background-secondary);
+	display: flex;
+	flex-direction: column;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	gap: 35px;
+	animation: slider 0.3s;
+
+	&_header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+.headerTitle {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+@keyframes slider {
+	from {
+		position: absolute;
+		right: -500px;
+	}
+
+	to {
+		right: 0;
+	}
+}
+
+@media only screen and (max-width: 990px) {
+	.ConferenceCallsList {
+		width: 100%;
+	}
+}

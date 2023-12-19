@@ -1,0 +1,64 @@
+.from {
+	display: flex;
+	justify-content: space-between;
+	padding: 16px 0;
+	position: relative;
+
+	.left {
+		color: var(--text-secondary, #5c6168);
+
+		/* Caption 1/Regular */
+		font-size: 13px;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+	}
+
+	.right {
+		display: flex;
+		gap: 3px;
+		align-items: center;
+
+		color: var(--text-primary, #1f2023);
+
+		/* Caption 1/Regular */
+		font-size: 13px;
+		line-height: 18px; /* 138.462% */
+		letter-spacing: -0.2px;
+		cursor: pointer;
+
+		.active {
+			rotate: 180deg;
+		}
+
+		&:hover {
+			color: var(--text-link, #1480e1);
+		}
+	}
+
+	.active1 {
+		color: var(--text-link, #1480e1);
+	}
+}
+
+.contact {
+	padding: 9px 0;
+
+	color: var(--text-secondary, #5c6168);
+
+	/* Caption 2/Regular */
+	font-size: 11px;
+	line-height: 14px; /* 127.273% */
+	letter-spacing: -0.2px;
+
+	span {
+		display: flex;
+		gap: 5px;
+		align-items: center;
+	}
+}
+
+.contactList {
+	height: calc(100% - 230px);
+
+	overflow-y: auto;
+}

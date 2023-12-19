@@ -32,6 +32,7 @@ const TransferCallCard = ({
 						payload: { action: "showTransferCall", data: { lineNum: LineNumber, showTransferCall: true } },
 					});
 					dispatch(setCallNumber(""));
+					transferBtn(false);
 				}}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer">
@@ -56,6 +57,7 @@ const TransferCallCard = ({
 						payload: { action: "showTransferCallAtt", data: { lineNum: LineNumber, showTransferCallAtt: true } },
 					});
 					dispatch(setCallNumber(""));
+					transferBtn(false);
 				}}>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="line / transfer_2">

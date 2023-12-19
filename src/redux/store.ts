@@ -8,8 +8,21 @@ import callHistoryReducer from "./call-history/callHistorySlice";
 import sidecarReducer from "./sidecar/sidecarSlice";
 import meetReducer from "./meet/meetSlice";
 import clioReducer from "./clio/clioSlice";
-import { apiService } from "./../services/api";
+import chatReducer from "./chat/chatSlice";
+import { apiService, apiStorageService } from "./../services/api";
 import sipReducer from "./sip";
+import { jwtTokenRefresher } from "middleware/jwtTokenRefresher";
+import { isDev, isLocalhost } from "./../config/env.config";
+
+if (!isDev)
+	if (!isLocalhost) {
+		console.log = () => {};
+		console.error = () => {};
+		console.debug = () => {};
+		window.onerror = function (message, source, lineno, colno, error) {
+			return true;
+		};
+	}
 
 export const store = configureStore({
 	reducer: {
@@ -23,9 +36,12 @@ export const store = configureStore({
 		sidecar: sidecarReducer,
 		meet: meetReducer,
 		clio: clioReducer,
+		chat: chatReducer,
 		[apiService.reducerPath]: apiService.reducer,
+		[apiStorageService.reducerPath]: apiStorageService.reducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(apiService.middleware, apiStorageService.middleware, jwtTokenRefresher),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

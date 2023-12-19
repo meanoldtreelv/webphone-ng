@@ -15,24 +15,30 @@
 	min-width: 18rem;
 	position: relative;
 	max-width: 28rem;
-    height: auto;
+	height: auto;
 }
+
 .layer3 {
 	border-radius: 0.5rem;
 	padding: 1rem;
-    background-color: rgb(255 255 255);
+	background-color: var(--background-secondary);
 	position: relative;
+
+	&_header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		button {
+			height: 0px;
+			height: 18px;
+		}
+	}
 }
-.x {
-	display: inline;
-	float: right;
-	cursor: pointer;
-	font-weight: bold;
-	color: #5b6067;
-}
+
 .h2 {
 	font-weight: 500;
 	font-size: 1.125rem;
-    line-height: 1.75rem;
-	color: #888888;
+	line-height: 1.75rem;
+	color: var(--text-secondary);
 }

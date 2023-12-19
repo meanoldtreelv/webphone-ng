@@ -17,12 +17,16 @@ import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
+import ChevronDownIcon from "components/UI/Icons/Navigation/ChevronDown";
+import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
 
 const Login = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
+	const [withExt, setWithExt] = useState(false);
 
 	const onContinueWithRingplan = () => {
+		sip.logout(false);
 		store.dispatch({ type: "sip/authMessage", payload: "" });
 		// navigate("/dashboard"); // Remove the extra parentheses
 		const loginUrl = getLoginUrl();
@@ -42,13 +46,11 @@ const Login = () => {
 	const [form, setForm] = useState<FormData>({ extension: "", secret: "", server: "zraytechnoloDoobh.ringplan.com" });
 
 	const loginWithExtension = () => {
-		// sip.logout()
+		sip.logout(false);
 		store.dispatch({ type: "sip/extAuth", payload: true });
-		
-		setCookie("extAuth", "true");
-		localStorage.clear();
-    	sessionStorage.clear();
-		
+
+		localStorage.setItem("extAuth", "true");
+
 		form?.extension === ""
 			? setForm((prevState) => {
 					return { ...prevState, extensionErrorMsg: "This field is required" };
@@ -73,6 +75,7 @@ const Login = () => {
 		form.extension && form.server && form.secret && sip.CreateUserAgent(form.extension, form.secret, form.server);
 		// sip.CreateUserAgent("", "", "")
 	};
+
 	const { authMessage, authLoading, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 
 	useEffect(() => {
@@ -84,8 +87,7 @@ const Login = () => {
 	const login = () => {
 		return (
 			<section className={`${styles.login} ${theme}`}>
-
-				{ suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
+				{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
 				</div>
@@ -100,39 +102,61 @@ const Login = () => {
 							</Button>
 						</div>
 
-						<p className={styles.login_withExtension}>Or login with extension and secret</p>
+						{/* <button className={styles.login_withExtension}> */}
+						<button className={styles.loginWithExtension_toggle} onClick={() => setWithExt(!withExt)}>
+							Or login with extension and secret
+							{withExt ? (
+								<div className={styles.loginWithExtension_chevronUp}>
+									<ChevronUpIcon />
+								</div>
+							) : (
+								<div className={styles.loginWithExtension_chevronDown}>
+									<ChevronDownIcon />
+								</div>
+							)}
+						</button>
 
-						<Input
-							type="text"
-							errorMsg={form?.extensionErrorMsg}
-							value={form?.extension}
-							onChange={(e) => setForm({ ...form, extension: e.target.value })}
-							placeholder="Enter extension here..."
-							required
-							icon={<ExtensionIcon />}
-						/>
-						<Input
-							type="text"
-							errorMsg={form?.serverErrorMsg}
-							value={form?.server}
-							onChange={(e) => setForm({ ...form, server: e.target.value })}
-							placeholder="Enter server address here..."
-							required
-							icon={<EnvelopeIcon />}
-						/>
-						<Input
-							type="password"
-							errorMsg={form?.secretErrorMsg}
-							value={form?.secret}
-							onChange={(e) => setForm({ ...form, secret: e.target.value })}
-							placeholder="Enter secret code here..."
-							required
-							icon={<LockIcon />}
-						/>
-						{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
-						<Button fill onClick={loginWithExtension}>
-							Sign In
-						</Button>
+						<div className={styles.loginWithExtension}>
+							{withExt ? (
+								<>
+									<div className={styles.loginWithExtension_inputs}>
+										<Input
+											type="text"
+											errorMsg={form?.extensionErrorMsg}
+											value={form?.extension}
+											onChange={(e) => setForm({ ...form, extension: e.target.value })}
+											placeholder="Enter extension here..."
+											required
+											icon={<ExtensionIcon />}
+										/>
+										<Input
+											type="text"
+											errorMsg={form?.serverErrorMsg}
+											value={form?.server}
+											onChange={(e) => setForm({ ...form, server: e.target.value })}
+											placeholder="Enter server address here..."
+											required
+											icon={<EnvelopeIcon />}
+										/>
+										<Input
+											type="password"
+											errorMsg={form?.secretErrorMsg}
+											value={form?.secret}
+											onChange={(e) => setForm({ ...form, secret: e.target.value })}
+											placeholder="Enter secret code here..."
+											required
+											icon={<LockIcon />}
+										/>
+										{authMessage && authMessage !== "continue" ? <ErrorMessage msg={authMessage} /> : ""}
+									</div>
+
+									<Button fill onClick={loginWithExtension}>
+										Sign In
+									</Button>
+								</>
+							) : null}
+						</div>
+
 						{/* 
 						<p className={`caption_1 ${styles.login_forgotPassword}`}>
 							Forgot your password? <span>Click here</span>

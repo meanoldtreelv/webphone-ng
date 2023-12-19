@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialCommonState = {
 	modal: false,
@@ -8,7 +8,9 @@ const initialCommonState = {
 		msg: "",
 	},
 	simpleNotification: "",
-	loader: false
+	loader: false,
+	extChange: false,
+	sessionOut: false,
 };
 
 const commonSlice = createSlice({
@@ -28,11 +30,25 @@ const commonSlice = createSlice({
 			state.simpleNotification = action.payload;
 		},
 		setLoader(state, action) {
-			state.loader = action.payload
-		}
+			state.loader = action.payload;
+		},
+		setExtChange(state) {
+			state.extChange = !state.extChange;
+		},
+		setSessionOut(state, action) {
+			state.sessionOut = action.payload;
+		},
 	},
 });
 
-export const { toggleModal, togglePlayPause, setNotification, setSimpleNotification, setLoader } = commonSlice.actions;
+export const {
+	toggleModal,
+	togglePlayPause,
+	setNotification,
+	setSimpleNotification,
+	setLoader,
+	setExtChange,
+	setSessionOut,
+} = commonSlice.actions;
 
 export default commonSlice.reducer;
