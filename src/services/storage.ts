@@ -14,6 +14,9 @@ export const storageService = apiStorageService.injectEndpoints({
 				method: "POST",
 				url: `/files/${id}/upload`,
 				data,
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
 			}),
 		}),
 		representationFiles: build.query({

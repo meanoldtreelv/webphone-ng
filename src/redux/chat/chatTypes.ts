@@ -43,4 +43,5 @@ export interface IChatState {
 	selectedAudioFiles: {};
 	selectedVideoFiles: {};
 	selectedAttachment: [];
+	isMsgSending: boolean;
 }

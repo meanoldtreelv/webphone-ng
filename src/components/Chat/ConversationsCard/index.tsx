@@ -73,7 +73,7 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 							</span>
 						)}
 
-						{limitCharacter(conversationData?.last_msg?.text, 50)}
+						{limitCharacter(conversationData?.last_msg?.text, 40)}
 					</span>
 					<span className={styles.pin_unread}>
 						{conversationData?.unread_msg_count > 0 && (

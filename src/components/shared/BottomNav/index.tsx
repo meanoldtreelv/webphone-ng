@@ -50,12 +50,12 @@ const BottomNav = () => {
 	];
 
 	const sidebarBtmMoreLinks = [
-		// {
-		// 	path: routePaths.CONFERENCE.ROUTE,
-		// 	icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-		// 	name: "Texting",
-		// 	unread: 1,
-		// },
+		{
+			path: routePaths.CHAT.ROUTE,
+			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Texting",
+			unread: 0,
+		},
 		// {
 		// 	path: routePaths.CONFERENCE.ROUTE,
 		// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -68,7 +68,7 @@ const BottomNav = () => {
 		// 	name: "Conference",
 		// },
 		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
-		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
+		{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 		{
 			path: routePaths.SETTINGS.ROUTE,
 			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,

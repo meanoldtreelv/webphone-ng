@@ -1,4 +1,5 @@
 export const formatDate = (dateString: string) => {
+	// todo :- modify condition for 12:55pm its showing 0:55pm
 	const date = new Date(dateString);
 
 	const hours = date.getHours();
@@ -171,4 +172,32 @@ export const formatDateAdvanced = (dateString: string) => {
 			return `${date.getDate()} ${dateMonth}`;
 		}
 	}
+};
+
+// export function getDate(dateTimeString: any) {
+// 	const dateObj = new Date(dateTimeString);
+// 	return dateObj?.toDateString(); // Returns the date in a human-readable format
+// }
+
+export const longDateFormat = (date) => {
+	const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+	// Split the date string into day, month, and year
+	const dateParts = date.split("/");
+	const day = parseInt(dateParts[0], 10); // Extract day
+	const month = parseInt(dateParts[1], 10) - 1; // Extract month (subtract 1 as months are zero-indexed)
+	const year = parseInt(dateParts[2], 10); // Extract year
+
+	// Create a new Date object using the extracted parts
+	const currentDate = new Date(year, month, day);
+
+	// Get the day, month abbreviation, and year from the Date object
+	const formattedDay = currentDate.getDate();
+	const formattedMonth = months[currentDate.getMonth()];
+	const formattedYear = currentDate.getFullYear();
+
+	// Construct the formatted date string
+	const formattedDate = `${formattedDay} ${formattedMonth} ${formattedYear}`;
+	// console.log(formattedDate);
+	return formattedDate;
 };

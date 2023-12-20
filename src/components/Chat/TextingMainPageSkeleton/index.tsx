@@ -5,7 +5,7 @@ const TextingMainPageSkeleton = () => {
 	return (
 		<div className={styles.page}>
 			<div>
-				{Array(16)
+				{Array(20)
 					.fill(null)
 					.map((item, index) => (
 						<ContactCardSkeleton key={index} />
