@@ -22,7 +22,13 @@ import {
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
-import { setIsMsgSending, setIsSettingDialogueOpen, setLatestMsgRandomId, setMsgLists } from "redux/chat/chatSlice";
+import {
+	setIsMsgSending,
+	setIsSettingDialogueOpen,
+	setLatestMsgRandomId,
+	setMsgLists,
+	setSelectedAttachment,
+} from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
 import { useLazyPostFilesQuery, useLazyUploadFilesQuery } from "services/storage";
@@ -129,6 +135,7 @@ const ConversationsFooter = () => {
 	useEffect(() => {
 		console.log(fileResponse, "fileResponse");
 		if (selectedAttachments.length === 0 || fileResponse.length !== selectedAttachments.length) return;
+
 		const fetchData = async () => {
 			const selectedFiles = selectedAttachments || [];
 			for (let i = 0; i < selectedFiles.length; i++) {
@@ -151,7 +158,7 @@ const ConversationsFooter = () => {
 				}
 			}
 		};
-		// fetchData();
+		fetchData();
 		// const sendData = async () => {
 		// 	const { error, data } = await sendOutboundMessage({
 		// 		id: conversationDatas?.id,
@@ -191,7 +198,7 @@ const ConversationsFooter = () => {
 				data: {
 					created_at: new Date(),
 					files: uploadId,
-					stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
+					// stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
 					text: text,
 					with_warning: false,
 				},
@@ -199,6 +206,9 @@ const ConversationsFooter = () => {
 
 			if (data) {
 				setText("");
+				setTextData({});
+				dispatch(setSelectedAttachment([]));
+				setFilePreviews([]);
 				showToast("message send successfully", "info");
 			}
 
@@ -206,7 +216,7 @@ const ConversationsFooter = () => {
 				showToast("There is error in sending text msg , please try again later  ", "error");
 			}
 		};
-		// sendData();
+		sendData();
 	}, [uploadId]);
 
 	useEffect(() => {
@@ -234,6 +244,13 @@ const ConversationsFooter = () => {
 			reader.readAsDataURL(selectedAttachments[i]);
 		}
 	}, [selectedAttachments]);
+
+	useEffect(() => {
+		setIsAttachmentClicked(false);
+	}, [selectedAttachments]);
+
+	console.log(selectedAttachments, "selectedAttachments");
+	console.log(text, "text");
 
 	return (
 		<>
@@ -309,7 +326,7 @@ const ConversationsFooter = () => {
 						</div>
 					</div>
 					<button
-						className={`${styles.send} ${text?.length > 0 ? styles.send_active : ""}`}
+						className={`${styles.send} ${text?.length > 0 || selectedAttachment.length > 0 ? styles.send_active : ""}`}
 						onClick={() => {
 							// setTextData({
 							// 	text: text,
@@ -327,20 +344,20 @@ const ConversationsFooter = () => {
 					{filePreviews?.map((item) => {
 						// todo- need to add more checks
 						if (
-							item.type === "image/jpeg" ||
-							item.type === "image/png" ||
-							item.type === "image/jpg" ||
-							item.type === "image/webp"
+							item?.type === "image/jpeg" ||
+							item?.type === "image/png" ||
+							item?.type === "image/jpg" ||
+							item?.type === "image/webp"
 						) {
-							return <SelectedImg src={item.target} name={item?.name} />;
+							return <SelectedImg src={item?.target} name={item?.name} />;
 						}
-						if (item.type === "video/mp4" || item.type === "video/mov") {
-							return <SelectedVideo src={item.target} name={item?.name} />;
+						if (item?.type === "video/mp4" || item?.type === "video/mov") {
+							return <SelectedVideo src={item?.target} name={item?.name} />;
 						}
-						if (item.type === "application/pdf" || item.type === "application/doc") {
+						if (item?.type === "application/pdf" || item?.type === "application/doc") {
 							return <SelectedDoc name={item?.name} />;
 						}
-						if (item.type === "audio/mpeg" || item.type === "audio/mp3") {
+						if (item?.type === "audio/mpeg" || item?.type === "audio/mp3") {
 							return <SelectedAudio name={item?.name} />;
 						}
 					})}
