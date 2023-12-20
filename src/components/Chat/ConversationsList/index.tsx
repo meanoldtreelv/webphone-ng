@@ -20,6 +20,7 @@ import {
 } from "redux/chat/chatSlice";
 import {
 	conversationLists,
+	isConversationSelected,
 	isSortingMessagePopUpOpen,
 	queries,
 	socket,
@@ -29,9 +30,11 @@ import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 import BtnMedium from "components/UI/BtnMedium";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
+	const conversationSelected = useSelector(isConversationSelected);
 	const conversationsLists = useSelector(conversationLists);
 	const sortingMessagePopUpOpen = useSelector(isSortingMessagePopUpOpen);
 	const sortConversationTypes = useSelector(sortConversationType);
@@ -51,6 +54,19 @@ const ConversationsList = () => {
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedConversationLists, setSearchedConversationLists] = useState([]);
+
+	const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
+	const { width } = useWindowDimensions();
+
+	useEffect(() => {
+		console.log(width, "width");
+
+		if (width <= 900 && conversationSelected) {
+			setIsChatBoxOpen(true);
+		} else {
+			setIsChatBoxOpen(false);
+		}
+	}, [width, conversationSelected]);
 
 	useEffect(() => {
 		setPage(1);
@@ -246,7 +262,9 @@ const ConversationsList = () => {
 	}, [Socket, conversationsLists, dispatch]);
 
 	return (
-		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
+		<div
+			className={`${styles.contact} ${true ? styles.contactListSml : ""}`}
+			style={isChatBoxOpen ? { display: "none" } : {}}>
 			<div className={styles.contact_header}>
 				{/* <h1 className={styles.respContacts_header}>Contacts</h1> */}
 				<div className={styles.contact_search}>
@@ -268,13 +286,7 @@ const ConversationsList = () => {
 							dispatch(setIsAddContactDialogueOpen(true));
 						}}
 					/>
-					{/* <button
-						className={styles.add_contact}
-						onClick={() => {
-							dispatch(setIsAddContactDialogueOpen(true));
-						}}>
-						<AddUserIcon color="icon-on-color" />
-					</button> */}
+
 					<BtnMedium
 						btnType={"primary"}
 						isDanger={false}
@@ -286,13 +298,6 @@ const ConversationsList = () => {
 							dispatch(setIsStartNewConversationDialogueOpen(true));
 						}}
 					/>
-					{/* <button
-						className={styles.add_contact}
-						onClick={() => {
-							dispatch(setIsStartNewConversationDialogueOpen(true));
-						}}>
-						<EditIcon color="icon-on-color" />
-					</button> */}
 				</div>
 				<div>
 					{searchText.length > 0 ? (

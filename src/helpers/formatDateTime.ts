@@ -2,13 +2,14 @@ export const formatDate = (dateString: string) => {
 	const date = new Date(dateString);
 
 	const hours = date.getHours();
-	const hours12 = hours % 12;
+	const hours12 = hours % 12 === 0 ? 12 : hours % 12; // Adjust for 12 AM/PM
 	const minutes = date.getMinutes();
 
+	const hoursString = hours12 < 10 ? `0${hours12}` : hours12; // Ensure two digits for hours
 	const minutesString = minutes < 10 ? `0${minutes}` : minutes;
 	const ampm = hours >= 12 ? "PM" : "AM";
 
-	return `${hours12}:${minutesString} ${ampm}`;
+	return `${hoursString}:${minutesString} ${ampm}`;
 };
 
 export const toSecMinAndHr = (totalSeconds: number) => {
@@ -172,3 +173,181 @@ export const formatDateAdvanced = (dateString: string) => {
 		}
 	}
 };
+
+// export function getDate(dateTimeString: any) {
+// 	const dateObj = new Date(dateTimeString);
+// 	return dateObj?.toDateString(); // Returns the date in a human-readable format
+// }
+
+export const longDateFormat = (date) => {
+	const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+	// Split the date string into day, month, and year
+	const dateParts = date.split("/");
+	const day = parseInt(dateParts[0], 10); // Extract day
+	const month = parseInt(dateParts[1], 10) - 1; // Extract month (subtract 1 as months are zero-indexed)
+	const year = parseInt(dateParts[2], 10); // Extract year
+
+	// Create a new Date object using the extracted parts
+	const currentDate = new Date(year, month, day);
+
+	// Get the day, month abbreviation, and year from the Date object
+	const formattedDay = currentDate.getDate();
+	const formattedMonth = months[currentDate.getMonth()];
+	const formattedYear = currentDate.getFullYear();
+
+	// Construct the formatted date string
+	const formattedDate = `${formattedDay} ${formattedMonth} ${formattedYear}`;
+	// console.log(formattedDate);
+	return formattedDate;
+};
+
+// export function passedTime(date) {
+// 	const currentdate = new Date();
+// 	const miliseconds = new Date(date);
+// 	const seconds = Math.floor(miliseconds.getTime() / 1000);
+// 	const currentseconds = Math.floor(currentdate.getTime() / 1000);
+// 	const difference = Math.abs(seconds - currentseconds);
+
+// 	var d = Math.floor(difference / (3600 * 24));
+// 	var h = Math.floor((difference % (3600 * 24)) / 3600);
+// 	var m = Math.floor((difference % 3600) / 60);
+// 	var s = Math.floor(difference % 60);
+
+// 	var dDisplay = d > 0 ? d + (d == 1 ? " day " : " days ") : "";
+// 	var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
+// 	var mDisplay = m > 0 ? m + (m == 1 ? " min " : " mins ") : "";
+// 	var sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
+
+// 	if (d > 0) {
+// 		return dDisplay;
+// 	} else if (h > 0) {
+// 		return hDisplay;
+// 	} else if (m > 0) {
+// 		return mDisplay;
+// 	} else if (s > 0) {
+// 		return sDisplay;
+// 	}
+// }
+
+export function showPassedTimeDate(givenDate) {
+	const today = new Date();
+	const yesterday = new Date(today);
+	yesterday.setDate(yesterday.getDate() - 1);
+	const dayBeforeYesterday = new Date(today);
+	dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 2);
+
+	const dateFormatOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
+	const timeFormatOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
+
+	const isSameDay = (date1, date2) =>
+		date1.getFullYear() === date2.getFullYear() &&
+		date1.getMonth() === date2.getMonth() &&
+		date1.getDate() === date2.getDate();
+
+	if (isSameDay(givenDate, today)) {
+		return givenDate.toLocaleTimeString("en-US", timeFormatOptions);
+	} else if (isSameDay(givenDate, yesterday)) {
+		return "Yesterday";
+	} else if (isSameDay(givenDate, dayBeforeYesterday)) {
+		return givenDate.toLocaleDateString("en-US", dateFormatOptions).replace(/\//g, ".");
+	} else {
+		// Check if the given date is further in the past
+		if (givenDate < dayBeforeYesterday) {
+			return givenDate.toLocaleDateString("en-US", dateFormatOptions).replace(/\//g, ".");
+		} else {
+			return "Date is further in the past";
+		}
+	}
+}
+export function convertIntoLongDateFormat(dateString) {
+	const currentDate = new Date();
+
+	const dateParts = dateString.split("/");
+	const day = parseInt(dateParts[0], 10);
+	const monthIndex = parseInt(dateParts[1], 10) - 1;
+	const year = parseInt(dateParts[2], 10);
+
+	const date = new Date(year, monthIndex, day);
+
+	// Check if the date is today
+	if (
+		date.getDate() === currentDate.getDate() &&
+		date.getMonth() === currentDate.getMonth() &&
+		date.getFullYear() === currentDate.getFullYear()
+	) {
+		return "Today";
+	}
+
+	// Get yesterday's date
+	const yesterday = new Date(currentDate);
+	yesterday.setDate(currentDate.getDate() - 1);
+
+	// Check if the date is yesterday
+	if (
+		date.getDate() === yesterday.getDate() &&
+		date.getMonth() === yesterday.getMonth() &&
+		date.getFullYear() === yesterday.getFullYear()
+	) {
+		return "Yesterday";
+	}
+
+	const options = {
+		weekday: "long",
+		month: "long",
+		day: "numeric",
+		year: "numeric",
+	};
+
+	const formattedDate = date.toLocaleDateString("en-US", options);
+
+	const daySuffix = getDaySuffix(day);
+
+	return formattedDate.replace(/\b\d{1,2}\b/, day + daySuffix);
+}
+
+function getDaySuffix(day) {
+	if (day >= 11 && day <= 13) {
+		return "th";
+	}
+	switch (day % 10) {
+		case 1:
+			return "st";
+		case 2:
+			return "nd";
+		case 3:
+			return "rd";
+		default:
+			return "th";
+	}
+}
+
+// Example usage:
+// const originalDate = "20/12/2023";
+// const convertedDate = convertDateFormat(originalDate);
+// console.log(convertedDate); // Output: Thursday, December 20th, 2023
+
+export function convertNewDateToString(date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+	const hours = String(date.getHours()).padStart(2, "0");
+	const minutes = String(date.getMinutes()).padStart(2, "0");
+	const seconds = String(date.getSeconds()).padStart(2, "0");
+	const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
+	const timezoneOffset = -date.getTimezoneOffset();
+	const timezoneOffsetHours = Math.floor(Math.abs(timezoneOffset) / 60)
+		.toString()
+		.padStart(2, "0");
+	const timezoneOffsetMinutes = (Math.abs(timezoneOffset) % 60).toString().padStart(2, "0");
+	const timezoneSign = timezoneOffset >= 0 ? "+" : "-";
+
+	const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}${timezoneSign}${timezoneOffsetHours}${timezoneOffsetMinutes}`;
+
+	return formattedDate;
+}
+
+// Example usage:
+// const currentDate = new Date(); // Create a new Date object with the current date and time
+// const formattedDate = convertNewDateToString(currentDate);
+// console.log(formattedDate);

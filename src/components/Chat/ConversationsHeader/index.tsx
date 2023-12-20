@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styles from "./ConversationsHeader.module.scss";
-import UserStatusIcon from "components/UI/Icons/UserStatus";
 import DeleteIcon from "components/UI/Icons/Delete";
 import CallIcon from "components/UI/Icons/ChatIcons/Call";
 import UserGroupIcon from "components/UI/Icons/User/UserGroup";
@@ -8,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	setConversationData,
 	setConversationLists,
+	setIsConversationSelected,
 	setIsDeleteCheck,
 	setIsDeleteConversationDialogueOpen,
 } from "redux/chat/chatSlice";
@@ -28,6 +28,8 @@ import { useLazyPinUnpinConversationQuery } from "services/chat";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router";
 import sip from "lib/sip";
+import ArrowLeft from "components/UI/Icons/ArrowLeft";
+import UserStatusIcon from "components/UI/Icons/UserStatus";
 
 const ConversationsHeader = () => {
 	const dispatch = useDispatch();
@@ -133,6 +135,14 @@ const ConversationsHeader = () => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
+				<span
+					className={styles.backArrow}
+					onClick={() => {
+						dispatch(setIsConversationSelected(false));
+						dispatch(setConversationData({}));
+					}}>
+					<ArrowLeft />
+				</span>
 				{conversationDatas?.conversation_type === "group" || conversationDatas?.conversation_type === "campaign" ? (
 					<span className={styles.initials_group}>
 						<UserGroupIcon />
@@ -140,9 +150,9 @@ const ConversationsHeader = () => {
 				) : (
 					<span className={styles.initials}>
 						{contactAbbreviation(first_name, last_name, phone, "")}
-						<span>
+						{/* <span>
 							<UserStatusIcon />
-						</span>
+						</span> */}
 					</span>
 				)}
 
