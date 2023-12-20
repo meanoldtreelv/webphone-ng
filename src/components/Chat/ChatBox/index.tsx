@@ -18,7 +18,7 @@ import { setMsgLists } from "redux/chat/chatSlice";
 import ChatSkeleton from "../ChatSkeleton";
 import ReceiveFiles from "./ReceiveFiles";
 import SendFiles from "./SendFiles";
-import { longDateFormat } from "helpers/formatDateTime";
+import { convertIntoLongDateFormat, longDateFormat } from "helpers/formatDateTime";
 import InfoMessage from "./InfoMessage";
 import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
@@ -197,7 +197,7 @@ const ChatBox = () => {
 					{messageLists?.length === 0 && <div className={styles.noMsg}>No more message </div>}
 					{dateWiseChat?.map((items) => (
 						<div key={items.date}>
-							<div className={styles.date}>{longDateFormat(items.date)}</div>
+							<div className={styles.date}>{convertIntoLongDateFormat(items.date)}</div>
 							{items?.msg
 								?.slice()
 								.reverse()

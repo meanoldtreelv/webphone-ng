@@ -27,9 +27,10 @@ const BottomNav = () => {
 			name: "Contacts",
 		},
 		{
-			path: routePaths.CALL_HISTORY.ROUTE,
-			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Recent",
+			path: routePaths.CHAT.ROUTE,
+			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Texting",
+			unread: 0,
 		},
 		{
 			path: routePaths.DASHBOARD.ROUTE,
@@ -37,11 +38,11 @@ const BottomNav = () => {
 			name: "Keypad",
 		},
 		{
-			path: routePaths.VOICEMAIL.ROUTE,
-			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Voicemail",
-			unread: 4,
+			path: routePaths.CALL_HISTORY.ROUTE,
+			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Recent",
 		},
+
 		{
 			path: routePaths.VOICEMAIL.ROUTE,
 			icon: <ApplicationIcon />,
@@ -50,12 +51,6 @@ const BottomNav = () => {
 	];
 
 	const sidebarBtmMoreLinks = [
-		{
-			path: routePaths.CHAT.ROUTE,
-			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Texting",
-			unread: 0,
-		},
 		// {
 		// 	path: routePaths.CONFERENCE.ROUTE,
 		// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
@@ -67,6 +62,12 @@ const BottomNav = () => {
 		// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
 		// 	name: "Conference",
 		// },
+		{
+			path: routePaths.VOICEMAIL.ROUTE,
+			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Voicemail",
+			unread: 4,
+		},
 		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
 		{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 		{

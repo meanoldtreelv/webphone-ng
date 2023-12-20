@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setConversationData, setIsConversationSelected } from "redux/chat/chatSlice";
 import { limitCharacter } from "helpers";
 import { contactAbbreviation } from "utils";
-import { recentDateFormat } from "helpers/formatDateTime";
+import { passedTime, recentDateFormat, showPassedTimeDate } from "helpers/formatDateTime";
 import PinIcon from "components/UI/Icons/Pin";
 
 const ConversationsCard: React.FC = ({ conversationData }) => {
@@ -62,7 +62,9 @@ const ConversationsCard: React.FC = ({ conversationData }) => {
 							? firstName + " " + lastName
 							: phone}
 					</span>
-					<span className={styles.dateTime}>{recentDateFormat(conversationData?.last_message_created_at)}</span>
+					<span className={styles.dateTime}>
+						{showPassedTimeDate(new Date(conversationData?.last_message_created_at))}
+					</span>
 				</div>
 				<div>
 					<span className={styles.msg}>

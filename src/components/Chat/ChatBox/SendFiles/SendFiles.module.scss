@@ -12,14 +12,17 @@
 
 .left {
 	display: flex;
+	flex-direction: column;
 
 	justify-content: flex-end;
 	width: calc(100%);
+	// background-color: red;
 }
 
 .left_box {
 	display: flex;
 	flex-direction: column;
+	justify-content: flex-end;
 	flex-shrink: 0;
 	flex-basis: 1;
 	padding: 12px 16px;
@@ -29,6 +32,7 @@
 	border-radius: 18px 0px 18px 18px;
 	background: var(--primary-default, #0c6dc7);
 	width: 300px;
+	margin-left: auto;
 }
 
 .sendImg {
