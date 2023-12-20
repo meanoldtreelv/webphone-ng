@@ -16,8 +16,11 @@ import { getCookie } from "typescript-cookie";
 import { getBackendUrl } from "config/env.config";
 import { io } from "socket.io-client";
 import { setSocket } from "redux/chat/chatSlice";
+import { setSimpleNotification } from "redux/common/commonSlice";
+import { socket } from "redux/chat/chatSelectors";
+import { showToast } from "utils";
 
-let socket: any = null;
+let Socket: any = null;
 
 const BaseLayout = ({ children }: any) => {
 	const dispatch = useDispatch();
@@ -25,6 +28,7 @@ const BaseLayout = ({ children }: any) => {
 	const { navigatePush, suggestPortraitOnMobileModalShow } = useSelector((state: any) => state.sip);
 	const { answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip);
 	const sessionValid = useSelector(sessionOut);
+	const reudxSocket = useSelector(socket);
 
 	useEffect(() => {
 		if (navigatePush !== "") {
@@ -40,12 +44,12 @@ const BaseLayout = ({ children }: any) => {
 	useEffect(() => {
 		const API_KEY = getCookie("id_token");
 
-		if (socket != null) {
-			socket.disconnect();
-			socket.offAny();
+		if (Socket != null) {
+			Socket.disconnect();
+			Socket.offAny();
 		}
 
-		socket = io(getBackendUrl(), {
+		Socket = io(getBackendUrl(), {
 			path: "/ws",
 			transports: ["websocket"],
 			secure: true,
@@ -53,23 +57,66 @@ const BaseLayout = ({ children }: any) => {
 			reconnectionDelay: 1500,
 		});
 
-		socket.on("connect", () => {
-			socket.emit("authenticate", { token: API_KEY });
+		Socket.on("connect", () => {
+			Socket.emit("authenticate", { token: API_KEY });
 		});
 
-		socket.on("authenticated", (data) => {
+		Socket.on("authenticated", (data) => {
 			// console.log("web socket Authentication successful.", data);
 
-			dispatch(setSocket(socket));
+			dispatch(setSocket(Socket));
 		});
 
-		socket.connect();
+		Socket.connect();
 
 		// Clean-up function to disconnect the socket when component unmounts
 		// return () => {
 		// 	socket.disconnect();
 		// };
 	}, []);
+
+	useEffect(() => {
+		if (!reudxSocket || !reudxSocket.connected) return;
+
+		reudxSocket.on("texting.message.new", (data) => {
+			console.log("texting.message.new", data);
+			// Get the current URL
+			const currentURL = window.location.href;
+
+			// Check if the URL ends with '/texting'
+			const isTextingURL = currentURL.endsWith("/texting");
+
+			if (!isTextingURL) {
+				const first_name = data?.contact?.first_name;
+				const last_name = data?.contact?.last_name;
+				const phone = data?.contact?.number;
+
+				let firstName: string;
+				let lastName: string;
+
+				if (first_name === "undefine" || first_name === null) {
+					firstName = "";
+				} else {
+					firstName = first_name;
+				}
+
+				if (last_name === "undefine" || last_name === null) {
+					lastName = "";
+				} else {
+					lastName = last_name;
+				}
+				const name =
+					data?.conversation_type === "group" || data?.conversation_type === "campaign"
+						? data?.campaign_info?.name
+						: firstName + lastName
+						? firstName + " " + lastName
+						: phone;
+
+				// dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
+				showToast(`New message from ${name} (${data?.text})`, "info");
+			}
+		});
+	}, [reudxSocket]);
 
 	return (
 		<div className={`${styles.wrapper}`}>
