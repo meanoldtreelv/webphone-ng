@@ -51,6 +51,7 @@ const initialChatState: IChatState = {
 	selectedVideoFiles: {},
 	selectedAttachment: [],
 	isMsgSending: false,
+	latestMsgRandomId: "",
 };
 
 const chatSlice = createSlice({
@@ -177,6 +178,9 @@ const chatSlice = createSlice({
 		setIsMsgSending(state, action) {
 			state.isMsgSending = action.payload;
 		},
+		setLatestMsgRandomId(state, action) {
+			state.latestMsgRandomId = action.payload;
+		},
 	},
 });
 
@@ -218,6 +222,7 @@ export const {
 	setSelectedVideoFiles,
 	setSelectedAttachment,
 	setIsMsgSending,
+	setLatestMsgRandomId,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

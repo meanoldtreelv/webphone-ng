@@ -260,22 +260,8 @@ export function showPassedTimeDate(givenDate) {
 		}
 	}
 }
-
 export function convertIntoLongDateFormat(dateString) {
-	const months = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
+	const currentDate = new Date();
 
 	const dateParts = dateString.split("/");
 	const day = parseInt(dateParts[0], 10);
@@ -283,7 +269,35 @@ export function convertIntoLongDateFormat(dateString) {
 	const year = parseInt(dateParts[2], 10);
 
 	const date = new Date(year, monthIndex, day);
-	const options = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+
+	// Check if the date is today
+	if (
+		date.getDate() === currentDate.getDate() &&
+		date.getMonth() === currentDate.getMonth() &&
+		date.getFullYear() === currentDate.getFullYear()
+	) {
+		return "Today";
+	}
+
+	// Get yesterday's date
+	const yesterday = new Date(currentDate);
+	yesterday.setDate(currentDate.getDate() - 1);
+
+	// Check if the date is yesterday
+	if (
+		date.getDate() === yesterday.getDate() &&
+		date.getMonth() === yesterday.getMonth() &&
+		date.getFullYear() === yesterday.getFullYear()
+	) {
+		return "Yesterday";
+	}
+
+	const options = {
+		weekday: "long",
+		month: "long",
+		day: "numeric",
+		year: "numeric",
+	};
 
 	const formattedDate = date.toLocaleDateString("en-US", options);
 
@@ -312,3 +326,28 @@ function getDaySuffix(day) {
 // const originalDate = "20/12/2023";
 // const convertedDate = convertDateFormat(originalDate);
 // console.log(convertedDate); // Output: Thursday, December 20th, 2023
+
+export function convertNewDateToString(date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+	const hours = String(date.getHours()).padStart(2, "0");
+	const minutes = String(date.getMinutes()).padStart(2, "0");
+	const seconds = String(date.getSeconds()).padStart(2, "0");
+	const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
+	const timezoneOffset = -date.getTimezoneOffset();
+	const timezoneOffsetHours = Math.floor(Math.abs(timezoneOffset) / 60)
+		.toString()
+		.padStart(2, "0");
+	const timezoneOffsetMinutes = (Math.abs(timezoneOffset) % 60).toString().padStart(2, "0");
+	const timezoneSign = timezoneOffset >= 0 ? "+" : "-";
+
+	const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}${timezoneSign}${timezoneOffsetHours}${timezoneOffsetMinutes}`;
+
+	return formattedDate;
+}
+
+// Example usage:
+// const currentDate = new Date(); // Create a new Date object with the current date and time
+// const formattedDate = convertNewDateToString(currentDate);
+// console.log(formattedDate);

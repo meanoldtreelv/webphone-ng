@@ -13,7 +13,7 @@ import ReceiveDoc from "./ReceiveDoc";
 import { useLazyGetMessagesListsQuery } from "services/chat";
 import { showToast } from "utils";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, msgLists, socket } from "redux/chat/chatSelectors";
+import { conversationData, latestMsgRandomId, msgLists, socket } from "redux/chat/chatSelectors";
 import { setMsgLists } from "redux/chat/chatSlice";
 import ChatSkeleton from "../ChatSkeleton";
 import ReceiveFiles from "./ReceiveFiles";
@@ -22,6 +22,7 @@ import { convertIntoLongDateFormat, longDateFormat } from "helpers/formatDateTim
 import InfoMessage from "./InfoMessage";
 import SendContact from "./SendContact";
 import ReceiveContact from "./ReceiveContact";
+import { setMeetList } from "redux/meet/meetSlice";
 
 const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -30,6 +31,7 @@ const ChatBox = () => {
 	const conversationDatas = useSelector(conversationData);
 	const messageLists = useSelector(msgLists);
 	const Socket = useSelector(socket);
+	const msgRandomId = useSelector(latestMsgRandomId);
 
 	const [getMessagesLists, { isFetching: isFetching1 }] = useLazyGetMessagesListsQuery();
 
@@ -114,7 +116,19 @@ const ChatBox = () => {
 		Socket.on("texting.message.new", (data) => {
 			console.log("texting.message.new", data);
 			if (data?.conversation_id === conversationDatas?.id) {
-				dispatch(setMsgLists([data, ...messageLists]));
+				if (data?.direction === "outbound") {
+					const updatedLists = messageLists?.map((item) => {
+						if (item.id === msgRandomId) {
+							// Replace the item object with data object
+							return data;
+						}
+						return item; // Return the original item if no replacement is needed
+					});
+					dispatch(setMsgLists(updatedLists));
+				}
+				if (data?.direction === "inbound") {
+					dispatch(setMsgLists([data, ...messageLists]));
+				}
 			}
 		});
 		// Emitting the event and passing data
@@ -177,6 +191,8 @@ const ChatBox = () => {
 		fetchData();
 	}, [page]);
 
+	console.log(messageLists, "new message list s ");
+
 	return (
 		<div className={`${styles.chatBox} ${imgSelected && styles.chatBox_imgSelected}`} onScroll={chatScrollHandler}>
 			{/* 
@@ -210,7 +226,12 @@ const ChatBox = () => {
 											return (
 												<div>
 													{item?.files?.map((data, index) => {
-														if (data?.mimetype === "image/png") {
+														if (
+															data?.mimetype === "image/png" ||
+															data?.mimetype === "image/jpeg" ||
+															data?.mimetype === "image/jpg" ||
+															data?.mimetype === "image/webp"
+														) {
 															return (
 																<ReceiveImg
 																	id={item?.id}
@@ -220,7 +241,7 @@ const ChatBox = () => {
 																/>
 															);
 														}
-														if (data?.mimetype === "video/mp4") {
+														if (data?.mimetype === "video/mp4" || data?.mimetype === "video/mov") {
 															return (
 																<ReceiveVideo
 																	id={item?.id}
@@ -232,7 +253,7 @@ const ChatBox = () => {
 															);
 														}
 
-														if (data?.mimetype === "application/pdf") {
+														if (data?.mimetype === "application/pdf" || data?.mimetype === "application/doc") {
 															return (
 																<ReceiveDoc
 																	id={item?.id}
@@ -243,7 +264,7 @@ const ChatBox = () => {
 																/>
 															);
 														}
-														if (data?.mimetype === "audio/mpeg") {
+														if (data?.mimetype === "audio/mpeg" || data?.mimetype === "audio/mp3") {
 															return (
 																<ReceiveAudio
 																	id={item?.id}
@@ -277,7 +298,12 @@ const ChatBox = () => {
 											return (
 												<div>
 													{item?.files?.map((data, index) => {
-														if (data?.mimetype === "image/png") {
+														if (
+															data?.mimetype === "image/png" ||
+															data?.mimetype === "image/jpeg" ||
+															data?.mimetype === "image/jpg" ||
+															data?.mimetype === "image/webp"
+														) {
 															return (
 																<SendImg
 																	id={item?.id}
@@ -287,7 +313,7 @@ const ChatBox = () => {
 																/>
 															);
 														}
-														if (data?.mimetype === "video/mp4") {
+														if (data?.mimetype === "video/mp4" || data?.mimetype === "video/mov") {
 															return (
 																<SendVideo
 																	id={item?.id}
@@ -298,7 +324,7 @@ const ChatBox = () => {
 																/>
 															);
 														}
-														if (data?.mimetype === "application/pdf") {
+														if (data?.mimetype === "application/pdf" || data?.mimetype === "application/doc") {
 															return (
 																<SendDoc
 																	id={item?.id}
@@ -310,7 +336,7 @@ const ChatBox = () => {
 															);
 														}
 
-														if (data?.mimetype === "audio/mpeg") {
+														if (data?.mimetype === "audio/mpeg" || data?.mimetype === "audio/mp3") {
 															return (
 																<SendAudio
 																	id={item?.id}

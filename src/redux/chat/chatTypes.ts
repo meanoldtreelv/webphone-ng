@@ -44,4 +44,5 @@ export interface IChatState {
 	selectedVideoFiles: {};
 	selectedAttachment: [];
 	isMsgSending: boolean;
+	latestMsgRandomId: string;
 }

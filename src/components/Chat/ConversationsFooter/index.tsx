@@ -11,16 +11,25 @@ import SelectedAudio from "./SelectedAudio";
 import SelectedDoc from "./SelectedDoc";
 import { useLazySendOutboundMessageQuery } from "services/chat";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationData, emoji, isDeleteCheck, selectedAttachment, selectedFiles } from "redux/chat/chatSelectors";
+import {
+	conversationData,
+	emoji,
+	isDeleteCheck,
+	msgLists,
+	selectedAttachment,
+	selectedFiles,
+} from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
 import SettingsIcon from "components/Voicemail/Settings";
-import { setIsMsgSending, setIsSettingDialogueOpen } from "redux/chat/chatSlice";
+import { setIsMsgSending, setIsSettingDialogueOpen, setLatestMsgRandomId, setMsgLists } from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
 import { useLazyPostFilesQuery, useLazyUploadFilesQuery } from "services/storage";
 import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import SelectedContact from "./SelectedContact";
+import { generateRandomId } from "helpers";
+import { convertNewDateToString } from "helpers/formatDateTime";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -29,6 +38,7 @@ const ConversationsFooter = () => {
 	const deleteCheck = useSelector(isDeleteCheck);
 	const emojiSelected = useSelector(emoji);
 	const selectedAttachments = useSelector(selectedAttachment);
+	const messageLists = useSelector(msgLists);
 
 	const [sendOutboundMessage, { data, isLoading, isFetching: isFetchingMsg }] = useLazySendOutboundMessageQuery();
 	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
@@ -41,13 +51,13 @@ const ConversationsFooter = () => {
 	const [filePreviews, setFilePreviews] = useState([]);
 	const [fileResponse, setFileResponse] = useState<{}[]>([]);
 	const [uploadId, setUploadId] = useState([]);
+	const [textData, setTextData] = useState({});
 
 	const sendMessageHandler = async () => {
 		setFileResponse([]);
 		setUploadId([]);
-		// const newLists = [...messageLists, ...data];
 
-		// dispatch(setMsgLists(newLists));
+		console.log(generateRandomId(15));
 
 		if (selectedAttachments?.length > 0) {
 			for (const item of selectedAttachments || []) {
@@ -86,17 +96,24 @@ const ConversationsFooter = () => {
 			// 	}
 			// }
 		} else {
+			const randomId = generateRandomId(15);
+			const newLists = [
+				{ id: randomId, text: text, direction: "outbound", created_at: convertNewDateToString(new Date()), files: [] },
+				...messageLists,
+			];
+			dispatch(setLatestMsgRandomId(randomId));
+			dispatch(setMsgLists(newLists));
+
+			setText("");
+
 			const { error, data } = await sendOutboundMessage({
 				id: conversationDatas?.id,
-				data: {
-					text: text,
-					with_warning: false,
-				},
+				data: textData,
 			});
 
 			if (data) {
-				setText("");
-				showToast("message send successfully", "info");
+				// setText("");
+				// showToast("message send successfully", "info");
 			}
 
 			if (error) {
@@ -265,10 +282,15 @@ const ConversationsFooter = () => {
 							value={text}
 							onChange={(e) => {
 								setText(e.target.value);
+								setTextData({
+									text: e.target.value,
+									with_warning: false,
+								});
 							}}
 							onKeyDownCapture={(e) => {
 								if (e.key === "Enter" && text !== "") {
 									setEmojiPicker(false);
+
 									sendMessageHandler();
 								}
 							}}
@@ -288,7 +310,13 @@ const ConversationsFooter = () => {
 					</div>
 					<button
 						className={`${styles.send} ${text?.length > 0 ? styles.send_active : ""}`}
-						onClick={sendMessageHandler}>
+						onClick={() => {
+							// setTextData({
+							// 	text: text,
+							// 	with_warning: false,
+							// });
+							sendMessageHandler();
+						}}>
 						<AirplaneIcon color="icon-on-color" />
 					</button>
 				</div>
