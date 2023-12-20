@@ -19,7 +19,7 @@
 		align-items: center;
 		color: var(--background-primary);
 		border-radius: 32px;
-		background: $accent-green-600;
+		background: var(--accent-blue-primary, #3b9ef7);
 	}
 
 	&_name {

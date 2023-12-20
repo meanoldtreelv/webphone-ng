@@ -1,10 +1,10 @@
-import { recentDateFormat } from "helpers/formatDateTime";
+import { formatDate } from "helpers/formatDateTime";
 import styles from "./ReceiveTime.module.scss";
 
 const ReceiveTime = ({ time }) => {
 	return (
 		<div className={styles.receiveTime}>
-			<span> {recentDateFormat(time)}</span>
+			<span> {formatDate(time)}</span>
 		</div>
 	);
 };

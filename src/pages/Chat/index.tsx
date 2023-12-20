@@ -1,5 +1,5 @@
 import BaseLayout from "layouts/BaseLayout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Chat.module.scss";
 import NoMessages from "components/Chat/NoMessages";
 import ConversationsList from "components/Chat/ConversationsList";
@@ -58,11 +58,13 @@ import EditContactDialogue from "components/Chat/EditContactDialogue";
 import SettingDialogue from "components/Chat/SettingDialogue";
 import ContactInfoDialogue from "components/Chat/ContactInfoDialogue";
 import TextingMainPageSkeleton from "components/Chat/TextingMainPageSkeleton";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 // let socket: any = null;
 
 const Chat: React.FC = () => {
 	const dispatch = useDispatch();
+
 	const conversationsLists = useSelector(conversationLists);
 	const conversationSelected = useSelector(isConversationSelected);
 	const startNewConversationDialogueOpen = useSelector(isStartNewConversationDialogueOpen);
@@ -86,6 +88,7 @@ const Chat: React.FC = () => {
 	const [deleteConversation, { data, isLoading: isLoading2, isFetching }] = useLazyDeleteConversationObjectQuery();
 
 	const [getTextingNumber] = useLazyGetTextingNumbersQuery();
+	// console.log(width, "dimaenson");
 
 	useEffect(() => {
 		const fetchData = async () => {
