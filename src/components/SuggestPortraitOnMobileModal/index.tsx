@@ -1,8 +1,6 @@
 import { store } from "redux/store";
 import styles from "./SuggestPortraitOnMobileModal.module.scss";
 import { useSelector } from "react-redux";
-import { useLazySetStatusQuery } from 'services/status'
-import { emptyFunction } from "utils";
 
 const SuggestPortraitOnMobileModal = () => {
 	const { status } = useSelector((state: any) => state.sip)

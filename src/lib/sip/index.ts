@@ -1484,7 +1484,7 @@ function SwitchLines(lineNum:number) {
         sip.volumeLevel(lineNum, "100")
       }else if (objSession.isOnHold === true) {
         if(objSession&&objSession?.data?.mergedCalls?.list){
-          for(let x = 0; x < objSession.data.mergedCalls?.list?.length|0 ; x++){
+          for(let x = 0; x < objSession.data.mergedCalls?.list?.length ; x++){
             // alert("Unholding"+objSession.data.mergedCalls.list[x])
             unholdSession(objSession.data.mergedCalls.list[x]);
           }

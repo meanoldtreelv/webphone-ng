@@ -53,31 +53,31 @@ ext_connected === "true" &&
 	store.dispatch({ type: "sip/extAuth", payload: extAuth === "true" }) &&
 	sip.CreateUserAgent(ext_user_id, ext_password, ext_domain);
 // console.log("this is the output: ", window?.navigator?.userAgentData?.mobile);
-const isMobile = () =>
-	window?.navigator?.userAgentData?.mobile ||
-	/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-if (isMobile()) {
-	var suggestPortraitOnMobileModalFirstTime = true;
-	const suggestPortraitOnMobileModal = () => {
-		if (suggestPortraitOnMobileModalFirstTime) {
-			store.dispatch({ type: "sip/suggestPortraitOnMobileModalShow", payload: true });
-			// suggestPortraitOnMobileModalFirstTime = false; // To show the message once uncomment this
-		}
-	};
-	if (window.matchMedia("(orientation: Landscape)").matches) {
-		suggestPortraitOnMobileModal();
-	}
-	let portrait = window.matchMedia("(orientation: portrait)");
-	portrait.addEventListener("change", function (e) {
-		if (e.matches) {
-			// Portrait mode"
-			store.dispatch({ type: "sip/suggestPortraitOnMobileModalShow", payload: false });
-		} else {
-			// Landscape
-			suggestPortraitOnMobileModal();
-		}
-	});
-}
+// const isMobile = () =>
+// 	window?.navigator?.userAgentData?.mobile ||
+// 	/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// if (isMobile()) {
+// 	var suggestPortraitOnMobileModalFirstTime = true;
+// 	const suggestPortraitOnMobileModal = () => {
+// 		if (suggestPortraitOnMobileModalFirstTime) {
+// 			store.dispatch({ type: "sip/suggestPortraitOnMobileModalShow", payload: true });
+// 			// suggestPortraitOnMobileModalFirstTime = false; // To show the message once uncomment this
+// 		}
+// 	};
+// 	if (window.matchMedia("(orientation: Landscape)").matches) {
+// 		suggestPortraitOnMobileModal();
+// 	}
+// 	let portrait = window.matchMedia("(orientation: portrait)");
+// 	portrait.addEventListener("change", function (e) {
+// 		if (e.matches) {
+// 			// Portrait mode"
+// 			store.dispatch({ type: "sip/suggestPortraitOnMobileModalShow", payload: false });
+// 		} else {
+// 			// Landscape
+// 			suggestPortraitOnMobileModal();
+// 		}
+// 	});
+// }
 
 export default createBrowserRouter([
 	{
