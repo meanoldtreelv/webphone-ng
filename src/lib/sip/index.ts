@@ -1456,32 +1456,44 @@ function AddLineHtml(lineObj:{LineNumber:number}) {
   // alert(lineObj.LineNumber)
 }
 function SwitchLines(lineNum:number) {
+  var lineObj = FindLineByNumber(lineNum);
+  var objSession = (lineObj !== null && lineObj.SipSession !== null) ? lineObj.SipSession:null;
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
     if(!session.data.line) return;
     if (session.state === SIP.SessionState.Established && session.data.line !== lineNum) {
-      if(session.data.confcalls){
-        sip.muteConference(session.data.line, false)
-        sip.volumeLevel(session.data.line, "0")
-      }else if (session.isOnHold === false) {
-        holdSession(session.data.line);
+      if(!(objSession&&objSession?.data?.mergedCalls?.list&&objSession?.data.mergedCalls.list.indexOf(session.data.line)!== -1)){
+        if(session.data.confcalls){
+          sip.muteConference(session.data.line, false)
+          sip.volumeLevel(session.data.line, "0")
+        }else if (session.isOnHold === false) {
+          holdSession(session.data.line);
+        }
+      }else{
+        // alert("skipping"+session.data.line)
       }
     }
     session.data.IsCurrentCall = false;
   });
 
-  var lineObj = FindLineByNumber(lineNum);
-  if (lineObj !== null && lineObj.SipSession !== null) {
-    var session = lineObj.SipSession;
-    if (session.state === SIP.SessionState.Established) {
-      if(session.data.confcalls){
+
+  if (objSession) {
+    if (objSession.state === SIP.SessionState.Established) {
+      if(objSession.data.confcalls){
         sip.muteConference(lineNum, true)
         sip.volumeLevel(lineNum, "100")
-      }else if (session.isOnHold === true) {
-        unholdSession(lineNum);
+      }else if (objSession.isOnHold === true) {
+        if(objSession&&objSession?.data?.mergedCalls?.list){
+          for(let x = 0; x < objSession.data.mergedCalls?.list?.length|0 ; x++){
+            // alert("Unholding"+objSession.data.mergedCalls.list[x])
+            unholdSession(objSession.data.mergedCalls.list[x]);
+          }
+        }else{
+          unholdSession(lineNum);
+        }
       }
     }
-    session.data.IsCurrentCall = true;
+    objSession.data.IsCurrentCall = true;
   }
 }
 function SelectLine(lineNum:number) {
@@ -4787,6 +4799,7 @@ const sip = {
     }
   },
   merge:(FromLineNumber: number, ToLineNumber: string ) =>  {
+    console.log("FromLineNumber" + FromLineNumber + ":ToLineNumber" + ToLineNumber)
     var FromCall = FindLineByNumber(FromLineNumber);
     if (FromCall === null || FromCall.SipSession === null) return;
 
@@ -4797,17 +4810,80 @@ const sip = {
     var sessionTo = ToCall.SipSession
 
     if(sessionFrom.data.mergedCalls) return;
-
     if (!sessionTo.data.mergedCalls) { //New merge
-      sessionTo.data.mergedCalls = [];
-      sessionTo.data.mergedCalls.push(ToLineNumber)
-      sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
-    } 
-      for(let x = 0; x < sessionFrom.data.mergedCalls?.length|0; x++){
-        //append from mic to this call
+      sessionTo.data.mergedCalls = {list:[], audioStreams:[]}
+      sessionTo.data.mergedCalls.list.push(ToLineNumber)
+      sessionTo.sessionDescriptionHandler?.peerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+          sessionTo.audioReceivers = []; 
+          sessionTo.audioReceivers.push(RTCRtpReceiver.track)
+          sessionTo.data.mergedCalls.audioStreams.push(RTCRtpReceiver.track)
+          console.log("Adding conference session:",RTCRtpReceiver.track.label);
+        }
+      });
+    }
+
+    sessionFrom.sessionDescriptionHandler?.peerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+      if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+        sessionFrom.audioReceivers = []; 
+        sessionFrom.audioReceivers.push(RTCRtpReceiver.track)
+        console.log("Adding conference session:",RTCRtpReceiver.track.label);
       }
-      sessionTo.data.mergedCalls.push(FromLineNumber)
-    // start merge
+    });
+
+    {//Mix Block
+
+      //Sender for to and prv
+      for(let x=0; x < sessionTo.data.mergedCalls?.list?.length|0; x++){
+        var previousCall = FindLineByNumber(sessionTo.data.mergedCalls.list[x]);
+        if (previousCall === null || previousCall.SipSession === null) return;
+        var previousCallSession = previousCall.SipSession;
+        previousCallSession.sessionDescriptionHandler?.peerConnection?.getSenders().forEach(function (RTCRtpSender) {
+          if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+            previousCallSession.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? previousCallSession.data.AudioSourceTrack : RTCRtpSender.track;
+            let outputStream = new MediaStream()
+            if(!RTCRtpSender.track.IsMixedTrack) outputStream.addTrack(RTCRtpSender.track);
+            outputStream.addTrack(sessionFrom.audioReceivers[0]);
+            previousCallSession.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+              outputStream, 
+              RTCRtpSender.track.IsMixedTrack? previousCallSession.data.mixedAudioTrack[0] : undefined,
+              RTCRtpSender.track.IsMixedTrack? previousCallSession.data.mixedAudioTrack[1] : undefined,
+            )
+            var mixedAudioTrack = previousCallSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+            mixedAudioTrack.IsMixedTrack = true;
+            RTCRtpSender.replaceTrack(mixedAudioTrack);
+          }
+        })
+      }
+
+      //sender for from
+      sessionFrom.sessionDescriptionHandler?.peerConnection?.getSenders().forEach(function (RTCRtpSender) {
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          sessionFrom.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? sessionFrom.data.AudioSourceTrack : RTCRtpSender.track;
+          let outputStream = new MediaStream();
+          outputStream.addTrack(RTCRtpSender.track);
+          for(let x = 0; x < sessionTo.data.mergedCalls?.audioStreams?.length|0; x++){
+            outputStream.addTrack(sessionTo.data.mergedCalls.audioStreams[x]);
+            console.log("Adding old audios to new",sessionTo.data.mergedCalls.audioStreams[x])
+          }
+          sessionFrom.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+            outputStream, 
+            RTCRtpSender.track.IsMixedTrack? sessionFrom.data.mixedAudioTrack[0] : undefined,
+            RTCRtpSender.track.IsMixedTrack? sessionFrom.data.mixedAudioTrack[1] : undefined,
+          )
+          var mixedAudioTrack = sessionFrom.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+          mixedAudioTrack.IsMixedTrack = true;
+          RTCRtpSender.replaceTrack(mixedAudioTrack);
+        }
+      })
+      
+    }
+
+    //new call stream not exist until here
+    sessionTo.data.mergedCalls.list.push(FromLineNumber)
+    sessionTo.data.mergedCalls.audioStreams.push(sessionFrom.audioReceivers[0])
+    sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
+    window.temp1 = Lines
     store.dispatch({type:"sip/mergedCallGroups", payload:{action:"add",data:{FromLineNumber:FromLineNumber, ToLineNumber:ToLineNumber}}});
   },
   logout: (changeLocation=true)=>{

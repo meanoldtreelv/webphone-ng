@@ -403,7 +403,7 @@ const sipSlice = createSlice({
 							}
 						}
 					}
-					console.log("Merge:", state.mergedCallGroups);
+					console.log("Merge:", JSON.parse(JSON.stringify(state.mergedCallGroups)));
 					// alert("merged")
 					break;
 				}

@@ -332,7 +332,7 @@ const Dialer = () => {
 								<div
 									className={`${styles.dialer_control} ${styles.dialer_endButton}`}
 									onClick={() => {
-										if (true) {
+										if (item.conferenceCallList) {
 											toast("Conference Ended by Host", {
 												position: "top-right",
 												autoClose: 3000,
