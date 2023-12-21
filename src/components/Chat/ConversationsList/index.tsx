@@ -31,6 +31,7 @@ import { showToast } from "utils";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 import BtnMedium from "components/UI/BtnMedium";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import BtnAction from "components/UI/BtnAction";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const ConversationsList = () => {
 	] = useLazyGetConversationListsQuery();
 
 	const [sortingIconHover, setSortingIconHover] = useState(false);
+	const [closeIconHover, setCloseIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(20);
@@ -306,21 +308,55 @@ const ConversationsList = () => {
 								<SearchIcon />
 								<span>Search results ({searchedConversationLists?.length})</span>
 							</span>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={false}
+								onMouseOut={() => {
+									setCloseIconHover(false);
+								}}
+								onMouseOver={() => {
+									setCloseIconHover(true);
+								}}
+								onClick={() => {
+									setSearchText("");
+									setSearchedConversationLists([]);
+								}}
+								icon={<CloseIcon color={closeIconHover ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.contact_sorting}
 								onClick={() => {
 									setSearchText("");
 									setSearchedConversationLists([]);
 								}}>
 								<CloseIcon />
-							</span>
+							</span> */}
 						</p>
 					) : (
 						<p className={styles.contact_favorites}>
 							<span>
 								<span>Conversations ({conversationsLists?.length})</span>
 							</span>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={isSortingPopUpTrue}
+								onMouseOut={() => {
+									setSortingIconHover(false);
+								}}
+								onMouseOver={() => {
+									setSortingIconHover(true);
+								}}
+								onClick={() => {
+									setIsSortingPopUpTrue(!isSortingPopUpTrue);
+									dispatch(setIsSortingMessagePopUpOpen(!sortingMessagePopUpOpen));
+								}}
+								icon={<SortIcon color={sortingIconHover || isSortingPopUpTrue ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.contact_sorting}
 								onMouseOver={() => {
 									setSortingIconHover(true);
@@ -333,7 +369,7 @@ const ConversationsList = () => {
 									dispatch(setIsSortingMessagePopUpOpen(!sortingMessagePopUpOpen));
 								}}>
 								<SortIcon color={sortingIconHover ? "primary-default" : "icon-primary"} />
-							</span>
+							</span> */}
 							{sortingMessagePopUpOpen && <ConversationsSortingPopUp />}
 						</p>
 					)}

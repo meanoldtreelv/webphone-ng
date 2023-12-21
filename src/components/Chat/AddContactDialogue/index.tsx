@@ -10,12 +10,14 @@ import { useLazyCreateTextingContactQuery } from "services/chat";
 import { showToast } from "utils";
 import { ClipLoader } from "react-spinners";
 import BtnLarge from "components/UI/BtnLarge";
+import BtnAction from "components/UI/BtnAction";
 
 const AddContactDialogue = () => {
 	const dispatch = useDispatch();
 
 	const [createTextingContact, { isFetching: isFetching1 }] = useLazyCreateTextingContactQuery();
 
+	const [cancelHover, setCancelHover] = useState(false);
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [number, setNumber] = useState("");
@@ -54,13 +56,30 @@ const AddContactDialogue = () => {
 						<span>Add New Contact</span>
 					</span>
 
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setCancelHover(false);
+						}}
+						onMouseOver={() => {
+							setCancelHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsAddContactDialogueOpen(false));
+						}}
+						icon={<CloseIcon color={cancelHover ? "primary-default" : "icon-primary"} />}
+					/>
+
+					{/* <span
 						className={styles.close}
 						onClick={() => {
 							dispatch(setIsAddContactDialogueOpen(false));
 						}}>
 						<CloseIcon />
-					</span>
+					</span> */}
 				</h1>
 
 				<div className={styles.row}>

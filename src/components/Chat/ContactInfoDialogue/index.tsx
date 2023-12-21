@@ -5,6 +5,7 @@ import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditContact, setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
 import { conversationData } from "redux/chat/chatSelectors";
+import BtnAction from "components/UI/BtnAction";
 
 const ContactBar = ({ contact }) => {
 	const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const ContactBar = ({ contact }) => {
 const ContactInfoDialogue = () => {
 	const dispatch = useDispatch();
 
+	const [cancelHover, setCancelHover] = useState(false);
 	const conversationsData = useSelector(conversationData);
 
 	return (
@@ -55,13 +57,29 @@ const ContactInfoDialogue = () => {
 							`Campaign Members (${conversationsData?.contactsinfo.length})`}
 						{conversationsData?.conversation_type === "direct" && `Contact Info`}
 					</span>
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setCancelHover(false);
+						}}
+						onMouseOver={() => {
+							setCancelHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsContactDetailsDialogueOpen(false));
+						}}
+						icon={<CloseIcon color={cancelHover ? "primary-default" : "icon-primary"} />}
+					/>
+					{/* <span
 						className={styles.close}
 						onClick={() => {
 							dispatch(setIsContactDetailsDialogueOpen(false));
 						}}>
 						<CloseIcon />
-					</span>
+					</span> */}
 				</div>
 				<div className={styles.contactCardBox}>
 					{conversationsData?.contactsinfo?.map((contact) => <ContactBar key={contact.id} contact={contact} />)}

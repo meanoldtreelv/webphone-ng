@@ -29,7 +29,7 @@ const BtnLarge = ({
 		<button
 			className={`${styles.button} ${btnType === "primary" && isDanger === false && styles.primary} ${
 				btnType === "secondary" && isDanger === false && styles.secondary
-			} ${btnType === "primary" && isDanger === true && styles.primary_danger}  ${
+			} ${btnType === "primary" && isDanger === true && styles.primary_danger} ${
 				btnType === "secondary" && isDanger === true && styles.secondary_danger
 			} ${btnType === "primary" && isDisabled === true && styles.primary_disabled} ${
 				btnType === "secondary" && isDisabled === true && styles.secondary_disabled

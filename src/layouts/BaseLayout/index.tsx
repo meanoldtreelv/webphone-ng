@@ -112,7 +112,7 @@ const BaseLayout = ({ children }: any) => {
 						? firstName + " " + lastName
 						: phone;
 
-				// dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
+				dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
 				showToast(`New message from ${name} (${data?.text})`, "info");
 			}
 		});

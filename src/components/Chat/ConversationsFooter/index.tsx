@@ -15,13 +15,14 @@ import {
 	conversationData,
 	emoji,
 	isDeleteCheck,
+	isSettingDialogueOpen,
 	msgLists,
 	selectedAttachment,
 	selectedFiles,
 } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
-import SettingsIcon from "components/Voicemail/Settings";
+// import SettingsIcon from "components/Voicemail/Settings";
 import {
 	setIsMsgSending,
 	setIsSettingDialogueOpen,
@@ -36,6 +37,8 @@ import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import SelectedContact from "./SelectedContact";
 import { generateRandomId } from "helpers";
 import { convertNewDateToString } from "helpers/formatDateTime";
+import BtnAction from "components/UI/BtnAction";
+import SettingsIcon from "components/UI/Icons/Settings";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -45,11 +48,15 @@ const ConversationsFooter = () => {
 	const emojiSelected = useSelector(emoji);
 	const selectedAttachments = useSelector(selectedAttachment);
 	const messageLists = useSelector(msgLists);
+	const isSettingsDialogueOpen = useSelector(isSettingDialogueOpen);
 
 	const [sendOutboundMessage, { data, isLoading, isFetching: isFetchingMsg }] = useLazySendOutboundMessageQuery();
 	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
 	const [uploadFiles] = useLazyUploadFilesQuery();
+
+	const [emojiIconHover, setEmojiIconHover] = useState(false);
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
+	const [isSettingsIconHover, setIsSettingIconHover] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
 	const [emojiPicker, setEmojiPicker] = useState(false);
 
@@ -275,7 +282,26 @@ const ConversationsFooter = () => {
 
 				<div className={styles.top}>
 					{isAttachmentClicked && <SharePopUp />}
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={isAttachmentClicked}
+						onMouseOut={() => {
+							setIsAttachmentHovered(false);
+						}}
+						onMouseOver={() => {
+							setIsAttachmentHovered(true);
+						}}
+						onClick={() => {
+							setIsAttachmentClicked(!isAttachmentClicked);
+						}}
+						icon={
+							<AttachmentIcon color={isAttachmentHovered || isAttachmentClicked ? "primary-default" : "icon-primary"} />
+						}
+					/>
+
+					{/* <span
 						onClick={() => {
 							setIsAttachmentClicked(!isAttachmentClicked);
 						}}
@@ -291,7 +317,7 @@ const ConversationsFooter = () => {
 						<AttachmentIcon
 							color={`${isAttachmentHovered || isAttachmentClicked ? "primary-default" : "icon-primary"}`}
 						/>
-					</span>
+					</span> */}
 					<div className={styles.inputBox}>
 						<input
 							type="text"
@@ -313,13 +339,29 @@ const ConversationsFooter = () => {
 							}}
 						/>
 						<div className={styles.icon}>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={emojiPicker}
+								onMouseOut={() => {
+									setEmojiIconHover(false);
+								}}
+								onMouseOver={() => {
+									setEmojiIconHover(true);
+								}}
+								onClick={() => {
+									setEmojiPicker(!emojiPicker);
+								}}
+								icon={<EmojiIcon color={emojiIconHover || emojiPicker ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.icon1}
 								onClick={() => {
 									setEmojiPicker(!emojiPicker);
 								}}>
 								<EmojiIcon />
-							</span>
+							</span> */}
 							{/* <span className={styles.icon1}>
 								<MicrophoneIcon />
 							</span> */}
@@ -364,12 +406,32 @@ const ConversationsFooter = () => {
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={isSettingsDialogueOpen}
+						onMouseOut={() => {
+							setIsSettingIconHover(false);
+						}}
+						onMouseOver={() => {
+							setIsSettingIconHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(true));
+						}}
+						icon={
+							<SettingsIcon
+								color={isSettingsIconHover || isSettingsDialogueOpen ? "primary-default" : "icon-primary"}
+							/>
+						}
+					/>
+					{/* <span
 						onClick={() => {
 							dispatch(setIsSettingDialogueOpen(true));
 						}}>
 						<SettingsIcon />
-					</span>
+					</span> */}
 				</div>
 				{deleteCheck && <SelectedMsgControl />}
 			</div>
