@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import routePaths from "./../../../constants/routes";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
@@ -12,11 +12,13 @@ import ContactIcon from "components/UI/Icons/Sidebar/Contact";
 import KeypadIcon from "components/UI/Icons/Sidebar/Keypad";
 import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
 import { ClipLoader } from "react-spinners";
 import { loader } from "redux/common/commonSelectors";
 import { getCookie } from "typescript-cookie";
+import { unreadMessageCount } from "redux/chat/chatSelectors";
+import { setUnreadMessageCount } from "redux/chat/chatSlice";
 
 interface ISidebarLinks {
 	path: string;
@@ -25,12 +27,15 @@ interface ISidebarLinks {
 	name: string;
 }
 const Sidebar = () => {
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const unreadCount = useSelector(unreadMessageCount);
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const mainLoader = useSelector(loader);
 	const [tabActive, setTabActive] = useState("1");
 	const [tabHovered, setTabHovered] = useState("1");
 
-	const [unreadMessage, setUnreadMessage] = useState(false);
+	const [unreadMessage, setUnreadMessage] = useState(true);
 
 	const { extAuth } = useSelector((state: any) => state.sip);
 	// the above two functions, they need to be removed
@@ -51,6 +56,8 @@ const Sidebar = () => {
 
 	// const sidebarTopLinks: ISidebarLinks[] = extAuth
 
+	console.log(unreadCount, "unreadCount");
+
 	const sidebarTopLinks: ISidebarLinks[] = extAuth
 		? [
 				{
@@ -63,25 +70,25 @@ const Sidebar = () => {
 					path: routePaths.CONTACT.ROUTE,
 					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Contacts",
-					unread: 3,
+					unread: 0,
 				},
 				{
 					path: routePaths.CHAT.ROUTE,
 					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Texting",
-					unread: 1,
+					unread: unreadCount,
 				},
 				{
 					path: routePaths.CALL_HISTORY.ROUTE,
 					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Recent",
-					unread: 1,
+					unread: 0,
 				},
 				{
 					path: routePaths.VOICEMAIL.ROUTE,
 					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Voicemail",
-					unread: 4,
+					unread: 0,
 				},
 		  ]
 		: [
@@ -95,43 +102,43 @@ const Sidebar = () => {
 					path: routePaths.CONTACT.ROUTE,
 					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Contacts",
-					unread: 3,
+					unread: 0,
 				},
 				{
 					path: routePaths.CHAT.ROUTE,
 					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Texting",
-					unread: 0,
+					unread: unreadCount,
 				},
 				// {
 				// 	path: routePaths.CONFERENCE.GROUPS.ROUTE,
 				// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
 				// 	name: "Conference",
-				// 	unread: 3,
+				// 	unread: 0,
 				// },
 				// {
 				// 	path: routePaths.CONFERENCE.ROUTE,
 				// 	icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
 				// 	name: "Texting",
-				// 	unread: 1,
+				// 	unread: 0,
 				// },
 				{
 					path: routePaths.CALL_HISTORY.ROUTE,
 					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Recent",
-					unread: 1,
+					unread: 0,
 				},
 				// {
 				// 	path: routePaths.CONFERENCE.ROUTE,
 				// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
 				// 	name: "Fax",
-				// 	unread: 2,
+				// 	unread: 0,
 				// },
 				{
 					path: routePaths.VOICEMAIL.ROUTE,
 					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Voicemail",
-					unread: 4,
+					unread: 0,
 				},
 		  ];
 
@@ -142,19 +149,25 @@ const Sidebar = () => {
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Settings",
-					unread: 3,
+					unread: 0,
 				},
 		  ]
 		: [
-				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
+				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 0 },
 				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
 					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 					name: "Settings",
-					unread: 3,
+					unread: 0,
 				},
 		  ];
+
+	const unreadHandler = (path) => {
+		if (path === "/texting") {
+			dispatch(setUnreadMessageCount(0));
+		}
+	};
 
 	return (
 		<section className={styles.sidebarBox} style={{ width: `${!isCollapsed ? "64px" : "calc(100vw - 15px)"}` }}>
@@ -180,14 +193,18 @@ const Sidebar = () => {
 								className={({ isActive }: { isActive: boolean }) =>
 									[styles.sidebar_tab, isActive ? styles.active_tab : ""].join(" ")
 								}
-								key={link.name}
-								// onClick={toggleCollapsed}
-							>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+								key={link.name}>
+								<span
+									className={`${!isCollapsed && link.unread > 0 ? styles.sidebar_icon : ""}`}
+									onClick={() => {
+										unreadHandler(link?.path);
+									}}>
+									{link.icon}
+								</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 									</span>
 								)}
 							</NavLink>
@@ -204,13 +221,12 @@ const Sidebar = () => {
 										[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
 									}
 									key={link.name}
-									// onClick={toggleCollapsed}
-								>
-									<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+									onClick={unreadHandler}>
+									<span className={` ${!isCollapsed && link.unread > 0 ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 									{isCollapsed && (
 										<span className={`${styles.sidebar_tabExpanded}`}>
 											<span>{link.name}</span>
-											{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+											{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 										</span>
 									)}
 								</NavLink>

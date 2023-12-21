@@ -37,7 +37,7 @@ const NoConversationsSelected = () => {
 					icon={}
 					onClick={}
 				/> */}
-				<BtnAction
+				{/* <BtnAction
 					btnType={btnType}
 					isDisabled={false}
 					type="button"
@@ -62,7 +62,7 @@ const NoConversationsSelected = () => {
 							}`}
 						/>
 					}
-				/>
+				/> */}
 			</div>
 		</section>
 	);

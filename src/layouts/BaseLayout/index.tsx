@@ -15,9 +15,9 @@ import ModalMessage from "components/shared/ModalMessage";
 import { getCookie } from "typescript-cookie";
 import { getBackendUrl } from "config/env.config";
 import { io } from "socket.io-client";
-import { setSocket } from "redux/chat/chatSlice";
+import { setSocket, setUnreadMessageCount } from "redux/chat/chatSlice";
 import { setSimpleNotification } from "redux/common/commonSlice";
-import { socket } from "redux/chat/chatSelectors";
+import { socket, unreadMessageCount } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 
 let Socket: any = null;
@@ -29,6 +29,7 @@ const BaseLayout = ({ children }: any) => {
 	const { answeredCalls, ringingOutboundCalls } = useSelector((state: any) => state.sip);
 	const sessionValid = useSelector(sessionOut);
 	const reudxSocket = useSelector(socket);
+	const unreadMessage = useSelector(unreadMessageCount);
 
 	useEffect(() => {
 		if (navigatePush !== "") {
@@ -81,12 +82,12 @@ const BaseLayout = ({ children }: any) => {
 		reudxSocket.on("texting.message.new", (data) => {
 			console.log("texting.message.new", data);
 			// Get the current URL
-			const currentURL = window.location.href;
+			// const currentURL = window.location.href;
 
 			// Check if the URL ends with '/texting'
-			const isTextingURL = currentURL.endsWith("/texting");
+			// const isTextingURL = currentURL.endsWith("/texting");
 
-			if (!isTextingURL) {
+			if (location.pathname !== "/texting") {
 				const first_name = data?.contact?.first_name;
 				const last_name = data?.contact?.last_name;
 				const phone = data?.contact?.number;
@@ -113,10 +114,14 @@ const BaseLayout = ({ children }: any) => {
 						: phone;
 
 				dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
+
+				//update the unread count every time hit this condition 'unreadMessage' is coming from useSelector
+				const unreadCount = unreadMessage;
+				dispatch(setUnreadMessageCount(unreadCount + 1));
 				showToast(`New message from ${name} (${data?.text})`, "info");
 			}
 		});
-	}, [reudxSocket]);
+	}, [reudxSocket, unreadMessage]);
 
 	return (
 		<div className={`${styles.wrapper}`}>
