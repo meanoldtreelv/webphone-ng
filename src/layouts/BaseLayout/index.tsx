@@ -31,6 +31,12 @@ const BaseLayout = ({ children }: any) => {
 	const reudxSocket = useSelector(socket);
 	const unreadMessage = useSelector(unreadMessageCount);
 
+	let isPageVisible = !document.hidden;
+
+	function handleVisibilityChange() {
+		isPageVisible = !document.hidden;
+	}
+
 	useEffect(() => {
 		if (navigatePush !== "") {
 			navigate(navigatePush);
@@ -87,41 +93,130 @@ const BaseLayout = ({ children }: any) => {
 			// Check if the URL ends with '/texting'
 			// const isTextingURL = currentURL.endsWith("/texting");
 
+			if (data.direction === "outbound") {
+				return;
+			}
+
+			const first_name = data?.contact?.first_name;
+			const last_name = data?.contact?.last_name;
+			const phone = data?.contact?.number;
+
+			let firstName: string;
+			let lastName: string;
+
+			if (first_name === "undefine" || first_name === null) {
+				firstName = "";
+			} else {
+				firstName = first_name;
+			}
+
+			if (last_name === "undefine" || last_name === null) {
+				lastName = "";
+			} else {
+				lastName = last_name;
+			}
+			const name =
+				data?.conversation_type === "group" || data?.conversation_type === "campaign"
+					? data?.campaign_info?.name
+					: firstName + lastName
+					? firstName + " " + lastName
+					: phone;
+
 			if (location.pathname !== "/texting") {
-				const first_name = data?.contact?.first_name;
-				const last_name = data?.contact?.last_name;
-				const phone = data?.contact?.number;
-
-				let firstName: string;
-				let lastName: string;
-
-				if (first_name === "undefine" || first_name === null) {
-					firstName = "";
-				} else {
-					firstName = first_name;
-				}
-
-				if (last_name === "undefine" || last_name === null) {
-					lastName = "";
-				} else {
-					lastName = last_name;
-				}
-				const name =
-					data?.conversation_type === "group" || data?.conversation_type === "campaign"
-						? data?.campaign_info?.name
-						: firstName + lastName
-						? firstName + " " + lastName
-						: phone;
-
-				dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
+				// dispatch(setSimpleNotification(`New message from ${name} (${data?.text})`));
 
 				//update the unread count every time hit this condition 'unreadMessage' is coming from useSelector
 				const unreadCount = unreadMessage;
 				dispatch(setUnreadMessageCount(unreadCount + 1));
-				showToast(`New message from ${name} (${data?.text})`, "info");
+				// showToast(`New message from ${name} (${data?.text})`, "info");
+
+				// Browser Window Notification
+				try {
+					// if (isPageVisible) {
+					// 	return; // Don't display the notification if the page is visible
+					// }
+					if ("Notification" in window) {
+						if (Notification.permission === "granted") {
+							let noticeOptions = {
+								body: "incoming_message_from < " + name + " >",
+							};
+							let inComingMesssgeNotification = new Notification("incoming_msg", noticeOptions);
+							// inComingCallNotification.onclick = function (event) {
+
+							//   var lineNo = lineObj.LineNumber;
+							//   var videoInvite = lineObj.SipSession.data.withvideo
+							//   window.setTimeout(function () {
+							//     // https://github.com/InnovateAsterisk/Browser-Phone/issues/26
+							//     if (videoInvite) {
+							//       AnswerVideoCall(lineNo)
+							//     }
+							//     else {
+							//       AnswerAudioCall(lineNo);
+							//     }
+							//   }, 1000);
+
+							//   // Select Buddy
+							//   SelectLine(lineNo);
+							//   return;
+							// }
+							inComingMesssgeNotification.onclick = function () {
+								store.dispatch({ type: "texting/navigatePush", payload: "/texting" });
+								// sidebar.classList.toggle("-translate-x-full");
+								// focus to dial pad
+								//document.getElementById("hamburger").checked = false;
+								//document.getElementById("phone-tab").click()
+								window.focus();
+							};
+						}
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			} else {
+				try {
+					if (isPageVisible) {
+						return; // Don't display the notification if the page is visible
+					}
+					if ("Notification" in window) {
+						if (Notification.permission === "granted") {
+							let noticeOptions = {
+								body: data?.text,
+							};
+							let inComingMesssgeNotification = new Notification(`New message from < ${name} >`, noticeOptions);
+							// inComingCallNotification.onclick = function (event) {
+
+							//   var lineNo = lineObj.LineNumber;
+							//   var videoInvite = lineObj.SipSession.data.withvideo
+							//   window.setTimeout(function () {
+							//     // https://github.com/InnovateAsterisk/Browser-Phone/issues/26
+							//     if (videoInvite) {
+							//       AnswerVideoCall(lineNo)
+							//     }
+							//     else {
+							//       AnswerAudioCall(lineNo);
+							//     }
+							//   }, 1000);
+
+							//   // Select Buddy
+							//   SelectLine(lineNo);
+							//   return;
+							// }
+							inComingMesssgeNotification.onclick = function () {
+								store.dispatch({ type: "texting/navigatePush", payload: "/texting" });
+								// sidebar.classList.toggle("-translate-x-full");
+								// focus to dial pad
+								//document.getElementById("hamburger").checked = false;
+								//document.getElementById("phone-tab").click()
+								window.focus();
+							};
+						}
+					}
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		});
-	}, [reudxSocket, unreadMessage]);
+	}, [reudxSocket, unreadMessage, location.pathname, isPageVisible]);
 
 	return (
 		<div className={`${styles.wrapper}`}>
