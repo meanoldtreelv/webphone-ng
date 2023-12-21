@@ -15,6 +15,8 @@ import {
 import { useLazyCreateConversationObjectQuery } from "services/chat";
 import { showToast } from "utils";
 import BtnLarge from "components/UI/BtnLarge";
+import BtnMedium from "components/UI/BtnMedium";
+import BtnAction from "components/UI/BtnAction";
 
 const Group = () => {
 	const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const Group = () => {
 
 	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
 
+	const [plusIconHover, setPlusIconHover] = useState(false);
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
 	const [groupName, setGroupName] = useState("");
@@ -50,6 +53,16 @@ const Group = () => {
 			dispatch(setIsStartNewConversationDialogueOpen(false));
 		}
 	};
+
+	const isDisabled = () => {
+		if (groupName && memberLists?.length >= 2 && memberLists?.length <= 10) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+
+	// console.log(isDisabled(), "isDisabled");
 
 	return (
 		<>
@@ -88,13 +101,29 @@ const Group = () => {
 					<span>Members ({memberLists?.length})</span>
 				</span>
 				{memberLists?.length > 0 && (
-					<div
-						style={{ cursor: "pointer" }}
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setPlusIconHover(false);
+						}}
+						onMouseOver={() => {
+							setPlusIconHover(true);
+						}}
 						onClick={() => {
 							dispatch(setIsAddMemberDialogueOpen(true));
-						}}>
-						<PlusIcon />
-					</div>
+						}}
+						icon={<PlusIcon color={plusIconHover ? "primary-default" : "icon-primary"} />}
+					/>
+					// <div
+					// 	style={{ cursor: "pointer" }}
+					// 	onClick={() => {
+					// 		dispatch(setIsAddMemberDialogueOpen(true));
+					// 	}}>
+					// 	<PlusIcon />
+					// </div>
 				)}
 			</div>
 			<div className={styles.memberBox}>
@@ -136,11 +165,19 @@ const Group = () => {
 				)}
 			</div>
 			<div className={styles.footer}>
-				<button
+				<BtnMedium
+					btnType={"primary"}
+					isDanger={false}
+					isDisabled={isDisabled()}
+					type="button"
+					btnText="Create Group"
+					onClick={createGroupHandler}
+				/>
+				{/* <button
 					className={`${groupName && memberLists?.length >= 2 && memberLists?.length <= 10 && styles.active}`}
 					onClick={createGroupHandler}>
 					Create Group
-				</button>
+				</button> */}
 			</div>
 		</>
 	);

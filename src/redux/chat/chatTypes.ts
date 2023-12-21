@@ -45,4 +45,5 @@ export interface IChatState {
 	selectedAttachment: [];
 	isMsgSending: boolean;
 	latestMsgRandomId: string;
+	unreadMessageCount: number;
 }

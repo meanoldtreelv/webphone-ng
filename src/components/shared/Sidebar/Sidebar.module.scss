@@ -72,17 +72,17 @@
 	&_icon {
 		position: relative;
 
-		// &::before {
-		// 	content: "";
-		// 	position: absolute;
-		// 	top: 0px;
-		// 	left: 15px;
-		// 	z-index: 100;
-		// 	width: 5px;
-		// 	height: 5px;
-		// 	background: var(--support-danger-default);
-		// 	border-radius: 100%;
-		// }
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0px;
+			left: 15px;
+			z-index: 100;
+			width: 5px;
+			height: 5px;
+			background: var(--support-danger-default);
+			border-radius: 100%;
+		}
 	}
 
 	&_unreadMsg {

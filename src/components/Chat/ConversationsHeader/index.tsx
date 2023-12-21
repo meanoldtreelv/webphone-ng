@@ -30,6 +30,7 @@ import { useNavigate } from "react-router";
 import sip from "lib/sip";
 import ArrowLeft from "components/UI/Icons/ArrowLeft";
 import UserStatusIcon from "components/UI/Icons/UserStatus";
+import BtnAction from "components/UI/BtnAction";
 
 const ConversationsHeader = () => {
 	const dispatch = useDispatch();
@@ -45,6 +46,10 @@ const ConversationsHeader = () => {
 
 	const [deleteIconHover, setDeleteIconHover] = useState(false);
 	const [isMoreMenu, setIsMoreMenu] = useState(false);
+	const [isThreeDotsHover, setIsThreeDotsHover] = useState(false);
+	const [isCallHover, setIsCallHover] = useState(false);
+	const [isCheckHover, setIsCheckHover] = useState(false);
+	const [isPinHover, setIsPinHover] = useState(false);
 
 	const first_name = conversationDatas?.contactsinfo?.[0]?.first_name;
 	const last_name = conversationDatas?.contactsinfo?.[0]?.last_name;
@@ -129,6 +134,7 @@ const ConversationsHeader = () => {
 
 	const handleCall = () => {
 		sip.call(String(conversationDatas?.contactsinfo?.[0]?.number));
+		// sip.call("300");
 		navigate("/dashboard");
 	};
 
@@ -172,27 +178,119 @@ const ConversationsHeader = () => {
 			<div className={styles.right}>
 				<span className={styles.icon}>
 					{conversationDatas?.pinned_at ? (
-						<span onClick={unPinHandler}>
-							{isFetching1 ? <ClipLoader size={14} color="var(--text-secondary)" /> : <UnpinIcon />}
-						</span>
+						<BtnAction
+							btnType={"normal"}
+							isDisabled={false}
+							type="button"
+							isActive={false}
+							onMouseOut={() => {
+								setIsPinHover(false);
+							}}
+							onMouseOver={() => {
+								setIsPinHover(true);
+							}}
+							onClick={unPinHandler}
+							// icon={<CheckIcon color={isCheckHover || deleteCheck ? "primary-default" : "icon-primary"} />}
+							icon={
+								isFetching1 ? (
+									<ClipLoader size={14} color="var(--primary-default)" />
+								) : (
+									<UnpinIcon color={isPinHover ? "primary-default" : "icon-primary"} />
+								)
+							}
+						/>
 					) : (
-						<span onClick={pinHandler}>
-							{isFetching1 ? <ClipLoader size={14} color="var(--text-secondary)" /> : <PinIcon />}
-						</span>
+						// <span onClick={unPinHandler}>
+						// 	{isFetching1 ? <ClipLoader size={14} color="var(--text-secondary)" /> : <UnpinIcon />}
+						// </span>
+						<BtnAction
+							btnType={"normal"}
+							isDisabled={false}
+							type="button"
+							isActive={false}
+							onMouseOut={() => {
+								setIsPinHover(false);
+							}}
+							onMouseOver={() => {
+								setIsPinHover(true);
+							}}
+							onClick={pinHandler}
+							// icon={<CheckIcon color={isCheckHover || deleteCheck ? "primary-default" : "icon-primary"} />}
+							icon={
+								isFetching1 ? (
+									<ClipLoader size={14} color="var(--primary-default)" />
+								) : (
+									<PinIcon color={isPinHover ? "primary-default" : "icon-primary"} />
+								)
+							}
+						/>
+						// <span onClick={pinHandler}>
+						// 	{isFetching1 ? <ClipLoader size={14} color="var(--text-secondary)" /> : <PinIcon />}
+						// </span>
 					)}
 				</span>
-				<span
+				<BtnAction
+					btnType={"normal"}
+					isDisabled={false}
+					type="button"
+					isActive={deleteCheck}
+					onMouseOut={() => {
+						setIsCheckHover(false);
+					}}
+					onMouseOver={() => {
+						setIsCheckHover(true);
+					}}
+					onClick={() => {
+						dispatch(setIsDeleteCheck(!deleteCheck));
+					}}
+					icon={<CheckIcon color={isCheckHover || deleteCheck ? "primary-default" : "icon-primary"} />}
+				/>
+				{/* <span
 					className={styles.icon}
 					onClick={() => {
 						dispatch(setIsDeleteCheck(!deleteCheck));
 					}}>
 					<CheckIcon />
-				</span>
-				<span className={styles.icon} onClick={handleCall}>
+				</span> */}
+				<BtnAction
+					btnType={"normal"}
+					isDisabled={false}
+					type="button"
+					isActive={false}
+					onMouseOut={() => {
+						setIsCallHover(false);
+					}}
+					onMouseOver={() => {
+						setIsCallHover(true);
+					}}
+					onClick={handleCall}
+					icon={<CallIcon color={isCallHover ? "primary-default" : "icon-primary"} />}
+				/>
+				{/* <span className={styles.icon} onClick={handleCall}>
 					<CallIcon />
-				</span>
+				</span> */}
 
-				<span
+				<BtnAction
+					btnType={"danger"}
+					isDisabled={false}
+					type="button"
+					isActive={deleteConversationDialogueOpen}
+					onMouseOut={() => {
+						setDeleteIconHover(false);
+					}}
+					onMouseOver={() => {
+						setDeleteIconHover(true);
+					}}
+					onClick={() => {
+						dispatch(setIsDeleteConversationDialogueOpen(true));
+					}}
+					icon={
+						<DeleteIcon
+							color={deleteIconHover || deleteConversationDialogueOpen ? "support-danger-default" : "icon-primary"}
+						/>
+					}
+				/>
+				{/* <span
 					onMouseOver={() => {
 						setDeleteIconHover(true);
 					}}
@@ -206,14 +304,30 @@ const ConversationsHeader = () => {
 					<DeleteIcon
 						color={deleteIconHover || deleteConversationDialogueOpen ? "support-danger-default" : "icon-primary"}
 					/>
-				</span>
-				<span
+				</span> */}
+				<BtnAction
+					btnType={"normal"}
+					isDisabled={false}
+					type="button"
+					isActive={isMoreMenu}
+					onMouseOut={() => {
+						setIsThreeDotsHover(false);
+					}}
+					onMouseOver={() => {
+						setIsThreeDotsHover(true);
+					}}
+					onClick={() => {
+						setIsMoreMenu(!isMoreMenu);
+					}}
+					icon={<ThreeDots color={isThreeDotsHover || isMoreMenu ? "primary-default" : "icon-primary"} />}
+				/>
+				{/* <span
 					className={styles.icon}
 					onClick={() => {
 						setIsMoreMenu(!isMoreMenu);
 					}}>
 					<ThreeDots />
-				</span>
+				</span> */}
 				{isMoreMenu && <MoreMenuPopUp />}
 			</div>
 		</div>

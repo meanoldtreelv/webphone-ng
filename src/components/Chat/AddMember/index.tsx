@@ -19,6 +19,7 @@ import {
 	textingContactLists,
 } from "redux/chat/chatSelectors";
 import AddMemberBox from "../StartNewConversations/AddMemberBox";
+import BtnAction from "components/UI/BtnAction";
 
 const AddMember = () => {
 	const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const AddMember = () => {
 	const campaignMemberList = useSelector(campaignMemberLists);
 	const conversationType = useSelector(startConversationType);
 
+	const [cancelHover, setCancelHover] = useState(false);
 	const [search, setSearch] = useState("");
 	const [filteredContactList, setFilteredContactList] = useState<any>([]);
 	const [fakePage, setFakePage] = useState(1);
@@ -124,13 +126,29 @@ const AddMember = () => {
 			<div className={styles.box}>
 				<div className={styles.header}>
 					<span>Add Member</span>
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setCancelHover(false);
+						}}
+						onMouseOver={() => {
+							setCancelHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsAddMemberDialogueOpen(false));
+						}}
+						icon={<CloseIcon color={cancelHover ? "primary-default" : "icon-primary"} />}
+					/>
+					{/* <span
 						className={styles.close}
 						onClick={() => {
 							dispatch(setIsAddMemberDialogueOpen(false));
 						}}>
 						<CloseIcon />
-					</span>
+					</span> */}
 				</div>
 				<div>
 					<SearchBar

@@ -117,14 +117,18 @@ const ChatBox = () => {
 			console.log("texting.message.new", data);
 			if (data?.conversation_id === conversationDatas?.id) {
 				if (data?.direction === "outbound") {
-					const updatedLists = messageLists?.map((item) => {
-						if (item.id === msgRandomId) {
-							// Replace the item object with data object
-							return data;
-						}
-						return item; // Return the original item if no replacement is needed
-					});
-					dispatch(setMsgLists(updatedLists));
+					if (data?.files?.length === 0) {
+						const updatedLists = messageLists?.map((item) => {
+							if (item.id === msgRandomId) {
+								// Replace the item object with data object
+								return data;
+							}
+							return item; // Return the original item if no replacement is needed
+						});
+						dispatch(setMsgLists(updatedLists));
+					} else {
+						dispatch(setMsgLists([data, ...messageLists]));
+					}
 				}
 				if (data?.direction === "inbound") {
 					dispatch(setMsgLists([data, ...messageLists]));
