@@ -31,8 +31,8 @@ const SendFiles = ({ id, time, text, files }) => {
 	return (
 		<div className={`${styles.msgDiv} ${deleteCheck && styles.msgDiv_active}`}>
 			<div className={styles.left}>
+				<SendTime time={time} />
 				<div className={styles.left_box}>
-					<SendTime time={time} />
 					<div className={styles.sendChat}>
 						<span>{text}</span>
 					</div>

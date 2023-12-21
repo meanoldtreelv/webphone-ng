@@ -22,6 +22,10 @@
 	gap: 10px;
 }
 
+.backArrow {
+	display: none;
+}
+
 .initials {
 	width: 32px;
 	height: 32px;
@@ -132,5 +136,13 @@
 
 	&_active {
 		background: var(--background-danger-active, rgba(242, 84, 84, 0.1));
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.backArrow {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
 	}
 }

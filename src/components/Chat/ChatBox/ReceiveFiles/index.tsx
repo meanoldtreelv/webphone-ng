@@ -31,8 +31,8 @@ const ReceiveFiles = ({ id, time, text, files }) => {
 	return (
 		<div className={`${styles.msgDiv} ${deleteCheck && styles.msgDiv_active}`}>
 			<div className={styles.left}>
+				<ReceiveTime time={time} />
 				<div className={styles.left_box}>
-					<ReceiveTime time={time} />
 					<div className={styles.receiveChat}>
 						<span>{text ? text : ""}</span>
 					</div>

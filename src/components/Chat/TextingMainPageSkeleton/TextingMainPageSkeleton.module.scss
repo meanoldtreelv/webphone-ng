@@ -3,6 +3,25 @@
 	height: 100%;
 
 	div {
-		width: 33%;
+		width: 600px;
+		height: 100%;
+		overflow: hidden;
+		padding: 15px 0;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.page {
+		div {
+			width: 50%;
+		}
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.page {
+		div {
+			width: 100%;
+		}
 	}
 }
