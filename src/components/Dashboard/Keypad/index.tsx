@@ -93,7 +93,7 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 			setFilteredContacts(filteredDt);
 		}
 	}, [number]);
-
+	const {	extAuthList, extNumber } = useSelector((state: any) => state.sip);
 	return (
 		<div className={styles.dialpad}>
 			<div className={`${styles.dialpad_contactSearch} ${filteredContacts.length ? styles.bgFilter : null}`}>
@@ -155,6 +155,9 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 					{/* <Button>
 					</Button> */}
 				</div>
+			</div>
+			<div>
+				{ extAuthList.map((item: any) => ( item.user == extNumber ? <p style={{whiteSpace: "nowrap", textAlign: "center"}}>{item.name} &lt;{item.outbound_callerid?.number}&gt;</p> :"" )) }
 			</div>
 		</div>
 	);
