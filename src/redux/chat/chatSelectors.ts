@@ -39,3 +39,4 @@ export const selectedVideoFiles = (state: RootState) => state.chat.selectedVideo
 export const selectedAttachment = (state: RootState) => state.chat.selectedAttachment;
 export const isMsgSending = (state: RootState) => state.chat.isMsgSending;
 export const latestMsgRandomId = (state: RootState) => state.chat.latestMsgRandomId;
+export const unreadMessageCount = (state: RootState) => state.chat.unreadMessageCount;

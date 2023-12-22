@@ -8,6 +8,8 @@ import { conversationData, conversationLists, fromContactLists } from "redux/cha
 import { useState } from "react";
 import { showToast } from "utils";
 import { useLazyCreateConversationObjectQuery, useLazyGetConversationListsQuery } from "services/chat";
+import BtnAction from "components/UI/BtnAction";
+import BtnMedium from "components/UI/BtnMedium";
 
 const SettingDialogue = () => {
 	const dispatch = useDispatch();
@@ -19,6 +21,7 @@ const SettingDialogue = () => {
 	const [getConversationLists] = useLazyGetConversationListsQuery();
 	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
 
+	const [cancelHover, setCancelHover] = useState(false);
 	const [fromNumber, setFromNumber] = useState(conversationDatas?.from_number);
 
 	const setNumberHandler = async () => {
@@ -150,13 +153,29 @@ const SettingDialogue = () => {
 						<span>Choose your number</span>
 					</span>
 
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setCancelHover(false);
+						}}
+						onMouseOver={() => {
+							setCancelHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(false));
+						}}
+						icon={<CloseIcon color={cancelHover ? "primary-default" : "icon-primary"} />}
+					/>
+					{/* <span
 						className={styles.close}
 						onClick={() => {
 							dispatch(setIsSettingDialogueOpen(false));
 						}}>
 						<CloseIcon />
-					</span>
+					</span> */}
 				</h1>
 
 				<p>Choose main number for sending messages</p>
@@ -178,11 +197,19 @@ const SettingDialogue = () => {
 				</div>
 
 				<div className={styles.btnBox}>
-					<button
+					<BtnMedium
+						btnType={"primary"}
+						isDanger={false}
+						isDisabled={fromNumber === conversationDatas?.from_number}
+						type="button"
+						btnText="Set"
+						onClick={setNumberHandler}
+					/>
+					{/* <button
 						onClick={setNumberHandler}
 						className={`${styles.button} ${fromNumber === conversationDatas?.from_number ? styles.buttonActive : ""}`}>
 						Set
-					</button>
+					</button> */}
 				</div>
 			</div>
 		</>
