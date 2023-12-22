@@ -15,14 +15,21 @@ import {
 	conversationData,
 	emoji,
 	isDeleteCheck,
+	isSettingDialogueOpen,
 	msgLists,
 	selectedAttachment,
 	selectedFiles,
 } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
-import SettingsIcon from "components/Voicemail/Settings";
-import { setIsMsgSending, setIsSettingDialogueOpen, setLatestMsgRandomId, setMsgLists } from "redux/chat/chatSlice";
+// import SettingsIcon from "components/Voicemail/Settings";
+import {
+	setIsMsgSending,
+	setIsSettingDialogueOpen,
+	setLatestMsgRandomId,
+	setMsgLists,
+	setSelectedAttachment,
+} from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
 import { useLazyPostFilesQuery, useLazyUploadFilesQuery } from "services/storage";
@@ -30,6 +37,8 @@ import MicrophoneIcon from "components/UI/Icons/ChatIcons/Microphone";
 import SelectedContact from "./SelectedContact";
 import { generateRandomId } from "helpers";
 import { convertNewDateToString } from "helpers/formatDateTime";
+import BtnAction from "components/UI/BtnAction";
+import SettingsIcon from "components/UI/Icons/Settings";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -39,11 +48,15 @@ const ConversationsFooter = () => {
 	const emojiSelected = useSelector(emoji);
 	const selectedAttachments = useSelector(selectedAttachment);
 	const messageLists = useSelector(msgLists);
+	const isSettingsDialogueOpen = useSelector(isSettingDialogueOpen);
 
 	const [sendOutboundMessage, { data, isLoading, isFetching: isFetchingMsg }] = useLazySendOutboundMessageQuery();
 	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
 	const [uploadFiles] = useLazyUploadFilesQuery();
+
+	const [emojiIconHover, setEmojiIconHover] = useState(false);
 	const [isAttachmentHovered, setIsAttachmentHovered] = useState(false);
+	const [isSettingsIconHover, setIsSettingIconHover] = useState(false);
 	const [isAttachmentClicked, setIsAttachmentClicked] = useState(false);
 	const [emojiPicker, setEmojiPicker] = useState(false);
 
@@ -129,6 +142,7 @@ const ConversationsFooter = () => {
 	useEffect(() => {
 		console.log(fileResponse, "fileResponse");
 		if (selectedAttachments.length === 0 || fileResponse.length !== selectedAttachments.length) return;
+
 		const fetchData = async () => {
 			const selectedFiles = selectedAttachments || [];
 			for (let i = 0; i < selectedFiles.length; i++) {
@@ -151,7 +165,7 @@ const ConversationsFooter = () => {
 				}
 			}
 		};
-		// fetchData();
+		fetchData();
 		// const sendData = async () => {
 		// 	const { error, data } = await sendOutboundMessage({
 		// 		id: conversationDatas?.id,
@@ -191,7 +205,7 @@ const ConversationsFooter = () => {
 				data: {
 					created_at: new Date(),
 					files: uploadId,
-					stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
+					// stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
 					text: text,
 					with_warning: false,
 				},
@@ -199,6 +213,9 @@ const ConversationsFooter = () => {
 
 			if (data) {
 				setText("");
+				setTextData({});
+				dispatch(setSelectedAttachment([]));
+				setFilePreviews([]);
 				showToast("message send successfully", "info");
 			}
 
@@ -206,7 +223,7 @@ const ConversationsFooter = () => {
 				showToast("There is error in sending text msg , please try again later  ", "error");
 			}
 		};
-		// sendData();
+		sendData();
 	}, [uploadId]);
 
 	useEffect(() => {
@@ -235,6 +252,13 @@ const ConversationsFooter = () => {
 		}
 	}, [selectedAttachments]);
 
+	useEffect(() => {
+		setIsAttachmentClicked(false);
+	}, [selectedAttachments]);
+
+	console.log(selectedAttachments, "selectedAttachments");
+	console.log(text, "text");
+
 	return (
 		<>
 			<div className={styles.footer}>
@@ -258,7 +282,26 @@ const ConversationsFooter = () => {
 
 				<div className={styles.top}>
 					{isAttachmentClicked && <SharePopUp />}
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={isAttachmentClicked}
+						onMouseOut={() => {
+							setIsAttachmentHovered(false);
+						}}
+						onMouseOver={() => {
+							setIsAttachmentHovered(true);
+						}}
+						onClick={() => {
+							setIsAttachmentClicked(!isAttachmentClicked);
+						}}
+						icon={
+							<AttachmentIcon color={isAttachmentHovered || isAttachmentClicked ? "primary-default" : "icon-primary"} />
+						}
+					/>
+
+					{/* <span
 						onClick={() => {
 							setIsAttachmentClicked(!isAttachmentClicked);
 						}}
@@ -274,7 +317,7 @@ const ConversationsFooter = () => {
 						<AttachmentIcon
 							color={`${isAttachmentHovered || isAttachmentClicked ? "primary-default" : "icon-primary"}`}
 						/>
-					</span>
+					</span> */}
 					<div className={styles.inputBox}>
 						<input
 							type="text"
@@ -296,20 +339,36 @@ const ConversationsFooter = () => {
 							}}
 						/>
 						<div className={styles.icon}>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={emojiPicker}
+								onMouseOut={() => {
+									setEmojiIconHover(false);
+								}}
+								onMouseOver={() => {
+									setEmojiIconHover(true);
+								}}
+								onClick={() => {
+									setEmojiPicker(!emojiPicker);
+								}}
+								icon={<EmojiIcon color={emojiIconHover || emojiPicker ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.icon1}
 								onClick={() => {
 									setEmojiPicker(!emojiPicker);
 								}}>
 								<EmojiIcon />
-							</span>
+							</span> */}
 							{/* <span className={styles.icon1}>
 								<MicrophoneIcon />
 							</span> */}
 						</div>
 					</div>
 					<button
-						className={`${styles.send} ${text?.length > 0 ? styles.send_active : ""}`}
+						className={`${styles.send} ${text?.length > 0 || selectedAttachment.length > 0 ? styles.send_active : ""}`}
 						onClick={() => {
 							// setTextData({
 							// 	text: text,
@@ -327,32 +386,52 @@ const ConversationsFooter = () => {
 					{filePreviews?.map((item) => {
 						// todo- need to add more checks
 						if (
-							item.type === "image/jpeg" ||
-							item.type === "image/png" ||
-							item.type === "image/jpg" ||
-							item.type === "image/webp"
+							item?.type === "image/jpeg" ||
+							item?.type === "image/png" ||
+							item?.type === "image/jpg" ||
+							item?.type === "image/webp"
 						) {
-							return <SelectedImg src={item.target} name={item?.name} />;
+							return <SelectedImg src={item?.target} name={item?.name} />;
 						}
-						if (item.type === "video/mp4" || item.type === "video/mov") {
-							return <SelectedVideo src={item.target} name={item?.name} />;
+						if (item?.type === "video/mp4" || item?.type === "video/mov") {
+							return <SelectedVideo src={item?.target} name={item?.name} />;
 						}
-						if (item.type === "application/pdf" || item.type === "application/doc") {
+						if (item?.type === "application/pdf" || item?.type === "application/doc") {
 							return <SelectedDoc name={item?.name} />;
 						}
-						if (item.type === "audio/mpeg" || item.type === "audio/mp3") {
+						if (item?.type === "audio/mpeg" || item?.type === "audio/mp3") {
 							return <SelectedAudio name={item?.name} />;
 						}
 					})}
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={isSettingsDialogueOpen}
+						onMouseOut={() => {
+							setIsSettingIconHover(false);
+						}}
+						onMouseOver={() => {
+							setIsSettingIconHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsSettingDialogueOpen(true));
+						}}
+						icon={
+							<SettingsIcon
+								color={isSettingsIconHover || isSettingsDialogueOpen ? "primary-default" : "icon-primary"}
+							/>
+						}
+					/>
+					{/* <span
 						onClick={() => {
 							dispatch(setIsSettingDialogueOpen(true));
 						}}>
 						<SettingsIcon />
-					</span>
+					</span> */}
 				</div>
 				{deleteCheck && <SelectedMsgControl />}
 			</div>

@@ -5,6 +5,8 @@ import { conversationData, msgLists, selectAllMsg, selectedMsgLists } from "redu
 import { useLazyDeleteMessagesQuery } from "services/chat";
 import { ClipLoader } from "react-spinners";
 import { showToast } from "utils";
+import BtnMedium from "components/UI/BtnMedium";
+import BtnLarge from "components/UI/BtnLarge";
 
 const SelectedMsgControl = () => {
 	const dispatch = useDispatch();
@@ -58,22 +60,49 @@ const SelectedMsgControl = () => {
 	return (
 		<div className={styles.controlBar}>
 			<div>
-				<button
+				<BtnLarge
+					btnType={"secondary"}
+					isDanger={false}
+					isDisabled={false}
+					type="button"
+					btnText="Cancel"
+					onClick={() => {
+						dispatch(setIsDeleteCheck(false));
+					}}
+				/>
+				{/* <button
 					className={styles.cancel}
 					onClick={() => {
 						dispatch(setIsDeleteCheck(false));
 					}}>
 					Cancel
-				</button>
-				<button className={styles.delete} onClick={deleteHandler}>
+				</button> */}
+				<BtnLarge
+					btnType={"primary"}
+					isDanger={true}
+					isDisabled={false}
+					type="button"
+					btnText="Delete"
+					onClick={deleteHandler}
+					isLoading={isLoading1}
+				/>
+				{/* <button className={styles.delete} onClick={deleteHandler}>
 					Delete {isLoading1 && <ClipLoader size={12} color="var(--text-on-color)" />}
-				</button>
+				</button> */}
 			</div>
 			<div>
 				<span>({selectedMsgList.length}) messages were selected</span>
-				<button className={styles.info} onClick={selectAllHandler}>
+				<BtnLarge
+					btnType={"primary"}
+					isDanger={false}
+					isDisabled={false}
+					type="button"
+					btnText="Select All"
+					onClick={selectAllHandler}
+				/>
+				{/* <button className={styles.info} onClick={selectAllHandler}>
 					Select All
-				</button>
+				</button> */}
 			</div>
 		</div>
 	);

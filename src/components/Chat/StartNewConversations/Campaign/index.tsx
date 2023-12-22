@@ -15,6 +15,8 @@ import {
 import { useLazyCreateConversationObjectQuery } from "services/chat";
 import { showToast } from "utils";
 import BtnLarge from "components/UI/BtnLarge";
+import BtnMedium from "components/UI/BtnMedium";
+import BtnAction from "components/UI/BtnAction";
 
 const Campaign = () => {
 	const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const Campaign = () => {
 
 	const [createConversationObject, {}] = useLazyCreateConversationObjectQuery();
 
+	const [plusIconHover, setPlusIconHover] = useState(false);
 	const [isFromNumberPopUpOpen, setIsFromNumberPopUpOpen] = useState(false);
 	const [isFromNumberHovered, setIsFromNumberHovered] = useState(false);
 	const [campaignName, setCampaignName] = useState("");
@@ -49,6 +52,14 @@ const Campaign = () => {
 		if (data) {
 			dispatch(setAddedMemberLists([]));
 			dispatch(setIsStartNewConversationDialogueOpen(false));
+		}
+	};
+
+	const isDisabled = () => {
+		if (campaignName && campaignMemberList?.length >= 2 && campaignMemberList?.length <= 10) {
+			return false;
+		} else {
+			return true;
 		}
 	};
 
@@ -89,13 +100,29 @@ const Campaign = () => {
 					<span>Members ({campaignMemberList?.length})</span>
 				</span>
 				{campaignMemberList?.length > 0 && (
-					<div
-						style={{ cursor: "pointer" }}
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setPlusIconHover(false);
+						}}
+						onMouseOver={() => {
+							setPlusIconHover(true);
+						}}
 						onClick={() => {
 							dispatch(setIsAddMemberDialogueOpen(true));
-						}}>
-						<PlusIcon />
-					</div>
+						}}
+						icon={<PlusIcon color={plusIconHover ? "primary-default" : "icon-primary"} />}
+					/>
+					// <div
+					// 	style={{ cursor: "pointer" }}
+					// 	onClick={() => {
+					// 		dispatch(setIsAddMemberDialogueOpen(true));
+					// 	}}>
+					// 	<PlusIcon />
+					// </div>
 				)}
 			</div>
 			<div className={styles.memberBox}>
@@ -137,13 +164,21 @@ const Campaign = () => {
 				)}
 			</div>
 			<div className={styles.footer}>
-				<button
+				<BtnMedium
+					btnType={"primary"}
+					isDanger={false}
+					isDisabled={isDisabled()}
+					type="button"
+					btnText="Create Campaign"
+					onClick={createCampaignHandler}
+				/>
+				{/* <button
 					className={`${
 						campaignName && campaignMemberList?.length >= 2 && campaignMemberList?.length <= 10 && styles.active
 					}`}
 					onClick={createCampaignHandler}>
 					Create Campaign
-				</button>
+				</button> */}
 			</div>
 		</>
 	);

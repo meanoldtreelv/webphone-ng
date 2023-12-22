@@ -52,6 +52,7 @@ const initialChatState: IChatState = {
 	selectedAttachment: [],
 	isMsgSending: false,
 	latestMsgRandomId: "",
+	unreadMessageCount: 0,
 };
 
 const chatSlice = createSlice({
@@ -181,6 +182,9 @@ const chatSlice = createSlice({
 		setLatestMsgRandomId(state, action) {
 			state.latestMsgRandomId = action.payload;
 		},
+		setUnreadMessageCount(state, action) {
+			state.unreadMessageCount = action.payload;
+		},
 	},
 });
 
@@ -223,6 +227,7 @@ export const {
 	setSelectedAttachment,
 	setIsMsgSending,
 	setLatestMsgRandomId,
+	setUnreadMessageCount,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
