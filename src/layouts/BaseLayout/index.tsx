@@ -222,7 +222,7 @@ const BaseLayout = ({ children }: any) => {
 		<div className={`${styles.wrapper}`}>
 			<ToastContainer />
 			{sessionValid && <ModalMessage />}
-			{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
+			{/* {suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />} */}
 			{dispNotification.msg.length ? <NotificationMsg /> : null}
 			<div className={styles.popUp} id="notification_bar">
 				{location.pathname != "/dashboard" && answeredCalls.length + ringingOutboundCalls.length > 0 && (

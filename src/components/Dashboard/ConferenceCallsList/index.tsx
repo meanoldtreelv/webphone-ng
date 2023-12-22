@@ -120,22 +120,6 @@ const ConferenceCallsList = ({
 									}}
 								/>
 							))}
-							{conferenceCallList?.map((item) => (
-								<ConferenceCallListMember
-									hoverOn={hoverOn}
-									setHoverOn={setHoverOn}
-									lineNumber={LineNumber}
-									details={{
-										id: item.id,
-										callTimer: item.callTimer,
-										billsec: item.startTime,
-										name: item.to,
-										number: item.to,
-										startTime: item.startTime,
-										disposition: item.disposition,
-									}}
-								/>
-							))}
 						</div>
 					</div>
 				</div>
