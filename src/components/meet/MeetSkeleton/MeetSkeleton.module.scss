@@ -1,0 +1,27 @@
+.skeleton {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+
+	div {
+		display: flex;
+		width: 50%;
+		align-items: center;
+
+		span {
+			width: 300px;
+			height: 42px;
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.skeleton {
+		div {
+			span {
+				width: 150px;
+			}
+		}
+	}
+}
