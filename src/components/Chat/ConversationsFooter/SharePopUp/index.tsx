@@ -2,7 +2,7 @@ import styles from "./SharePopUp.module.scss";
 import UserGroupIcon from "components/UI/Icons/Sidebar/UserGroup";
 import UploadIcon from "components/UI/Icons/ChatIcons/Upload";
 import { useDispatch } from "react-redux";
-import { setSelectedAttachment, setSelectedFiles } from "redux/chat/chatSlice";
+import { setIsShareContactDialogueOpen, setSelectedAttachment, setSelectedFiles } from "redux/chat/chatSlice";
 
 const SharePopUp = () => {
 	const dispatch = useDispatch();
@@ -67,7 +67,10 @@ const SharePopUp = () => {
 					<span>Share image</span>
 				</label>
 			</div>
-			<div>
+			<div
+				onClick={() => {
+					dispatch(setIsShareContactDialogueOpen(true));
+				}}>
 				<span>
 					<UserGroupIcon color="icon-primary" />
 				</span>
