@@ -1,37 +1,131 @@
 import styles from "./ReceiveContact.module.scss";
 import ThreeDots from "components/UI/Icons/meet/ThreeDots";
 import ContactDetailsPopUp from "../ContactDetailsPopup";
+import ReceiveTime from "../ReceiveTime";
+import { useDispatch, useSelector } from "react-redux";
+import { isDeleteCheck, selectedMsgLists } from "redux/chat/chatSelectors";
+import { setSelectedMsgLists } from "redux/chat/chatSlice";
+import { useState } from "react";
+import { contactAbbreviation } from "utils";
 
-const ReceiveContact = () => {
+export const ContactReceive = ({ item }) => {
+	const [isContactMenuPopUpOpen, setIsContactMenuPopUpOpen] = useState(false);
+	const first_name = item?.full_name?.first_name;
+	const last_name = item?.full_name?.last_name;
+	const phone = item?.phone_numbers?.[0];
+	const email = item?.email;
+
+	let firstName: string;
+	let lastName: string;
+	let number: any;
+
+	if (first_name === "undefine" || first_name === null) {
+		firstName = "";
+	} else {
+		firstName = first_name;
+	}
+
+	if (last_name === "undefine" || last_name === null) {
+		lastName = "";
+	} else {
+		lastName = last_name;
+	}
+	if (phone === "undefine" || phone === null) {
+		number = "";
+	} else {
+		number = phone;
+	}
 	return (
-		<div className={styles.receiveContact}>
-			<div className={styles.contactBox}>
-				<div className={styles.contact}>
-					<div>
-						<span className={styles.initials}>SG</span>
-						<span className={styles.details}>
-							<span className={styles.name}>Shivam Gupta </span>
-							<span className={styles.number}>987643131</span>
-						</span>
+		<div className={styles.contact}>
+			<div>
+				<span className={styles.initials}>{contactAbbreviation(first_name, last_name, phone, "")}</span>
+				<span className={styles.details}>
+					<span className={styles.name}>{firstName + lastName ? firstName + " " + lastName : ""}</span>
+					<span className={styles.number}>{number || email}</span>
+				</span>
+			</div>
+			<span
+				onClick={() => {
+					setIsContactMenuPopUpOpen(!isContactMenuPopUpOpen);
+				}}>
+				<ThreeDots />
+			</span>
+			{isContactMenuPopUpOpen && <ContactDetailsPopUp />}
+		</div>
+	);
+};
+
+const ReceiveContact = ({ id, files, time }) => {
+	const dispatch = useDispatch();
+	const deleteCheck = useSelector(isDeleteCheck);
+	const selectedMsgList = useSelector(selectedMsgLists);
+
+	const [isContactMenuPopUpOpen, setIsContactMenuPopUpOpen] = useState(false);
+
+	const handleSelectInput = () => {
+		!selectedMsgList.includes(id)
+			? dispatch(setSelectedMsgLists({ type: "ADD", id }))
+			: dispatch(setSelectedMsgLists({ id }));
+	};
+	return (
+		<div className={`${styles.msgDiv} ${deleteCheck && styles.msgDiv_active}`}>
+			<div className={styles.left}>
+				<ReceiveTime time={time} />
+				<div className={styles.receiveContact}>
+					<div className={styles.contactBox}>
+						{files?.json_preview?.map((item) => {
+							// const first_name = item?.full_name?.first_name;
+							// const last_name = item?.full_name?.last_name;
+							// const phone = item?.phone_numbers?.[0];
+							// const email = item?.email;
+
+							// let firstName: string;
+							// let lastName: string;
+							// let number: any;
+
+							// if (first_name === "undefine" || first_name === null) {
+							// 	firstName = "";
+							// } else {
+							// 	firstName = first_name;
+							// }
+
+							// if (last_name === "undefine" || last_name === null) {
+							// 	lastName = "";
+							// } else {
+							// 	lastName = last_name;
+							// }
+							// if (phone === "undefine" || phone === null) {
+							// 	number = "";
+							// } else {
+							// 	number = phone;
+							// }
+
+							return (
+								<ContactReceive item={item} />
+								// <div className={styles.contact}>
+								// 	<div>
+								// 		<span className={styles.initials}>{contactAbbreviation(first_name, last_name, phone, "")}</span>
+								// 		<span className={styles.details}>
+								// 			<span className={styles.name}>{firstName + lastName ? firstName + " " + lastName : ""}</span>
+								// 			<span className={styles.number}>{number || email}</span>
+								// 		</span>
+								// 	</div>
+								// 	<span
+								// 		onClick={() => {
+								// 			setIsContactMenuPopUpOpen(!isContactMenuPopUpOpen);
+								// 		}}>
+								// 		<ThreeDots />
+								// 	</span>
+								// 	{isContactMenuPopUpOpen && <ContactDetailsPopUp />}
+								// </div>
+							);
+						})}
 					</div>
-					<span>
-						<ThreeDots />
-					</span>
-					{false && <ContactDetailsPopUp />}
-				</div>
-				<div className={styles.contact}>
-					<div>
-						<span className={styles.initials}>SG</span>
-						<span className={styles.details}>
-							<span className={styles.name}>Shivam Gupta Delhi India </span>
-							<span className={styles.number}>987643131</span>
-						</span>
-					</div>
-					<span>
-						<ThreeDots />
-					</span>
 				</div>
 			</div>
+			{deleteCheck && (
+				<input type="checkbox" name="" id={id} checked={selectedMsgList.includes(id)} onChange={handleSelectInput} />
+			)}
 		</div>
 	);
 };

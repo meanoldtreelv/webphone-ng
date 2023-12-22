@@ -62,12 +62,15 @@ const MultipleCallListModal = () => {
 									</span>
 									{!sip.isConferenceCall(activeCallLineNumber) && activeCallLineNumber !== call.LineNumber && !call.conferenceCallList && <span>
 										<span style={{ float: "right", display:"flex", }}>
-											<span>
-												<Button onClick={()=>{
-													console.log("merge call " + call.LineNumber + " with " + activeCallLineNumber)
-													sip.merge(call.LineNumber, activeCallLineNumber)
-													}} styles={{padding: "6px"}}><MergeCallIcon /></Button>
-											</span>
+											{
+												call.mergedOnGroup?<span>{call.mergedOnGroup}</span>:
+												<span>
+													<Button onClick={()=>{
+														console.log("merge call " + call.LineNumber + " with " + activeCallLineNumber)
+														sip.merge(call.LineNumber, activeCallLineNumber)
+														}} styles={{padding: "6px"}}><MergeCallIcon /></Button>
+												</span>
+											}
 										</span>
 									</span>}
 								</span>

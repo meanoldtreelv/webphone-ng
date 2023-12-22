@@ -10,6 +10,7 @@ import Calendar from "components/UI/Calendar";
 import gsuite_small from "assets/images/img/google_small.png";
 import outlook from "assets/images/img/outlook_small.png";
 import { ClipLoader } from "react-spinners";
+import MeetSkeleton from "../MeetSkeleton";
 
 const MeetBox = () => {
 	const [tabSelected, setTabSelected] = useState("timeline");
@@ -81,13 +82,20 @@ const MeetBox = () => {
 			{tabSelected === "timeline" && (
 				<div>
 					<div className={styles.meetBox}>
-						{isFetching ? (
+						{true ? (
 							<div className={styles.loader}>
-								<ClipLoader />
+								{Array(16)
+									.fill(null)
+									.map((item, index) => (
+										<MeetSkeleton key={index} />
+									))}
 							</div>
 						) : (
 							<>
 								{/* <div>17 OCTOBER, TUE</div> */}
+								{meetingList?.length === 0 && (
+									<div style={{ textAlign: "center" }}> No meeting scheduled at selected date !!!</div>
+								)}
 								{meetingList?.map((item) => <MeetingCard key={item.id} meetData={item} />)}
 								<div className={styles.loadMore}>
 									{meetListData?.length === perPage && <button onClick={loadMoreHandler}>Load More...</button>}
@@ -102,7 +110,12 @@ const MeetBox = () => {
 				<div className={styles.calendar}>
 					{isFetching && (
 						<div className={styles.loader}>
-							<ClipLoader />
+							{/* <ClipLoader /> */}
+							{Array(16)
+								.fill(null)
+								.map((item, index) => (
+									<MeetSkeleton key={index} />
+								))}
 						</div>
 					)}
 					<Calendar />

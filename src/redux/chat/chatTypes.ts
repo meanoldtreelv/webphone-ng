@@ -46,4 +46,5 @@ export interface IChatState {
 	isMsgSending: boolean;
 	latestMsgRandomId: string;
 	unreadMessageCount: number;
+	selectedShareContact: { lists: []; combinedVcf: boolean };
 }
