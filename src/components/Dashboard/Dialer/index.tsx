@@ -162,7 +162,7 @@ const Dialer = () => {
 											}}
 											border
 											styles={{ padding: "5px", borderColor: "var(--text-link)" }}>
-											<>Members: {item.conferenceCallList.length + 1}</>
+											<>Members: {item.conferenceCallList?.filter((element: { disposition: string; }) => element.disposition!== "Bye" ).length + 1}</>
 										</Button>
 									</div>
 								)}
