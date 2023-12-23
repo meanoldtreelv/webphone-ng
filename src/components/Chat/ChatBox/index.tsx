@@ -279,6 +279,17 @@ const ChatBox = () => {
 																/>
 															);
 														}
+														if (data?.mimetype === "text/vcard") {
+															return (
+																<ReceiveContact
+																	id={item?.id}
+																	files={data}
+																	time={item?.created_at}
+																	name={data?.name}
+																	duration={data?.duration}
+																/>
+															);
+														}
 														return null; // Or handle non-PNG files if needed
 													})}
 												</div>
@@ -346,6 +357,17 @@ const ChatBox = () => {
 																	id={item?.id}
 																	files={data}
 																	time={data?.uploaded_at}
+																	name={data?.name}
+																	duration={data?.duration}
+																/>
+															);
+														}
+														if (data?.mimetype === "text/vcard") {
+															return (
+																<SendContact
+																	id={item?.id}
+																	files={data}
+																	time={item?.created_at}
 																	name={data?.name}
 																	duration={data?.duration}
 																/>

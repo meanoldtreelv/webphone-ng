@@ -53,6 +53,7 @@ const initialChatState: IChatState = {
 	isMsgSending: false,
 	latestMsgRandomId: "",
 	unreadMessageCount: 0,
+	selectedShareContact: { lists: [], combinedVcf: true },
 };
 
 const chatSlice = createSlice({
@@ -185,6 +186,9 @@ const chatSlice = createSlice({
 		setUnreadMessageCount(state, action) {
 			state.unreadMessageCount = action.payload;
 		},
+		setSelectedShareContact(state, action) {
+			state.selectedShareContact = action.payload;
+		},
 	},
 });
 
@@ -228,6 +232,7 @@ export const {
 	setIsMsgSending,
 	setLatestMsgRandomId,
 	setUnreadMessageCount,
+	setSelectedShareContact,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -40,3 +40,4 @@ export const selectedAttachment = (state: RootState) => state.chat.selectedAttac
 export const isMsgSending = (state: RootState) => state.chat.isMsgSending;
 export const latestMsgRandomId = (state: RootState) => state.chat.latestMsgRandomId;
 export const unreadMessageCount = (state: RootState) => state.chat.unreadMessageCount;
+export const selectedShareContact = (state: RootState) => state.chat.selectedShareContact;
