@@ -19,6 +19,7 @@ import {
 	msgLists,
 	selectedAttachment,
 	selectedFiles,
+	selectedShareContact,
 } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
 import EmojiIcon from "components/UI/Icons/Emoji";
@@ -29,6 +30,7 @@ import {
 	setLatestMsgRandomId,
 	setMsgLists,
 	setSelectedAttachment,
+	setSelectedShareContact,
 } from "redux/chat/chatSlice";
 import SelectedMsgControl from "./SelectedMsgControl";
 import EmojiPickers from "../EmojiPickers";
@@ -39,6 +41,7 @@ import { generateRandomId } from "helpers";
 import { convertNewDateToString } from "helpers/formatDateTime";
 import BtnAction from "components/UI/BtnAction";
 import SettingsIcon from "components/UI/Icons/Settings";
+import { useLazyExportVcfQuery } from "services/contact";
 
 const ConversationsFooter = () => {
 	const dispatch = useDispatch();
@@ -49,8 +52,10 @@ const ConversationsFooter = () => {
 	const selectedAttachments = useSelector(selectedAttachment);
 	const messageLists = useSelector(msgLists);
 	const isSettingsDialogueOpen = useSelector(isSettingDialogueOpen);
+	const selectedShareContacts = useSelector(selectedShareContact);
 
 	const [sendOutboundMessage, { data, isLoading, isFetching: isFetchingMsg }] = useLazySendOutboundMessageQuery();
+	const [exportVcf] = useLazyExportVcfQuery();
 	const [postFiles, { data: fileData, isError }] = useLazyPostFilesQuery();
 	const [uploadFiles] = useLazyUploadFilesQuery();
 
@@ -108,6 +113,42 @@ const ConversationsFooter = () => {
 			// 		return;
 			// 	}
 			// }
+		} else if (selectedShareContacts?.lists?.length > 0) {
+			const idLists = selectedShareContacts?.lists.map((item) => {
+				return item.id;
+			});
+			console.log(idLists, "idLists");
+			if (selectedShareContacts?.combinedVcf) {
+				console.log("first");
+
+				const { data, error } = await exportVcf({ dircnt_ids: idLists });
+				if (data) {
+					setUploadId((prevState) => [...prevState, data?.id]);
+					console.log(data, "data");
+				}
+				if (error) {
+					showToast("something went wrong ", "error");
+					return;
+				}
+			} else {
+				console.log("second");
+
+				for (let i = 0; i < selectedShareContacts?.lists?.length; i++) {
+					const { data, error } = await exportVcf({
+						dircnt_ids: [idLists[i]],
+					});
+
+					if (data) {
+						// console.log(data, "file dtaa response");
+
+						setUploadId((prevState) => [...prevState, data?.id]);
+					}
+					if (error) {
+						showToast("something went wrong ", "error");
+						return;
+					}
+				}
+			}
 		} else {
 			const randomId = generateRandomId(15);
 			const newLists = [
@@ -227,6 +268,46 @@ const ConversationsFooter = () => {
 	}, [uploadId]);
 
 	useEffect(() => {
+		if (selectedShareContacts?.lists.length === 0 || uploadId.length !== selectedShareContacts?.lists?.length) return;
+		console.log(uploadId, "uploadid");
+
+		// data: {
+		// 	created_at: "2023-12-19T02:50:40.570Z",
+		// 	files: ["658105003015972ceebae740", "65810500ce769fef5abf0239"],
+		// 	stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
+		// 	text: "",
+		// 	with_warning: false,
+		// },
+		const sendData = async () => {
+			// todo - edit stamp id
+			const { error, data } = await sendOutboundMessage({
+				id: conversationDatas?.id,
+				data: {
+					created_at: new Date(),
+					files: uploadId,
+					// stamp_id: "04966ce0-4994-48de-b062-8da751f3f30b",
+					text: text,
+					with_warning: false,
+				},
+			});
+
+			if (data) {
+				setText("");
+				setTextData({});
+				setUploadId([]);
+				dispatch(setSelectedShareContact({ ...selectedShareContacts, lists: [] }));
+				// setFilePreviews([]);
+				showToast("contact send successfully", "info");
+			}
+
+			if (error) {
+				showToast("There is error in sending text msg , please try again later  ", "error");
+			}
+		};
+		sendData();
+	}, [uploadId]);
+
+	useEffect(() => {
 		if (!emojiSelected) return;
 		setText((prevState) => prevState + emojiSelected);
 	}, [emojiSelected]);
@@ -256,8 +337,9 @@ const ConversationsFooter = () => {
 		setIsAttachmentClicked(false);
 	}, [selectedAttachments]);
 
-	console.log(selectedAttachments, "selectedAttachments");
-	console.log(text, "text");
+	// console.log(selectedAttachments, "selectedAttachments");
+	// console.log(text, "text");
+	console.log(uploadId, "uploadId");
 
 	return (
 		<>
@@ -403,6 +485,7 @@ const ConversationsFooter = () => {
 							return <SelectedAudio name={item?.name} />;
 						}
 					})}
+					{selectedShareContacts?.lists.map((item) => <SelectedContact data={item} />)}
 				</div>
 				<div className={styles.settingBar}>
 					<p>{conversationDatas?.from_number}</p>

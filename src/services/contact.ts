@@ -34,6 +34,13 @@ export const contactService = apiService.injectEndpoints({
 				url: `/company/directory/contacts/${id}`,
 			}),
 		}),
+		exportVcf: build.query({
+			query: (data) => ({
+				method: "POST",
+				url: "/company/directory/contacts/export-vcf",
+				data,
+			}),
+		}),
 	}),
 });
 
@@ -43,4 +50,5 @@ export const {
 	useLazyUpdateContactQuery,
 	useLazyDeleteContactQuery,
 	useLazyCreateContactQuery,
+	useLazyExportVcfQuery,
 } = contactService;
