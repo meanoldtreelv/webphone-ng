@@ -1500,6 +1500,9 @@ function SelectLine(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null) return;
 
+  //Mute earlyMedia of previous call
+  FindLineByNumber(store.getState().sip.activeCallLineNumber)?.SipSession?.data?.earlyMedia?.pause()
+
   store.dispatch({type:"sip/activeCallLineNumber", payload:lineNum})
   var displayLineNumber = 0;
   for (var l = 0; l < Lines.length; l++) {
@@ -1528,6 +1531,7 @@ function SelectLine(lineNum:number) {
 
     Lines[l].IsSelected = Lines[l].LineNumber === lineObj.LineNumber;
   }
+  lineObj?.SipSession?.data?.earlyMedia?.play()
 }
 function formatShortDuration(seconds) {
   var sec = Math.floor(parseFloat(seconds));
@@ -3260,7 +3264,7 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
     console.warn("Failed to send INVITE:", e);
   });
 }
-function DialByLine(type, numToDial, CallerIDName, extraHeaders) {
+function DialByLine(type:string, numToDial:string, CallerIDName, extraHeaders) {
   // document.getElementById("calling-state").innerHTML = "Calling....";
   if (userAgent === null || userAgent.isRegistered() === false) {
     return;
@@ -4687,6 +4691,19 @@ const sip = {
     var lineObj = FindLineByNumber(LineNumber);
     return (lineObj?.SipSession?.data?.confcalls? true : false)
   },
+  isAnswered: (LineNumber: number) =>{
+    for(let x = 0; x < store.getState().sip.answeredCalls.length ; x++){
+      if(store.getState().sip.answeredCalls[x].LineNumber === LineNumber) return true
+    }
+    return false
+  },
+  isMerged: (LineNumber: number) =>{
+    for(let x = 0; x < store.getState().sip.answeredCalls.length ; x++){
+      if(store.getState().sip.answeredCalls[x].LineNumber === LineNumber) 
+        if(store.getState().sip.answeredCalls[x].mergedOnGroup) return true
+    }
+    return false
+  },
   callSpeakerDevice: (LineNumber: number, value: string) => {
     var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
     if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
@@ -4836,7 +4853,7 @@ const sip = {
       //Sender for to and prv
       for(let x=0; x < sessionTo.data.mergedCalls?.list?.length|0; x++){
         var previousCall = FindLineByNumber(sessionTo.data.mergedCalls.list[x]);
-        if (previousCall === null || previousCall.SipSession === null) return;
+        if (previousCall === null || previousCall.SipSession === null) continue;
         var previousCallSession = previousCall.SipSession;
         previousCallSession.sessionDescriptionHandler?.peerConnection?.getSenders().forEach(function (RTCRtpSender) {
           if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
@@ -4883,7 +4900,6 @@ const sip = {
     sessionTo.data.mergedCalls.list.push(FromLineNumber)
     sessionTo.data.mergedCalls.audioStreams.push(sessionFrom.audioReceivers[0])
     sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
-    window.temp1 = Lines
     store.dispatch({type:"sip/mergedCallGroups", payload:{action:"add",data:{FromLineNumber:FromLineNumber, ToLineNumber:ToLineNumber}}});
     SwitchLines(store.getState().sip.activeCallLineNumber)
   },
