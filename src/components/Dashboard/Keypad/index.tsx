@@ -8,6 +8,7 @@ import sip from "../../../lib/sip";
 import React, { useEffect, useState } from "react";
 import ContactCard from "components/Contact/ContactCard";
 import { setCallHistory } from "redux/call-history/callHistorySlice";
+import { store } from "redux/store";
 
 interface IKeypad {
 	addContact: (disp: boolean) => void;
@@ -157,7 +158,16 @@ const Keypad: React.FC<IKeypad> = ({ addContact }) => {
 				</div>
 			</div>
 			<div>
-				{ extAuthList.map((item: any) => ( item.user == extNumber ? <p style={{whiteSpace: "nowrap", textAlign: "center"}}>{item.name} &lt;{item.outbound_callerid?.number}&gt;</p> :"" )) }
+				{extAuthList.map((item: any) => (item.user == extNumber ?
+					<p onClick={() => {
+						store.dispatch({ type: "sip/editExtension", payload: item });
+						store.dispatch({ type: "sip/isExtensionOpen", payload: false });
+						store.dispatch({ type: "sip/isEditBoxOpen", payload: true });
+						// alert(item.user)//edit extension
+					}} style={{
+						whiteSpace: "nowrap", cursor: "pointer", textAlign: "center", color: "var(--text-link)"
+					}
+					}>{item.name} &lt;{item.outbound_callerid?.number}&gt;</p> : ""))}
 			</div>
 		</div>
 	);
