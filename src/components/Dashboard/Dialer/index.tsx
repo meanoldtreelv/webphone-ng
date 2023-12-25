@@ -162,7 +162,7 @@ const Dialer = () => {
 											}}
 											border
 											styles={{ padding: "5px", borderColor: "var(--text-link)" }}>
-											<>Members: {item.conferenceCallList.length + 1}</>
+											<>Members: {item.conferenceCallList?.filter((element: { disposition: string; }) => element.disposition!== "Bye" ).length + 1}</>
 										</Button>
 									</div>
 								)}
@@ -187,7 +187,7 @@ const Dialer = () => {
 										Add Call
 									</p>
 								</div>
-								<div
+								{!item.mergedOnGroup && <div
 									className={styles.dialer_action}
 									onClick={() => {
 										item.answered
@@ -206,7 +206,7 @@ const Dialer = () => {
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										Conference
 									</p>
-								</div>
+								</div>}
 								{/* check if this icon works too */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>

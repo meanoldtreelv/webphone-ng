@@ -76,7 +76,7 @@ const ConferenceCallsList = ({
 					</div>
 					<div>
 						<div className={styles.ConferenceCallsList_header} style={{ padding: "0 17px" }}>
-							<span>Members({conferenceCallList?.length + 1})</span>
+							<span>Members({conferenceCallList?.filter(element => element.disposition!== "Bye" ).length + 1})</span>
 							<button onClick={addMember}>
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path
@@ -105,6 +105,7 @@ const ConferenceCallsList = ({
 								/>
 							}
 							{conferenceCallList?.map((item) => (
+								item.disposition !== "Bye"?
 								<ConferenceCallListMember
 									hoverOn={hoverOn}
 									setHoverOn={setHoverOn}
@@ -118,7 +119,7 @@ const ConferenceCallsList = ({
 										startTime: item.startTime,
 										disposition: item.disposition,
 									}}
-								/>
+								/>:""
 							))}
 						</div>
 					</div>
