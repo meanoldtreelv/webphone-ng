@@ -4499,6 +4499,7 @@ function haveActiveCall(LineNumber:number){
     // alert("End conf")
   }
   store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
+  SelectLine(store.getState().sip.activeCallLineNumber)
   window.clearInterval(session.data.callTimer);
   window.setTimeout(function () {
       RemoveLine(lineObj); // remove line
