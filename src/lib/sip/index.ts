@@ -917,9 +917,15 @@ function holdSession(lineNum:number) {
     ) {
       var pc = session.sessionDescriptionHandler.peerConnection;
       // Stop all the inbound streams
-      pc.getReceivers().forEach(function (RTCRtpReceiver) {
-        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
-      });
+      if(!session.data.confcalls&&!session.data.mergedCalls){
+        pc.getReceivers().forEach(function (RTCRtpReceiver) {
+          if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+        }); 
+      }else{
+        var audioobject = document.getElementById("line-" + lineNum + "-remoteAudio");
+        if(audioobject) audioobject.volume = "0";
+      }
+
       // Stop all the outbound streams (especially useful for Conference Calls!!)
       pc.getSenders().forEach(function (RTCRtpSender) {
         // Mute Audio
@@ -935,9 +941,11 @@ function holdSession(lineNum:number) {
               );
               session.data.AudioSourceTrack.enabled = false;
             }
+          }else{
+            console.log("Muting Audio Track : " + RTCRtpSender.track.label);
+            RTCRtpSender.track.enabled = false;
           }
-          console.log("Muting Audio Track : " + RTCRtpSender.track.label);
-          RTCRtpSender.track.enabled = false;
+
         }
         // Stop Video
         else if (RTCRtpSender.track && RTCRtpSender.track.kind === "video") {
@@ -1043,6 +1051,10 @@ function unholdSession(lineNum:number) {
       pc.getReceivers().forEach(function (RTCRtpReceiver) {
         if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
       });
+      if(session.data.confcalls||session.data.mergedCalls){
+        var audioobject = document.getElementById("line-" + lineNum + "-remoteAudio");
+        if(audioobject) audioobject.volume = "1";
+      }
       // Restore all the outbound streams
       pc.getSenders().forEach(function (RTCRtpSender) {
         // Unmute Audio
@@ -4487,6 +4499,7 @@ function haveActiveCall(LineNumber:number){
     // alert("End conf")
   }
   store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
+  SelectLine(store.getState().sip.activeCallLineNumber)
   window.clearInterval(session.data.callTimer);
   window.setTimeout(function () {
       RemoveLine(lineObj); // remove line
