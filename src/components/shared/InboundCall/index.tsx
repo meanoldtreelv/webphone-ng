@@ -32,7 +32,7 @@ const InboundCall = () => {
 								id: "",
 								dst: "",
 								src: ringingInboundCalls[0]?.DisplayNumber,
-								starttime: Date.now(),
+								starttime: new Date(Date.now()).toISOString(),
 							},
 							recording: {},
 						},

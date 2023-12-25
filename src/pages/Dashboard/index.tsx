@@ -31,8 +31,8 @@ import { setLoader } from "redux/common/commonSlice";
 import { setContactList } from "redux/contact/contactSlice";
 import { useLazyGetContactsQuery } from "services/contact";
 import { extChange } from "redux/common/commonSelectors";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -164,7 +164,7 @@ const Dashboard = () => {
 	return (
 		<div className={styles.dashboardWrapper}>
 			<BaseLayout>
-				<ToastContainer/>
+				<ToastContainer />
 				<section className={styles.dashboard}>
 					{/* this is a contact list components which is shown besides Sidebar  */}
 					<div className={styles.contact}>
