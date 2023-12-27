@@ -16,7 +16,25 @@ const OpenApp: React.FC<IOpenApp> = ({ style }) => {
 	useEffect(() => {
 		const userAgent = navigator?.userAgent || navigator?.vendor || window?.opera;
 		setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent));
-		setDispBtn(Cookies.get("deep_link") !== "false");
+		setDispBtn(Cookies.get("dlink") !== "false");
+
+		const checkAppInstalled = () => {
+			const testAppLink = document.createElement("a");
+			testAppLink.href = appLink;
+			testAppLink.style.display = "none";
+
+			document.body.appendChild(testAppLink);
+			testAppLink.click();
+
+			setTimeout(() => {
+				document.body.removeChild(testAppLink);
+				setAppInstalled(true);
+			}, 100);
+		};
+
+		if (isMobile && Cookies.get("dlink") === "true") {
+			checkAppInstalled();
+		}
 	}, []);
 
 	const handleOpenApp = () => {
@@ -34,9 +52,9 @@ const OpenApp: React.FC<IOpenApp> = ({ style }) => {
 		}
 	};
 
-	const handleOpenAppPrompt = () => {
+	const closeOpenAppPrompt = () => {
 		setDispBtn(false);
-		Cookies.set("deep_link", "false");
+		Cookies.set("dlink", "false");
 	};
 
 	return (
@@ -44,11 +62,11 @@ const OpenApp: React.FC<IOpenApp> = ({ style }) => {
 		dispBtn && (
 			<div className={styles.openApp} style={style}>
 				<button onClick={handleOpenApp} className={styles.mainBtn}>
-					{appInstalled ? "OPEN APP" : "OPEN APP"}
+					OPEN APP
 				</button>
 
 				{!style && (
-					<button onClick={handleOpenAppPrompt}>
+					<button onClick={closeOpenAppPrompt}>
 						<XMainIcon />
 					</button>
 				)}
