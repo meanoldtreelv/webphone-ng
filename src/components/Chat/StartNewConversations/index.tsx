@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./StartNewConversations.module.scss";
 import CloseIcon from "components/UI/Icons/Close";
 import Conversations from "./Conversations";
@@ -14,11 +14,14 @@ import { useLazyGetTextingNumbersQuery } from "services/chat";
 import { showToast } from "utils";
 import Campaign from "./Campaign";
 import { startConversationType } from "redux/chat/chatSelectors";
+import BtnAction from "components/UI/BtnAction";
 
 const StartNewConversations = () => {
 	const dispatch = useDispatch();
 
 	const conversationType = useSelector(startConversationType);
+
+	const [cancelHover, setCancelHover] = useState(false);
 
 	const [getTextingNumber, { data, isLoading, isFetching }] = useLazyGetTextingNumbersQuery();
 
@@ -44,13 +47,29 @@ const StartNewConversations = () => {
 			<div className={styles.box}>
 				<div className={styles.header}>
 					<span>Start New Conversation</span>
-					<span
+					<BtnAction
+						btnType={"normal"}
+						isDisabled={false}
+						type="button"
+						isActive={false}
+						onMouseOut={() => {
+							setCancelHover(false);
+						}}
+						onMouseOver={() => {
+							setCancelHover(true);
+						}}
+						onClick={() => {
+							dispatch(setIsStartNewConversationDialogueOpen(false));
+						}}
+						icon={<CloseIcon color={cancelHover ? "primary-default" : "icon-primary"} />}
+					/>
+					{/* <span
 						className={styles.close}
 						onClick={() => {
 							dispatch(setIsStartNewConversationDialogueOpen(false));
 						}}>
 						<CloseIcon />
-					</span>
+					</span> */}
 				</div>
 				<div className={styles.tabBar}>
 					<span

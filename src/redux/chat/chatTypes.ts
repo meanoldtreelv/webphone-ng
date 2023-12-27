@@ -42,4 +42,9 @@ export interface IChatState {
 	selectedFiles: any;
 	selectedAudioFiles: {};
 	selectedVideoFiles: {};
+	selectedAttachment: [];
+	isMsgSending: boolean;
+	latestMsgRandomId: string;
+	unreadMessageCount: number;
+	selectedShareContact: { lists: []; combinedVcf: boolean };
 }

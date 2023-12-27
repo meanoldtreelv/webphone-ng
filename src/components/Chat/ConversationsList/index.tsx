@@ -20,6 +20,7 @@ import {
 } from "redux/chat/chatSlice";
 import {
 	conversationLists,
+	isConversationSelected,
 	isSortingMessagePopUpOpen,
 	queries,
 	socket,
@@ -29,9 +30,12 @@ import { useLazyGetConversationListsQuery } from "services/chat";
 import { showToast } from "utils";
 import AddUserIcon from "components/UI/Icons/VideoCall/AddUser";
 import BtnMedium from "components/UI/BtnMedium";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import BtnAction from "components/UI/BtnAction";
 
 const ConversationsList = () => {
 	const dispatch = useDispatch();
+	const conversationSelected = useSelector(isConversationSelected);
 	const conversationsLists = useSelector(conversationLists);
 	const sortingMessagePopUpOpen = useSelector(isSortingMessagePopUpOpen);
 	const sortConversationTypes = useSelector(sortConversationType);
@@ -44,6 +48,7 @@ const ConversationsList = () => {
 	] = useLazyGetConversationListsQuery();
 
 	const [sortingIconHover, setSortingIconHover] = useState(false);
+	const [closeIconHover, setCloseIconHover] = useState(false);
 	const [isSortingPopUpTrue, setIsSortingPopUpTrue] = useState(false);
 	const [page, setPage] = useState(1);
 	const [perPage, setPerPage] = useState(20);
@@ -51,6 +56,19 @@ const ConversationsList = () => {
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedConversationLists, setSearchedConversationLists] = useState([]);
+
+	const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
+	const { width } = useWindowDimensions();
+
+	useEffect(() => {
+		console.log(width, "width");
+
+		if (width <= 900 && conversationSelected) {
+			setIsChatBoxOpen(true);
+		} else {
+			setIsChatBoxOpen(false);
+		}
+	}, [width, conversationSelected]);
 
 	useEffect(() => {
 		setPage(1);
@@ -246,7 +264,9 @@ const ConversationsList = () => {
 	}, [Socket, conversationsLists, dispatch]);
 
 	return (
-		<div className={`${styles.contact} ${true ? styles.contactListSml : ""}`}>
+		<div
+			className={`${styles.contact} ${true ? styles.contactListSml : ""}`}
+			style={isChatBoxOpen ? { display: "none" } : {}}>
 			<div className={styles.contact_header}>
 				{/* <h1 className={styles.respContacts_header}>Contacts</h1> */}
 				<div className={styles.contact_search}>
@@ -268,13 +288,7 @@ const ConversationsList = () => {
 							dispatch(setIsAddContactDialogueOpen(true));
 						}}
 					/>
-					{/* <button
-						className={styles.add_contact}
-						onClick={() => {
-							dispatch(setIsAddContactDialogueOpen(true));
-						}}>
-						<AddUserIcon color="icon-on-color" />
-					</button> */}
+
 					<BtnMedium
 						btnType={"primary"}
 						isDanger={false}
@@ -286,13 +300,6 @@ const ConversationsList = () => {
 							dispatch(setIsStartNewConversationDialogueOpen(true));
 						}}
 					/>
-					{/* <button
-						className={styles.add_contact}
-						onClick={() => {
-							dispatch(setIsStartNewConversationDialogueOpen(true));
-						}}>
-						<EditIcon color="icon-on-color" />
-					</button> */}
 				</div>
 				<div>
 					{searchText.length > 0 ? (
@@ -301,21 +308,55 @@ const ConversationsList = () => {
 								<SearchIcon />
 								<span>Search results ({searchedConversationLists?.length})</span>
 							</span>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={false}
+								onMouseOut={() => {
+									setCloseIconHover(false);
+								}}
+								onMouseOver={() => {
+									setCloseIconHover(true);
+								}}
+								onClick={() => {
+									setSearchText("");
+									setSearchedConversationLists([]);
+								}}
+								icon={<CloseIcon color={closeIconHover ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.contact_sorting}
 								onClick={() => {
 									setSearchText("");
 									setSearchedConversationLists([]);
 								}}>
 								<CloseIcon />
-							</span>
+							</span> */}
 						</p>
 					) : (
 						<p className={styles.contact_favorites}>
 							<span>
 								<span>Conversations ({conversationsLists?.length})</span>
 							</span>
-							<span
+							<BtnAction
+								btnType={"normal"}
+								isDisabled={false}
+								type="button"
+								isActive={isSortingPopUpTrue}
+								onMouseOut={() => {
+									setSortingIconHover(false);
+								}}
+								onMouseOver={() => {
+									setSortingIconHover(true);
+								}}
+								onClick={() => {
+									setIsSortingPopUpTrue(!isSortingPopUpTrue);
+									dispatch(setIsSortingMessagePopUpOpen(!sortingMessagePopUpOpen));
+								}}
+								icon={<SortIcon color={sortingIconHover || isSortingPopUpTrue ? "primary-default" : "icon-primary"} />}
+							/>
+							{/* <span
 								className={styles.contact_sorting}
 								onMouseOver={() => {
 									setSortingIconHover(true);
@@ -328,7 +369,7 @@ const ConversationsList = () => {
 									dispatch(setIsSortingMessagePopUpOpen(!sortingMessagePopUpOpen));
 								}}>
 								<SortIcon color={sortingIconHover ? "primary-default" : "icon-primary"} />
-							</span>
+							</span> */}
 							{sortingMessagePopUpOpen && <ConversationsSortingPopUp />}
 						</p>
 					)}

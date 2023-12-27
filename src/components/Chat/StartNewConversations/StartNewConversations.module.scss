@@ -13,7 +13,7 @@
 	top: 0px;
 	right: 0;
 
-	width: 33%;
+	width: 600px;
 	height: 100%;
 	flex-shrink: 0;
 
@@ -45,9 +45,9 @@
 	letter-spacing: -0.5px;
 }
 
-.close {
-	cursor: pointer;
-}
+// .close {
+// 	cursor: pointer;
+// }
 
 .tabBar {
 	display: flex;
@@ -99,7 +99,7 @@
 	}
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
 	.box {
 		width: 100%;
 	}

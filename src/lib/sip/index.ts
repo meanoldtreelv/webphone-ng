@@ -68,7 +68,7 @@ let maxFrameRate = ""; // Suggests a frame rate to your webcam if possible.
 let videoHeight = ""; // Suggests a video height (and therefor picture quality) to your webcam.
 let videoAspectRatio = "1.33"; // Suggests an aspect ratio (1:1 = 1 | 4:3 = 0.75 | 16:9 = 0.5625) to your webcam.
 
-let Lines = [];
+let Lines: any[] = [];
 let newLineNumber = 1;
 
 let audioBlobs = {};
@@ -84,9 +84,9 @@ let settingsVideoStreamTrack = null;
 let HasVideoDevice = false;
 let HasAudioDevice = false;
 let HasSpeakerDevice = false;
-let AudioinputDevices = [];
-let VideoinputDevices = [];
-let SpeakerDevices = [];
+let AudioinputDevices: MediaDeviceInfo[] | { deviceId: string | null; }[] = [];
+let VideoinputDevices: MediaDeviceInfo[] | { deviceId: any; }[] = [];
+let SpeakerDevices: MediaDeviceInfo[] = [];
 
 let userInteractionForAudioPlayer = false;
 
@@ -96,6 +96,15 @@ ringer.loop = true;
 ringerCallWaiting.loop = false;
 ringer.preload = "auto";
 ringerCallWaiting.preload = "auto";
+
+function getMediaDevices(constraints: MediaStreamConstraints, script: { (newStream: any): void; (arg0: MediaStream): void; }):MediaStream|Boolean{
+  navigator.mediaDevices.getUserMedia(constraints).then(function(newStream){
+    script(newStream)
+  }).catch(function(e){
+    console.log("getMediaDevices " + e)
+  });
+  return false
+}
 if ( typeof ringer.sinkId !== "undefined" && getRingerOutputID() != "default") {
   ringer
     .setSinkId(getRingerOutputID())
@@ -915,9 +924,15 @@ function holdSession(lineNum:number) {
     ) {
       var pc = session.sessionDescriptionHandler.peerConnection;
       // Stop all the inbound streams
-      pc.getReceivers().forEach(function (RTCRtpReceiver) {
-        if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
-      });
+      if(!session.data.confcalls&&!session.data.mergedCalls){
+        pc.getReceivers().forEach(function (RTCRtpReceiver) {
+          if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+        }); 
+      }else{
+        var audioobject = document.getElementById("line-" + lineNum + "-remoteAudio");
+        if(audioobject) audioobject.volume = "0";
+      }
+
       // Stop all the outbound streams (especially useful for Conference Calls!!)
       pc.getSenders().forEach(function (RTCRtpSender) {
         // Mute Audio
@@ -933,9 +948,11 @@ function holdSession(lineNum:number) {
               );
               session.data.AudioSourceTrack.enabled = false;
             }
+          }else{
+            console.log("Muting Audio Track : " + RTCRtpSender.track.label);
+            RTCRtpSender.track.enabled = false;
           }
-          console.log("Muting Audio Track : " + RTCRtpSender.track.label);
-          RTCRtpSender.track.enabled = false;
+
         }
         // Stop Video
         else if (RTCRtpSender.track && RTCRtpSender.track.kind === "video") {
@@ -1041,6 +1058,10 @@ function unholdSession(lineNum:number) {
       pc.getReceivers().forEach(function (RTCRtpReceiver) {
         if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
       });
+      if(session.data.confcalls||session.data.mergedCalls){
+        var audioobject = document.getElementById("line-" + lineNum + "-remoteAudio");
+        if(audioobject) audioobject.volume = "1";
+      }
       // Restore all the outbound streams
       pc.getSenders().forEach(function (RTCRtpSender) {
         // Unmute Audio
@@ -1456,37 +1477,50 @@ function AddLineHtml(lineObj:{LineNumber:number}) {
   // alert(lineObj.LineNumber)
 }
 function SwitchLines(lineNum:number) {
+  var lineObj = FindLineByNumber(lineNum);
+  var objSession = (lineObj !== null && lineObj.SipSession !== null) ? lineObj.SipSession:null;
   $.each(userAgent.sessions, function (i, session) {
     // All the other calls, not on hold
     if(!session.data.line) return;
     if (session.state === SIP.SessionState.Established && session.data.line !== lineNum) {
-      if(session.data.confcalls){
-        sip.muteConference(session.data.line, false)
-        sip.volumeLevel(session.data.line, "0")
-      }else if (session.isOnHold === false) {
-        holdSession(session.data.line);
+      if(!(objSession&&objSession?.data?.mergedCalls?.list&&objSession?.data.mergedCalls.list.indexOf(session.data.line)!== -1)){
+        if(session.data.confcalls){
+          sip.muteConference(session.data.line, false)
+          sip.volumeLevel(session.data.line, "0")
+        }else if (session.isOnHold === false) {
+          holdSession(session.data.line);
+        }
+      }else{
+        // alert("skipping"+session.data.line)
       }
     }
     session.data.IsCurrentCall = false;
   });
 
-  var lineObj = FindLineByNumber(lineNum);
-  if (lineObj !== null && lineObj.SipSession !== null) {
-    var session = lineObj.SipSession;
-    if (session.state === SIP.SessionState.Established) {
-      if(session.data.confcalls){
+
+  if (objSession) {
+    if (objSession.state === SIP.SessionState.Established) {
+      if(objSession.data.confcalls){
         sip.muteConference(lineNum, true)
         sip.volumeLevel(lineNum, "100")
-      }else if (session.isOnHold === true) {
+      }else if(objSession&&objSession?.data?.mergedCalls?.list){
+        for(let x = 0; x < objSession.data.mergedCalls?.list?.length ; x++){
+          // alert("Unholding"+objSession.data.mergedCalls.list[x])
+          unholdSession(objSession.data.mergedCalls.list[x]);
+        }
+      }else if (objSession.isOnHold === true) {
         unholdSession(lineNum);
       }
     }
-    session.data.IsCurrentCall = true;
+    objSession.data.IsCurrentCall = true;
   }
 }
 function SelectLine(lineNum:number) {
   var lineObj = FindLineByNumber(lineNum);
   if (lineObj === null) return;
+
+  //Mute earlyMedia of previous call
+  FindLineByNumber(store.getState().sip.activeCallLineNumber)?.SipSession?.data?.earlyMedia?.pause()
 
   store.dispatch({type:"sip/activeCallLineNumber", payload:lineNum})
   var displayLineNumber = 0;
@@ -1516,6 +1550,7 @@ function SelectLine(lineNum:number) {
 
     Lines[l].IsSelected = Lines[l].LineNumber === lineObj.LineNumber;
   }
+  lineObj?.SipSession?.data?.earlyMedia?.play()
 }
 function formatShortDuration(seconds) {
   var sec = Math.floor(parseFloat(seconds));
@@ -2833,7 +2868,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
     "YYYY-MM-DD HH:mm:ss UTC"
   );
   const outboundCall =  {
-    LineNumber: newLineNumber,
+    LineNumber: lineObj.LineNumber,
     DisplayName: "",
     DisplayNumber: dialledNumber,
   }
@@ -2852,6 +2887,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
   lineObj.SipSession.data.terminateby = "them";
   lineObj.SipSession.data.withvideo = false;
   lineObj.SipSession.data.earlyReject = false;
+  lineObj.SipSession.data.ringingOutboundCallsDisplayName = "";
   lineObj.SipSession.isOnHold = false;
   lineObj.SipSession.delegate = {
     onBye: function (sip) {
@@ -2867,6 +2903,13 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
       onSessionDescriptionHandlerCreated(lineObj, sdh, provisional, false);
     },
   };
+  const updateRingingOutboundCallName = () =>{
+    console.log(lineObj.SipSession)
+    if(!lineObj.SipSession.data?.ringingOutboundCallsDisplayName && lineObj.SipSession?._assertedIdentity?._displayName) {
+      store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"displayName",data:{lineNum:lineObj.LineNumber, displayName:lineObj.SipSession?._assertedIdentity?._displayName}}})
+      lineObj.SipSession.data.ringingOutboundCallsDisplayName = lineObj.SipSession?._assertedIdentity?._displayName
+    }
+  }
   var inviterOptions = {
     requestDelegate: {
       // OutgoingRequestDelegate
@@ -2874,12 +2917,14 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
         onInviteTrying(lineObj, sip);
       },
       onProgress: function (sip) {
+        updateRingingOutboundCallName();
         onInviteProgress(lineObj, sip);
       },
       onRedirect: function (sip) {
         onInviteRedirected(lineObj, sip);
       },
       onAccept: function (sip) {
+        updateRingingOutboundCallName();
         onInviteAccepted(lineObj, false, sip);
       },
       onReject: function (sip) {
@@ -3248,7 +3293,7 @@ function AttendedTransfer(lineNum:number, dstNo:string) {
     console.warn("Failed to send INVITE:", e);
   });
 }
-function DialByLine(type, numToDial, CallerIDName, extraHeaders) {
+function DialByLine(type:string, numToDial:string, CallerIDName, extraHeaders) {
   // document.getElementById("calling-state").innerHTML = "Calling....";
   if (userAgent === null || userAgent.isRegistered() === false) {
     return;
@@ -3554,7 +3599,7 @@ function ConferenceDial(lineNum:number, phoneNo:string) {
         session.data.AudioSourceTrack &&
         session.data.AudioSourceTrack.kind === "audio"
       ) {
-        var pc = session.sessionDescriptionHandler.peerConnection;
+        // var pc = session.sessionDescriptionHandler.peerConnection;
         // pc.getSenders().forEach(function (RTCRtpSender) {
         //   if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
         //     RTCRtpSender.replaceTrack(session.data.AudioSourceTrack)
@@ -4471,6 +4516,7 @@ function haveActiveCall(LineNumber:number){
     // alert("End conf")
   }
   store.dispatch({type:"sip/answeredCalls", payload:{action:"remove",data:LineNumber}}) // change the ui
+  SelectLine(store.getState().sip.activeCallLineNumber)
   window.clearInterval(session.data.callTimer);
   window.setTimeout(function () {
       RemoveLine(lineObj); // remove line
@@ -4675,6 +4721,19 @@ const sip = {
     var lineObj = FindLineByNumber(LineNumber);
     return (lineObj?.SipSession?.data?.confcalls? true : false)
   },
+  isAnswered: (LineNumber: number) =>{
+    for(let x = 0; x < store.getState().sip.answeredCalls.length ; x++){
+      if(store.getState().sip.answeredCalls[x].LineNumber === LineNumber) return true
+    }
+    return false
+  },
+  isMerged: (LineNumber: number) =>{
+    for(let x = 0; x < store.getState().sip.answeredCalls.length ; x++){
+      if(store.getState().sip.answeredCalls[x].LineNumber === LineNumber) 
+        if(store.getState().sip.answeredCalls[x].mergedOnGroup) return true
+    }
+    return false
+  },
   callSpeakerDevice: (LineNumber: number, value: string) => {
     var remoteAudio = $("#line-" + LineNumber + "-remoteAudio")?.get(0);
     if (typeof remoteAudio !== "undefined" && typeof remoteAudio.sinkId !== "undefined") {
@@ -4711,40 +4770,118 @@ const sip = {
   callMicrophoneDevice: (LineNumber: number, value: string) => {
     try {
       const lineObj = FindLineByNumber(LineNumber)
-      var session = lineObj.SipSession;
+      const session = lineObj.SipSession;
       // Microphone Device Change
-      if(true){
-        var newid = value;
-        console.log("Call to change Microphone: ", newid);
-        // Save Setting
-        session.data.AudioSourceDevice = newid;
-        var constraints = {
-            audio: {
-                deviceId: (newid != "default")? { exact: newid } : "default"
-            },
-            video: false
-        }
-        navigator.mediaDevices.getUserMedia(constraints).then(function(newStream){
-            // Assume that since we are selecting from a dropdown, this is possible
-            var newMediaTrack = newStream.getAudioTracks()[0];
-            var pc = session.sessionDescriptionHandler.peerConnection;
-            pc.getSenders().forEach(function (RTCRtpSender) {
-                if(RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
-                    console.log("Switching Audio Track : "+ RTCRtpSender.track.label + " to "+ newMediaTrack.label);
-                    RTCRtpSender.track.stop(); // Must stop, or this mic will stay in use
-                    RTCRtpSender.replaceTrack(newMediaTrack).then(function(){
-                      console.log("done!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                    }).catch(function(e){
-                        console.error("Error replacing track: ", e);
-                    });
-                }
-            });
-            store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:LineNumber, callMicrophoneDevice:value}}});
-        }).catch(function(e){
-            console.error("Error on getUserMedia");
-        });
+      const newid = value;
+      console.log("Call to change Microphone: ", newid);
+      // Save Setting
+      session.data.AudioSourceDevice = newid;
+      const constraints = {
+          audio: {
+              deviceId: (newid != "default")? { exact: newid } : "default"
+          },
+          video: false
       }
-    } catch (error) { }
+      if(session.data.confcalls){
+        //Replace mic of first call
+        const script =(newStream)=>{//newStream = new device
+          if(session.data?.AudioSourceTrack) session.data.AudioSourceTrack.stop()//stop mic of first call
+          session.data.AudioSourceTrack = newStream.getAudioTracks()[0] //replace new mic
+          const pc = session.sessionDescriptionHandler.peerConnection
+          console.log(session.data.AudioSourceTrack)
+          pc?.getSenders()?.forEach(function (RTCRtpSender) {
+            if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+              let outputStream = new MediaStream()
+              outputStream.addTrack(session.data.AudioSourceTrack);
+              session.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+                outputStream, 
+                RTCRtpSender.track.IsMixedTrack? session.data.mixedAudioTrack[0] : undefined,
+                RTCRtpSender.track.IsMixedTrack? session.data.mixedAudioTrack[1] : undefined,
+              )
+              var mixedAudioTrack = session.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+              RTCRtpSender.replaceTrack(mixedAudioTrack);
+            }
+          })
+        }
+        getMediaDevices(constraints, script);
+        for(let confCallId=0; confCallId < (session.data.confcalls.length|0); confCallId++){
+          //Replace mic of conf call
+          const confSession = session.data.confcalls[confCallId].session
+          if(confSession.state === SIP.SessionState.Terminated) continue;
+          const script =(newStream)=>{//newStream = new device
+            if(confSession.data?.AudioSourceTrack) confSession.data.AudioSourceTrack.stop(); //stop mic of conf
+            confSession.data.AudioSourceTrack = newStream.getAudioTracks()[0] //replace new mic
+            const pc = confSession.sessionDescriptionHandler?.peerConnection
+            console.log(confSession.data.AudioSourceTrack)
+            pc?.getSenders()?.forEach(function (RTCRtpSender) {
+              if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+                const outputStream = new MediaStream()
+                outputStream.addTrack(confSession.data.AudioSourceTrack);
+                confSession.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+                  outputStream, 
+                  RTCRtpSender.track.IsMixedTrack? confSession.data.mixedAudioTrack[0] : undefined,
+                  RTCRtpSender.track.IsMixedTrack? confSession.data.mixedAudioTrack[1] : undefined,
+                )
+                const mixedAudioTrack = confSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+                RTCRtpSender.replaceTrack(mixedAudioTrack);
+              }
+            })
+          }
+          getMediaDevices(constraints, script);
+        }
+        store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:LineNumber, callMicrophoneDevice:value}}});
+      }else if(session.data.mergedCalls){
+        window.temp = Lines;
+        for(let x = 0; x < session.data.mergedCalls?.list?.length ; x++){
+          console.log(session.data.mergedCalls.list[x]);
+          const mergedCallLineID = session.data.mergedCalls.list[x];
+          const mergedCallSession = FindLineByNumber(mergedCallLineID)?.SipSession;
+          if(!mergedCallSession) continue
+          mergedCallSession.data.AudioSourceDevice = newid;
+          console.log(mergedCallSession.data.AudioSourceTrack)
+          const script =(newStream)=>{//newStream = new device
+            if(mergedCallSession.data?.AudioSourceTrack) mergedCallSession.data.AudioSourceTrack.stop(); //stop mic of conf
+            mergedCallSession.data.AudioSourceTrack = newStream.getAudioTracks()[0] //replace new mic
+            const pc = mergedCallSession.sessionDescriptionHandler?.peerConnection
+            console.log(mergedCallSession.data.AudioSourceTrack)
+            pc?.getSenders()?.forEach(function (RTCRtpSender) {
+              if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+                const outputStream = new MediaStream()
+                outputStream.addTrack(mergedCallSession.data.AudioSourceTrack);
+                mergedCallSession.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+                  outputStream, 
+                  RTCRtpSender.track.IsMixedTrack? mergedCallSession.data.mixedAudioTrack[0] : undefined,
+                  RTCRtpSender.track.IsMixedTrack? mergedCallSession.data.mixedAudioTrack[1] : undefined,
+                )
+                const mixedAudioTrack = mergedCallSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+                RTCRtpSender.replaceTrack(mixedAudioTrack);
+              }
+            })
+            store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:mergedCallLineID, callMicrophoneDevice:value}}});
+          }
+          getMediaDevices(constraints, script);
+        }
+      }else{
+        // Assume that since we are selecting from a dropdown, this is possible
+        const script =(newStream)=>{//newStream = new device
+          const newMediaTrack = newStream.getAudioTracks()[0];
+          const pc = session.sessionDescriptionHandler.peerConnection;
+          pc.getSenders().forEach(function (RTCRtpSender) {
+            if(RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
+              console.log("Switching Audio Track : "+ RTCRtpSender.track.label + " to "+ newMediaTrack.label);
+              RTCRtpSender.track.stop(); // Must stop, or this mic will stay in use
+              RTCRtpSender.replaceTrack(newMediaTrack).then(function(){
+                console.log("done!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              }).catch(function(e){
+                  console.error("Error replacing track: ", e);
+              });
+            }
+          });
+          store.dispatch({type:"sip/answeredCalls", payload:{action:"callMicrophoneDevice",data:{lineNum:LineNumber, callMicrophoneDevice:value}}});
+        }
+        getMediaDevices(constraints, script);
+      }
+    } catch (error) { console.log(error)}
   },
   ringtone: (LineNumber: number, status: boolean ) =>  {
     const lineObj = FindLineByNumber(LineNumber)
@@ -4787,6 +4924,7 @@ const sip = {
     }
   },
   merge:(FromLineNumber: number, ToLineNumber: string ) =>  {
+    console.log("FromLineNumber" + FromLineNumber + ":ToLineNumber" + ToLineNumber)
     var FromCall = FindLineByNumber(FromLineNumber);
     if (FromCall === null || FromCall.SipSession === null) return;
 
@@ -4797,18 +4935,81 @@ const sip = {
     var sessionTo = ToCall.SipSession
 
     if(sessionFrom.data.mergedCalls) return;
-
     if (!sessionTo.data.mergedCalls) { //New merge
-      sessionTo.data.mergedCalls = [];
-      sessionTo.data.mergedCalls.push(ToLineNumber)
-      sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
-    } 
-      for(let x = 0; x < sessionFrom.data.mergedCalls?.length|0; x++){
-        //append from mic to this call
+      sessionTo.data.mergedCalls = {list:[], audioStreams:[]}
+      sessionTo.data.mergedCalls.list.push(ToLineNumber)
+      sessionTo.sessionDescriptionHandler?.peerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+        if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+          sessionTo.audioReceivers = []; 
+          sessionTo.audioReceivers.push(RTCRtpReceiver.track)
+          sessionTo.data.mergedCalls.audioStreams.push(RTCRtpReceiver.track)
+          console.log("Adding conference session:",RTCRtpReceiver.track.label);
+        }
+      });
+    }
+
+    sessionFrom.sessionDescriptionHandler?.peerConnection?.getReceivers().forEach(function (RTCRtpReceiver) {
+      if (RTCRtpReceiver.track && RTCRtpReceiver.track.kind === "audio") {
+        sessionFrom.audioReceivers = []; 
+        sessionFrom.audioReceivers.push(RTCRtpReceiver.track)
+        console.log("Adding conference session:",RTCRtpReceiver.track.label);
       }
-      sessionTo.data.mergedCalls.push(FromLineNumber)
-    // start merge
+    });
+
+    {//Mix Block
+
+      //Sender for to and prv
+      for(let x=0; x < sessionTo.data.mergedCalls?.list?.length|0; x++){
+        var previousCall = FindLineByNumber(sessionTo.data.mergedCalls.list[x]);
+        if (previousCall === null || previousCall.SipSession === null) continue;
+        var previousCallSession = previousCall.SipSession;
+        previousCallSession.sessionDescriptionHandler?.peerConnection?.getSenders().forEach(function (RTCRtpSender) {
+          if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+            previousCallSession.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? previousCallSession.data.AudioSourceTrack : RTCRtpSender.track;
+            let outputStream = new MediaStream()
+            if(!RTCRtpSender.track.IsMixedTrack) outputStream.addTrack(RTCRtpSender.track);
+            outputStream.addTrack(sessionFrom.audioReceivers[0]);
+            previousCallSession.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+              outputStream, 
+              RTCRtpSender.track.IsMixedTrack? previousCallSession.data.mixedAudioTrack[0] : undefined,
+              RTCRtpSender.track.IsMixedTrack? previousCallSession.data.mixedAudioTrack[1] : undefined,
+            )
+            var mixedAudioTrack = previousCallSession.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+            mixedAudioTrack.IsMixedTrack = true;
+            RTCRtpSender.replaceTrack(mixedAudioTrack);
+          }
+        })
+      }
+
+      //sender for from
+      sessionFrom.sessionDescriptionHandler?.peerConnection?.getSenders().forEach(function (RTCRtpSender) {
+        if (RTCRtpSender.track && RTCRtpSender.track.kind === "audio") {
+          sessionFrom.data.AudioSourceTrack = RTCRtpSender.track.IsMixedTrack ? sessionFrom.data.AudioSourceTrack : RTCRtpSender.track;
+          let outputStream = new MediaStream();
+          outputStream.addTrack(RTCRtpSender.track);
+          for(let x = 0; x < sessionTo.data.mergedCalls?.audioStreams?.length|0; x++){
+            outputStream.addTrack(sessionTo.data.mergedCalls.audioStreams[x]);
+            console.log("Adding old audios to new",sessionTo.data.mergedCalls.audioStreams[x])
+          }
+          sessionFrom.data.mixedAudioTrack =  ConferenceMixAudioStreams(
+            outputStream, 
+            RTCRtpSender.track.IsMixedTrack? sessionFrom.data.mixedAudioTrack[0] : undefined,
+            RTCRtpSender.track.IsMixedTrack? sessionFrom.data.mixedAudioTrack[1] : undefined,
+          )
+          var mixedAudioTrack = sessionFrom.data.mixedAudioTrack[0].stream.getAudioTracks()[0];
+          mixedAudioTrack.IsMixedTrack = true;
+          RTCRtpSender.replaceTrack(mixedAudioTrack);
+        }
+      })
+      
+    }
+
+    //new call stream not exist until here
+    sessionTo.data.mergedCalls.list.push(FromLineNumber)
+    sessionTo.data.mergedCalls.audioStreams.push(sessionFrom.audioReceivers[0])
+    sessionFrom.data.mergedCalls = sessionTo.data.mergedCalls
     store.dispatch({type:"sip/mergedCallGroups", payload:{action:"add",data:{FromLineNumber:FromLineNumber, ToLineNumber:ToLineNumber}}});
+    SwitchLines(store.getState().sip.activeCallLineNumber)
   },
   logout: (changeLocation=true)=>{
     localStorage.clear();
