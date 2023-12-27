@@ -4851,7 +4851,6 @@ const sip = {
           }
           getMediaDevices(constraints, script);
         }
-        alert("done")
       }else{
         // Assume that since we are selecting from a dropdown, this is possible
         const script =(newStream)=>{//newStream = new device
