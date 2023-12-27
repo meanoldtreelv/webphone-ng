@@ -7,6 +7,9 @@ import XIcon from "components/UI/Icons/X";
 import MergeCallIcon from "components/UI/Icons/VideoCall/MergeCall";
 import ChevronDownIcon from "components/UI/Icons/Navigation/ChevronDown";
 import EndCallIcon from "components/UI/Icons/VideoCall/EndCall";
+import { Slide, toast } from "react-toastify";
+import { useTheme } from "hooks/useTheme";
+
 const MultipleCallListModal = () => {
 	const { ringingInboundCalls, answeredCalls, ringingOutboundCalls, activeCallLineNumber } = useSelector(
 		(state: any) => state.sip,
@@ -17,6 +20,8 @@ const MultipleCallListModal = () => {
 	const notMerged = (call: { mergedOnGroup: number | undefined }) => {
 		return !merged(call);
 	};
+	const theme = useTheme();
+
 	return (
 		<div className={styles.layer1}>
 			<div
@@ -96,15 +101,18 @@ const MultipleCallListModal = () => {
 													{call.mergedOnGroup ? (
 														<span>{call.mergedOnGroup}</span>
 													) : (
-														<div className={styles.mergeBtn}>
-															<Button
-																onClick={() => {
-																	sip.merge(call.LineNumber, activeCallLineNumber);
-																}}
-																icon={<MergeCallIcon />}>
-																MERGE
-															</Button>
-														</div>
+														<>
+															<div className={styles.mergeBtn}>
+																<Button
+																	onClick={(e) => {
+																		e.stopPropagation();
+																		sip.merge(call.LineNumber, activeCallLineNumber);
+																	}}
+																	icon={<MergeCallIcon />}>
+																	MERGE
+																</Button>
+															</div>
+														</>
 													)}
 												</span>
 											</span>
@@ -137,34 +145,53 @@ const MultipleCallListModal = () => {
 														<p>{call.conferenceCallList ? "Conference" : call.DisplayNumber}</p>
 														<span>{call.answered ? call.callTimer : "00:00"}</span>
 													</div>
-													{!sip.isConferenceCall(activeCallLineNumber) &&
-														activeCallLineNumber !== call.LineNumber &&
-														sip.isAnswered(activeCallLineNumber) &&
-														!sip.isMerged(activeCallLineNumber) &&
-														!call.conferenceCallList && (
-															<span>
-																<span className={styles.actBtns}>
-																	{/* // call.mergedOnGroup?<span>{call.mergedOnGroup}</span>: */}
-																	<span className={styles.mergeBtnWrapper}>
-																		<Button
-																			onClick={() => {
-																				sip.merge(activeCallLineNumber, call.LineNumber);
-																			}}
-																			icon={<MergeCallIcon />}>
-																			MERGE
-																		</Button>
-																	</span>
-																	<span className={styles.endCallBtn}>
-																		<Button
-																			onClick={() => {
-																				console.log("end call logic goes here...");
-																			}}>
-																			<EndCallIcon />
-																		</Button>
+													<section className={styles.actBtnWrap}>
+														{!sip.isConferenceCall(activeCallLineNumber) &&
+															activeCallLineNumber !== call.LineNumber &&
+															sip.isAnswered(activeCallLineNumber) &&
+															!sip.isMerged(activeCallLineNumber) &&
+															!call.conferenceCallList && (
+																<span>
+																	<span className={styles.actBtns}>
+																		{/* // call.mergedOnGroup?<span>{call.mergedOnGroup}</span>: */}
+																		<span className={styles.mergeBtnWrapper}>
+																			<Button
+																				onClick={(e) => {
+																					e.stopPropagation();
+																					sip.merge(activeCallLineNumber, call.LineNumber);
+																				}}
+																				icon={<MergeCallIcon />}>
+																				MERGE
+																			</Button>
+																		</span>
 																	</span>
 																</span>
-															</span>
-														)}
+															)}
+														<span className={styles.endCallBtn}>
+															<Button
+																onClick={(e) => {
+																	e.stopPropagation();
+																	if (call.conferenceCallList) {
+																		toast("Conference Ended by Host", {
+																			position: "top-right",
+																			autoClose: 3000,
+																			hideProgressBar: true,
+																			closeOnClick: true,
+																			pauseOnHover: true,
+																			draggable: true,
+																			progress: undefined,
+																			transition: Slide,
+																			theme: theme ? "dark" : "light",
+																		});
+																		sip.hungupConference(call.LineNumber);
+																	} else {
+																		sip.hungup(call.LineNumber);
+																	}
+																}}>
+																<EndCallIcon />
+															</Button>
+														</span>
+													</section>
 												</button>
 											</div>
 										))}

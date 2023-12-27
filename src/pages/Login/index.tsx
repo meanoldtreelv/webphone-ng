@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip";
 import { store } from "../../redux/store";
-import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
