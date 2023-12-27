@@ -1,22 +1,19 @@
-@import "./../../../sass/abstracts/variables";
-
 .sidebarBox {
 	height: 100%;
 	background: var(--overlay-primary);
 	overflow-x: hidden;
-	// position: absolute;
 	z-index: 10;
 }
+
 .sidebar {
 	border: 1px solid var(--border-tertiary);
 	background: var(--background-primary);
-	//   margin: 15px;
 	padding: 15px;
 	height: 100%;
 	max-width: 280px;
+	width: 64px;
 	// uncomment the line below to make the sidebar animation smoother
 	// transition: all 0.3s;
-	width: 64px;
 
 	&_logoIcon {
 		margin-bottom: 20px;
@@ -27,8 +24,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		// align-items: end;
 	}
+
 	&_topTab {
 		display: flex;
 		flex-direction: column;
@@ -37,26 +34,25 @@
 
 	&_tab {
 		height: 32px;
-		// width: 240px;
-		padding: 6px 8px 6px 8px;
+		padding: 7px;
 		border-radius: 8px;
-		// background: var(--background-active, rgba(25, 138, 240, 0.1));
 		font-size: 14px;
 
 		display: flex;
-		// justify-content: center;
 		align-items: center;
 		gap: 10px;
 		color: var(--text-primary);
 
+		span {
+			display: flex;
+			align-items: center;
+		}
+
 		&:hover {
-			background: map-get($color, opacity-neutral-10);
+			background: var(--background-hover);
 			color: var(--text-link);
 		}
-		&:visited {
-			background: var(--background-active);
-			color: var(--text-link);
-		}
+
 		&:active {
 			background: var(--background-active);
 			color: var(--text-link);
@@ -72,21 +68,21 @@
 	&_icon {
 		position: relative;
 
-		// &::before {
-		// 	content: "";
-		// 	position: absolute;
-		// 	top: 0px;
-		// 	left: 15px;
-		// 	z-index: 100;
-		// 	width: 5px;
-		// 	height: 5px;
-		// 	background: var(--support-danger-default);
-		// 	border-radius: 100%;
-		// }
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0px;
+			left: 15px;
+			z-index: 100;
+			width: 5px;
+			height: 5px;
+			background: var(--support-danger-default);
+			border-radius: 100%;
+		}
 	}
 
 	&_unreadMsg {
-		color: var(--text-primary);
+		color: var(--text-on-color);
 		text-align: center;
 		display: inline-flex;
 		padding: 1px 6px;
@@ -100,7 +96,16 @@
 
 .active_tab {
 	background: var(--background-active);
-	color: var(--text-link) !important;
+	color: var(--text-link);
+
+	&:hover {
+		background: var(--background-active);
+		color: var(--text-link);
+	}
+	&:active {
+		background: var(--background-active);
+		color: var(--text-link);
+	}
 }
 
 .spinnerMain {

@@ -33,8 +33,11 @@
 		line-height: 18px; /* 138.462% */
 		letter-spacing: -0.2px;
 
+		cursor: pointer;
+
 		input {
 			display: none;
+			cursor: pointer;
 		}
 
 		label {
@@ -49,6 +52,7 @@
 			letter-spacing: -0.2px;
 
 			color: var(--text-primary, #1f2023);
+			cursor: pointer;
 		}
 
 		span {

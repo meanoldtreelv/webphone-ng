@@ -17,16 +17,16 @@ export const jwtTokenRefresher =
 							refresh_token: getCookie("refresh_token"),
 						})
 						.then((resp) => {
-							var currentDate = new Date();
-							var expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+							var expiryDate = new Date();
+							expiryDate.setFullYear(expiryDate.getFullYear() + 10);
 							var formattedExpiryDate = expiryDate.toUTCString();
 
 							if (process.env.NODE_ENV === "development") {
 								document.cookie = `id_token=${resp?.data?.id_token}; domain=localhost; path=/; expires=${formattedExpiryDate}`;
-								document.cookie = `refresh_token=${resp?.data?.id_token}; domain=localhost; path=/; expires=${formattedExpiryDate}`;
+								document.cookie = `refresh_token=${resp?.data?.refresh_token}; domain=localhost; path=/; expires=${formattedExpiryDate}`;
 							} else if (process.env.NODE_ENV === "production") {
 								document.cookie = `id_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
-								document.cookie = `refresh_token=${resp?.data?.id_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
+								document.cookie = `refresh_token=${resp?.data?.refresh_token}; domain=.ringplan.com; path=/; expires=${formattedExpiryDate}`;
 							}
 						})
 						.catch((e) => {

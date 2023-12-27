@@ -13,12 +13,12 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/UI/Loader";
 import sip from "../../lib/sip";
 import { store } from "../../redux/store";
-import { getCookie, setCookie } from "utils";
 import { getGoBackUrl, getLoginUrl } from "config/env.config";
 import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 import ChevronDownIcon from "components/UI/Icons/Navigation/ChevronDown";
 import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
+import OpenApp from "components/shared/OpenApp";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -87,12 +87,13 @@ const Login = () => {
 	const login = () => {
 		return (
 			<section className={`${styles.login} ${theme}`}>
-				{suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />}
+				{/* {suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />} */}
 				<div className={styles.login_image}>
 					<img src={loginSideImage} alt="" />
 				</div>
 				<div className={styles.login_textBox}>
 					<div className={styles.login_text}>
+						<OpenApp />
 						<h1 className={styles.login_join}>Join the RingPlan Team</h1>
 						<p className={styles.login_doMore}>Do more with Ringplan.</p>
 

@@ -5,12 +5,14 @@ import sip from "../../../lib/sip";
 import { nameIcon } from "utils";
 import { useEffect } from "react";
 import { setCallHistory } from "redux/call-history/callHistorySlice";
+import { callNumber } from "redux/call/callSelectors";
 
 const InboundCall = () => {
 	const dispatch = useDispatch();
 	const { ringingInboundCalls, ringingInboundCallActive, activeCallLineNumber } = useSelector(
 		(state: any) => state.sip,
 	);
+	const number = useSelector(callNumber);
 
 	useEffect(() => {
 		if (ringingInboundCalls.length) {
@@ -30,9 +32,9 @@ const InboundCall = () => {
 						{
 							cdr: {
 								id: "",
-								dst: "",
+								dst: number,
 								src: ringingInboundCalls[0]?.DisplayNumber,
-								starttime: Date.now(),
+								starttime: new Date(Date.now()).toISOString(),
 							},
 							recording: {},
 						},
@@ -46,7 +48,7 @@ const InboundCall = () => {
 						{
 							cdr: {
 								id: "",
-								dst: "",
+								dst: number,
 								src: ringingInboundCalls[0]?.DisplayNumber,
 								starttime: Date.now(),
 							},

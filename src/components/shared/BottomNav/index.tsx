@@ -8,14 +8,20 @@ import RecentsIcon from "components/UI/Icons/Sidebar/Recents";
 import FaxIcon from "components/UI/Icons/Sidebar/Fax";
 import VoicemailIcon from "components/UI/Icons/Sidebar/Voicemail";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import ApplicationIcon from "components/UI/Icons/Application";
 import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
 import XIcon from "components/UI/Icons/X";
+import { useDispatch, useSelector } from "react-redux";
+import { unreadMessageCount } from "redux/chat/chatSelectors";
+import { setUnreadMessageCount } from "redux/chat/chatSlice";
 
 const BottomNav = () => {
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const unreadCount = useSelector(unreadMessageCount);
 	const [tabActive, setTabActive] = useState("1");
 	const [tabHovered, setTabHovered] = useState("1");
 	const [moreOpt, setMoreOpt] = useState(false);
@@ -25,11 +31,13 @@ const BottomNav = () => {
 			path: routePaths.CONTACT.ROUTE,
 			icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
 			name: "Contacts",
+			unread: 0,
 		},
 		{
-			path: routePaths.CALL_HISTORY.ROUTE,
-			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Recent",
+			path: routePaths.CHAT.ROUTE,
+			icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Texting",
+			unread: unreadCount,
 		},
 		{
 			path: routePaths.DASHBOARD.ROUTE,
@@ -37,11 +45,11 @@ const BottomNav = () => {
 			name: "Keypad",
 		},
 		{
-			path: routePaths.VOICEMAIL.ROUTE,
-			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
-			name: "Voicemail",
-			unread: 4,
+			path: routePaths.CALL_HISTORY.ROUTE,
+			icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Recent",
 		},
+
 		{
 			path: routePaths.VOICEMAIL.ROUTE,
 			icon: <ApplicationIcon />,
@@ -52,30 +60,36 @@ const BottomNav = () => {
 	const sidebarBtmMoreLinks = [
 		// {
 		// 	path: routePaths.CONFERENCE.ROUTE,
-		// 	icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-		// 	name: "Texting",
-		// 	unread: 1,
-		// },
-		// {
-		// 	path: routePaths.CONFERENCE.ROUTE,
 		// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
 		// 	name: "Fax",
-		// 	unread: 2,
+		// 	unread: 0,
 		// },
 		// {
 		// 	path: routePaths.CONFERENCE.GROUPS.ROUTE,
 		// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
 		// 	name: "Conference",
 		// },
-		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
-		{ path: routePaths.CONTACT.ROUTE, icon: <MeetIcon />, name: "Download RingPlan Meet", unread: 2 },
+		{
+			path: routePaths.VOICEMAIL.ROUTE,
+			icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+			name: "Voicemail",
+			unread: 0,
+		},
+		{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 0 },
+		{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 		{
 			path: routePaths.SETTINGS.ROUTE,
 			icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
 			name: "Settings",
-			unread: 3,
+			unread: 0,
 		},
 	];
+
+	const unreadHandler = (path) => {
+		if (path === "/texting") {
+			dispatch(setUnreadMessageCount(0));
+		}
+	};
 
 	return (
 		<div className={styles.bottomNav}>
@@ -86,8 +100,16 @@ const BottomNav = () => {
 						className={() =>
 							[styles.sidebar_tab, link.path === window.location.pathname ? styles.active_tab : null].join(" ")
 						}
-						key={link.name}>
-						<span className={styles.sidebar_icon}>{link.icon}</span>
+						key={link.name}
+						onClick={() => {
+							unreadHandler(link?.path);
+						}}>
+						<span
+							className={`${styles.sidebar_icon} ${
+								link.name !== "More" && link?.unread > 0 ? styles.unread_icon : ""
+							}`}>
+							{link.icon}
+						</span>
 						<span className={`${styles.sidebar_tabExpanded}`}>
 							<span>{link.name}</span>
 							{/* <span className={styles.sidebar_unreadMsg}>{link.unread}</span> */}

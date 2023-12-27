@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import routePaths from "./../../../constants/routes";
 import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 import VoicemailIcon from "components/UI/Icons/Sidebar/Voicemail";
-import FaxIcon from "components/UI/Icons/Sidebar/Fax";
 import RecentsIcon from "components/UI/Icons/Sidebar/Recents";
 import ChatIcon from "components/UI/Icons/Sidebar/Chat";
-import UserGroupIcon from "components/UI/Icons/Sidebar/UserGroup";
 import ContactIcon from "components/UI/Icons/Sidebar/Contact";
 import KeypadIcon from "components/UI/Icons/Sidebar/Keypad";
 import SidecarIcon from "components/UI/Icons/Sidebar/Sidecar";
 import MeetIcon from "components/UI/Icons/Sidebar/Meet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/UI/Logo";
 import { ClipLoader } from "react-spinners";
 import { loader } from "redux/common/commonSelectors";
-import { getCookie } from "typescript-cookie";
+import { unreadMessageCount } from "redux/chat/chatSelectors";
+import { setUnreadMessageCount } from "redux/chat/chatSlice";
+import FaxIcon from "components/UI/Icons/Sidebar/Fax";
+import UserGroupIcon from "components/UI/Icons/Sidebar/UserGroup";
 
 interface ISidebarLinks {
 	path: string;
@@ -24,115 +25,162 @@ interface ISidebarLinks {
 	unread: number;
 	name: string;
 }
+
 const Sidebar = () => {
-	const [isCollapsed, setIsCollapsed] = useState(false);
+	const dispatch = useDispatch();
+	const location = useLocation();
+
+	const unreadCount = useSelector(unreadMessageCount);
 	const mainLoader = useSelector(loader);
-	const [tabActive, setTabActive] = useState("1");
-	const [tabHovered, setTabHovered] = useState("1");
-
-	const [unreadMessage, setUnreadMessage] = useState(false);
-
 	const { extAuth } = useSelector((state: any) => state.sip);
-	// the above two functions, they need to be removed
-	// use sass
-	const activeTabStyle = {
-		background: "var(--background-active, rgba(25, 138, 240, 0.1))",
-		color: "var(--text-link, #1480e1)",
-	};
 
-	const hoveredTabStyle = {
-		background: "var(--background-active, rgba(25, 138, 240, 0.1))",
-		color: "var(--text-link, #1480e1)",
-	};
-
-	// const toggleCollapsed = () => {
-	// 	setIsCollapsed(!isCollapsed);
-	// };
-
-	// const sidebarTopLinks: ISidebarLinks[] = extAuth
+	const [isCollapsed, setIsCollapsed] = useState(false);
+	const [tabHovered, setTabHovered] = useState("");
 
 	const sidebarTopLinks: ISidebarLinks[] = extAuth
 		? [
 				{
 					path: routePaths.DASHBOARD.ROUTE,
-					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<KeypadIcon
+							color={`${
+								tabHovered === "Keypad" || location.pathname === "/dashboard" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Keypad",
 					unread: 0,
 				},
 				{
 					path: routePaths.CONTACT.ROUTE,
-					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<ContactIcon
+							color={`${
+								tabHovered === "Contacts" || location.pathname === "/contact" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Contacts",
-					unread: 3,
+					unread: 0,
 				},
 				{
 					path: routePaths.CHAT.ROUTE,
-					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<ChatIcon
+							color={`${
+								tabHovered === "Texting" || location.pathname === "/texting" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Texting",
-					unread: 1,
+					unread: unreadCount,
 				},
 				{
 					path: routePaths.CALL_HISTORY.ROUTE,
-					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<RecentsIcon
+							color={`${
+								tabHovered === "Recent" || location.pathname === "/call-history" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Recent",
-					unread: 1,
+					unread: 0,
 				},
 				{
 					path: routePaths.VOICEMAIL.ROUTE,
-					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<VoicemailIcon
+							color={`${
+								tabHovered === "Voicemail" || location.pathname === "/voicemail" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Voicemail",
-					unread: 4,
+					unread: 0,
 				},
 		  ]
 		: [
 				{
 					path: routePaths.DASHBOARD.ROUTE,
-					icon: <KeypadIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<KeypadIcon
+							color={`${
+								tabHovered === "Keypad" || location.pathname === "/dashboard" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Keypad",
 					unread: 0,
 				},
 				{
 					path: routePaths.CONTACT.ROUTE,
-					icon: <ContactIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<ContactIcon
+							color={`${
+								tabHovered === "Contacts" || location.pathname === "/contact" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Contacts",
-					unread: 3,
+					unread: 0,
 				},
 				{
 					path: routePaths.CHAT.ROUTE,
-					icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<ChatIcon
+							color={`${
+								tabHovered === "Texting" || location.pathname === "/texting" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Texting",
+					unread: unreadCount,
+				},
+
+				{
+					path: routePaths.CALL_HISTORY.ROUTE,
+					icon: (
+						<RecentsIcon
+							color={`${
+								tabHovered === "Recent" || location.pathname === "/call-history" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
+					name: "Recent",
+					unread: 0,
+				},
+
+				{
+					path: routePaths.VOICEMAIL.ROUTE,
+					icon: (
+						<VoicemailIcon
+							color={`${
+								tabHovered === "Voicemail" || location.pathname === "/voicemail" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
+					name: "Voicemail",
 					unread: 0,
 				},
 				// {
 				// 	path: routePaths.CONFERENCE.GROUPS.ROUTE,
-				// 	icon: <UserGroupIcon tabActive={tabActive} tabHovered={tabHovered} />,
+				// 	icon: (
+				// 		<UserGroupIcon
+				// 			color={`${tabHovered === "Conference" || location.pathname === "/" ? "primary-default" : "icon-primary"}`}
+				// 		/>
+				// 	),
 				// 	name: "Conference",
-				// 	unread: 3,
+				// 	unread: 0,
 				// },
 				// {
 				// 	path: routePaths.CONFERENCE.ROUTE,
-				// 	icon: <ChatIcon tabActive={tabActive} tabHovered={tabHovered} />,
-				// 	name: "Texting",
-				// 	unread: 1,
-				// },
-				{
-					path: routePaths.CALL_HISTORY.ROUTE,
-					icon: <RecentsIcon tabActive={tabActive} tabHovered={tabHovered} />,
-					name: "Recent",
-					unread: 1,
-				},
-				// {
-				// 	path: routePaths.CONFERENCE.ROUTE,
-				// 	icon: <FaxIcon tabActive={tabActive} tabHovered={tabHovered} />,
+				// 	icon: (
+				// 		<FaxIcon color={`${tabHovered === "Fax" || location.pathname === "/" ? "primary-default" : "icon-primary"}`} />
+				// 	),
 				// 	name: "Fax",
-				// 	unread: 2,
+				// 	unread: 0,
 				// },
-				{
-					path: routePaths.VOICEMAIL.ROUTE,
-					icon: <VoicemailIcon tabActive={tabActive} tabHovered={tabHovered} />,
-					name: "Voicemail",
-					unread: 4,
-				},
 		  ];
 
 	const sidebarBtmLinks: ISidebarLinks[] = extAuth
@@ -140,21 +188,39 @@ const Sidebar = () => {
 				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
-					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<SettingsIcon
+							color={`${
+								tabHovered === "Settings" || location.pathname === "/settings" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Settings",
-					unread: 3,
+					unread: 0,
 				},
 		  ]
 		: [
-				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 2 },
+				{ path: routePaths.SIDECAR.ROUTE, icon: <SidecarIcon />, name: "Sidecar", unread: 0 },
 				{ path: routePaths.MEET.ROUTE, icon: <MeetIcon />, name: "RingPlan Meet", unread: 0 },
 				{
 					path: routePaths.SETTINGS.ROUTE,
-					icon: <SettingsIcon tabActive={tabActive} tabHovered={tabHovered} />,
+					icon: (
+						<SettingsIcon
+							color={`${
+								tabHovered === "Settings" || location.pathname === "/settings" ? "primary-default" : "icon-primary"
+							}`}
+						/>
+					),
 					name: "Settings",
-					unread: 3,
+					unread: 0,
 				},
 		  ];
+
+	const unreadHandler = (path) => {
+		if (path === "/texting") {
+			dispatch(setUnreadMessageCount(0));
+		}
+	};
 
 	return (
 		<section className={styles.sidebarBox} style={{ width: `${!isCollapsed ? "64px" : "calc(100vw - 15px)"}` }}>
@@ -181,13 +247,20 @@ const Sidebar = () => {
 									[styles.sidebar_tab, isActive ? styles.active_tab : ""].join(" ")
 								}
 								key={link.name}
-								// onClick={toggleCollapsed}
-							>
-								<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+								onClick={() => {
+									unreadHandler(link?.path);
+								}}
+								onMouseOver={() => {
+									setTabHovered(link?.name);
+								}}
+								onMouseOut={() => {
+									setTabHovered("");
+								}}>
+								<span className={`${!isCollapsed && link.unread > 0 ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 								{isCollapsed && (
 									<span className={`${styles.sidebar_tabExpanded}`}>
 										<span>{link.name}</span>
-										{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+										{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 									</span>
 								)}
 							</NavLink>
@@ -204,13 +277,12 @@ const Sidebar = () => {
 										[styles.sidebar_tab, isActive ? styles.active_tab : null].join(" ")
 									}
 									key={link.name}
-									// onClick={toggleCollapsed}
-								>
-									<span className={` ${!isCollapsed && unreadMessage ? styles.sidebar_icon : ""}`}>{link.icon}</span>
+									onClick={unreadHandler}>
+									<span className={` ${!isCollapsed && link.unread > 0 ? styles.sidebar_icon : ""}`}>{link.icon}</span>
 									{isCollapsed && (
 										<span className={`${styles.sidebar_tabExpanded}`}>
 											<span>{link.name}</span>
-											{/* {link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>} */}
+											{link.unread > 0 && <span className={styles.sidebar_unreadMsg}>{link.unread}</span>}
 										</span>
 									)}
 								</NavLink>

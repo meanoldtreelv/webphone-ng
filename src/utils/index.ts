@@ -16,9 +16,12 @@ import { cookieType } from "../types";
 // 	return formData;
 // };
 
-export const nameIcon = (displayname: string|number) => {
-	if(typeof displayname === "number") displayname = displayname.toString()
-	return displayname[0] + (displayname?.split && displayname.split(" ") && displayname.split(" ")[1] ? displayname.split(" ")[1][0] : "");
+export const nameIcon = (displayname: string | number) => {
+	if (typeof displayname === "number") displayname = displayname.toString();
+	return (
+		displayname[0] +
+		(displayname?.split && displayname.split(" ") && displayname.split(" ")[1] ? displayname.split(" ")[1][0] : "")
+	);
 };
 
 export const generateFormData = (obj: Record<string, any>): FormData => {
@@ -50,7 +53,7 @@ export const setCookie = (
 	},
 ) =>
 	Cookies.set(name, value, {
-		expires: 7,
+		expires: new Date().setFullYear(new Date().getFullYear() + 10),
 	});
 
 export const resetUserCookie = () => Cookies.remove("user");

@@ -403,7 +403,7 @@ const sipSlice = createSlice({
 							}
 						}
 					}
-					console.log("Merge:", state.mergedCallGroups);
+					console.log("Merge:", JSON.parse(JSON.stringify(state.mergedCallGroups)));
 					// alert("merged")
 					break;
 				}
@@ -770,6 +770,19 @@ const sipSlice = createSlice({
 					for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
 						if (state.ringingOutboundCalls[index].LineNumber === lineNum) {
 							state.ringingOutboundCalls[index].isMute = isMute;
+							break;
+						}
+					}
+					break;
+				}
+				case "displayName": {
+					console.log("displayName:");
+					console.log(action.payload.data);
+					const lineNum = action.payload.data.lineNum;
+					const displayName = action.payload.data.displayName;
+					for (let index = 0; index < state.ringingOutboundCalls.length; index++) {
+						if (state.ringingOutboundCalls[index].LineNumber === lineNum) {
+							state.ringingOutboundCalls[index].DisplayName = displayName;
 							break;
 						}
 					}

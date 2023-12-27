@@ -12,11 +12,10 @@ import Loader from "components/UI/Loader";
 import { useSelector } from "react-redux";
 import { store } from "redux/store";
 import ErrorMessage from "components/UI/ErrorMessage";
-import { getCookie, setCookie } from "utils";
+import { getCookie } from "utils";
 import { useTheme } from "hooks/useTheme";
 import { useSearchParams } from "react-router-dom";
 import logo from "./../../assets/images/core/logo-ri.svg";
-import Cookies from "js-cookie";
 
 const Callback = () => {
 	let [searchParams, setSearchParams] = useSearchParams();

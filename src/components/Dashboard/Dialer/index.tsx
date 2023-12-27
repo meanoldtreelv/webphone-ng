@@ -29,6 +29,7 @@ import CallConference from "components/UI/Icons/Call/CallConference";
 import ConferenceCallsList from "../ConferenceCallsList";
 import Button from "components/UI/Forms/Button";
 import { Slide, toast } from "react-toastify";
+import { useTheme } from "hooks/useTheme";
 
 const Dialer = () => {
 	const [isTransferButtonClicked, setIsTransferButtonClicked] = useState(false);
@@ -42,6 +43,7 @@ const Dialer = () => {
 	const transferCallHandler = () => {
 		setIsTransferButtonClicked(!isTransferButtonClicked);
 	};
+	const theme = useTheme();
 	const showAddConferenceCall = (LineNumber: number, showAddConferenceCall = true) => {
 		store.dispatch({
 			type: "sip/answeredCalls",
@@ -102,7 +104,7 @@ const Dialer = () => {
 									callTimerConf: item.callTimerConf,
 									displayNumber: item.DisplayNumber,
 									displayName: item.DisplayName ? item.DisplayName : item.DisplayNumber,
-									disposition:  item.disposition
+									disposition: item.disposition,
 								}}
 							/>
 						) : null}
@@ -120,15 +122,17 @@ const Dialer = () => {
 									{false ? (
 										<img src="/img/dummy/profile96.png" alt=""></img>
 									) : (
-										<span>{ !item.conferenceCallList && (item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber))}</span>
+										<span>
+											{!item.conferenceCallList &&
+												(item.DisplayName ? nameIcon(item.DisplayName) : nameIcon(item.DisplayNumber))}
+										</span>
 									)}
 								</div>
-								{item.conferenceCallList ?
-								(
-									 <p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
+								{item.conferenceCallList ? (
+									<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										Conference
 									</p>
-								):(
+								) : (
 									<>
 										<p className={`title_1`} style={{ color: "var(--text-primary, #1F2023)" }}>
 											{item.DisplayName}
@@ -150,13 +154,18 @@ const Dialer = () => {
 										{item.callTimer}
 									</div>
 								)}
-								{item.conferenceCallList && <div className={styles.Members}>
-									<Button onClick={()=>{showConferenceCallsList(item.LineNumber, item.conferenceCallList)}} border styles={{padding: "5px", borderColor:"var(--text-link)"}}>
-										<>
-											Members: {item.conferenceCallList.length + 1}
-										</>
-									</Button>
-								</div>}
+								{item.conferenceCallList && (
+									<div className={styles.Members}>
+										<Button
+											onClick={() => {
+												showConferenceCallsList(item.LineNumber, item.conferenceCallList);
+											}}
+											border
+											styles={{ padding: "5px", borderColor: "var(--text-link)" }}>
+											<>Members: {item.conferenceCallList?.filter((element: { disposition: string; }) => element.disposition!== "Bye" ).length + (item.disposition === "Bye"?0:1)}</>
+										</Button>
+									</div>
+								)}
 							</div>
 						</div>
 						<div className={styles.dialer_box}>
@@ -178,7 +187,7 @@ const Dialer = () => {
 										Add Call
 									</p>
 								</div>
-								<div
+								{!item.mergedOnGroup && <div
 									className={styles.dialer_action}
 									onClick={() => {
 										item.answered
@@ -192,12 +201,12 @@ const Dialer = () => {
 										style={
 											item.conferenceCallList ? { background: "var(--background-danger, #FFEBEB)" } : IconDisableStyle
 										}>
-										<CallConference answered={item.answered} fill={""} />
+										<CallConference answered={item.answered} />
 									</span>
 									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
 										Conference
 									</p>
-								</div>
+								</div>}
 								{/* check if this icon works too */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
@@ -207,29 +216,31 @@ const Dialer = () => {
 										Merge Call
 									</p>
 								</div> */}
-								{!item.conferenceCallList && <div
-									className={styles.dialer_action}
-									style={{ position: "relative" }}
-									// onClick={() => {
-									// 	setIsTransferButtonClicked(!isTransferButtonClicked);
-									// }}
-								>
-									<span
-										className={styles.dialer_icon}
-										style={false ? IconActiveStyle : IconDisableStyle}
-										onClick={() => {
-											item.answered && transferCallHandler();
-										}}>
-										{/* check if this icon works */}
-										<CallTransferIcon answered={item.answered} />
-									</span>
-									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										Transfer
-									</p>
-									{isTransferButtonClicked && item.answered && (
-										<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
-									)}
-								</div>}
+								{!item.conferenceCallList && (
+									<div
+										className={styles.dialer_action}
+										style={{ position: "relative" }}
+										// onClick={() => {
+										// 	setIsTransferButtonClicked(!isTransferButtonClicked);
+										// }}
+									>
+										<span
+											className={styles.dialer_icon}
+											style={false ? IconActiveStyle : IconDisableStyle}
+											onClick={() => {
+												item.answered && transferCallHandler();
+											}}>
+											{/* check if this icon works */}
+											<CallTransferIcon answered={item.answered} />
+										</span>
+										<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											Transfer
+										</p>
+										{isTransferButtonClicked && item.answered && (
+											<TransferCallCard transferBtn={setIsTransferButtonClicked} LineNumber={item.LineNumber} />
+										)}
+									</div>
+								)}
 								{/* check if this icon works or not */}
 								{/* <div className={styles.dialer_action}>
 									<span className={styles.dialer_icon} style={false ? IconActiveStyle : IconDisableStyle}>
@@ -242,10 +253,9 @@ const Dialer = () => {
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
-										if(item.conferenceCallList){
+										if (item.conferenceCallList) {
 											sip.muteConference(item.LineNumber, item.isMute);
-										
-										}else{
+										} else {
 											sip.mute(item.LineNumber, item.isMute);
 										}
 									}}>
@@ -258,24 +268,26 @@ const Dialer = () => {
 										{item.isMute ? "Unmute" : "Mute"}
 									</p>
 								</div>
-								{!item.conferenceCallList && <div
-									className={styles.dialer_action}
-									onClick={() => {
-										item.answered && sip.hold(item.LineNumber, item.isHold);
-									}}>
-									<span
-										className={styles.dialer_icon}
-										style={
-											item.isHold
-												? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
-												: IconDisableStyle
-										}>
-										<CallHoldIcon isHold={item.isHold} answered={item.answered} />
-									</span>
-									<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
-										{item.isHold ? "Resume" : "Hold"}
-									</p>
-								</div>}
+								{!item.conferenceCallList && (
+									<div
+										className={styles.dialer_action}
+										onClick={() => {
+											item.answered && sip.hold(item.LineNumber, item.isHold);
+										}}>
+										<span
+											className={styles.dialer_icon}
+											style={
+												item.isHold
+													? { background: "#f0f8ff", border: "1px solid var(--border-disabled, #c8d3e0)" }
+													: IconDisableStyle
+											}>
+											<CallHoldIcon isHold={item.isHold} answered={item.answered} />
+										</span>
+										<p className={`caption_2 ${styles.dialer_text}`} style={{ color: "var(--text-primary, #1F2023)" }}>
+											{item.isHold ? "Resume" : "Hold"}
+										</p>
+									</div>
+								)}
 								<div
 									className={styles.dialer_action}
 									onClick={() => {
@@ -320,7 +332,7 @@ const Dialer = () => {
 								<div
 									className={`${styles.dialer_control} ${styles.dialer_endButton}`}
 									onClick={() => {
-										if(item.conferenceCallList){
+										if (item.conferenceCallList) {
 											toast("Conference Ended by Host", {
 												position: "top-right",
 												autoClose: 3000,
@@ -329,11 +341,11 @@ const Dialer = () => {
 												pauseOnHover: true,
 												draggable: true,
 												progress: undefined,
-												transition:Slide,
-												theme: "light"//"light","dark"
-												});
+												transition: Slide,
+												theme: theme ? "dark" : "light", //"light","dark"
+											});
 											sip.hungupConference(item.LineNumber);
-										}else{
+										} else {
 											sip.hungup(item.LineNumber);
 										}
 									}}>

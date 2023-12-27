@@ -2,8 +2,14 @@ import EditIcon from "components/UI/Icons/ChatIcons/Edit";
 import styles from "./MoreMenuPopUp.module.scss";
 import InfoIcon from "components/UI/Icons/ChatIcons/Info";
 import { useDispatch, useSelector } from "react-redux";
-import { setEditContact, setIsContactDetailsDialogueOpen, setIsEditContactDialogueOpen } from "redux/chat/chatSlice";
+import {
+	setEditContact,
+	setIsContactDetailsDialogueOpen,
+	setIsEditContactDialogueOpen,
+	setIsSettingDialogueOpen,
+} from "redux/chat/chatSlice";
 import { conversationData } from "redux/chat/chatSelectors";
+import SettingsIcon from "components/UI/Icons/Sidebar/Settings";
 
 const MoreMenuPopUp = () => {
 	const dispatch = useDispatch();
@@ -33,6 +39,15 @@ const MoreMenuPopUp = () => {
 					<InfoIcon />
 				</span>
 				<span>Details</span>
+			</div>
+			<div
+				onClick={() => {
+					dispatch(setIsSettingDialogueOpen(true));
+				}}>
+				<span>
+					<SettingsIcon />
+				</span>
+				<span>Change your texting number</span>
 			</div>
 		</div>
 	);

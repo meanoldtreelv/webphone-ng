@@ -2,7 +2,7 @@ import styles from "./SharePopUp.module.scss";
 import UserGroupIcon from "components/UI/Icons/Sidebar/UserGroup";
 import UploadIcon from "components/UI/Icons/ChatIcons/Upload";
 import { useDispatch } from "react-redux";
-import { setSelectedFiles } from "redux/chat/chatSlice";
+import { setIsShareContactDialogueOpen, setSelectedAttachment, setSelectedFiles } from "redux/chat/chatSlice";
 
 const SharePopUp = () => {
 	const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const SharePopUp = () => {
 	const handleFileChange = (event) => {
 		const files = event.target.files;
 
-		dispatch(setSelectedFiles(files));
+		dispatch(setSelectedAttachment(files));
 
 		// You can perform further actions with the selected file, like uploading it to a server
 		// For instance, you can use the 'fetch' API to upload the file
@@ -24,14 +24,15 @@ const SharePopUp = () => {
 					type="file"
 					onChange={handleFileChange}
 					// You can add additional attributes like accept to specify allowed file types
-					accept=".doc"
-					id="doc"
+					accept=".png,.jpeg,.jpg,.mp4,.mov,.doc,.pdf,.mp3"
+					id="attachment"
+					multiple
 				/>
-				<label htmlFor="doc">
+				<label htmlFor="attachment">
 					<span>
 						<UploadIcon />
 					</span>
-					<span>Share video</span>
+					<span>Upload from your computer</span>
 				</label>
 			</div>
 			<div>
@@ -41,6 +42,7 @@ const SharePopUp = () => {
 					// You can add additional attributes like accept to specify allowed file types
 					accept=".mp4,.mov"
 					id="video"
+					multiple
 				/>
 				<label htmlFor="video">
 					<span>
@@ -65,7 +67,10 @@ const SharePopUp = () => {
 					<span>Share image</span>
 				</label>
 			</div>
-			<div>
+			<div
+				onClick={() => {
+					dispatch(setIsShareContactDialogueOpen(true));
+				}}>
 				<span>
 					<UserGroupIcon color="icon-primary" />
 				</span>
