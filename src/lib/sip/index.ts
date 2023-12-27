@@ -2868,7 +2868,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
     "YYYY-MM-DD HH:mm:ss UTC"
   );
   const outboundCall =  {
-    LineNumber: newLineNumber,
+    LineNumber: lineObj.LineNumber,
     DisplayName: "",
     DisplayNumber: dialledNumber,
   }
@@ -2887,6 +2887,7 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
   lineObj.SipSession.data.terminateby = "them";
   lineObj.SipSession.data.withvideo = false;
   lineObj.SipSession.data.earlyReject = false;
+  lineObj.SipSession.data.ringingOutboundCallsDisplayName = "";
   lineObj.SipSession.isOnHold = false;
   lineObj.SipSession.delegate = {
     onBye: function (sip) {
@@ -2902,6 +2903,13 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
       onSessionDescriptionHandlerCreated(lineObj, sdh, provisional, false);
     },
   };
+  const updateRingingOutboundCallName = () =>{
+    console.log(lineObj.SipSession)
+    if(!lineObj.SipSession.data?.ringingOutboundCallsDisplayName && lineObj.SipSession?._assertedIdentity?._displayName) {
+      store.dispatch({type:"sip/ringingOutboundCalls", payload:{action:"displayName",data:{lineNum:lineObj.LineNumber, displayName:lineObj.SipSession?._assertedIdentity?._displayName}}})
+      lineObj.SipSession.data.ringingOutboundCallsDisplayName = lineObj.SipSession?._assertedIdentity?._displayName
+    }
+  }
   var inviterOptions = {
     requestDelegate: {
       // OutgoingRequestDelegate
@@ -2909,12 +2917,14 @@ function AudioCall(lineObj, dialledNumber, extraHeaders) {
         onInviteTrying(lineObj, sip);
       },
       onProgress: function (sip) {
+        updateRingingOutboundCallName();
         onInviteProgress(lineObj, sip);
       },
       onRedirect: function (sip) {
         onInviteRedirected(lineObj, sip);
       },
       onAccept: function (sip) {
+        updateRingingOutboundCallName();
         onInviteAccepted(lineObj, false, sip);
       },
       onReject: function (sip) {
