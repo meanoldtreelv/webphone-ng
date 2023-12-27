@@ -19,6 +19,7 @@ import { useTheme } from "hooks/useTheme";
 import SuggestPortraitOnMobileModal from "components/SuggestPortraitOnMobileModal";
 import ChevronDownIcon from "components/UI/Icons/Navigation/ChevronDown";
 import ChevronUpIcon from "components/UI/Icons/Navigation/ChevronUp";
+import OpenApp from "components/shared/OpenApp";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -93,6 +94,7 @@ const Login = () => {
 				</div>
 				<div className={styles.login_textBox}>
 					<div className={styles.login_text}>
+						<OpenApp />
 						<h1 className={styles.login_join}>Join the RingPlan Team</h1>
 						<p className={styles.login_doMore}>Do more with Ringplan.</p>
 

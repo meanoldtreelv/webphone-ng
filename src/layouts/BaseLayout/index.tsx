@@ -19,6 +19,7 @@ import { setSocket, setUnreadMessageCount } from "redux/chat/chatSlice";
 import { setSimpleNotification } from "redux/common/commonSlice";
 import { socket, unreadMessageCount } from "redux/chat/chatSelectors";
 import { showToast } from "utils";
+import OpenApp from "components/shared/OpenApp";
 
 let Socket: any = null;
 
@@ -220,6 +221,7 @@ const BaseLayout = ({ children }: any) => {
 
 	return (
 		<div className={`${styles.wrapper}`}>
+			{window.location.pathname === "/dashboard" && <OpenApp style={{ right: "125px", marginTop: "6px" }} />}
 			<ToastContainer />
 			{sessionValid && <ModalMessage />}
 			{/* {suggestPortraitOnMobileModalShow && <SuggestPortraitOnMobileModal />} */}

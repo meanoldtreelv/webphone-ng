@@ -11,23 +11,25 @@
 	bottom: 0px;
 	position: fixed;
 }
+
 .layer2 {
-	min-width: 18rem;
+	min-width: 380px;
 	position: relative;
-	max-width: 28rem;
+	width: 310px;
 	height: auto;
 }
 
 .layer3 {
 	border-radius: 0.5rem;
 	padding: 1rem;
-	background-color: var(--background-secondary);
+	background-color: var(--background-quaternary);
 	position: relative;
 
 	&_header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-bottom: 15px;
 
 		button {
 			height: 0px;
@@ -41,4 +43,106 @@
 	font-size: 1.125rem;
 	line-height: 1.75rem;
 	color: var(--text-secondary);
+}
+
+.callsListBtn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border: 1px solid var(--border-secondary);
+	border-radius: 5px;
+	padding: 8px 12px;
+	width: 100%;
+	margin-bottom: 9px;
+
+	&:hover {
+		background: var(--background-quaternary);
+	}
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	p {
+		font-weight: bold;
+		color: var(--text-primary);
+	}
+
+	span {
+		font-size: 0.85em;
+		color: var(--text-secondary);
+		display: flex;
+		align-items: center;
+		height: 15px;
+	}
+
+	svg {
+		width: 18px;
+	}
+}
+
+.mergedCalls {
+	margin-top: 10px;
+
+	> p {
+		font-size: 0.9em;
+		margin-bottom: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 5px;
+		color: var(--text-secondary);
+
+		svg {
+			width: 15px;
+		}
+
+		path {
+			stroke: var(--icon-primary);
+		}
+	}
+}
+
+.mergeBtn {
+	position: relative;
+	z-index: 999;
+}
+
+.mergeBtnWrapper,
+.mergeBtn {
+	margin-right: 10px;
+
+	button {
+		display: flex;
+		align-items: center;
+		background: var(--background-emphasis);
+		height: 32px;
+		padding: 0 10px 0 8px;
+		border-radius: 3px;
+		color: var(--text-primary);
+
+		svg {
+			margin-right: 10px;
+			width: 14px;
+			height: 15px;
+			background: red;
+		}
+
+		path {
+			fill: var(--text-primary);
+		}
+	}
+}
+
+.endCallBtn {
+	display: flex;
+	align-items: center;
+	height: 30px;
+	svg,
+	path {
+		color: var(--text-danger) !important;
+		fill: var(--text-danger) !important;
+	}
 }
